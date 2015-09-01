@@ -2,10 +2,11 @@ package interpreter.lexer.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class TokenList {
 
-    private List<Token> tokens = new ArrayList<Token>();
+    private List<Token> tokens = new ArrayList<>();
 
     public void add(Token token) {
         tokens.add(token);
@@ -22,4 +23,9 @@ public class TokenList {
     public int size() {
         return tokens.size();
     }
+
+    public Stream<Token> stream() {
+        return tokens.stream();
+    }
+
 }
