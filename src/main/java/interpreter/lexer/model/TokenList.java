@@ -1,0 +1,25 @@
+package interpreter.lexer.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TokenList {
+
+    private List<Token> tokens = new ArrayList<Token>();
+
+    public void add(Token token) {
+        tokens.add(token);
+    }
+
+    public Token get(int index) {
+        return tokens.get(index);
+    }
+
+    public void remove(int index) {
+        tokens.remove(index);
+    }
+
+    public int size() {
+        return tokens.size();
+    }
+}
