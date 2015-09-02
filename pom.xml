@@ -8,6 +8,38 @@
     <artifactId>klab</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <groovy.version>2.4.4</groovy.version>
+        <spock.version>1.0-groovy-2.4</spock.version>
+        <cglib.version>3.1</cglib.version>
+        <objenesis.version>2.2</objenesis.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${spock.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>${cglib.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>${objenesis.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -18,6 +50,19 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -41,8 +86,6 @@
                         <configuration>
                             <mainClass>console.App</mainClass>
                             <arguments>
-                                <argument>foo</argument>
-                                <argument>bar</argument>
                             </arguments>
                         </configuration>
                     </plugin>
