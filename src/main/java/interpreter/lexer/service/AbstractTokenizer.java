@@ -39,6 +39,8 @@ public abstract class AbstractTokenizer implements Tokenizer {
                 onSpaceOrTabulator();
             } else if (tokenStartMatcher.isNewLineStart()) {
                 onNewLine();
+            } else {
+                tokenizerContext.setIndex(tokenizerContext.getIndex()+1);
             }
         }
     }
