@@ -56,8 +56,7 @@ public class TokenizerContextManager {
         int newLines = (int) token.getLexeme().chars().filter(character -> character == '\n').count();
         int lastLine = token.getLexeme().lastIndexOf('\n');
         incrementLine(newLines);
-        tokenizerContext.setColumn((long) 1);
-        incrementColumn(token.getLexeme().length() - lastLine);
+        tokenizerContext.setColumn((long) (token.getLexeme().length() - lastLine));
     }
 
     private void incrementLine(int value) {

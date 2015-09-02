@@ -13,6 +13,7 @@
         <spock.version>1.0-groovy-2.4</spock.version>
         <cglib.version>3.1</cglib.version>
         <objenesis.version>2.2</objenesis.version>
+        <makeiteasy.version>4.0.0</makeiteasy.version>
     </properties>
 
     <dependencies>
@@ -36,6 +37,12 @@
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
             <version>${objenesis.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.natpryce</groupId>
+            <artifactId>make-it-easy</artifactId>
+            <version>${makeiteasy.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
