@@ -18,21 +18,25 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public void onNumber() {
-        tokenizerContextManager.addToken(NUMBER_REGEX, TokenClass.NUMBER);
+        addToken(NUMBER_REGEX, TokenClass.NUMBER);
     }
 
     @Override
     public void onWord() {
-        tokenizerContextManager.addToken(WORD_REGEX, TokenClass.WORD);
+        addToken(WORD_REGEX, TokenClass.WORD);
     }
 
     @Override
     public void onSpaceOrTabulator() {
-        tokenizerContextManager.addToken(SPACE_REGEX, TokenClass.SPACE);
+        addToken(SPACE_REGEX, TokenClass.SPACE);
     }
 
     @Override
     public void onNewLine() {
-        tokenizerContextManager.addToken(NEWLINE_REGEX, TokenClass.NEW_LINE);
+        addToken(NEWLINE_REGEX, TokenClass.NEW_LINE);
+    }
+
+    private void addToken(final Pattern pattern, TokenClass tokenClass) {
+        tokenizerContextManager.addToken(tokenReader.readToken(pattern, tokenClass));
     }
 }

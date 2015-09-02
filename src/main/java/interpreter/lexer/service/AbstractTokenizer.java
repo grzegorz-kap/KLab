@@ -8,6 +8,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     protected TokenizerContext tokenizerContext;
     protected TokenizerContextManager tokenizerContextManager;
+    protected TokenRegexReader tokenReader;
 
     private TokenStartMatcher tokenStartMatcher;
 
@@ -23,6 +24,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
         tokenizerContext = new TokenizerContext(inputText);
         tokenStartMatcher = new TokenStartMatcher(tokenizerContext);
         tokenizerContextManager = new TokenizerContextManager(tokenizerContext);
+        tokenReader = new TokenRegexReader(tokenizerContext);
         process();
         return tokenizerContext.getTokenList();
     }
