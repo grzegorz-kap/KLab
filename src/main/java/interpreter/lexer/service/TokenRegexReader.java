@@ -25,7 +25,7 @@ public class TokenRegexReader {
 
     private String tryMatchLexeme(final Pattern pattern) {
         Matcher matcher = pattern.matcher(tokenizerContext.getInputText());
-        if (!matcher.find(tokenizerContext.getIndex())) {
+        if (!matcher.find()) {
             throw new TokenReadException("Cannot read token", tokenizerContext);
         }
         return matcher.group();

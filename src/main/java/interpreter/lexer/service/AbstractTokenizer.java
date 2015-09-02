@@ -20,8 +20,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     public abstract void onNewLine();
 
+    public abstract boolean tryReadOperator();
+
     public TokenList readTokens(String inputText) {
-        tokenizerContext = new TokenizerContext(inputText);
+        setContext(inputText);
         tokenStartMatcher = new TokenStartMatcher(tokenizerContext);
         tokenizerContextManager = new TokenizerContextManager(tokenizerContext);
         tokenReader = new TokenRegexReader(tokenizerContext);
@@ -29,19 +31,36 @@ public abstract class AbstractTokenizer implements Tokenizer {
         return tokenizerContext.getTokenList();
     }
 
+    protected void setContext(String inputText) {
+        tokenizerContext = new TokenizerContext(inputText);
+    }
+
     private void process() {
         while (!tokenizerContext.isInputEnd()) {
-            if (tokenStartMatcher.isNumberStart()) {
-                onNumber();
-            } else if (tokenStartMatcher.isWordStart()) {
-                onWord();
-            } else if (tokenStartMatcher.isSpaceOrTabulatorStart()) {
-                onSpaceOrTabulator();
-            } else if (tokenStartMatcher.isNewLineStart()) {
-                onNewLine();
-            } else {
-                tokenizerContext.setIndex(tokenizerContext.getIndex()+1);
-            }
+            takeAction();
         }
+    }
+
+    private void takeAction() {
+        if (tokenStartMatcher.isNumberStart()) {
+            onNumber();
+            return;
+        }
+        if (tokenStartMatcher.isWordStart()) {
+            onWord();
+            return;
+        }
+        if (tokenStartMatcher.isSpaceOrTabulatorStart()) {
+            onSpaceOrTabulator();
+            return;
+        }
+        if(tryReadOperator()){
+            return;
+        }
+        if (tokenStartMatcher.isNewLineStart()) {
+            onNewLine();
+            return;
+        }
+        tokenizerContext.setIndex(tokenizerContext.getIndex()+1);
     }
 }

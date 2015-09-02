@@ -98,4 +98,19 @@ class RegexTokenizerTest extends Specification {
             "\n\n\n"|   _
             "\n \t \n " | _
     }
+
+    def "Testing reading operators"(input) {
+        when:
+            def tokens = tokenizer.readTokens(input)
+        then:
+            tokens.size() == 1
+            tokens.get(0).lexeme == input
+            tokens.get(0).tokenClass == TokenClass.OPERATOR
+        where:
+            input   |   _
+            "*"     |   _
+            "+"     |   _
+            "/"     |   _
+            "-"     |   _
+    }
 }

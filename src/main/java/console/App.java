@@ -7,7 +7,7 @@ import interpreter.lexer.service.Tokenizer;
 public class App {
     public static void main(String[] args){
         Tokenizer tokenizer = new RegexTokenizer();
-        TokenList tokens = tokenizer.readTokens("323.3232 dsa");
-        tokens.stream().forEach( token -> System.out.println(String.format("%s, %s", token.getLexeme(), token.getTokenClass())));
+        TokenList tokens = tokenizer.readTokens("323.3232 \tsdad * - / + \n \n \t f");
+        tokens.stream().forEach( token -> System.out.println(String.format("%s\t %s", token.getLexeme(), token.getTokenClass())));
     }
 }

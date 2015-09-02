@@ -3,9 +3,9 @@ package interpreter.lexer.model;
 public class TokenizerContext {
 
     private TokenList tokenList = new TokenList();
-    private String inputText;
-    private int index = 0;
-    private int length = 0;
+    protected String inputText;
+    protected int index = 0;
+    protected int length = 0;
     private Long line = (long) 1;
     private Long column = (long) 1;
 
