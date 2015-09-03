@@ -1,6 +1,7 @@
 package interpreter.lexer.model;
 
 public class Token {
+
     private String lexeme;
     private Long line;
     private Long column;
