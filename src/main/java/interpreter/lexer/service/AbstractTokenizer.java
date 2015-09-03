@@ -22,6 +22,8 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     public abstract boolean tryReadOperator();
 
+    public abstract boolean tryReadOtherSymbol();
+
     public TokenList readTokens(String inputText) {
         setContext(inputText);
         tokenStartMatcher = new TokenStartMatcher(tokenizerContext);
@@ -59,6 +61,9 @@ public abstract class AbstractTokenizer implements Tokenizer {
         }
         if (tokenStartMatcher.isNewLineStart()) {
             onNewLine();
+            return;
+        }
+        if(tryReadOtherSymbol()){
             return;
         }
         tokenizerContext.setIndex(tokenizerContext.getIndex()+1);

@@ -6,22 +6,36 @@ import java.util.regex.Pattern;
 
 public class TokenMatcher {
 
-    public static final List<String> OPERATORS = Arrays.asList(
+    private static final List<String> OPERATORS_PATTERNS = Arrays.asList(
             "^\\+", "^\\*", "^-", "^/"
     );
 
-    public static final Pattern OPERATOR_REGEX = Pattern.compile(mergeIntoPattern(OPERATORS));
+    private static final List<String> SYMBOLS_PATTERNS = Arrays.asList(
+            "^,", "^:", "^;", "^\\[", "^\\]", "^\\(", "^\\)"
+    );
+
+    private static Pattern OPERATOR_REGEX = Pattern.compile(mergeIntoPattern(OPERATORS_PATTERNS));
+
+    private static Pattern SYMBOLS_REGEX = Pattern.compile(mergeIntoPattern(SYMBOLS_PATTERNS));
+
+    public static Pattern getOperatorRegex() {
+        return OPERATOR_REGEX;
+    }
+
+    public static Pattern getSymbolsRegex() {
+        return SYMBOLS_REGEX;
+    }
 
     private static String mergeIntoPattern(List<String> list) {
-        StringBuilder buffer = new StringBuilder("");
+        StringBuilder builder = new StringBuilder("");
         list.forEach(op -> {
-            buffer.append("(");
-            buffer.append(op);
-            buffer.append(")|");
+            builder.append("(");
+            builder.append(op);
+            builder.append(")|");
         });
-        if(buffer.length()>0) {
-            buffer.deleteCharAt(buffer.length()-1);
+        if(builder.length()>0) {
+            builder.deleteCharAt(builder.length()-1);
         }
-        return buffer.toString();
+        return builder.toString();
     }
 }

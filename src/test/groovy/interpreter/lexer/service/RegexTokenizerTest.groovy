@@ -1,5 +1,6 @@
 package interpreter.lexer.service
 
+import interpreter.lexer.model.Token
 import interpreter.lexer.model.TokenClass
 import spock.lang.Specification
 
@@ -112,5 +113,23 @@ class RegexTokenizerTest extends Specification {
             "+"     |   _
             "/"     |   _
             "-"     |   _
+    }
+
+    def "Testing reading symbols"(def input, def tokenClass) {
+        when:
+            def tokens = tokenizer.readTokens(input);
+        then:
+            tokens.size() == 1
+            tokens.get(0).lexeme == input
+            tokens.get(0).tokenClass == tokenClass
+        where:
+        input   ||  tokenClass
+        ","     ||  TokenClass.COMMA
+        ":"     ||  TokenClass.COLON
+        ";"     ||  TokenClass.SEMICOLON
+        "("     ||  TokenClass.OPEN_PARENTHESIS
+        ")"     ||  TokenClass.CLOSE_PARENTHESIS
+        "["     ||  TokenClass.OPEN_BRACKET
+        "]"     ||  TokenClass.CLOSE_BRACKET
     }
 }

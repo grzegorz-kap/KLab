@@ -3,8 +3,10 @@ package interpreter.lexer.service;
 import interpreter.lexer.model.RegexTokenizerContext;
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
+import interpreter.lexer.utils.SymbolsMapper;
 import interpreter.lexer.utils.TokenMatcher;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,17 +44,30 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public boolean tryReadOperator() {
-        Matcher matcher = TokenMatcher.OPERATOR_REGEX.matcher(tokenizerContext.getInputText());
-        boolean result = matcher.find();
-        if(result) {
-            addToken(matcher.group(), TokenClass.OPERATOR);
+        String result = tryRead(TokenMatcher.getOperatorRegex());
+        if(Objects.nonNull(result)) {
+            addToken(result, TokenClass.OPERATOR);
         }
-        return result;
+        return Objects.nonNull(result);
+    }
+
+    @Override
+    public boolean tryReadOtherSymbol() {
+        String result = tryRead(TokenMatcher.getSymbolsRegex());
+        if(Objects.nonNull(result)){
+            addToken(result, SymbolsMapper.getTokenClass(result));
+        }
+        return Objects.nonNull(result);
     }
 
     @Override
     protected void setContext(String inputText) {
         tokenizerContext = new RegexTokenizerContext(inputText);
+    }
+
+    private String tryRead(Pattern pattern) {
+        Matcher matcher = pattern.matcher(tokenizerContext.getInputText());
+        return matcher.find() ? matcher.group() : null;
     }
 
     private void addToken(final Pattern pattern, TokenClass tokenClass) {
