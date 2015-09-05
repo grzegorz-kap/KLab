@@ -1,6 +1,5 @@
 package interpreter.lexer.service
 
-import interpreter.lexer.model.Token
 import interpreter.lexer.model.TokenClass
 import spock.lang.Specification
 

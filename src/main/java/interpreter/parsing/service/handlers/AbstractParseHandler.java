@@ -1,17 +1,17 @@
 package interpreter.parsing.service.handlers;
 
-import interpreter.parsing.service.Parser;
+import interpreter.parsing.service.ParseContextManager;
 
 public abstract class AbstractParseHandler implements ParseHandler {
 
-    private Parser parser;
+    private ParseContextManager parseContextManager;
 
-
-    public Parser getParser() {
-        return parser;
+    public ParseContextManager getContextManager() {
+        return parseContextManager;
     }
 
-    public void setParser(Parser parser) {
-        this.parser = parser;
+    @Override
+    public void setContextManager(ParseContextManager parseContextManager) {
+        this.parseContextManager = parseContextManager;
     }
 }

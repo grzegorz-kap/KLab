@@ -2,23 +2,30 @@ package interpreter.parsing.service;
 
 import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenList;
-import interpreter.parsing.model.ExpressionTree;
+import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.ParseContext;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.service.handlers.ParseHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class AbstractParser implements Parser {
+public abstract class AbstractParser implements Parser {
 
-    private ParseContext parseContext;
+    protected ParseContext parseContext;
 
-    private Map<TokenClass, ParseHandler> parseHandlerMap;
+    protected ParseContextManager parseContextManager = new ParseContextManager();
+
+    private Map<TokenClass, ParseHandler> parseHandlerMap = new HashMap<>();
+
+    protected abstract void process();
 
     @Override
-    public ExpressionTree<ParseToken> process(TokenList tokenList) {
+    public Expression<ParseToken> process(TokenList tokenList) {
         parseContext = new ParseContext(tokenList);
-        return parseContext.getExpressionTree();
+        parseContextManager.setParseContext(parseContext);
+        process();
+        return parseContext.getExpressionTree().get(0);
     }
 
     @Override
@@ -28,7 +35,7 @@ public class AbstractParser implements Parser {
 
     @Override
     public void addParseHandler(TokenClass tokenClass, ParseHandler parseHandler) {
-        parseHandler.setParser(this);
+        parseHandler.setContextManager(parseContextManager);
         parseHandlerMap.put(tokenClass, parseHandler);
     }
 }
