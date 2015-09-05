@@ -3,9 +3,9 @@ package interpreter.parsing.model.expression;
 import java.util.Collection;
 
 public interface Expression<T> {
-    void setParent(Expression<T> expression);
-
     Expression<T> getParent();
+
+    void setParent(Expression<T> expression);
 
     void addChild(Expression<T> expression);
 

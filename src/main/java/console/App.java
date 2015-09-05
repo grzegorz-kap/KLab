@@ -9,7 +9,7 @@ import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.service.Parser;
 
 public class App {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Tokenizer tokenizer = new RegexTokenizer();
         TokenList tokens = tokenizer.readTokens("32132");
         tokens.stream().forEach(

@@ -10,7 +10,7 @@ public class ParserService extends AbstractParser {
     protected void process() {
         while (!parseContextManager.endOfTokens()) {
             ParseHandler parseHandler = getParseHandler(parseContext.getCurrentToken().getTokenClass());
-            if(Objects.isNull(parseHandler)){
+            if (Objects.isNull(parseHandler)) {
                 throw new RuntimeException();
             }
             parseHandler.handle();

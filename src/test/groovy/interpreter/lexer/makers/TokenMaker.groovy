@@ -7,7 +7,7 @@ import interpreter.lexer.model.Token
 import interpreter.lexer.model.TokenClass
 
 import static com.natpryce.makeiteasy.Property.newProperty
-import static interpreter.lexer.model.TokenClass.*
+import static interpreter.lexer.model.TokenClass.NUMBER
 
 class TokenMaker {
 

@@ -9,10 +9,6 @@ public class SymbolsMapper {
 
     private static Map<String, TokenClass> TOKEN_CLASS_MAP = new HashMap<>();
 
-    public static TokenClass getTokenClass(String symbol) {
-        return TOKEN_CLASS_MAP.get(symbol);
-    }
-
     static {
         TOKEN_CLASS_MAP.put(",", TokenClass.COMMA);
         TOKEN_CLASS_MAP.put(":", TokenClass.COLON);
@@ -21,5 +17,9 @@ public class SymbolsMapper {
         TOKEN_CLASS_MAP.put(")", TokenClass.CLOSE_PARENTHESIS);
         TOKEN_CLASS_MAP.put("[", TokenClass.OPEN_BRACKET);
         TOKEN_CLASS_MAP.put("]", TokenClass.CLOSE_BRACKET);
+    }
+
+    public static TokenClass getTokenClass(String symbol) {
+        return TOKEN_CLASS_MAP.get(symbol);
     }
 }

@@ -16,19 +16,19 @@ class NumberHandlerTest extends Specification {
     @SuppressWarnings("GroovyAssignabilityCheck")
     def "Testing handle method for numbers"() {
         given:
-            def token = make a(saveToken, with(lexame, "3232.2121"), with(tokenClass, TokenClass.NUMBER))
-            def result = null;
-            numberHandler.contextManager = Mock(ParseContextManager)
+        def token = make a(saveToken, with(lexame, "3232.2121"), with(tokenClass, TokenClass.NUMBER))
+        def result = null;
+        numberHandler.contextManager = Mock(ParseContextManager)
         when:
-            numberHandler.handle()
+        numberHandler.handle()
         then:
-            1 * numberHandler.contextManager.tokenAt(0) >> token
-            1 * numberHandler.contextManager.incrementTokenPosition(1)
-            1 * numberHandler.contextManager.addExpressionValue(_ as NumberToken<Double>) >> {result=it[0]}
-            result.token == token
-            result.valueRe == 3232.2121
-            result.valueIm == null
-            result.numberType == NumberType.DOUBLE
+        1 * numberHandler.contextManager.tokenAt(0) >> token
+        1 * numberHandler.contextManager.incrementTokenPosition(1)
+        1 * numberHandler.contextManager.addExpressionValue(_ as NumberToken<Double>) >> { result = it[0] }
+        result.token == token
+        result.valueRe == 3232.2121
+        result.valueIm == null
+        result.numberType == NumberType.DOUBLE
 
     }
 }

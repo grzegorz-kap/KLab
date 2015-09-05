@@ -12,6 +12,11 @@ public abstract class AbstractExpression<T> implements Expression<T> {
     }
 
     @Override
+    public void setParent(Expression<T> parent) {
+        this.parent = parent;
+    }
+
+    @Override
     public void addChild(Expression<T> expression) {
         throw new RuntimeException("addChild");
     }
@@ -19,11 +24,6 @@ public abstract class AbstractExpression<T> implements Expression<T> {
     @Override
     public void addChildren(Collection<? extends Expression<T>> expressions) {
         throw new RuntimeException("addChildren");
-    }
-
-    @Override
-    public void setParent(Expression<T> parent) {
-        this.parent = parent;
     }
 
     @Override
