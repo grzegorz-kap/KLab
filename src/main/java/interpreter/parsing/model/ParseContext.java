@@ -58,11 +58,26 @@ public class ParseContext {
         return stack.size();
     }
 
-    public List<Expression<ParseToken>> getExpressionTree() {
-        return expressionTree;
+    public void addExpression(Expression<ParseToken> expression) {
+        expressionTree.add(expression);
     }
 
-    public void setExpressionTree(List<Expression<ParseToken>> expressionTree) {
-        this.expressionTree = expressionTree;
+    public List<Expression<ParseToken>> getLastFromExpression(int number) {
+        List<Expression<ParseToken>> expressions = new ArrayList<>(number);
+        for (int index = expressionTree.size() - number; index < expressionTree.size(); index++) {
+            expressions.add(expressionTree.get(index));
+        }
+        return expressions;
+    }
+
+    public void removeLastFromExpression(int number) {
+        int indexToRemove = expressionTree.size() - 1;
+        while (number-- > 0 && indexToRemove >= 0) {
+            expressionTree.remove(indexToRemove--);
+        }
+    }
+
+    public int expressionSize() {
+        return expressionTree.size();
     }
 }

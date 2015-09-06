@@ -1,6 +1,7 @@
 package interpreter.parsing.model;
 
 import interpreter.lexer.model.Token;
+import interpreter.lexer.model.TokenClass;
 
 public class ParseToken {
 
@@ -12,5 +13,9 @@ public class ParseToken {
 
     public void setToken(Token token) {
         this.token = token;
+    }
+
+    public TokenClass getTokenClass() {
+        return token.getTokenClass();
     }
 }

@@ -8,6 +8,13 @@ public class ExpressionNode<T> extends AbstractExpression<T> implements Expressi
 
     private List<Expression<T>> children = new ArrayList<>();
 
+    public ExpressionNode() {
+    }
+
+    public ExpressionNode(T value) {
+        this.value = value;
+    }
+
     @Override
     public void addChild(Expression<T> expression) {
         children.add(expression);
@@ -18,5 +25,10 @@ public class ExpressionNode<T> extends AbstractExpression<T> implements Expressi
     public void addChildren(Collection<? extends Expression<T>> expressions) {
         children.addAll(expressions);
         expressions.forEach(expression -> expression.setParent(this));
+    }
+
+    @Override
+    public List<Expression<T>> getChildren() {
+        return children;
     }
 }

@@ -25,7 +25,7 @@ public abstract class AbstractParser implements Parser {
         parseContext = new ParseContext(tokenList);
         parseContextManager.setParseContext(parseContext);
         process();
-        return parseContext.getExpressionTree().get(0);
+        return parseContext.getLastFromExpression(1).get(0);
     }
 
     @Override

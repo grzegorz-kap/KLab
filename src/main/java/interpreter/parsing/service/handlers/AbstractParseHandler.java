@@ -4,7 +4,7 @@ import interpreter.parsing.service.ParseContextManager;
 
 public abstract class AbstractParseHandler implements ParseHandler {
 
-    private ParseContextManager parseContextManager;
+    protected ParseContextManager parseContextManager;
 
     public ParseContextManager getContextManager() {
         return parseContextManager;
@@ -13,5 +13,10 @@ public abstract class AbstractParseHandler implements ParseHandler {
     @Override
     public void setContextManager(ParseContextManager parseContextManager) {
         this.parseContextManager = parseContextManager;
+    }
+
+    @Override
+    public void handleStackFinish() {
+
     }
 }

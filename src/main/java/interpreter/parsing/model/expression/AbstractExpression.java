@@ -1,6 +1,7 @@
 package interpreter.parsing.model.expression;
 
 import java.util.Collection;
+import java.util.List;
 
 public abstract class AbstractExpression<T> implements Expression<T> {
     protected Expression<T> parent;
@@ -24,6 +25,11 @@ public abstract class AbstractExpression<T> implements Expression<T> {
     @Override
     public void addChildren(Collection<? extends Expression<T>> expressions) {
         throw new RuntimeException("addChildren");
+    }
+
+    @Override
+    public List<Expression<T>> getChildren() {
+        throw new RuntimeException();
     }
 
     @Override
