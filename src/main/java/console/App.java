@@ -6,12 +6,10 @@ import interpreter.lexer.service.Tokenizer;
 import interpreter.parsing.factory.ParserFactory;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
-import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.service.Parser;
-import org.apache.commons.lang3.StringUtils;
+import interpreter.parsing.utils.ExpressionPrinter;
 
 public class App {
-    private static int ident = 0;
 
     public static void main(String[] args) {
         Tokenizer tokenizer = new RegexTokenizer();
@@ -29,30 +27,6 @@ public class App {
 
         Parser parser = ParserFactory.getParser();
         Expression<ParseToken> expression = parser.process(tokens);
-        System.out.println(expressionPrint(expression));
-    }
-
-    public static String expressionPrint(Expression<ParseToken> expression) {
-        StringBuilder builder = new StringBuilder("");
-
-        for (int i = 0; i < ident * 2; i++) {
-            builder.append(i % 2 == 0 ? '|' : ' ');
-        }
-
-        ParseToken token = expression.getValue();
-        if (token != null) {
-            builder.append(String.format("%s", token.getToken().getLexeme()));
-        } else {
-            builder.append("null");
-        }
-
-        builder.append('\n');
-
-        if (expression instanceof ExpressionNode) {
-            ident++;
-            expression.getChildren().forEach(child -> builder.append(expressionPrint(child)));
-            ident--;
-        }
-        return builder.toString();
+        System.out.println(ExpressionPrinter.expressionToString(expression));
     }
 }
