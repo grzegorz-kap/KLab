@@ -26,8 +26,6 @@ class NumberHandlerTest extends Specification {
         1 * numberHandler.contextManager.incrementTokenPosition(1)
         1 * numberHandler.contextManager.addExpressionValue(_ as NumberToken<Double>) >> { result = it[0] }
         result.token == token
-        result.valueRe == 3232.2121
-        result.valueIm == null
         result.numberType == NumberType.DOUBLE
 
     }

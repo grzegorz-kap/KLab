@@ -15,9 +15,15 @@
         <cglib.version>3.1</cglib.version>
         <objenesis.version>2.2</objenesis.version>
         <makeiteasy.version>4.0.0</makeiteasy.version>
+        <spring.framework.version>4.2.1.RELEASE</spring.framework.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.framework.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

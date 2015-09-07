@@ -33,34 +33,34 @@ class OperatorHandlerTest extends Specification {
 
     def "Testing operators precedence"() {
         when:
-            3.times {
-                operatorHandler.handle()
-            }
+        3.times {
+            operatorHandler.handle()
+        }
         then:
-            3 * operatorHandler.contextManager.tokenAt(0) >> { return tokens[index] }
-            5 * operatorHandler.contextManager.isStackEmpty() >> { stack.isEmpty() }
-            3 * operatorHandler.contextManager.stackPush(_) >> { arguments -> stack.push(arguments[0]) }
-            3 * operatorHandler.contextManager.incrementTokenPosition(1) >> { index++ }
-            3 * operatorHandler.contextManager.stackPeek() >> { return stack.peek() }
-            2 * operatorHandler.contextManager.stackPop() >> { return stack.pop() }
-            2 * operatorHandler.contextManager.popExpressionArguments(2) >> []
-            2 * operatorHandler.contextManager.addExpression(_) >> { arguments -> expressionList.add(arguments[0]) }
-            stack.size() == 1
-            expressionList.size() == 2
-            tokens[2] == stack.peek().token
-            expressionList[0].getValue().token == tokens[1]
-            expressionList[1].getValue().token == tokens[0]
+        3 * operatorHandler.contextManager.tokenAt(0) >> { return tokens[index] }
+        5 * operatorHandler.contextManager.isStackEmpty() >> { stack.isEmpty() }
+        3 * operatorHandler.contextManager.stackPush(_) >> { arguments -> stack.push(arguments[0]) }
+        3 * operatorHandler.contextManager.incrementTokenPosition(1) >> { index++ }
+        3 * operatorHandler.contextManager.stackPeek() >> { return stack.peek() }
+        2 * operatorHandler.contextManager.stackPop() >> { return stack.pop() }
+        2 * operatorHandler.contextManager.popExpressionArguments(2) >> []
+        2 * operatorHandler.contextManager.addExpression(_) >> { arguments -> expressionList.add(arguments[0]) }
+        stack.size() == 1
+        expressionList.size() == 2
+        tokens[2] == stack.peek().token
+        expressionList[0].getValue().token == tokens[1]
+        expressionList[1].getValue().token == tokens[0]
     }
 
     def "Testing stack finish method"() {
         given:
-            def parseToken = make a(saveOperatorToken)
-            stack.push(parseToken)
+        def parseToken = make a(saveOperatorToken)
+        stack.push(parseToken)
         when:
-            operatorHandler.handleStackFinish()
+        operatorHandler.handleStackFinish()
         then:
-            1 * operatorHandler.contextManager.stackPop() >> { return stack.pop() }
-            1 * operatorHandler.contextManager.popExpressionArguments(2) >> []
-            1 * operatorHandler.contextManager.addExpression(_ as ExpressionNode<ParseToken>) >> {}
+        1 * operatorHandler.contextManager.stackPop() >> { return stack.pop() }
+        1 * operatorHandler.contextManager.popExpressionArguments(2) >> []
+        1 * operatorHandler.contextManager.addExpression(_ as ExpressionNode<ParseToken>) >> {}
     }
 }

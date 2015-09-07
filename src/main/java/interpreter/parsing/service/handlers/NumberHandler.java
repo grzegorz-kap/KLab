@@ -9,16 +9,15 @@ public class NumberHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         Token token = getContextManager().tokenAt(0);
-        NumberToken<Number> numberToken = createNumberToken(token);
+        NumberToken numberToken = createNumberToken(token);
         getContextManager().addExpressionValue(numberToken);
         getContextManager().incrementTokenPosition(1);
     }
 
-    private <T extends Number> NumberToken<T> createNumberToken(Token token) {
-        NumberToken<Double> numberToken = new NumberToken<>();
+    private NumberToken createNumberToken(Token token) {
+        NumberToken numberToken = new NumberToken();
         numberToken.setToken(token);
         numberToken.setNumberType(NumberType.DOUBLE);
-        numberToken.setValueRe(Double.valueOf(token.getLexeme()));
-        return (NumberToken<T>) numberToken;
+        return numberToken;
     }
 }
