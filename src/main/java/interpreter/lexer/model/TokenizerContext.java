@@ -2,10 +2,10 @@ package interpreter.lexer.model;
 
 public class TokenizerContext {
 
-    private TokenList tokenList = new TokenList();
     protected String inputText;
     protected int index = 0;
     protected int length = 0;
+    private TokenList tokenList = new TokenList();
     private Long line = (long) 1;
     private Long column = (long) 1;
 
@@ -30,12 +30,12 @@ public class TokenizerContext {
         return tokenList;
     }
 
-    public void addToken(Token token) {
-        tokenList.add(token);
-    }
-
     public void setTokenList(TokenList tokenList) {
         this.tokenList = tokenList;
+    }
+
+    public void addToken(Token token) {
+        tokenList.add(token);
     }
 
     public int getIndex() {

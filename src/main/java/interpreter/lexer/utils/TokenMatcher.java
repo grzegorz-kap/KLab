@@ -33,8 +33,8 @@ public class TokenMatcher {
             builder.append(op);
             builder.append(")|");
         });
-        if(builder.length()>0) {
-            builder.deleteCharAt(builder.length()-1);
+        if (builder.length() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
         }
         return builder.toString();
     }

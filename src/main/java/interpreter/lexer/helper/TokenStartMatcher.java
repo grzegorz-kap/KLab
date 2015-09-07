@@ -22,7 +22,7 @@ public class TokenStartMatcher {
     }
 
     public boolean isSpaceOrTabulatorStart() {
-        return  tokenizerContext.isCharAt(0, ' ') || tokenizerContext.isCharAt(0, '\t');
+        return tokenizerContext.isCharAt(0, ' ') || tokenizerContext.isCharAt(0, '\t');
     }
 
     public boolean isNewLineStart() {

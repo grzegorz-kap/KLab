@@ -1,6 +1,6 @@
 package interpreter.lexer.model;
 
-public class RegexTokenizerContext extends TokenizerContext{
+public class RegexTokenizerContext extends TokenizerContext {
 
     private String regexInput;
     private int index = 0;
@@ -19,7 +19,7 @@ public class RegexTokenizerContext extends TokenizerContext{
     public void setIndex(int index) {
         int start = index - this.index;
         int end = regexInput.length();
-        if(start > end){
+        if (start > end) {
             regexInput = "";
         } else {
             regexInput = regexInput.substring(start, end);

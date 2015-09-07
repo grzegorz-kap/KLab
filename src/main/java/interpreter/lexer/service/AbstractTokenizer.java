@@ -56,16 +56,16 @@ public abstract class AbstractTokenizer implements Tokenizer {
             onSpaceOrTabulator();
             return;
         }
-        if(tryReadOperator()){
+        if (tryReadOperator()) {
             return;
         }
         if (tokenStartMatcher.isNewLineStart()) {
             onNewLine();
             return;
         }
-        if(tryReadOtherSymbol()){
+        if (tryReadOtherSymbol()) {
             return;
         }
-        tokenizerContext.setIndex(tokenizerContext.getIndex()+1);
+        tokenizerContext.setIndex(tokenizerContext.getIndex() + 1);
     }
 }

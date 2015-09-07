@@ -12,12 +12,12 @@ class TokenRegexReaderTest extends Specification {
 
     def "Testing reading token for pattern"() {
         given: "Pattern and expected token class"
-            def pattern = Pattern.compile("\\d+\\.?\\d*");
-            def tokenClass = TokenClass.NUMBER;
+        def pattern = Pattern.compile("\\d+\\.?\\d*");
+        def tokenClass = TokenClass.NUMBER;
         when: "Trying to read token"
-            def result = tokenReader.readToken(pattern, tokenClass);
+        def result = tokenReader.readToken(pattern, tokenClass);
         then: "Read method return correct token"
-            result.lexeme == "123.321"
-            result.tokenClass == tokenClass
+        result.lexeme == "123.321"
+        result.tokenClass == tokenClass
     }
 }

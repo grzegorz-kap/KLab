@@ -45,7 +45,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     @Override
     public boolean tryReadOperator() {
         String result = tryRead(TokenMatcher.getOperatorRegex());
-        if(Objects.nonNull(result)) {
+        if (Objects.nonNull(result)) {
             addToken(result, TokenClass.OPERATOR);
         }
         return Objects.nonNull(result);
@@ -54,7 +54,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     @Override
     public boolean tryReadOtherSymbol() {
         String result = tryRead(TokenMatcher.getSymbolsRegex());
-        if(Objects.nonNull(result)){
+        if (Objects.nonNull(result)) {
             addToken(result, SymbolsMapper.getTokenClass(result));
         }
         return Objects.nonNull(result);
