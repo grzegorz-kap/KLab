@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.*;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_10;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_20;
 
@@ -15,10 +16,10 @@ public abstract class OperatorFactory {
     private static Map<String, OperatorProducer> OPERATOR_PRODUCERS = new HashMap<>();
 
     static {
-        OPERATOR_PRODUCERS.put("+", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_10));
-        OPERATOR_PRODUCERS.put("-", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_10));
-        OPERATOR_PRODUCERS.put("*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20));
-        OPERATOR_PRODUCERS.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20));
+        OPERATOR_PRODUCERS.put("+", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_10, ADD));
+        OPERATOR_PRODUCERS.put("-", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_10, SUB));
+        OPERATOR_PRODUCERS.put("*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, MULT));
+        OPERATOR_PRODUCERS.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, DIV));
     }
 
     public static OperatorToken get(final Token token) {

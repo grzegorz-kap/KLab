@@ -1,9 +1,9 @@
-package interpreter.parsing.model.tokens;
+package interpreter.math;
 
+import interpreter.commons.ObjectData;
 import interpreter.parsing.model.NumberType;
-import interpreter.parsing.model.ParseToken;
 
-public class NumberToken extends ParseToken {
+public class NumberScalar extends ObjectData {
 
     private NumberType numberType;
 
