@@ -7,7 +7,7 @@ import interpreter.parsing.model.tokens.NumberToken;
 import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
 
-public class NumberTranslateHandler extends AbstractTranslateHandler implements TranslateHandler {
+public class NumberTranslateHandler extends AbstractTranslateHandler {
 
     private NumberScalarFactory numberScalarFactory;
 

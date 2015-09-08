@@ -22,4 +22,9 @@ public class DoubleScalar extends NumberScalar {
     public void setValue(Double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

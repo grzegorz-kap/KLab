@@ -4,6 +4,7 @@ import interpreter.commons.ObjectData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Instruction {
 
@@ -29,5 +30,9 @@ public class Instruction {
 
     public void add(ObjectData objectData) {
         objectDataList.add(objectData);
+    }
+
+    public void forEachObjectData(Consumer<? super ObjectData> consumer) {
+        objectDataList.forEach(consumer);
     }
 }

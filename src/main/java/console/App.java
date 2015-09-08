@@ -22,7 +22,7 @@ public class App {
         ctx.refresh();
 
         Tokenizer tokenizer = new RegexTokenizer();
-        TokenList tokens = tokenizer.readTokens("3*2-1/3+2");
+        TokenList tokens = tokenizer.readTokens("3*2-12/3+2");
         tokens.stream().forEach(
                 token -> System.out.println(
                         String.format("%s\t %s \t\t %d %d",
@@ -34,6 +34,8 @@ public class App {
                 )
         );
 
+        System.out.println();
+
         Parser parser = ParserFactory.getParser();
         Expression<ParseToken> expression = parser.process(tokens);
         System.out.println(ExpressionPrinter.expressionToString(expression));
@@ -41,5 +43,10 @@ public class App {
         InstructionTranslator instructionTranslator = ctx.getBean(InstructionTranslatorService.class);
         MacroInstruction macroInstruction = instructionTranslator.translate(expression);
 
+        macroInstruction.forEach(instruction -> {
+            System.out.print(instruction.getInstructionCode() + "\t");
+            instruction.forEachObjectData(objectData -> System.out.print(objectData + "\t"));
+            System.out.println();
+        });
     }
 }

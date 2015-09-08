@@ -7,7 +7,7 @@ import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.service.handlers.ParseHandler;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class AbstractParser implements Parser {
@@ -16,7 +16,7 @@ public abstract class AbstractParser implements Parser {
 
     protected ParseContextManager parseContextManager = new ParseContextManager();
 
-    private Map<TokenClass, ParseHandler> parseHandlerMap = new HashMap<>();
+    private Map<TokenClass, ParseHandler> parseHandlerMap = new EnumMap<>(TokenClass.class);
 
     protected abstract void process();
 
