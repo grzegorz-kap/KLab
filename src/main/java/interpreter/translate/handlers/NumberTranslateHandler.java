@@ -15,7 +15,7 @@ public class NumberTranslateHandler extends AbstractTranslateHandler {
     public void handle(Expression<ParseToken> expression) {
         NumberToken numberToken = (NumberToken) expression.getValue();
         Instruction instruction = new Instruction();
-        instruction.setInstructionCode(InstructionCode.PUSH_DOUBLE);
+        instruction.setInstructionCode(InstructionCode.PUSH);
         instruction.setArgumentsNumber(1);
         instruction.add(numberScalarFactory.getDouble(format(numberToken)));
         translateContextManager.addInstruction(instruction);

@@ -1,9 +1,9 @@
 package interpreter.translate.model.instruction;
 
 public enum InstructionCode {
-    PUSH_DOUBLE,
+    PUSH,
     ADD,
-    DOUBLE,
+    SUB,
     MULT,
     DIV
 }
