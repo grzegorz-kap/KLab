@@ -24,6 +24,16 @@ public class TranslateServiceFactory {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_SINGLETON)
+    public InstructionTranslator getInstructionTranslator() {
+        InstructionTranslatorService instructionTranslatorService = new InstructionTranslatorService();
+        instructionTranslatorService.setTranslateContextManager(new TranslateContextManager());
+        instructionTranslatorService.addTranslateHandler(TokenClass.NUMBER, getNumberTranslateHandler());
+        instructionTranslatorService.addTranslateHandler(TokenClass.OPERATOR, getOperatorTranslateHandler());
+        return instructionTranslatorService;
+    }
+
+    @Bean
+    @Scope(BeanDefinition.SCOPE_SINGLETON)
     public NumberTranslateHandler getNumberTranslateHandler() {
         NumberTranslateHandler numberTranslateHandler = new NumberTranslateHandler();
         numberTranslateHandler.setNumberScalarFactory(numberScalarFactory);
@@ -36,15 +46,5 @@ public class TranslateServiceFactory {
         OperatorTranslateHandler operatorTranslateHandler = new OperatorTranslateHandler();
         operatorTranslateHandler.setOperatorInstructionCodesFactory(operatorInstructionCodesFactory);
         return operatorTranslateHandler;
-    }
-
-    @Bean
-    @Scope(BeanDefinition.SCOPE_SINGLETON)
-    public InstructionTranslator getInstructionTranslator() {
-        InstructionTranslatorService instructionTranslatorService = new InstructionTranslatorService();
-        instructionTranslatorService.setTranslateContextManager(new TranslateContextManager());
-        instructionTranslatorService.addTranslateHandler(TokenClass.NUMBER, getNumberTranslateHandler());
-        instructionTranslatorService.addTranslateHandler(TokenClass.OPERATOR, getOperatorTranslateHandler());
-        return instructionTranslatorService;
     }
 }

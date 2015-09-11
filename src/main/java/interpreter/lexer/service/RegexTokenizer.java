@@ -5,11 +5,16 @@ import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.utils.SymbolsMapper;
 import interpreter.lexer.utils.TokenMatcher;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RegexTokenizer extends AbstractTokenizer {
 
     public static final String NUMBER_PATTERN = "^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?";
