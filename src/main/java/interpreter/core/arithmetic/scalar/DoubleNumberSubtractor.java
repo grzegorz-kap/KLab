@@ -1,6 +1,7 @@
-package interpreter.core.arithmetic.add;
+package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
+import interpreter.core.arithmetic.NumberSubtractor;
 import interpreter.math.DoubleScalar;
 
 public class DoubleNumberSubtractor implements NumberSubtractor {

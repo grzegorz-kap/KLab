@@ -1,4 +1,4 @@
-package interpreter.core.arithmetic.add;
+package interpreter.core.arithmetic;
 
 import interpreter.commons.ObjectData;
 

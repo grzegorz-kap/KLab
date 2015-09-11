@@ -1,7 +1,12 @@
 package interpreter.core.arithmetic.factory;
 
 import interpreter.core.arithmetic.ArithmeticOperationsFactory;
-import interpreter.core.arithmetic.add.*;
+import interpreter.core.arithmetic.NumberAdder;
+import interpreter.core.arithmetic.NumberMultiplicator;
+import interpreter.core.arithmetic.NumberSubtractor;
+import interpreter.core.arithmetic.scalar.DoubleNumberAdder;
+import interpreter.core.arithmetic.scalar.DoubleNumberMultiplicator;
+import interpreter.core.arithmetic.scalar.DoubleNumberSubtractor;
 import interpreter.parsing.model.NumberType;
 import org.springframework.stereotype.Service;
 
