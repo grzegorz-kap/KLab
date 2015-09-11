@@ -3,7 +3,7 @@ package interpreter.math;
 import interpreter.commons.ObjectData;
 import interpreter.parsing.model.NumberType;
 
-public class NumberScalar extends ObjectData {
+public class NumberObject extends ObjectData {
 
     private NumberType numberType;
 

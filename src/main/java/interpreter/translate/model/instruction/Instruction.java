@@ -35,4 +35,8 @@ public class Instruction {
     public void forEachObjectData(Consumer<? super ObjectData> consumer) {
         objectDataList.forEach(consumer);
     }
+
+    public ObjectData getObjectDate(int index) {
+        return objectDataList.get(index);
+    }
 }

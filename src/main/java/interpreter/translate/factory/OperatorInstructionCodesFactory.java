@@ -16,7 +16,7 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.ADD, InstructionCode.ADD);
         instructionCodeMap.put(OperatorCode.DIV, InstructionCode.DIV);
         instructionCodeMap.put(OperatorCode.MULT, InstructionCode.MULT);
-        instructionCodeMap.put(OperatorCode.SUB, InstructionCode.DOUBLE);
+        instructionCodeMap.put(OperatorCode.SUB, InstructionCode.SUB);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {

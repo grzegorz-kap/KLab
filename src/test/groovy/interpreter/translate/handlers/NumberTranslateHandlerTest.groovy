@@ -1,6 +1,6 @@
 package interpreter.translate.handlers
 
-import interpreter.math.NumberScalar
+import interpreter.math.NumberObject
 import interpreter.math.NumberScalarFactory
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
@@ -26,7 +26,7 @@ class NumberTranslateHandlerTest extends Specification {
         given:
         def numberToken = make a(saveNumberToken);
         def expressionValue = new ExpressionValue<ParseToken>();
-        def numberScalar = Stub(NumberScalar)
+        def numberScalar = Stub(NumberObject)
         expressionValue.setValue(numberToken);
 
         when:
@@ -35,7 +35,7 @@ class NumberTranslateHandlerTest extends Specification {
         then:
         1 * numberTranslateHandler.numberScalarFactory.getDouble(Double.valueOf(numberToken.token.lexeme)) >> numberScalar
         1 * numberTranslateHandler.translateContextManager.addInstruction({
-            it.instructionCode == InstructionCode.PUSH_DOUBLE
+            it.instructionCode == InstructionCode.PUSH
             it.argumentsNumber == 1
             it.objectDataList.size() == 1
             it.objectDataList[0] == numberScalar
