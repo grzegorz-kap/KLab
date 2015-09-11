@@ -1,7 +1,7 @@
 package interpreter.execution.handlers.arithmetic;
 
 import interpreter.commons.ObjectData;
-import interpreter.core.arithmetic.ArithmeticOperationsFactory;
+import interpreter.core.arithmetic.factory.ArithmeticOperationsFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.math.NumberObject;
