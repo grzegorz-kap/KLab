@@ -2,7 +2,7 @@ package interpreter.math;
 
 import interpreter.parsing.model.NumberType;
 
-public class DoubleScalar extends NumberScalar {
+public class DoubleScalar extends NumberObject {
 
     private Double value;
 

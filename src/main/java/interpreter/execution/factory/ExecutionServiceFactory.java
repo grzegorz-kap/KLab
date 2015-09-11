@@ -3,6 +3,7 @@ package interpreter.execution.factory;
 import interpreter.core.arithmetic.ArithmeticOperationsFactory;
 import interpreter.execution.handlers.PushInstructionHandler;
 import interpreter.execution.handlers.arithmetic.AddInstructionHandler;
+import interpreter.execution.handlers.arithmetic.SubInstructionHandler;
 import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.service.ExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import static interpreter.translate.model.instruction.InstructionCode.ADD;
-import static interpreter.translate.model.instruction.InstructionCode.PUSH;
+import static interpreter.translate.model.instruction.InstructionCode.*;
 
 @Configuration
 public class ExecutionServiceFactory {
@@ -27,6 +27,7 @@ public class ExecutionServiceFactory {
         executionService.setExecutionContext(new ExecutionContext());
         executionService.registerInstructionHandler(PUSH, getPushInstructionHandler());
         executionService.registerInstructionHandler(ADD, addInstructionHandler());
+        executionService.registerInstructionHandler(SUB, subInstructionHandler());
         return executionService;
     }
 
@@ -38,6 +39,13 @@ public class ExecutionServiceFactory {
         return addInstructionHandler;
     }
 
+    @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public SubInstructionHandler subInstructionHandler() {
+        SubInstructionHandler subInstructionHandler = new SubInstructionHandler();
+        subInstructionHandler.setArithmeticOperationsFactory(arithmeticOperationsFactory);
+        return subInstructionHandler;
+    }
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)

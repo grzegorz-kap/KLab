@@ -7,7 +7,7 @@ public class StandardNumberScalarFactory implements NumberScalarFactory {
 
 
     @Override
-    public NumberScalar getDouble(Double value) {
+    public NumberObject getDouble(Double value) {
         return new DoubleScalar(value);
     }
 }
