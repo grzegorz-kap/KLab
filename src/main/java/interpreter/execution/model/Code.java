@@ -25,4 +25,8 @@ public class Code {
     public int size() {
         return instructions.size();
     }
+
+    public void clear() {
+        instructions.clear();
+    }
 }

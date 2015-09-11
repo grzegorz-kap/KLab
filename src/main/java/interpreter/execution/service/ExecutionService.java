@@ -7,6 +7,7 @@ import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class ExecutionService {
 
@@ -16,6 +17,19 @@ public class ExecutionService {
 
     public ExecutionService(){
         instructionHandlers = new InstructionHandler[InstructionCode.values().length];
+    }
+
+    public void start() {
+        while (!instructionPointer.isCodeEnd()) {
+            Instruction instruction = instructionPointer.current();
+            InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
+            if(Objects.isNull(instructionHandler)) {
+                System.out.println(instruction.getInstructionCode());
+                instructionPointer.increment();
+            } else {
+                instructionHandler.handle(instructionPointer);
+            }
+        }
     }
 
     public void addInstructions(Collection<? extends Instruction> instructions) {
@@ -32,6 +46,9 @@ public class ExecutionService {
         instructionHandler.setExecutionContext(executionContext);
     }
 
-
-
+    public void resetCodeAndStack() {
+        executionContext.clearExecutionStack();
+        executionContext.clearCode();
+        instructionPointer = executionContext.newInstructionPointer();
+    }
 }

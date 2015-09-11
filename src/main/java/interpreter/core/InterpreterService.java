@@ -20,11 +20,14 @@ public class InterpreterService {
     private InstructionTranslator instructionTranslator;
 
     public MacroInstruction start(String input) {
+        executionService.resetCodeAndStack();
         TokenList tokenList = tokenizer.readTokens(input);
         Expression<ParseToken> expression = parser.process(tokenList);
-        return instructionTranslator.translate(expression);
+        MacroInstruction macroInstruction = instructionTranslator.translate(expression);
+        executionService.addInstructions(macroInstruction.getInstructions());
+        executionService.start();
+        return macroInstruction;
     }
-
 
     @Autowired
     public void setExecutionService(ExecutionService executionService) {

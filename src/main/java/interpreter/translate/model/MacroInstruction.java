@@ -3,6 +3,7 @@ package interpreter.translate.model;
 import interpreter.translate.model.instruction.Instruction;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,5 +20,9 @@ public class MacroInstruction {
 
     public void forEach(Consumer<? super Instruction> consumer) {
         instructions.forEach(consumer);
+    }
+
+    public Collection<? extends Instruction> getInstructions() {
+        return instructions;
     }
 }
