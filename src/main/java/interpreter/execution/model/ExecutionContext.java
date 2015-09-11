@@ -37,4 +37,12 @@ public class ExecutionContext {
     public void clearCode() {
         code.clear();
     }
+
+    public ObjectData executionStackPop() {
+        return executionStack.pop();
+    }
+
+    public void executionStackPush(ObjectData objectData) {
+        executionStack.push(objectData);
+    }
 }
