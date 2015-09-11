@@ -1,18 +1,18 @@
 package interpreter.core.arithmetic.factory;
 
 import interpreter.core.arithmetic.ArithmeticOperationsFactory;
-import interpreter.core.arithmetic.add.DoubleNumberAdder;
-import interpreter.core.arithmetic.add.DoubleNumberSubtractor;
-import interpreter.core.arithmetic.add.NumberAdder;
-import interpreter.core.arithmetic.add.NumberSubtractor;
+import interpreter.core.arithmetic.add.*;
 import interpreter.parsing.model.NumberType;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StandardArithmeticOperationsFactory implements ArithmeticOperationsFactory {
 
-    private static NumberAdder[] numberAdders = new NumberAdder[NumberType.values().length];
-    private static NumberSubtractor[] numberSubtractors = new NumberSubtractor[NumberType.values().length];
+    private static final int NUMBER_TYPES_COUNT = NumberType.values().length;
+
+    private static NumberAdder[] numberAdders = new NumberAdder[NUMBER_TYPES_COUNT];
+    private static NumberSubtractor[] numberSubtractors = new NumberSubtractor[NUMBER_TYPES_COUNT];
+    private static NumberMultiplicator[] numberMultiplicators = new NumberMultiplicator[NUMBER_TYPES_COUNT];
 
     static {
         numberAdders[NumberType.DOUBLE.getIndex()] = new DoubleNumberAdder();
@@ -20,6 +20,10 @@ public class StandardArithmeticOperationsFactory implements ArithmeticOperations
 
     static {
         numberSubtractors[NumberType.DOUBLE.getIndex()] = new DoubleNumberSubtractor();
+    }
+
+    static {
+        numberMultiplicators[NumberType.DOUBLE.getIndex()] = new DoubleNumberMultiplicator();
     }
 
     @Override
@@ -30,5 +34,10 @@ public class StandardArithmeticOperationsFactory implements ArithmeticOperations
     @Override
     public NumberSubtractor getSubtractor(NumberType numberType) {
         return numberSubtractors[numberType.getIndex()];
+    }
+
+    @Override
+    public NumberMultiplicator getMultiplicator(NumberType numberType) {
+        return numberMultiplicators[numberType.getIndex()];
     }
 }

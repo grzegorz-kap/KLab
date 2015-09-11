@@ -3,6 +3,7 @@ package interpreter.execution.factory;
 import interpreter.core.arithmetic.ArithmeticOperationsFactory;
 import interpreter.execution.handlers.PushInstructionHandler;
 import interpreter.execution.handlers.arithmetic.AddInstructionHandler;
+import interpreter.execution.handlers.arithmetic.MultInstructionHandler;
 import interpreter.execution.handlers.arithmetic.SubInstructionHandler;
 import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.service.ExecutionService;
@@ -28,6 +29,7 @@ public class ExecutionServiceFactory {
         executionService.registerInstructionHandler(PUSH, getPushInstructionHandler());
         executionService.registerInstructionHandler(ADD, addInstructionHandler());
         executionService.registerInstructionHandler(SUB, subInstructionHandler());
+        executionService.registerInstructionHandler(MULT, multInstructionHandler());
         return executionService;
     }
 
@@ -45,6 +47,14 @@ public class ExecutionServiceFactory {
         SubInstructionHandler subInstructionHandler = new SubInstructionHandler();
         subInstructionHandler.setArithmeticOperationsFactory(arithmeticOperationsFactory);
         return subInstructionHandler;
+    }
+
+    @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public MultInstructionHandler multInstructionHandler() {
+        MultInstructionHandler multInstructionHandler = new MultInstructionHandler();
+        multInstructionHandler.setArithmeticOperationsFactory(arithmeticOperationsFactory);
+        return multInstructionHandler;
     }
 
     @Bean
