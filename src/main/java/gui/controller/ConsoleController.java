@@ -1,29 +1,38 @@
 package gui.controller;
 
-import gui.config.ScreensConfiguration;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import org.fxmisc.richtext.CodeArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope(BeanDefinition.SCOPE_SINGLETON)
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ConsoleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleController.class);
 
-    @Autowired
-    private ScreensConfiguration screensConfiguration;
+    @FXML
+    private CodeArea commandInput;
 
     @FXML
-    private TextArea commandInput;
+    private CodeArea consoleOutput;
 
     @FXML
-    public void onExit() {
-        LOGGER.info(commandInput.getText());
+    public void onKeyPressed(KeyEvent keyEvent) {
+         if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+             consoleOutput.appendText(String.format(">> %s\n\n", getInputTextAndClear()));
+             keyEvent.consume();
+         }
+    }
+
+    private String getInputTextAndClear() {
+        String inputText = commandInput.getText();
+        commandInput.clear();
+        return inputText;
     }
 }
