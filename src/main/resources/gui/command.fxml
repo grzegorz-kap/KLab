@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.TextArea?>
+<TextArea xmlns:fx="http://javafx.com/fxml/1" fx:id="commandInput" onKeyPressed="#onExit" prefHeight="200.0"
+          prefWidth="200.0" promptText="Input command here" xmlns="http://javafx.com/javafx/null"
+          fx:controller="gui.controller.ConsoleController"/>
