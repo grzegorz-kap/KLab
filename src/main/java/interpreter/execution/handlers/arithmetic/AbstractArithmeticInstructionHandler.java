@@ -6,14 +6,12 @@ import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.math.NumberObject;
 import interpreter.parsing.model.NumberType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractArithmeticInstructionHandler extends AbstractInstructionHandler {
 
+    @Autowired
     protected ArithmeticOperationsFactory arithmeticOperationsFactory;
-
-    public void setArithmeticOperationsFactory(ArithmeticOperationsFactory arithmeticOperationsFactory) {
-        this.arithmeticOperationsFactory = arithmeticOperationsFactory;
-    }
 
     public NumberType numberType(ObjectData a, ObjectData b) {
         return ((NumberObject) a).getNumberType();
