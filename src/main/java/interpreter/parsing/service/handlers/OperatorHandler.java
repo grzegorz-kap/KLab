@@ -1,14 +1,27 @@
 package interpreter.parsing.service.handlers;
 
+import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.factory.OperatorFactory;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OperatorHandler extends AbstractParseHandler implements ParseHandler {
+
+    @PostConstruct
+    private void init() {
+        supportedTokenClass = TokenClass.OPERATOR;
+    }
 
     @Override
     public void handle() {

@@ -9,14 +9,17 @@ import interpreter.parsing.service.handlers.ParseHandler;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractParser implements Parser {
 
     protected ParseContext parseContext;
-
     protected ParseContextManager parseContextManager = new ParseContextManager();
-
     private Map<TokenClass, ParseHandler> parseHandlerMap = new EnumMap<>(TokenClass.class);
+
+    public AbstractParser(Set<ParseHandler> parseHandlers) {
+        parseHandlers.forEach(this::addParseHandler);
+    }
 
     protected abstract void process();
 
@@ -28,14 +31,12 @@ public abstract class AbstractParser implements Parser {
         return parseContext.getLastFromExpression(1).get(0);
     }
 
-    @Override
     public ParseHandler getParseHandler(TokenClass tokenClass) {
         return parseHandlerMap.get(tokenClass);
     }
 
-    @Override
-    public void addParseHandler(TokenClass tokenClass, ParseHandler parseHandler) {
+    private void addParseHandler(ParseHandler parseHandler) {
         parseHandler.setContextManager(parseContextManager);
-        parseHandlerMap.put(tokenClass, parseHandler);
+        parseHandlerMap.put(parseHandler.getSupportedTokenClass(), parseHandler);
     }
 }
