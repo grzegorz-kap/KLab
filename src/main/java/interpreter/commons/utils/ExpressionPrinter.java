@@ -5,6 +5,9 @@ import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionNode;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+import java.util.stream.IntStream;
+
 @Component
 public class ExpressionPrinter {
 
@@ -14,13 +17,10 @@ public class ExpressionPrinter {
 
     private String expressionToString(Expression<ParseToken> expression, int ident) {
         StringBuilder builder = new StringBuilder("");
-
-        for (int i = 0; i < ident * 2; i++) {
-            builder.append(i % 2 == 0 ? '|' : ' ');
-        }
+        IntStream.range(0, ident * 2).forEach(i -> builder.append(i % 2 == 0 ? '|' : ' '));
 
         ParseToken token = expression.getValue();
-        if (token != null) {
+        if (Objects.nonNull(token)) {
             builder.append(String.format("%s", token.getToken().getLexeme()));
         } else {
             builder.append("null");
