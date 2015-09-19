@@ -2,7 +2,6 @@ package interpreter.parsing.service.handlers;
 
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.model.ParseToken;
-import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.model.tokens.MatrixStartToken;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -22,8 +21,7 @@ public class OpenBracketParseHandler extends AbstractParseHandler implements Par
     @Override
     public void handle() {
         ParseToken parseToken = new MatrixStartToken(parseContextManager.tokenAt(0));
-        ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(parseToken);
-        parseContextManager.addExpression(expressionNode);
+        parseContextManager.addExpressionNode(parseToken);
         parseContextManager.stackPush(parseToken);
         parseContextManager.incrementTokenPosition(1);
     }

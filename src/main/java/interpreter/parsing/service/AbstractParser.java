@@ -7,17 +7,16 @@ import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.service.handlers.ParseHandler;
 
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractParser implements Parser {
 
     protected ParseContext parseContext;
-    protected ParseContextManager parseContextManager = new ParseContextManager();
-    private Map<TokenClass, ParseHandler> parseHandlerMap = new EnumMap<>(TokenClass.class);
+    protected ParseContextManager parseContextManager;
+    private ParseHandler[] parseHandlers = new ParseHandler[TokenClass.values().length];
 
-    public AbstractParser(Set<ParseHandler> parseHandlers) {
+    public AbstractParser(Set<ParseHandler> parseHandlers, ParseContextManager parseContextManager) {
+        this.parseContextManager = parseContextManager;
         parseHandlers.forEach(this::addParseHandler);
     }
 
@@ -26,17 +25,18 @@ public abstract class AbstractParser implements Parser {
     @Override
     public Expression<ParseToken> process(TokenList tokenList) {
         parseContext = new ParseContext(tokenList);
+        parseContext.setParseHandlers(parseHandlers);
         parseContextManager.setParseContext(parseContext);
         process();
         return parseContext.getLastFromExpression(1).get(0);
     }
 
     public ParseHandler getParseHandler(TokenClass tokenClass) {
-        return parseHandlerMap.get(tokenClass);
+        return parseHandlers[tokenClass.getIndex()];
     }
 
     private void addParseHandler(ParseHandler parseHandler) {
         parseHandler.setContextManager(parseContextManager);
-        parseHandlerMap.put(parseHandler.getSupportedTokenClass(), parseHandler);
+        parseHandlers[parseHandler.getSupportedTokenClass().getIndex()] = parseHandler;
     }
 }

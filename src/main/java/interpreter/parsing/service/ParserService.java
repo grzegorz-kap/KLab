@@ -18,13 +18,13 @@ public class ParserService extends AbstractParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParser.class);
 
     @Autowired
-    public ParserService(Set<ParseHandler> parseHandlers) {
-        super(parseHandlers);
+    public ParserService(Set<ParseHandler> parseHandlers, ParseContextManager parseContextManager) {
+        super(parseHandlers, parseContextManager);
     }
 
     @Override
     protected void process() {
-        while (!parseContextManager.endOfTokens()) {
+        while (!parseContextManager.isEndOfTokens()) {
             ParseHandler parseHandler = getParseHandler(parseContext.getCurrentToken().getTokenClass());
             iSUnsupported(parseHandler);
             parseHandler.handle();

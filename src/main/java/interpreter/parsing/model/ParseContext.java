@@ -1,13 +1,12 @@
 package interpreter.parsing.model;
 
 import interpreter.lexer.model.Token;
+import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenList;
 import interpreter.parsing.model.expression.Expression;
+import interpreter.parsing.service.handlers.ParseHandler;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 public class ParseContext {
 
@@ -15,6 +14,7 @@ public class ParseContext {
     private List<Expression<ParseToken>> expressionTree = new ArrayList<>();
     private Deque<ParseToken> stack = new ArrayDeque<>();
     private int index;
+    private ParseHandler[] parseHandlers;
 
     public ParseContext(TokenList tokenList) {
         this.tokenList = tokenList;
@@ -79,5 +79,17 @@ public class ParseContext {
 
     public int expressionSize() {
         return expressionTree.size();
+    }
+
+    public void setParseHandlers(ParseHandler[] parseHandlers) {
+        this.parseHandlers = parseHandlers;
+    }
+
+    public ParseHandler getParseHandler(TokenClass tokenClass) {
+        return parseHandlers[tokenClass.getIndex()];
+    }
+
+    public ListIterator<Expression<ParseToken>> getListIterator(int index) {
+        return expressionTree.listIterator(index);
     }
 }
