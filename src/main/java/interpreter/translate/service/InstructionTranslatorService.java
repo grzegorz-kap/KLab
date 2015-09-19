@@ -3,6 +3,8 @@ package interpreter.translate.service;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionValue;
+import interpreter.translate.model.instruction.Instruction;
+import interpreter.translate.model.instruction.InstructionCode;
 
 
 public class InstructionTranslatorService extends AbstractInstructionTranslator {
@@ -11,6 +13,7 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     protected void translate() {
         Expression<ParseToken> parseTokenExpression = translateContext.getExpression();
         process(parseTokenExpression);
+        addPrint();
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
@@ -28,5 +31,9 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         } else {
             translateExpressionNode(parseTokenExpression);
         }
+    }
+
+    private void addPrint() {
+        translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0));
     }
 }

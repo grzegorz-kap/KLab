@@ -23,6 +23,4 @@ public class TranslateContext {
     public Expression<ParseToken> getExpression() {
         return expression;
     }
-
-
 }

@@ -1,22 +1,14 @@
 package interpreter.execution.service;
 
 import interpreter.execution.handlers.InstructionHandler;
-import interpreter.execution.model.ExecutionContext;
-import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.instruction.Instruction;
-import interpreter.translate.model.instruction.InstructionCode;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-
-public class ExecutionService {
-
-    private InstructionHandler[] instructionHandlers;
-    private ExecutionContext executionContext;
-    private InstructionPointer instructionPointer;
-
-    public ExecutionService() {
-        instructionHandlers = new InstructionHandler[InstructionCode.values().length];
-    }
+@Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+public class ExecutionService extends AbstractExecutionService {
 
     public void start() {
         while (!instructionPointer.isCodeEnd()) {
@@ -24,25 +16,5 @@ public class ExecutionService {
             InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
             instructionHandler.handle(instructionPointer);
         }
-    }
-
-    public void addInstructions(Collection<? extends Instruction> instructions) {
-        executionContext.addInstruction(instructions);
-    }
-
-    public void setExecutionContext(ExecutionContext executionContext) {
-        this.executionContext = executionContext;
-        this.instructionPointer = executionContext.newInstructionPointer();
-    }
-
-    public void registerInstructionHandler(InstructionCode instructionCode, InstructionHandler instructionHandler) {
-        instructionHandlers[instructionCode.getIndex()] = instructionHandler;
-        instructionHandler.setExecutionContext(executionContext);
-    }
-
-    public void resetCodeAndStack() {
-        executionContext.clearExecutionStack();
-        executionContext.clearCode();
-        instructionPointer = executionContext.newInstructionPointer();
     }
 }

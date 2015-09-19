@@ -5,7 +5,8 @@ public enum InstructionCode {
     ADD(1),
     SUB(2),
     MULT(3),
-    DIV(4);
+    DIV(4),
+    PRINT(5);
 
     private int index;
 

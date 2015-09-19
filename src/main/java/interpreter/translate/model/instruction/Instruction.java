@@ -12,6 +12,14 @@ public class Instruction {
     private Integer argumentsNumber;
     private List<ObjectData> objectDataList = new ArrayList<>();
 
+    public Instruction() {
+    }
+
+    public Instruction(InstructionCode instructionCode, Integer argumentsNumber) {
+        this.instructionCode = instructionCode;
+        this.argumentsNumber = argumentsNumber;
+    }
+
     public InstructionCode getInstructionCode() {
         return instructionCode;
     }
