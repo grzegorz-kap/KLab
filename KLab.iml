@@ -7,6 +7,7 @@
           <file>file://$MODULE_DIR$/src/main/java/config/ApplicationConfiguration.java</file>
           <file>file://$MODULE_DIR$/src/main/java/interpreter/translate/factory/TranslateServiceFactory.java</file>
           <file>file://$MODULE_DIR$/src/main/java/gui/GuiAppConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/gui/config/GuiAppConfiguration.java</file>
         </fileset>
         <fileset id="fileset2" name="Spring Application Context (2)" removed="false">
           <file>file://$MODULE_DIR$/src/main/java/config/ApplicationConfiguration.java</file>
@@ -14,6 +15,7 @@
           <file>file://$MODULE_DIR$/src/main/java/gui/configuration/GuiAppConfiguration.java</file>
           <file>file://$MODULE_DIR$/src/main/java/interpreter/parsing/factory/ParserFactory.java</file>
           <file>file://$MODULE_DIR$/src/main/java/interpreter/translate/factory/TranslateServiceFactory.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/gui/config/GuiAppConfiguration.java</file>
         </fileset>
       </configuration>
     </facet>

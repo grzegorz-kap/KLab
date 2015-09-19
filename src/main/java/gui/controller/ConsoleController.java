@@ -1,20 +1,29 @@
 package gui.controller;
 
+import gui.helpers.KeyboardHelper;
+import gui.view.ConsoleViewService;
 import javafx.fxml.FXML;
-import javafx.scene.input.KeyCode;
+import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ConsoleController {
+public class ConsoleController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleController.class);
+
+    private ConsoleViewService consoleViewService;
+    private KeyboardHelper keyboardHelper;
 
     @FXML
     private CodeArea commandInput;
@@ -24,15 +33,26 @@ public class ConsoleController {
 
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {
-         if(keyEvent.getCode().equals(KeyCode.ENTER)) {
-             consoleOutput.appendText(String.format(">> %s\n\n", getInputTextAndClear()));
-             keyEvent.consume();
-         }
+        if (keyboardHelper.isEnterPressed(keyEvent)) {
+            LOGGER.info("ENTER pressed");
+            consoleViewService.onCommandSubmit();
+            keyEvent.consume();
+        }
     }
 
-    private String getInputTextAndClear() {
-        String inputText = commandInput.getText();
-        commandInput.clear();
-        return inputText;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        consoleViewService.setCommandInput(commandInput);
+        consoleViewService.setConsoleOutput(consoleOutput);
+    }
+
+    @Autowired
+    public void setConsoleViewService(ConsoleViewService consoleViewService) {
+        this.consoleViewService = consoleViewService;
+    }
+
+    @Autowired
+    public void setKeyboardHelper(KeyboardHelper keyboardHelper) {
+        this.keyboardHelper = keyboardHelper;
     }
 }
