@@ -5,9 +5,7 @@ import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Set;
 
@@ -17,13 +15,9 @@ public abstract class AbstractExecutionService {
     protected ExecutionContext executionContext;
     protected InstructionPointer instructionPointer;
 
-    @Autowired
-    private Set<InstructionHandler> instructionHandlersBeans;
-
-    @PostConstruct
-    private void init() {
+    public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
         setupExecutionContext(new ExecutionContext());
-        instructionHandlersBeans.forEach(this::registerInstructionHandler);
+        instructionHandlers.forEach(this::registerInstructionHandler);
     }
 
     private void setupExecutionContext(ExecutionContext executionContext) {
