@@ -1,16 +1,18 @@
-package interpreter.parsing.utils;
+package interpreter.commons.utils;
 
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionNode;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExpressionPrinter {
 
-    public static String expressionToString(Expression<ParseToken> expression) {
+    public String expressionToString(Expression<ParseToken> expression) {
         return expressionToString(expression, 0);
     }
 
-    private static String expressionToString(Expression<ParseToken> expression, int ident) {
+    private String expressionToString(Expression<ParseToken> expression, int ident) {
         StringBuilder builder = new StringBuilder("");
 
         for (int i = 0; i < ident * 2; i++) {
