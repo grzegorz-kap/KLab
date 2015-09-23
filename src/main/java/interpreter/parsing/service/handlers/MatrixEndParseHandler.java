@@ -9,25 +9,24 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class MatrixEndParseHandler extends AbstractParseHandler implements ParseHandler {
+public class MatrixEndParseHandler extends AbstractParseHandler {
 
     private StackHelper stackHelper;
-
-    @PostConstruct
-    private void init() {
-        supportedTokenClass = TokenClass.CLOSE_BRACKET;
-    }
 
     @Override
     public void handle() {
         moveStackToExpression();
         reduceExpression();
         parseContextManager.incrementTokenPosition(1);
+    }
+
+    @Override
+    public TokenClass getSupportedTokenClass() {
+        return TokenClass.CLOSE_BRACKET;
     }
 
     private void reduceExpression() {

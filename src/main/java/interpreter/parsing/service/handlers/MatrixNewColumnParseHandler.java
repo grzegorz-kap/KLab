@@ -9,13 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class MatrixNewColumnParseHandler extends AbstractParseHandler implements ParseHandler {
+public class MatrixNewColumnParseHandler extends AbstractParseHandler {
 
     private StackHelper stackHelper;
-
-    public MatrixNewColumnParseHandler() {
-        supportedTokenClass = TokenClass.COMMA;
-    }
 
     @Override
     public void handle() {
@@ -23,6 +19,11 @@ public class MatrixNewColumnParseHandler extends AbstractParseHandler implements
             throw new RuntimeException();
         }
         parseContextManager.incrementTokenPosition(1);
+    }
+
+    @Override
+    public TokenClass getSupportedTokenClass() {
+        return TokenClass.COMMA;
     }
 
     @Autowired
