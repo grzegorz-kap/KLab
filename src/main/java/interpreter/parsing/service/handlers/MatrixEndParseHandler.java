@@ -3,6 +3,8 @@ package interpreter.parsing.service.handlers;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
+import interpreter.parsing.service.handlers.helpers.StackHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,9 @@ import java.util.Objects;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class CloseBracketParseHandler extends AbstractParseHandler implements ParseHandler {
+public class MatrixEndParseHandler extends AbstractParseHandler implements ParseHandler {
+
+    private StackHelper stackHelper;
 
     @PostConstruct
     private void init() {
@@ -43,22 +47,20 @@ public class CloseBracketParseHandler extends AbstractParseHandler implements Pa
     }
 
     private void moveStackToExpression() {
-        while (!parseContextManager.isStackEmpty() && !isMatrixStartAtStackPeek()) {
-            parseContextManager.getParseHandler(parseContextManager.stackPeekClass()).handleStackFinish();
-        }
-        if (parseContextManager.isStackEmpty()) {
+        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, TokenClass.OPEN_BRACKET)) {
             throw new RuntimeException();
         }
         parseContextManager.stackPop();
-    }
-
-    private boolean isMatrixStartAtStackPeek() {
-        return parseContextManager.stackPeekClass().equals(TokenClass.OPEN_BRACKET);
     }
 
     private Integer findMatrixStartIndex() {
         return parseContextManager.findLast(
                 expression -> expression.getValue().getTokenClass().equals(TokenClass.OPEN_BRACKET)
         );
+    }
+
+    @Autowired
+    public void setStackHelper(StackHelper stackHelper) {
+        this.stackHelper = stackHelper;
     }
 }

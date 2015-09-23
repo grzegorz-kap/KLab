@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class OpenBracketParseHandler extends AbstractParseHandler implements ParseHandler {
+public class MatrixStartParseHandler extends AbstractParseHandler implements ParseHandler {
 
     @PostConstruct
     private void init() {
