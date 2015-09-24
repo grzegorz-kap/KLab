@@ -12,7 +12,15 @@ public class BalanceContextService {
         balanceContext.put(balanceType);
     }
 
-    public void pop(ParseContextManager parseContextManager) {
-        parseContextManager.getBalanceContext().pop();
+    public void popOrThrow(ParseContextManager parseContextManager, BalanceType balanceType) {
+        BalanceContext balanceContext = parseContextManager.getBalanceContext();
+        BalanceType current = balanceContext.pop();
+        checkIfCorrect(current, balanceType);
+    }
+
+    private void checkIfCorrect(BalanceType current, BalanceType expected) {
+        if (!expected.equals(current)) {
+            throw new RuntimeException(expected.toString());
+        }
     }
 }

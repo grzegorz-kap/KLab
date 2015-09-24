@@ -1,11 +1,12 @@
-package interpreter.parsing.service.handlers.matrix
+package interpreter.parsing.service.handlers
 
 import interpreter.lexer.model.TokenClass
+import interpreter.parsing.model.BalanceType
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionNode
+import interpreter.parsing.service.BalanceContextService
 import interpreter.parsing.service.ParseContextManager
-import interpreter.parsing.service.handlers.MatrixEndParseHandler
 import interpreter.parsing.service.handlers.helpers.ExpressionHelper
 import interpreter.parsing.service.handlers.helpers.StackHelper
 import spock.lang.Specification
@@ -16,11 +17,13 @@ class MatrixEndParseHandlerTest extends Specification {
     def parseContextManager = Mock(ParseContextManager)
     def stackHelper = Mock(StackHelper)
     def expressionHelper = Mock(ExpressionHelper)
+    def balanceContextService = Mock(BalanceContextService)
 
     def setup() {
         handler.setContextManager(parseContextManager)
         handler.setStackHelper(stackHelper)
         handler.setExpressionHelper(expressionHelper)
+        handler.setBalanceContextService(balanceContextService)
     }
 
     def "Test supported class"() {
@@ -49,6 +52,7 @@ class MatrixEndParseHandlerTest extends Specification {
         1 * parseContextManager.popExpression() >> matrixNode
         1 * parseContextManager.addExpression({ matrixNode = it } as ExpressionNode<ParseToken>)
         1 * parseContextManager.incrementTokenPosition(1)
+        1 * balanceContextService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX)
         matrixNode.children == expressions
         parseToken.parseClass == ParseClass.MATRIX
     }

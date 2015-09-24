@@ -1,9 +1,11 @@
 package interpreter.parsing.service.handlers;
 
 import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.model.BalanceType;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
+import interpreter.parsing.service.BalanceContextService;
 import interpreter.parsing.service.handlers.helpers.ExpressionHelper;
 import interpreter.parsing.service.handlers.helpers.StackHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
 
     private StackHelper stackHelper;
     private ExpressionHelper expressionHelper;
+    private BalanceContextService balanceContextService;
 
     @Override
     public void handle() {
         moveStackToExpression();
         reduceExpression();
+        balanceContextService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX);
         parseContextManager.incrementTokenPosition(1);
     }
 
@@ -55,5 +59,10 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     @Autowired
     public void setExpressionHelper(ExpressionHelper expressionHelper) {
         this.expressionHelper = expressionHelper;
+    }
+
+    @Autowired
+    public void setBalanceContextService(BalanceContextService balanceContextService) {
+        this.balanceContextService = balanceContextService;
     }
 }

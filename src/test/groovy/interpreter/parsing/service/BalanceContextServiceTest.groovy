@@ -22,9 +22,19 @@ class BalanceContextServiceTest extends Specification {
 
     def "Test pop method"() {
         when:
-        balanceService.pop(parseContextManager)
+        balanceService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX)
         then:
         1 * parseContextManager.getBalanceContext() >> balanceContext
-        1 * balanceContext.pop()
+        1 * balanceContext.pop() >> BalanceType.INSIDE_MATRIX
+        notThrown(Exception)
+    }
+
+    def "Test pop method with exception"() {
+        when:
+        balanceService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX)
+        then:
+        1 * parseContextManager.getBalanceContext() >> balanceContext
+        1 * balanceContext.pop() >> BalanceType.NORMAL
+        thrown(Exception)
     }
 }

@@ -1,9 +1,8 @@
-package interpreter.parsing.service.handlers.matrix
+package interpreter.parsing.service.handlers
 
 import interpreter.lexer.model.TokenClass
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.service.ParseContextManager
-import interpreter.parsing.service.handlers.MatrixNewColumnParseHandler
 import interpreter.parsing.service.handlers.helpers.StackHelper
 import spock.lang.Specification
 
