@@ -31,4 +31,9 @@ public class ExpressionNode<T> extends AbstractExpression<T> implements Expressi
     public List<Expression<T>> getChildren() {
         return children;
     }
+
+    @Override
+    public int getChildrenCount() {
+        return children.size();
+    }
 }

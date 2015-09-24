@@ -17,4 +17,6 @@ public interface Expression<T> {
     T getValue();
 
     void setValue(T value);
+
+    int getChildrenCount();
 }
