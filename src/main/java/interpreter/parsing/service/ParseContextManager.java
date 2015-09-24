@@ -3,6 +3,7 @@ package interpreter.parsing.service;
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.exception.WrongNumberOfArgumentsException;
+import interpreter.parsing.model.BalanceContext;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseContext;
 import interpreter.parsing.model.ParseToken;
@@ -117,5 +118,9 @@ public class ParseContextManager {
 
     public int expressionSize() {
         return parseContext.expressionSize();
+    }
+
+    public BalanceContext getBalanceContext() {
+        return parseContext.getBalanceContext();
     }
 }

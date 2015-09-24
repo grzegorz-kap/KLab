@@ -15,6 +15,7 @@ public class ParseContext {
     private Deque<ParseToken> stack = new ArrayDeque<>();
     private int index;
     private ParseHandler[] parseHandlers;
+    private BalanceContext balanceContext = new BalanceContext();
 
     public ParseContext(TokenList tokenList) {
         this.tokenList = tokenList;
@@ -91,5 +92,9 @@ public class ParseContext {
 
     public ListIterator<Expression<ParseToken>> getListIterator(int index) {
         return expressionTree.listIterator(index);
+    }
+
+    public BalanceContext getBalanceContext() {
+        return balanceContext;
     }
 }
