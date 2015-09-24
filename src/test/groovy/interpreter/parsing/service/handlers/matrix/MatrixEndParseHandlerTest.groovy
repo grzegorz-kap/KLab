@@ -5,6 +5,7 @@ import interpreter.parsing.model.ParseClass
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionNode
 import interpreter.parsing.service.ParseContextManager
+import interpreter.parsing.service.handlers.MatrixEndParseHandler
 import interpreter.parsing.service.handlers.helpers.ExpressionHelper
 import interpreter.parsing.service.handlers.helpers.StackHelper
 import spock.lang.Specification

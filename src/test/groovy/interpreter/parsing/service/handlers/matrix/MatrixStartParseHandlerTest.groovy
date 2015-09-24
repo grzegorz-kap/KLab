@@ -4,6 +4,7 @@ import interpreter.lexer.model.TokenClass
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.model.tokens.MatrixStartToken
 import interpreter.parsing.service.ParseContextManager
+import interpreter.parsing.service.handlers.MatrixStartParseHandler
 import spock.lang.Specification
 
 import static com.natpryce.makeiteasy.MakeItEasy.*

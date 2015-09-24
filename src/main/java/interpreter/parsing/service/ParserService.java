@@ -26,7 +26,7 @@ public class ParserService extends AbstractParser {
     protected void process() {
         while (!parseContextManager.isEndOfTokens()) {
             ParseHandler parseHandler = getParseHandler(parseContext.getCurrentToken().getTokenClass());
-            iSUnsupported(parseHandler);
+            isUnsupported(parseHandler);
             parseHandler.handle();
         }
         while (parseContextManager.stackSize() > 0) {
@@ -35,7 +35,7 @@ public class ParserService extends AbstractParser {
         }
     }
 
-    private void iSUnsupported(final ParseHandler parseHandler) {
+    private void isUnsupported(final ParseHandler parseHandler) {
         if (Objects.isNull(parseHandler)) {
             LOGGER.error("'{}'\t'{}'", parseContext.getCurrentToken().getLexeme(), parseContext.getCurrentToken().getTokenClass());
         }
