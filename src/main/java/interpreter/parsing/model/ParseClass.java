@@ -4,9 +4,10 @@ public enum ParseClass {
 
     NUMBER(0),
     OPERATOR(1),
-    MATRIX(2),
+    MATRIX_START(2),
     MATRIX_END(3),
-    MATRIX_VERSE(4);
+    MATRIX_VERSE(4),
+    MATRIX(5);
 
     private int index;
 

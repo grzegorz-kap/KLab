@@ -1,6 +1,8 @@
-package interpreter.parsing.service.handlers;
+package interpreter.parsing.service.handlers.matrix;
 
 import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.model.ParseClass;
+import interpreter.parsing.service.handlers.AbstractParseHandler;
 import interpreter.parsing.service.handlers.helpers.StackHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -15,7 +17,7 @@ public class MatrixNewColumnParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, TokenClass.OPEN_BRACKET)) {
+        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, ParseClass.MATRIX_START)) {
             throw new RuntimeException();
         }
         parseContextManager.incrementTokenPosition(1);

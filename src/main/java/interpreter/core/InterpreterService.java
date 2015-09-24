@@ -28,6 +28,14 @@ public class InterpreterService {
     private MacroInstructionPrinter macroInstructionPrinter;
 
     public void start(String input) {
+        try {
+            startExecution(input);
+        } catch (RuntimeException ex) {
+            LOGGER.error("Execution failed", ex);
+        }
+    }
+
+    private void startExecution(String input) {
         LOGGER.info("\n{}", input);
         executionService.resetCodeAndStack();
         TokenList tokenList = tokenizer.readTokens(input);

@@ -1,9 +1,10 @@
-package interpreter.parsing.service.handlers;
+package interpreter.parsing.service.handlers.matrix;
 
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.tokens.MatrixStartToken;
+import interpreter.parsing.service.handlers.AbstractParseHandler;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ public class MatrixStartParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         ParseToken parseToken = new MatrixStartToken(parseContextManager.tokenAt(0));
-        parseToken.setParseClass(ParseClass.MATRIX);
+        parseToken.setParseClass(ParseClass.MATRIX_START);
         parseContextManager.addExpressionNode(parseToken);
         parseContextManager.stackPush(parseToken);
         parseContextManager.incrementTokenPosition(1);

@@ -4,8 +4,8 @@ import interpreter.parsing.service.ParseContextManager
 import interpreter.parsing.service.handlers.ParseHandler
 import spock.lang.Specification
 
-import static interpreter.lexer.model.TokenClass.NEW_LINE
-import static interpreter.lexer.model.TokenClass.OPEN_BRACKET
+import static interpreter.parsing.model.ParseClass.MATRIX_START
+import static interpreter.parsing.model.ParseClass.NUMBER
 
 class StackHelperTest extends Specification {
 
@@ -19,12 +19,12 @@ class StackHelperTest extends Specification {
         stackHandler.handleStackFinish() >> { count--; }
 
         when:
-        def result = stackHelper.stackToExpressionUntilTokenClass(contextManager, OPEN_BRACKET)
+        def result = stackHelper.stackToExpressionUntilTokenClass(contextManager, MATRIX_START)
 
         then:
         4 * contextManager.isStackEmpty() >> { return count == 0; }
-        5 * contextManager.stackPeekClass() >> { return count == 1 ? OPEN_BRACKET : NEW_LINE }
-        2 * contextManager.getParseHandler(NEW_LINE) >> { return stackHandler };
+        3 * contextManager.stackPeekClass() >> { return count == 1 ? MATRIX_START : NUMBER }
+        2 * contextManager.getParseHandler(_) >> { return stackHandler };
         result
     }
 
@@ -34,7 +34,7 @@ class StackHelperTest extends Specification {
         contextManager.isStackEmpty() >> true
 
         when:
-        def result = stackHelper.stackToExpressionUntilTokenClass(contextManager, OPEN_BRACKET)
+        def result = stackHelper.stackToExpressionUntilTokenClass(contextManager, MATRIX_START)
 
         then:
         !result

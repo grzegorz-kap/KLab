@@ -1,12 +1,10 @@
-package interpreter.parsing.service.handlers
+package interpreter.parsing.service.handlers.matrix
 
 import interpreter.lexer.model.TokenClass
+import interpreter.parsing.model.ParseClass
 import interpreter.parsing.service.ParseContextManager
 import interpreter.parsing.service.handlers.helpers.StackHelper
 import spock.lang.Specification
-
-import static interpreter.lexer.model.TokenClass.OPEN_BRACKET
-
 
 class MatrixNewColumnParseHandlerTest extends Specification {
 
@@ -28,9 +26,7 @@ class MatrixNewColumnParseHandlerTest extends Specification {
         parseHandler.handle()
 
         then:
-        1 * parseHandler.stackHelper.stackToExpressionUntilTokenClass(parseHandler.parseContextManager, OPEN_BRACKET) >> 1
+        1 * parseHandler.stackHelper.stackToExpressionUntilTokenClass(parseHandler.parseContextManager, ParseClass.MATRIX_START) >> 1
         1 * parseHandler.parseContextManager.incrementTokenPosition(1)
     }
-
-
 }

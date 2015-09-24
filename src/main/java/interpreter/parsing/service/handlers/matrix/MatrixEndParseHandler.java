@@ -1,21 +1,25 @@
-package interpreter.parsing.service.handlers;
+package interpreter.parsing.service.handlers.matrix;
 
 import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
+import interpreter.parsing.service.handlers.AbstractParseHandler;
+import interpreter.parsing.service.handlers.helpers.ExpressionHelper;
 import interpreter.parsing.service.handlers.helpers.StackHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
+import static interpreter.parsing.model.ParseClass.MATRIX_START;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MatrixEndParseHandler extends AbstractParseHandler {
 
     private StackHelper stackHelper;
+    private ExpressionHelper expressionHelper;
 
     @Override
     public void handle() {
@@ -31,35 +35,26 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
 
     private void reduceExpression() {
         ExpressionNode<ParseToken> matrixNode = new ExpressionNode<>();
-        Integer matrixStartIndex = findMatrixStartIndex();
-        checkCorrectIndexFound(matrixStartIndex);
-        int expressionNodesToPop = parseContextManager.expressionSize() - matrixStartIndex - 1;
-        matrixNode.addChildren(parseContextManager.popExpressionArguments(expressionNodesToPop));
+        matrixNode.addChildren(expressionHelper.popUntilParseClass(parseContextManager, parseClass -> parseClass.equals(MATRIX_START)));
         matrixNode.setValue(parseContextManager.popExpression().getValue());
+        matrixNode.getValue().setParseClass(ParseClass.MATRIX);
         parseContextManager.addExpression(matrixNode);
     }
 
-    private void checkCorrectIndexFound(Integer matrixStartIndex) {
-        if (Objects.isNull(matrixStartIndex)) {
-            throw new RuntimeException();
-        }
-    }
-
     private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, TokenClass.OPEN_BRACKET)) {
+        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, MATRIX_START)) {
             throw new RuntimeException();
         }
         parseContextManager.stackPop();
     }
 
-    private Integer findMatrixStartIndex() {
-        return parseContextManager.findLast(
-                expression -> expression.getValue().getTokenClass().equals(TokenClass.OPEN_BRACKET)
-        );
-    }
-
     @Autowired
     public void setStackHelper(StackHelper stackHelper) {
         this.stackHelper = stackHelper;
+    }
+
+    @Autowired
+    public void setExpressionHelper(ExpressionHelper expressionHelper) {
+        this.expressionHelper = expressionHelper;
     }
 }

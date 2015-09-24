@@ -3,6 +3,7 @@ package interpreter.parsing.service;
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.exception.WrongNumberOfArgumentsException;
+import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseContext;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -65,7 +66,11 @@ public class ParseContextManager {
         return parseContext.stackPop();
     }
 
-    public TokenClass stackPeekClass() {
+    public ParseClass stackPeekClass() {
+        return parseContext.stackPeek().getParseClass();
+    }
+
+    public TokenClass stackPeekTokenClass() {
         return parseContext.stackPeek().getTokenClass();
     }
 
