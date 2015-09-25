@@ -14,4 +14,8 @@ public class BalanceContext {
     public BalanceType pop() {
         return balanceTypes.pop();
     }
+
+    public BalanceType peek() {
+        return balanceTypes.peek();
+    }
 }

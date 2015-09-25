@@ -43,7 +43,7 @@ class OperatorHandlerTest extends Specification {
         3 * operatorHandler.contextManager.incrementTokenPosition(1) >> { index++ }
         3 * operatorHandler.contextManager.stackPeek() >> { return stack.peek() }
         2 * operatorHandler.contextManager.stackPop() >> { return stack.pop() }
-        2 * operatorHandler.contextManager.popExpressionArguments(2) >> []
+        2 * operatorHandler.contextManager.expressionPopArguments(2) >> []
         2 * operatorHandler.contextManager.addExpression(_) >> { arguments -> expressionList.add(arguments[0]) }
         stack.size() == 1
         expressionList.size() == 2
@@ -60,7 +60,7 @@ class OperatorHandlerTest extends Specification {
         operatorHandler.handleStackFinish()
         then:
         1 * operatorHandler.contextManager.stackPop() >> { return stack.pop() }
-        1 * operatorHandler.contextManager.popExpressionArguments(2) >> []
+        1 * operatorHandler.contextManager.expressionPopArguments(2) >> []
         1 * operatorHandler.contextManager.addExpression(_ as ExpressionNode<ParseToken>) >> {}
     }
 }

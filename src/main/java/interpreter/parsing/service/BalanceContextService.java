@@ -18,6 +18,10 @@ public class BalanceContextService {
         checkIfCorrect(current, balanceType);
     }
 
+    public BalanceType peek(ParseContextManager parseContextManager) {
+        return parseContextManager.getBalanceContext().peek();
+    }
+
     private void checkIfCorrect(BalanceType current, BalanceType expected) {
         if (!expected.equals(current)) {
             throw new RuntimeException(expected.toString());

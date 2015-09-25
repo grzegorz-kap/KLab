@@ -41,7 +41,7 @@ public class OperatorHandler extends AbstractParseHandler {
     private void stackToExpression() {
         OperatorToken operatorToken = (OperatorToken) parseContextManager.stackPop();
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(operatorToken);
-        expressionNode.addChildren(parseContextManager.popExpressionArguments(operatorToken.getArgumentsNumber()));
+        expressionNode.addChildren(parseContextManager.expressionPopArguments(operatorToken.getArgumentsNumber()));
         parseContextManager.addExpression(expressionNode);
     }
 

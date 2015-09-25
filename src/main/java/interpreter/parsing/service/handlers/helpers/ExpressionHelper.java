@@ -16,7 +16,7 @@ public class ExpressionHelper {
     public List<Expression<ParseToken>> popUntilParseClass(ParseContextManager parseContextManager, Predicate<ParseClass> predicate) {
         Integer foundIndex = findLastIndex(parseContextManager, predicate);
         checkCorrectIndexFound(foundIndex);
-        return parseContextManager.popExpressionArguments(parseContextManager.expressionSize() - foundIndex - 1);
+        return parseContextManager.expressionPopArguments(parseContextManager.expressionSize() - foundIndex - 1);
     }
 
     private void checkCorrectIndexFound(Integer matrixStartIndex) {

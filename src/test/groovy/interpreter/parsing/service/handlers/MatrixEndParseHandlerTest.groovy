@@ -18,8 +18,10 @@ class MatrixEndParseHandlerTest extends Specification {
     def stackHelper = Mock(StackHelper)
     def expressionHelper = Mock(ExpressionHelper)
     def balanceContextService = Mock(BalanceContextService)
+    def rowHandler = Mock(MatrixNewRowHandler)
 
     def setup() {
+        handler.setMatrixNewRowHandler(rowHandler)
         handler.setContextManager(parseContextManager)
         handler.setStackHelper(stackHelper)
         handler.setExpressionHelper(expressionHelper)
@@ -49,10 +51,12 @@ class MatrixEndParseHandlerTest extends Specification {
         1 * expressionHelper.popUntilParseClass(parseContextManager, { predicate ->
             ParseClass.values().each { parseClass -> predicate.test(parseClass) == parseClass.equals(ParseClass.MATRIX_START) }
         }) >> expressions
-        1 * parseContextManager.popExpression() >> matrixNode
+        1 * parseContextManager.expressionPop() >> matrixNode
         1 * parseContextManager.addExpression({ matrixNode = it } as ExpressionNode<ParseToken>)
         1 * parseContextManager.incrementTokenPosition(1)
         1 * balanceContextService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX)
+        1 * balanceContextService.peek(parseContextManager) >> BalanceType.NORMAL
+        1 * rowHandler.handleAction()
         matrixNode.children == expressions
         parseToken.parseClass == ParseClass.MATRIX
     }

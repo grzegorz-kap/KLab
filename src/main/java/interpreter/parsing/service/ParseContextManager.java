@@ -89,11 +89,11 @@ public class ParseContextManager {
         }
     }
 
-    public Expression<ParseToken> popExpression() {
-        return popExpressionArguments(1).get(0);
+    public Expression<ParseToken> expressionPop() {
+        return expressionPopArguments(1).get(0);
     }
 
-    public List<Expression<ParseToken>> popExpressionArguments(int argumentsNumber) {
+    public List<Expression<ParseToken>> expressionPopArguments(int argumentsNumber) {
         checkIfCorrectNumberOfArguments(argumentsNumber);
         List<Expression<ParseToken>> subList = parseContext.getLastFromExpression(argumentsNumber);
         parseContext.removeLastFromExpression(argumentsNumber);
