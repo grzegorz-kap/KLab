@@ -2,7 +2,7 @@ package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.NumberMultiplicator;
-import interpreter.math.DoubleScalar;
+import interpreter.math.scalar.DoubleScalar;
 
 public class ScalarDoubleNumberMultiplicator implements NumberMultiplicator {
     @Override

@@ -1,6 +1,6 @@
 package interpreter.translate.handlers;
 
-import interpreter.math.NumberScalarFactory;
+import interpreter.math.scalar.NumberScalarFactory;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;

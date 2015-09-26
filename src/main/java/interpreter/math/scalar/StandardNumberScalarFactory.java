@@ -1,4 +1,4 @@
-package interpreter.math;
+package interpreter.math.scalar;
 
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package interpreter.translate.handlers
 
-import interpreter.math.NumberObject
-import interpreter.math.NumberScalarFactory
+import interpreter.math.scalar.NumberObject
+import interpreter.math.scalar.NumberScalarFactory
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
 import interpreter.translate.model.instruction.Instruction
