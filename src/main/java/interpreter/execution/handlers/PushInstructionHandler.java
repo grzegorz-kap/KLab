@@ -8,16 +8,9 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class PushInstructionHandler extends AbstractInstructionHandler {
-
-    @PostConstruct
-    private void init() {
-        supportedInstructionCode = InstructionCode.PUSH;
-    }
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
@@ -25,5 +18,10 @@ public class PushInstructionHandler extends AbstractInstructionHandler {
         ObjectData objectData = instruction.getObjectDate(0);
         executionContext.pushToExecutionStack(objectData);
         instructionPointer.increment();
+    }
+
+    @Override
+    public InstructionCode getSupportedInstructionCode() {
+        return InstructionCode.PUSH;
     }
 }

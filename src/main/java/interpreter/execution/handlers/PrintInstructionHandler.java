@@ -9,19 +9,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class PrintInstructionHandler extends AbstractInstructionHandler implements InstructionHandler {
 
-    @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-
-    @PostConstruct
-    private void init() {
-        supportedInstructionCode = InstructionCode.PRINT;
-    }
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
@@ -29,9 +21,19 @@ public class PrintInstructionHandler extends AbstractInstructionHandler implemen
         instructionPointer.increment();
     }
 
+    @Override
+    public InstructionCode getSupportedInstructionCode() {
+        return InstructionCode.PRINT;
+    }
+
     private void publishPrintEvent() {
         PrintEvent printEvent = new PrintEvent(this);
         printEvent.setObjectData(executionContext.executionStackPop());
         applicationEventPublisher.publishEvent(printEvent);
+    }
+
+    @Autowired
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 }
