@@ -8,6 +8,10 @@ public class OjalgoMatrix<T extends Number> extends ObjectData implements Matrix
 
     private PhysicalStore<T> matrixStore;
 
+    public OjalgoMatrix(PhysicalStore<T> matrixStore) {
+        this.matrixStore = matrixStore;
+    }
+
     @Override
     public T get(int m, int n) {
         return matrixStore.get(m, n);
