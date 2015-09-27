@@ -19,13 +19,20 @@
         <javafx.plugin.version>8.1.4</javafx.plugin.version>
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
+        <richtextfx.version>0.6.8</richtextfx.version>
+        <ojalgo.version>38.2</ojalgo.version>
     </properties>
 
     <dependencies>
         <dependency>
+            <groupId>org.ojalgo</groupId>
+            <artifactId>ojalgo</artifactId>
+            <version>${ojalgo.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.fxmisc.richtext</groupId>
             <artifactId>richtextfx</artifactId>
-            <version>0.6.8</version>
+            <version>${richtextfx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
