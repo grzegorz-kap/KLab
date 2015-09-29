@@ -1,10 +1,9 @@
 package interpreter.math.matrix.ojalgo;
 
-import interpreter.commons.ObjectData;
 import interpreter.math.matrix.Matrix;
 import org.ojalgo.matrix.store.PhysicalStore;
 
-public class OjalgoMatrix<T extends Number> extends ObjectData implements Matrix<T> {
+public class OjalgoMatrix<T extends Number> implements Matrix<T> {
 
     private PhysicalStore<T> matrixStore;
 
