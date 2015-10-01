@@ -3,9 +3,9 @@ package interpreter.execution.handlers;
 import interpreter.commons.ObjectData;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
+import interpreter.math.matrix.Matrix;
 import interpreter.math.matrix.MatrixBuilder;
 import interpreter.math.matrix.MatrixFactory;
-import interpreter.math.scalar.DoubleScalar;
 import interpreter.translate.model.instruction.InstructionCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -16,12 +16,11 @@ import java.util.List;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
+public class MatrixInstructionHandler extends AbstractInstructionHandler {
 
     private MatrixFactory matrixFactory;
     private ExecutionContextManager executionContextManager;
 
-    @Override
     public void handle(InstructionPointer instructionPointer) {
         process(executionContextManager.executionStackPop(executionContext, instructionPointer.current().getArgumentsNumber()));
         instructionPointer.increment();
@@ -29,26 +28,26 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
 
     private void process(List<ObjectData> objectDataList) {
         MatrixBuilder<Double> matrixBuilder = matrixFactory.createDoubleBuilder();
-        objectDataList.forEach(objectData -> process(matrixBuilder, objectData));
+        objectDataList.forEach(objectData -> process(objectData, matrixBuilder));
         executionContext.executionStackPush(matrixBuilder.build());
+    }
+
+    private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
+        if (objectData instanceof Matrix) {
+            matrixBuilder.appendBelow((Matrix) objectData);
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     @Override
     public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.MATRIX_VERSE;
+        return InstructionCode.MATRIX;
     }
 
     @Autowired
     public void setMatrixFactory(MatrixFactory matrixFactory) {
         this.matrixFactory = matrixFactory;
-    }
-
-    private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
-        if (objectData instanceof DoubleScalar) {
-            builder.appendRight(((DoubleScalar) objectData).getValue());
-        } else {
-            throw new RuntimeException();
-        }
     }
 
     @Autowired

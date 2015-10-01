@@ -16,7 +16,7 @@ public class PushInstructionHandler extends AbstractInstructionHandler {
     public void handle(InstructionPointer instructionPointer) {
         Instruction instruction = instructionPointer.current();
         ObjectData objectData = instruction.getObjectDate(0);
-        executionContext.pushToExecutionStack(objectData);
+        executionContext.executionStackPush(objectData);
         instructionPointer.increment();
     }
 

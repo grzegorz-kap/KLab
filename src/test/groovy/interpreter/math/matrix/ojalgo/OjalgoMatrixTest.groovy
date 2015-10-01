@@ -15,7 +15,7 @@ class OjalgoMatrixTest extends Specification {
 
     def "Test get method"() {
         when:
-        def result = doubleMatrix.get(0, 0)
+        def result = doubleMatrix.getValueAt(0, 0)
 
         then:
         1 * physicalStore.get(0, 0) >> 0.5
@@ -24,7 +24,7 @@ class OjalgoMatrixTest extends Specification {
 
     def "Test set method"() {
         when:
-        doubleMatrix.set(3, 4, 5.0D)
+        doubleMatrix.setValueAt(3, 4, 5.0D)
 
         then:
         1 * physicalStore.set(3, 4, 5.0D)

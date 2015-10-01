@@ -4,7 +4,11 @@ import interpreter.commons.ObjectData;
 
 public interface Matrix<T extends Number> extends ObjectData {
 
-    T get(int m, int n);
+    T getValueAt(int m, int n);
 
-    void set(int m, int n, T value);
+    void setValueAt(int m, int n, T value);
+
+    long getRowsCount();
+
+    long getColumnsCount();
 }

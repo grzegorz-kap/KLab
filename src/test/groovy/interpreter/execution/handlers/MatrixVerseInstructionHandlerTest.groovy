@@ -2,6 +2,7 @@ package interpreter.execution.handlers
 
 import interpreter.execution.model.ExecutionContext
 import interpreter.execution.model.InstructionPointer
+import interpreter.execution.service.ExecutionContextManager
 import interpreter.math.matrix.Matrix
 import interpreter.math.matrix.MatrixBuilder
 import interpreter.math.matrix.MatrixFactory
@@ -17,10 +18,12 @@ class MatrixVerseInstructionHandlerTest extends Specification {
     def handler = new MatrixVerseInstructionHandler()
     def matrixFactory = Mock(MatrixFactory)
     def executionContext = Mock(ExecutionContext)
+    def executionContextManager = Mock(ExecutionContextManager)
 
     def setup() {
         handler.setMatrixFactory(matrixFactory)
         handler.setExecutionContext(executionContext)
+        handler.setExecutionContextManager(executionContextManager)
     }
 
     def "Test supported instruction code"() {
@@ -45,10 +48,10 @@ class MatrixVerseInstructionHandlerTest extends Specification {
 
         then:
         1 * matrixFactory.createDoubleBuilder() >> matrixBuilder
-        4 * executionContext.executionStackPop() >> objectData
-        4 * matrixBuilder.appendRight(2.25D)
+        1 * executionContextManager.executionStackPop(executionContext, 4) >> [objectData]
+        1 * matrixBuilder.appendRight(2.25D)
         1 * ip.increment()
         1 * matrixBuilder.build() >> matrix
-        1 * executionContext.pushToExecutionStack({ it == matrix } as Matrix<Double>)
+        1 * executionContext.executionStackPush({ it == matrix } as Matrix<Double>)
     }
 }

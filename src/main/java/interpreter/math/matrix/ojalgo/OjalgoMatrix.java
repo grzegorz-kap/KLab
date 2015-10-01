@@ -12,13 +12,31 @@ public class OjalgoMatrix<T extends Number> implements Matrix<T> {
     }
 
     @Override
-    public T get(int m, int n) {
+    public T getValueAt(int m, int n) {
         return matrixStore.get(m, n);
     }
 
     @Override
-    public void set(int m, int n, T value) {
+    public void setValueAt(int m, int n, T value) {
         matrixStore.set(m, n, value);
     }
 
+    @Override
+    public long getRowsCount() {
+        return matrixStore.countRows();
+    }
+
+    @Override
+    public long getColumnsCount() {
+        return matrixStore.countColumns();
+    }
+
+    public PhysicalStore<T> getMatrixStore() {
+        return matrixStore;
+    }
+
+    @Override
+    public String toString() {
+        return matrixStore.toString();
+    }
 }

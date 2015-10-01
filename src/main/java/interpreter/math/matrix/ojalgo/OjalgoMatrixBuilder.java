@@ -22,20 +22,16 @@ public class OjalgoMatrixBuilder<T extends Number, I extends PhysicalStore<T>> i
 
     @Override
     public MatrixBuilder<T> appendRight(T scalar) {
-        createRowsIfEmpty(1);
+        createIfEmpty(1, 0);
         builder.right(scalar);
         return this;
     }
 
-    private void createRowsIfEmpty(int rowsNumber) {
-        if (Objects.isNull(builder)) {
-            builder = factory.makeZero(rowsNumber, 0).builder();
-        }
-    }
-
     @Override
     public OjalgoMatrixBuilder<T, I> appendBelow(Matrix<T> matrix) {
-        return null;
+        createIfEmpty(0, matrix.getColumnsCount());
+        builder.below(((OjalgoMatrix) matrix).getMatrixStore());
+        return this;
     }
 
     @Override
@@ -46,6 +42,12 @@ public class OjalgoMatrixBuilder<T extends Number, I extends PhysicalStore<T>> i
     @Override
     public OjalgoMatrix<T> build() {
         return new OjalgoMatrix<>(builder.copy());
+    }
+
+    private void createIfEmpty(long rowsNumber, long colsNumber) {
+        if (Objects.isNull(builder)) {
+            builder = factory.makeZero(rowsNumber, colsNumber).builder();
+        }
     }
 
 }
