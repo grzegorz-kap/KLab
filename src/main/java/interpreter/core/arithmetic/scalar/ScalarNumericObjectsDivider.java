@@ -1,12 +1,13 @@
 package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
+import interpreter.core.arithmetic.NumericObjectsDivider;
 import interpreter.math.scalar.DoubleScalar;
 import interpreter.parsing.model.NumericType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScalarNumericObjectsDivider implements interpreter.core.arithmetic.NumericObjectsDivider {
+public class ScalarNumericObjectsDivider implements NumericObjectsDivider {
 
     @Override
     public ObjectData div(ObjectData a, ObjectData b) {

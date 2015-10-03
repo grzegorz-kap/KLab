@@ -1,12 +1,13 @@
 package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
+import interpreter.core.arithmetic.NumericObjectsMultiplicator;
 import interpreter.math.scalar.DoubleScalar;
 import interpreter.parsing.model.NumericType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScalarNumericObjectsMultiplicator implements interpreter.core.arithmetic.NumericObjectsMultiplicator {
+public class ScalarNumericObjectsMultiplicator implements NumericObjectsMultiplicator {
 
     @Override
     public ObjectData mult(ObjectData a, ObjectData b) {
