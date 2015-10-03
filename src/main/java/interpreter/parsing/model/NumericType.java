@@ -1,13 +1,13 @@
 package interpreter.parsing.model;
 
-public enum NumberType {
+public enum NumericType {
     INTEGER(0),
     FLOAT(1),
     DOUBLE(2);
 
     private int index;
 
-    NumberType(int index) {
+    NumericType(int index) {
         this.index = index;
     }
 

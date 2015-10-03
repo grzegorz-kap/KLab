@@ -4,15 +4,15 @@ import interpreter.core.arithmetic.NumberAdder;
 import interpreter.core.arithmetic.NumberDivider;
 import interpreter.core.arithmetic.NumberMultiplicator;
 import interpreter.core.arithmetic.NumberSubtractor;
-import interpreter.parsing.model.NumberType;
+import interpreter.parsing.model.NumericType;
 
 public interface ArithmeticOperationsFactory {
 
-    NumberAdder getAdder(NumberType numberType);
+    NumberAdder getAdder(NumericType numericType);
 
-    NumberSubtractor getSubtractor(NumberType numberType);
+    NumberSubtractor getSubtractor(NumericType numericType);
 
-    NumberMultiplicator getMultiplicator(NumberType numberType);
+    NumberMultiplicator getMultiplicator(NumericType numericType);
 
-    NumberDivider getDivider(NumberType numberType);
+    NumberDivider getDivider(NumericType numericType);
 }

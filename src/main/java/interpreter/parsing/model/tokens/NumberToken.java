@@ -1,17 +1,17 @@
 package interpreter.parsing.model.tokens;
 
-import interpreter.parsing.model.NumberType;
+import interpreter.parsing.model.NumericType;
 import interpreter.parsing.model.ParseToken;
 
 public class NumberToken extends ParseToken {
 
-    private NumberType numberType;
+    private NumericType numericType;
 
-    public NumberType getNumberType() {
-        return numberType;
+    public NumericType getNumericType() {
+        return numericType;
     }
 
-    public void setNumberType(NumberType numberType) {
-        this.numberType = numberType;
+    public void setNumericType(NumericType numericType) {
+        this.numericType = numericType;
     }
 }

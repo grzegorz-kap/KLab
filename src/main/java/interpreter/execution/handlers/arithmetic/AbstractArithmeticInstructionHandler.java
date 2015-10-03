@@ -4,16 +4,16 @@ import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.factory.ArithmeticOperationsFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.math.scalar.NumberObject;
-import interpreter.parsing.model.NumberType;
+import interpreter.math.scalar.NumericObject;
+import interpreter.parsing.model.NumericType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractArithmeticInstructionHandler extends AbstractInstructionHandler {
 
     protected ArithmeticOperationsFactory arithmeticOperationsFactory;
 
-    public NumberType numberType(ObjectData a, ObjectData b) {
-        return ((NumberObject) a).getNumberType();
+    public NumericType numberType(ObjectData a, ObjectData b) {
+        return ((NumericObject) a).getNumericType();
     }
 
     protected void handleTwoArguments(InstructionPointer instructionPointer) {
