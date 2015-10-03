@@ -10,4 +10,12 @@ public class KeyboardHelper {
     public boolean isEnterPressed(final KeyEvent keyEvent) {
         return keyEvent.getCode().equals(KeyCode.ENTER) && !keyEvent.isAltDown();
     }
+
+    public boolean isArrowUpPressed(KeyEvent keyEvent) {
+        return keyEvent.getCode().equals(KeyCode.UP);
+    }
+
+    public boolean isArrowDownPressed(KeyEvent keyEvent) {
+        return keyEvent.getCode().equals(KeyCode.DOWN);
+    }
 }

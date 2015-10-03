@@ -20,29 +20,15 @@ import javax.annotation.PreDestroy;
 public class ConsoleViewService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleViewService.class);
-
     private InterpreterService interpreterService;
     private InterpreterEventsService interpreterEventsService;
     private CodeArea commandInput;
     private CodeArea consoleOutput;
-
-    private final ApplicationListener<PrintEvent> PRINT_LISTENER = this::onApplicationEvent;
-
-    @PostConstruct
-    void init() {
-        interpreterEventsService.register(PRINT_LISTENER);
-    }
-
-    @PreDestroy
-    void destroy() {
-        interpreterEventsService.unregister(PRINT_LISTENER);
-    }
+    private final ApplicationListener<PrintEvent> PRINT_LISTENER = this::onPrintEvent;
 
     public void onCommandSubmit() {
         final String inputText = getInputTextAndClear();
-        LOGGER.info("Command: '{}' entered.", inputText);
         appendCommandToConsole(inputText);
-        LOGGER.info("Executing entered command");
         interpreterService.start(inputText);
     }
 
@@ -56,7 +42,7 @@ public class ConsoleViewService {
         return inputText;
     }
 
-    private void onApplicationEvent(PrintEvent printEvent) {
+    private void onPrintEvent(PrintEvent printEvent) {
         String printData = printEvent.getObjectData().toString();
         consoleOutput.appendText(String.format("   %s \n", printData));
     }
@@ -67,6 +53,16 @@ public class ConsoleViewService {
 
     public void setConsoleOutput(CodeArea consoleOutput) {
         this.consoleOutput = consoleOutput;
+    }
+
+    @PostConstruct
+    void init() {
+        interpreterEventsService.register(PRINT_LISTENER);
+    }
+
+    @PreDestroy
+    void destroy() {
+        interpreterEventsService.unregister(PRINT_LISTENER);
     }
 
     @Autowired
