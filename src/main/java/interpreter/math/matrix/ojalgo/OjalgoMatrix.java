@@ -37,6 +37,6 @@ public class OjalgoMatrix<T extends Number> implements Matrix<T> {
 
     @Override
     public String toString() {
-        return matrixStore.toString();
+        return OjalgoMatrixPrinter.toString(matrixStore);
     }
 }
