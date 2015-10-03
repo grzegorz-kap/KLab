@@ -1,5 +1,6 @@
 package interpreter.math.scalar;
 
+import interpreter.math.NumericObject;
 import org.springframework.stereotype.Service;
 
 @Service("numberScalarFactory")

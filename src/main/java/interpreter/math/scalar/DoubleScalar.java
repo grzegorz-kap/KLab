@@ -1,11 +1,11 @@
 package interpreter.math.scalar;
 
+import interpreter.math.AbstractNumericObject;
 import interpreter.parsing.model.NumericType;
 
-public class DoubleScalar implements NumericObject {
+public class DoubleScalar extends AbstractNumericObject {
 
     private Double value;
-    private NumericType numericType;
 
     public DoubleScalar() {
         setNumericType(NumericType.DOUBLE);
@@ -27,15 +27,5 @@ public class DoubleScalar implements NumericObject {
     @Override
     public String toString() {
         return value.toString();
-    }
-
-    @Override
-    public NumericType getNumericType() {
-        return numericType;
-    }
-
-    @Override
-    public void setNumericType(NumericType numericType) {
-        this.numericType = numericType;
     }
 }

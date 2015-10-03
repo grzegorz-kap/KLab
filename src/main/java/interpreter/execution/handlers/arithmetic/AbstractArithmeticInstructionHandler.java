@@ -4,7 +4,7 @@ import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.factory.ArithmeticOperationsFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.math.scalar.NumericObject;
+import interpreter.math.NumericObject;
 import interpreter.parsing.model.NumericType;
 import org.springframework.beans.factory.annotation.Autowired;
 

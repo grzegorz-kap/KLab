@@ -1,4 +1,4 @@
-package interpreter.math.scalar;
+package interpreter.math;
 
 import interpreter.commons.ObjectData;
 import interpreter.parsing.model.NumericType;
