@@ -1,41 +1,22 @@
 package interpreter.core.arithmetic.factory;
 
-import interpreter.core.arithmetic.NumberAdder;
-import interpreter.core.arithmetic.NumberDivider;
-import interpreter.core.arithmetic.NumberMultiplicator;
-import interpreter.core.arithmetic.NumberSubtractor;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberAdder;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberDivider;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberMultiplicator;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberSubtractor;
+import interpreter.core.arithmetic.*;
 import interpreter.parsing.model.NumericType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class StandardArithmeticOperationsFactory implements ArithmeticOperationsFactory {
 
     private static final int NUMBER_TYPES_COUNT = NumericType.values().length;
 
-    private static NumberAdder[] numberAdders = new NumberAdder[NUMBER_TYPES_COUNT];
-    private static NumberSubtractor[] numberSubtractors = new NumberSubtractor[NUMBER_TYPES_COUNT];
-    private static NumberMultiplicator[] numberMultiplicators = new NumberMultiplicator[NUMBER_TYPES_COUNT];
-    private static NumberDivider[] numberDividers = new NumberDivider[NUMBER_TYPES_COUNT];
-
-    static {
-        numberAdders[NumericType.DOUBLE.getIndex()] = new ScalarDoubleNumberAdder();
-    }
-
-    static {
-        numberSubtractors[NumericType.DOUBLE.getIndex()] = new ScalarDoubleNumberSubtractor();
-    }
-
-    static {
-        numberMultiplicators[NumericType.DOUBLE.getIndex()] = new ScalarDoubleNumberMultiplicator();
-    }
-
-    static {
-        numberDividers[NumericType.DOUBLE.getIndex()] = new ScalarDoubleNumberDivider();
-    }
+    private NumberAdder[] numberAdders = new NumberAdder[NUMBER_TYPES_COUNT];
+    private NumberSubtractor[] numberSubtractors = new NumberSubtractor[NUMBER_TYPES_COUNT];
+    private NumberMultiplicator[] numberMultiplicators = new NumberMultiplicator[NUMBER_TYPES_COUNT];
+    private NumberDivider[] numberDividers = new NumberDivider[NUMBER_TYPES_COUNT];
 
     @Override
     public NumberAdder getAdder(NumericType numericType) {
@@ -55,5 +36,31 @@ public class StandardArithmeticOperationsFactory implements ArithmeticOperations
     @Override
     public NumberDivider getDivider(NumericType numericType) {
         return numberDividers[numericType.getIndex()];
+    }
+
+    @Autowired
+    public void setNumberAdders(Set<NumberAdder> numberAdders) {
+        setOperators(numberAdders, this.numberAdders);
+    }
+
+    @Autowired
+    public void setNumberSubtractors(Set<NumberSubtractor> numberSubtractors) {
+        setOperators(numberSubtractors, this.numberSubtractors);
+    }
+
+    @Autowired
+    public void setNumberMultiplicators(Set<NumberMultiplicator> numberMultiplicators) {
+        setOperators(numberMultiplicators, this.numberMultiplicators);
+    }
+
+    @Autowired
+    public void setNumberDividers(Set<NumberDivider> numberDividers) {
+        setOperators(numberDividers, this.numberDividers);
+    }
+
+    private void setOperators(Set<? extends NumberOperator> sources, NumberOperator[] destination) {
+        sources.stream()
+                .filter(numberOperator -> Objects.nonNull(numberOperator.getSupportedType()))
+                .forEach(operator -> destination[operator.getSupportedType().getIndex()] = operator);
     }
 }
