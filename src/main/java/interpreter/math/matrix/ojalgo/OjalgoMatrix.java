@@ -9,7 +9,7 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
 
     private PhysicalStore<T> matrixStore;
 
-    public OjalgoMatrix(PhysicalStore<T> matrixStore) {
+    public <P extends PhysicalStore<T>> OjalgoMatrix(P matrixStore) {
         super(NumericType.MATRIX_DOUBLE);
         this.matrixStore = matrixStore;
     }
