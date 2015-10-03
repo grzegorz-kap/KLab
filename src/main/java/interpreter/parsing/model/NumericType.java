@@ -3,7 +3,8 @@ package interpreter.parsing.model;
 public enum NumericType {
     INTEGER(0),
     FLOAT(1),
-    DOUBLE(2);
+    DOUBLE(2),
+    MATRIX_DOUBLE(3);
 
     private int index;
 

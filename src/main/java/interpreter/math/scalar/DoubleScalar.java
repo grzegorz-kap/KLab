@@ -8,7 +8,7 @@ public class DoubleScalar extends AbstractNumericObject {
     private Double value;
 
     public DoubleScalar() {
-        setNumericType(NumericType.DOUBLE);
+        super(NumericType.DOUBLE);
     }
 
     public DoubleScalar(Double value) {
