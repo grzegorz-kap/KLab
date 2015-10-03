@@ -1,6 +1,7 @@
 package gui.controller;
 
 import gui.helpers.KeyboardHelper;
+import gui.model.CommandHistory;
 import gui.view.ConsoleViewService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +25,7 @@ public class ConsoleController implements Initializable {
 
     private ConsoleViewService consoleViewService;
     private KeyboardHelper keyboardHelper;
+    private CommandHistory commandHistory = new CommandHistory();
 
     @FXML
     private CodeArea commandInput;
@@ -44,6 +46,7 @@ public class ConsoleController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         consoleViewService.setCommandInput(commandInput);
         consoleViewService.setConsoleOutput(consoleOutput);
+        consoleViewService.setCommandHistory(commandHistory);
     }
 
     @Autowired

@@ -22,11 +22,9 @@ import javax.annotation.PreDestroy;
 public class ConsoleViewService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleViewService.class);
-
     private InterpreterService interpreterService;
     private InterpreterEventsService interpreterEventsService;
     private CommandHistoryService commandHistoryService;
-
     private CodeArea commandInput;
     private CodeArea consoleOutput;
     private final ApplicationListener<PrintEvent> PRINT_LISTENER = this::onApplicationEvent;
@@ -85,5 +83,9 @@ public class ConsoleViewService {
     @Autowired
     public void setCommandHistoryService(CommandHistoryService commandHistoryService) {
         this.commandHistoryService = commandHistoryService;
+    }
+
+    public void setCommandHistory(CommandHistory commandHistory) {
+        this.commandHistory = commandHistory;
     }
 }
