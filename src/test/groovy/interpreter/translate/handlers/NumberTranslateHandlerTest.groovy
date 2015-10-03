@@ -1,6 +1,6 @@
 package interpreter.translate.handlers
 
-import interpreter.math.scalar.NumberObject
+import interpreter.math.NumericObject
 import interpreter.math.scalar.NumberScalarFactory
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
@@ -26,7 +26,7 @@ class NumberTranslateHandlerTest extends Specification {
         given:
         def numberToken = make a(saveNumberToken);
         def expressionValue = new ExpressionValue<ParseToken>();
-        def numberScalar = Stub(NumberObject)
+        def numberScalar = Stub(NumericObject)
         expressionValue.setValue(numberToken);
 
         when:

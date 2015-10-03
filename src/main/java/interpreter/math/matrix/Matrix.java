@@ -1,8 +1,8 @@
 package interpreter.math.matrix;
 
-import interpreter.commons.ObjectData;
+import interpreter.math.NumericObject;
 
-public interface Matrix<T extends Number> extends ObjectData {
+public interface Matrix<T extends Number> extends NumericObject {
 
     T getValueAt(int m, int n);
 

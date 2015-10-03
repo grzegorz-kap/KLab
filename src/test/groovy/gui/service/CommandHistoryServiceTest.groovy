@@ -32,7 +32,7 @@ class CommandHistoryServiceTest extends Specification {
         commandHistory.getSize() == 1
         commandHistory.commands[0].content == command
         commandHistory.currentPosition == 1
-        Duration.between(commandHistory.commands[0].createdAt, LocalDateTime.now()).toMillis() < 100
+        Duration.between(commandHistory.commands[0].createdAt, LocalDateTime.now()).toMillis() < 1000
     }
 
     def "Test add the same command second"() {

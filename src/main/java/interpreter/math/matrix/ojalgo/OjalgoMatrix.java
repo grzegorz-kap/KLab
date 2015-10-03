@@ -1,13 +1,16 @@
 package interpreter.math.matrix.ojalgo;
 
+import interpreter.math.AbstractNumericObject;
 import interpreter.math.matrix.Matrix;
+import interpreter.parsing.model.NumericType;
 import org.ojalgo.matrix.store.PhysicalStore;
 
-public class OjalgoMatrix<T extends Number> implements Matrix<T> {
+public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implements Matrix<T> {
 
     private PhysicalStore<T> matrixStore;
 
-    public OjalgoMatrix(PhysicalStore<T> matrixStore) {
+    public <P extends PhysicalStore<T>> OjalgoMatrix(P matrixStore) {
+        super(NumericType.MATRIX_DOUBLE);
         this.matrixStore = matrixStore;
     }
 
