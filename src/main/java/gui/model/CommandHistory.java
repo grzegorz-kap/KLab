@@ -27,4 +27,8 @@ public class CommandHistory {
     public Command getCurrent() {
         return currentPosition >= 0 ? commands.get(currentPosition) : null;
     }
+
+    public int getSize() {
+        return commands.size();
+    }
 }
