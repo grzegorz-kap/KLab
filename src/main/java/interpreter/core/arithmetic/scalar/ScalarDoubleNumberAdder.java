@@ -2,7 +2,7 @@ package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.NumberAdder;
-import interpreter.math.DoubleScalar;
+import interpreter.math.scalar.DoubleScalar;
 
 public class ScalarDoubleNumberAdder implements NumberAdder {
 

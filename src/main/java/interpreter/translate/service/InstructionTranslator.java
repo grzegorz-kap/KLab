@@ -1,6 +1,6 @@
 package interpreter.translate.service;
 
-import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.translate.handlers.TranslateHandler;
@@ -10,7 +10,5 @@ public interface InstructionTranslator {
 
     MacroInstruction translate(Expression<ParseToken> expression);
 
-    void addTranslateHandler(TokenClass tokenClass, TranslateHandler translateHandler);
-
-    TranslateHandler getTranslateHandler(TokenClass tokenClass);
+    TranslateHandler getTranslateHandler(ParseClass parseClass);
 }

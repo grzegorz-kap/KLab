@@ -1,13 +1,12 @@
 package interpreter.parsing.model;
 
 import interpreter.lexer.model.Token;
+import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenList;
+import interpreter.parsing.handlers.ParseHandler;
 import interpreter.parsing.model.expression.Expression;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 public class ParseContext {
 
@@ -15,6 +14,8 @@ public class ParseContext {
     private List<Expression<ParseToken>> expressionTree = new ArrayList<>();
     private Deque<ParseToken> stack = new ArrayDeque<>();
     private int index;
+    private ParseHandler[] parseHandlers;
+    private BalanceContext balanceContext = new BalanceContext();
 
     public ParseContext(TokenList tokenList) {
         this.tokenList = tokenList;
@@ -62,6 +63,10 @@ public class ParseContext {
         expressionTree.add(expression);
     }
 
+    public Expression<ParseToken> getExpression(int index) {
+        return expressionTree.get(index);
+    }
+
     public List<Expression<ParseToken>> getLastFromExpression(int number) {
         List<Expression<ParseToken>> expressions = new ArrayList<>(number);
         for (int index = expressionTree.size() - number; index < expressionTree.size(); index++) {
@@ -79,5 +84,21 @@ public class ParseContext {
 
     public int expressionSize() {
         return expressionTree.size();
+    }
+
+    public void setParseHandlers(ParseHandler[] parseHandlers) {
+        this.parseHandlers = parseHandlers;
+    }
+
+    public ParseHandler getParseHandler(TokenClass tokenClass) {
+        return parseHandlers[tokenClass.getIndex()];
+    }
+
+    public ListIterator<Expression<ParseToken>> getListIterator(int index) {
+        return expressionTree.listIterator(index);
+    }
+
+    public BalanceContext getBalanceContext() {
+        return balanceContext;
     }
 }

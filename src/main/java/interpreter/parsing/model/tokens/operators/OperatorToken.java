@@ -10,7 +10,6 @@ public class OperatorToken extends ParseToken {
     private OperatorCode operatorCode;
 
     public OperatorToken() {
-
     }
 
     public OperatorToken(int argumentsNumber, OperatorAssociativity operatorAssociativity,
