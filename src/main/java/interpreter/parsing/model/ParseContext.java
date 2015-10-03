@@ -63,6 +63,10 @@ public class ParseContext {
         expressionTree.add(expression);
     }
 
+    public Expression<ParseToken> getExpression(int index) {
+        return expressionTree.get(index);
+    }
+
     public List<Expression<ParseToken>> getLastFromExpression(int number) {
         List<Expression<ParseToken>> expressions = new ArrayList<>(number);
         for (int index = expressionTree.size() - number; index < expressionTree.size(); index++) {

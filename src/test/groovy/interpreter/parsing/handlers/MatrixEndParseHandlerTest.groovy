@@ -40,6 +40,7 @@ class MatrixEndParseHandlerTest extends Specification {
         given:
         def expressions = []
         def parseToken = new ParseToken()
+        parseToken.setParseClass(ParseClass.NUMBER)
         def matrixNode = new ExpressionNode<ParseToken>();
         matrixNode.value = parseToken
 
@@ -55,7 +56,8 @@ class MatrixEndParseHandlerTest extends Specification {
         1 * parseContextManager.addExpression({ matrixNode = it } as ExpressionNode<ParseToken>)
         1 * parseContextManager.incrementTokenPosition(1)
         1 * balanceContextService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX)
-        1 * balanceContextService.peek(parseContextManager) >> BalanceType.NORMAL
+        1 * parseContextManager.expressionSize() >> 1
+        1 * parseContextManager.expressionPeek() >> new ExpressionNode<>(parseToken)
         1 * rowHandler.handleAction()
         matrixNode.children == expressions
         parseToken.parseClass == ParseClass.MATRIX

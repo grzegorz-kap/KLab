@@ -1,6 +1,7 @@
 package interpreter.execution.handlers;
 
 import interpreter.commons.ObjectData;
+import interpreter.execution.WrongTypeException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
 import interpreter.math.matrix.Matrix;
@@ -36,7 +37,7 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
         if (objectData instanceof Matrix) {
             matrixBuilder.appendBelow((Matrix) objectData);
         } else {
-            throw new RuntimeException();
+            throw new WrongTypeException(objectData);
         }
     }
 

@@ -93,6 +93,10 @@ public class ParseContextManager {
         return expressionPopArguments(1).get(0);
     }
 
+    public Expression<ParseToken> expressionPeek() {
+        return parseContext.getExpression(expressionSize() - 1);
+    }
+
     public List<Expression<ParseToken>> expressionPopArguments(int argumentsNumber) {
         checkIfCorrectNumberOfArguments(argumentsNumber);
         List<Expression<ParseToken>> subList = parseContext.getLastFromExpression(argumentsNumber);

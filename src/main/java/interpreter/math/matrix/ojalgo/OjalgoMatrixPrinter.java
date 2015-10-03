@@ -21,7 +21,7 @@ public class OjalgoMatrixPrinter {
                 retVal.append("\n").append(matrixStore.get((long) i, 0L));
 
                 for (int j = 1; j < tmpColDim; ++j) {
-                    retVal.append(",\t").append(matrixStore.get((long) i, (long) j));
+                    retVal.append("\t").append(matrixStore.get((long) i, (long) j));
                 }
             }
         }

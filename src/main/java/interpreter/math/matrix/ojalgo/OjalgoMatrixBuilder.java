@@ -17,7 +17,9 @@ public class OjalgoMatrixBuilder<T extends Number, I extends PhysicalStore<T>> i
 
     @Override
     public OjalgoMatrixBuilder<T, I> appendRight(Matrix<T> matrix) {
-        return null;
+        createIfEmpty(matrix.getRowsCount(), 0);
+        builder.right(((OjalgoMatrix) matrix).getMatrixStore());
+        return this;
     }
 
     @Override
@@ -36,7 +38,9 @@ public class OjalgoMatrixBuilder<T extends Number, I extends PhysicalStore<T>> i
 
     @Override
     public MatrixBuilder<T> appendBelow(T scalar) {
-        return null;
+        createIfEmpty(0, 1);
+        builder.below(scalar);
+        return this;
     }
 
     @Override

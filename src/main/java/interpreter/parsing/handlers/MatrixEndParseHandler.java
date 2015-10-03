@@ -44,7 +44,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     }
 
     private void endRow() {
-        if (!BalanceType.INSIDE_MATRIX.equals(balanceContextService.peek(parseContextManager))) {
+        if (parseContextManager.expressionSize() > 0 && !parseContextManager.expressionPeek().getValue().getParseClass().equals(ParseClass.MATRIX_VERSE)) {
             matrixNewRowHandler.handleAction();
         }
     }

@@ -1,8 +1,10 @@
 package interpreter.execution.handlers;
 
 import interpreter.commons.ObjectData;
+import interpreter.execution.WrongTypeException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
+import interpreter.math.matrix.Matrix;
 import interpreter.math.matrix.MatrixBuilder;
 import interpreter.math.matrix.MatrixFactory;
 import interpreter.math.scalar.DoubleScalar;
@@ -46,8 +48,10 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
     private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
         if (objectData instanceof DoubleScalar) {
             builder.appendRight(((DoubleScalar) objectData).getValue());
+        } else if (objectData instanceof Matrix) {
+            builder.appendRight(((Matrix) objectData));
         } else {
-            throw new RuntimeException();
+            throw new WrongTypeException(objectData);
         }
     }
 
