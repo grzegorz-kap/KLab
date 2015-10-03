@@ -1,4 +1,4 @@
-package interpreter.parsing.service.handlers;
+package interpreter.parsing.handlers;
 
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.factory.OperatorFactory;

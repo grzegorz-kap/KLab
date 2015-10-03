@@ -1,4 +1,4 @@
-package interpreter.parsing.service.handlers.helpers;
+package interpreter.parsing.handlers.helpers;
 
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.service.ParseContextManager;

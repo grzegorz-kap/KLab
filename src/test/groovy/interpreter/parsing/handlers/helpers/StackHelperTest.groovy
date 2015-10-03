@@ -1,7 +1,7 @@
-package interpreter.parsing.service.handlers.helpers
+package interpreter.parsing.handlers.helpers
 
+import interpreter.parsing.handlers.ParseHandler
 import interpreter.parsing.service.ParseContextManager
-import interpreter.parsing.service.handlers.ParseHandler
 import spock.lang.Specification
 
 import static interpreter.parsing.model.ParseClass.MATRIX_START

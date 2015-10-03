@@ -1,12 +1,12 @@
-package interpreter.parsing.service.handlers
+package interpreter.parsing.handlers
 
 import interpreter.lexer.model.Token
+import interpreter.parsing.handlers.helpers.ExpressionHelper
+import interpreter.parsing.handlers.helpers.StackHelper
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionNode
 import interpreter.parsing.service.ParseContextManager
-import interpreter.parsing.service.handlers.helpers.ExpressionHelper
-import interpreter.parsing.service.handlers.helpers.StackHelper
 import spock.lang.Specification
 
 import java.util.function.Predicate

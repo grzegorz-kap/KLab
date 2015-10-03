@@ -1,8 +1,8 @@
-package interpreter.parsing.service.handlers;
+package interpreter.parsing.handlers;
 
 import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.handlers.helpers.StackHelper;
 import interpreter.parsing.model.ParseClass;
-import interpreter.parsing.service.handlers.helpers.StackHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
