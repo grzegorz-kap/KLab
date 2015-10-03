@@ -28,6 +28,10 @@ public class CommandHistory {
         return currentPosition >= 0 ? commands.get(currentPosition) : null;
     }
 
+    public Command getAt(int index) {
+        return commands.get(index);
+    }
+
     public int getSize() {
         return commands.size();
     }

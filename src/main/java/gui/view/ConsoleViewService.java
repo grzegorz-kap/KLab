@@ -1,5 +1,7 @@
 package gui.view;
 
+import gui.model.CommandHistory;
+import gui.service.CommandHistoryService;
 import gui.service.InterpreterEventsService;
 import interpreter.core.InterpreterService;
 import interpreter.core.events.PrintEvent;
@@ -23,10 +25,12 @@ public class ConsoleViewService {
 
     private InterpreterService interpreterService;
     private InterpreterEventsService interpreterEventsService;
+    private CommandHistoryService commandHistoryService;
+
     private CodeArea commandInput;
     private CodeArea consoleOutput;
-
     private final ApplicationListener<PrintEvent> PRINT_LISTENER = this::onApplicationEvent;
+    private CommandHistory commandHistory;
 
     @PostConstruct
     void init() {
@@ -40,9 +44,8 @@ public class ConsoleViewService {
 
     public void onCommandSubmit() {
         final String inputText = getInputTextAndClear();
-        LOGGER.info("Command: '{}' entered.", inputText);
         appendCommandToConsole(inputText);
-        LOGGER.info("Executing entered command");
+        commandHistoryService.addCommand(commandHistory, inputText);
         interpreterService.start(inputText);
     }
 
@@ -77,5 +80,10 @@ public class ConsoleViewService {
     @Autowired
     public void setInterpreterService(InterpreterService interpreterService) {
         this.interpreterService = interpreterService;
+    }
+
+    @Autowired
+    public void setCommandHistoryService(CommandHistoryService commandHistoryService) {
+        this.commandHistoryService = commandHistoryService;
     }
 }
