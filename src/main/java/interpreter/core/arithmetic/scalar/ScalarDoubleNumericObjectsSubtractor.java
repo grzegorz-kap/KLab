@@ -1,19 +1,19 @@
 package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
-import interpreter.core.arithmetic.NumberMultiplicator;
+import interpreter.core.arithmetic.NumericObjectsSubtractor;
 import interpreter.math.scalar.DoubleScalar;
 import interpreter.parsing.model.NumericType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScalarDoubleNumberMultiplicator implements NumberMultiplicator {
+public class ScalarDoubleNumericObjectsSubtractor implements NumericObjectsSubtractor {
 
     @Override
-    public ObjectData mult(ObjectData a, ObjectData b) {
+    public ObjectData sub(ObjectData a, ObjectData b) {
         Double first = ((DoubleScalar) a).getValue();
         Double second = ((DoubleScalar) b).getValue();
-        return new DoubleScalar(first * second);
+        return new DoubleScalar(first - second);
     }
 
     @Override

@@ -1,18 +1,18 @@
 package interpreter.core.arithmetic.factory;
 
-import interpreter.core.arithmetic.NumberAdder;
-import interpreter.core.arithmetic.NumberDivider;
-import interpreter.core.arithmetic.NumberMultiplicator;
-import interpreter.core.arithmetic.NumberSubtractor;
+import interpreter.core.arithmetic.NumericObjectsAdder;
+import interpreter.core.arithmetic.NumericObjectsDivider;
+import interpreter.core.arithmetic.NumericObjectsMultiplicator;
+import interpreter.core.arithmetic.NumericObjectsSubtractor;
 import interpreter.parsing.model.NumericType;
 
 public interface ArithmeticOperationsFactory {
 
-    NumberAdder getAdder(NumericType numericType);
+    NumericObjectsAdder getAdder(NumericType numericType);
 
-    NumberSubtractor getSubtractor(NumericType numericType);
+    NumericObjectsSubtractor getSubtractor(NumericType numericType);
 
-    NumberMultiplicator getMultiplicator(NumericType numericType);
+    NumericObjectsMultiplicator getMultiplicator(NumericType numericType);
 
-    NumberDivider getDivider(NumericType numericType);
+    NumericObjectsDivider getDivider(NumericType numericType);
 }

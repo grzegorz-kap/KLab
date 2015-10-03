@@ -1,19 +1,18 @@
 package interpreter.core.arithmetic.scalar;
 
 import interpreter.commons.ObjectData;
-import interpreter.core.arithmetic.NumberAdder;
 import interpreter.math.scalar.DoubleScalar;
 import interpreter.parsing.model.NumericType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScalarDoubleNumberAdder implements NumberAdder {
+public class ScalarNumericObjectsDivider implements interpreter.core.arithmetic.NumericObjectsDivider {
 
     @Override
-    public ObjectData add(ObjectData a, ObjectData b) {
+    public ObjectData div(ObjectData a, ObjectData b) {
         Double first = ((DoubleScalar) a).getValue();
         Double second = ((DoubleScalar) b).getValue();
-        return new DoubleScalar(first + second);
+        return new DoubleScalar(first / second);
     }
 
     @Override
