@@ -2,6 +2,7 @@ package gui.controller;
 
 import gui.helpers.KeyboardHelper;
 import gui.model.CommandHistory;
+import gui.view.CommandHistoryViewService;
 import gui.view.ConsoleViewService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +25,8 @@ public class ConsoleController implements Initializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleController.class);
 
     private ConsoleViewService consoleViewService;
+    private CommandHistoryViewService commandHistoryViewService;
+
     private KeyboardHelper keyboardHelper;
     private CommandHistory commandHistory = new CommandHistory();
 
@@ -36,17 +39,39 @@ public class ConsoleController implements Initializable {
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {
         if (keyboardHelper.isEnterPressed(keyEvent)) {
-            LOGGER.info("ENTER pressed");
-            consoleViewService.onCommandSubmit();
-            keyEvent.consume();
+            onEnter(keyEvent);
+        } else if (keyboardHelper.isArrowUpPressed(keyEvent)) {
+            onArrowUp(keyEvent);
+        } else if (keyboardHelper.isArrowDownPressed(keyEvent)) {
+            onArrowDown(keyEvent);
         }
+    }
+
+    private void onArrowDown(KeyEvent keyEvent) {
+        LOGGER.info("Key down pressed");
+        commandHistoryViewService.onArrowDown();
+        keyEvent.consume();
+    }
+
+    private void onArrowUp(KeyEvent keyEvent) {
+        LOGGER.info("Key up pressed");
+        commandHistoryViewService.onArrowUp();
+        keyEvent.consume();
+    }
+
+    private void onEnter(KeyEvent keyEvent) {
+        LOGGER.info("Enter pressed");
+        commandHistoryViewService.onCommandSubmit();
+        consoleViewService.onCommandSubmit();
+        keyEvent.consume();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         consoleViewService.setCommandInput(commandInput);
         consoleViewService.setConsoleOutput(consoleOutput);
-        consoleViewService.setCommandHistory(commandHistory);
+        commandHistoryViewService.setCommandHistory(commandHistory);
+        commandHistoryViewService.setCommandInput(commandInput);
     }
 
     @Autowired
@@ -57,5 +82,10 @@ public class ConsoleController implements Initializable {
     @Autowired
     public void setKeyboardHelper(KeyboardHelper keyboardHelper) {
         this.keyboardHelper = keyboardHelper;
+    }
+
+    @Autowired
+    public void setCommandHistoryViewService(CommandHistoryViewService commandHistoryViewService) {
+        this.commandHistoryViewService = commandHistoryViewService;
     }
 }

@@ -1,7 +1,5 @@
 package gui.view;
 
-import gui.model.CommandHistory;
-import gui.service.CommandHistoryService;
 import gui.service.InterpreterEventsService;
 import interpreter.core.InterpreterService;
 import interpreter.core.events.PrintEvent;
@@ -24,26 +22,13 @@ public class ConsoleViewService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleViewService.class);
     private InterpreterService interpreterService;
     private InterpreterEventsService interpreterEventsService;
-    private CommandHistoryService commandHistoryService;
     private CodeArea commandInput;
     private CodeArea consoleOutput;
-    private final ApplicationListener<PrintEvent> PRINT_LISTENER = this::onApplicationEvent;
-    private CommandHistory commandHistory;
-
-    @PostConstruct
-    void init() {
-        interpreterEventsService.register(PRINT_LISTENER);
-    }
-
-    @PreDestroy
-    void destroy() {
-        interpreterEventsService.unregister(PRINT_LISTENER);
-    }
+    private final ApplicationListener<PrintEvent> PRINT_LISTENER = this::onPrintEvent;
 
     public void onCommandSubmit() {
         final String inputText = getInputTextAndClear();
         appendCommandToConsole(inputText);
-        commandHistoryService.addCommand(commandHistory, inputText);
         interpreterService.start(inputText);
     }
 
@@ -57,7 +42,7 @@ public class ConsoleViewService {
         return inputText;
     }
 
-    private void onApplicationEvent(PrintEvent printEvent) {
+    private void onPrintEvent(PrintEvent printEvent) {
         String printData = printEvent.getObjectData().toString();
         consoleOutput.appendText(String.format("   %s \n", printData));
     }
@@ -70,6 +55,16 @@ public class ConsoleViewService {
         this.consoleOutput = consoleOutput;
     }
 
+    @PostConstruct
+    void init() {
+        interpreterEventsService.register(PRINT_LISTENER);
+    }
+
+    @PreDestroy
+    void destroy() {
+        interpreterEventsService.unregister(PRINT_LISTENER);
+    }
+
     @Autowired
     public void setInterpreterEventsService(InterpreterEventsService interpreterEventsService) {
         this.interpreterEventsService = interpreterEventsService;
@@ -78,14 +73,5 @@ public class ConsoleViewService {
     @Autowired
     public void setInterpreterService(InterpreterService interpreterService) {
         this.interpreterService = interpreterService;
-    }
-
-    @Autowired
-    public void setCommandHistoryService(CommandHistoryService commandHistoryService) {
-        this.commandHistoryService = commandHistoryService;
-    }
-
-    public void setCommandHistory(CommandHistory commandHistory) {
-        this.commandHistory = commandHistory;
     }
 }

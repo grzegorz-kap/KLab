@@ -31,7 +31,7 @@ class CommandHistoryServiceTest extends Specification {
         then:
         commandHistory.getSize() == 1
         commandHistory.commands[0].content == command
-        commandHistory.currentPosition == 0
+        commandHistory.currentPosition == 1
         Duration.between(commandHistory.commands[0].createdAt, LocalDateTime.now()).toMillis() < 100
     }
 
@@ -57,5 +57,26 @@ class CommandHistoryServiceTest extends Specification {
         historyService.addCommand(commandHistory, "[1,2,3]")
         then: "the new command is added"
         commandHistory.getSize() == 3
+    }
+
+    def "Test keyUp and keyDown methods"() {
+        given:
+        def commandHistory = new CommandHistory()
+        10.times { index -> historyService.addCommand(commandHistory, (index + 1).toString())
+        }
+
+        when: "keyUp method"
+        def result = historyService.keyUp(commandHistory)
+        def result2 = historyService.keyUp(commandHistory)
+        then: "result is correct"
+        result == "10"
+        result2 == "9"
+        commandHistory.currentPosition == 8
+
+        when: "keyDown method"
+        3.times { result = historyService.keyDown(commandHistory) }
+        then:
+        result == "10"
+        commandHistory.currentPosition == 9
     }
 }

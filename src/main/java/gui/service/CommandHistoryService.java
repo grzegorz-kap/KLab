@@ -19,9 +19,31 @@ public class CommandHistoryService {
             Command command = new Command();
             command.setContent(commandContent);
             commandHistory.add(command);
-            commandHistory.setCurrentPosition(commandHistory.getSize() - 1);
+            commandHistory.setCurrentPosition(commandHistory.getSize());
         }
     }
+
+    public String keyUp(CommandHistory commandHistory) {
+        if (commandHistory.getCurrentPosition() > 0) {
+            commandHistory.setCurrentPosition(commandHistory.getCurrentPosition() - 1);
+        }
+        String content = getCurrentCommandContent(commandHistory);
+        return content;
+    }
+
+    public String keyDown(CommandHistory commandHistory) {
+        if (commandHistory.getCurrentPosition() < commandHistory.getSize() - 1) {
+            commandHistory.setCurrentPosition(commandHistory.getCurrentPosition() + 1);
+        }
+        String content = getCurrentCommandContent(commandHistory);
+        return content;
+    }
+
+    private String getCurrentCommandContent(CommandHistory commandHistory) {
+        Command command = commandHistory.getCurrent();
+        return Objects.isNull(command) ? null : command.getContent();
+    }
+
 
     private boolean isNewCommand(CommandHistory commandHistory, String commandContent) {
         Command lastCommand = commandHistory.getSize() == 0 ? null : commandHistory.getAt(commandHistory.getSize() - 1);
