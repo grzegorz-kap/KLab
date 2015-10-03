@@ -4,13 +4,12 @@ import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.factory.ArithmeticOperationsFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.math.NumberObject;
+import interpreter.math.scalar.NumberObject;
 import interpreter.parsing.model.NumberType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractArithmeticInstructionHandler extends AbstractInstructionHandler {
 
-    @Autowired
     protected ArithmeticOperationsFactory arithmeticOperationsFactory;
 
     public NumberType numberType(ObjectData a, ObjectData b) {
@@ -29,4 +28,8 @@ public abstract class AbstractArithmeticInstructionHandler extends AbstractInstr
         throw new RuntimeException();
     }
 
+    @Autowired
+    public void setArithmeticOperationsFactory(ArithmeticOperationsFactory arithmeticOperationsFactory) {
+        this.arithmeticOperationsFactory = arithmeticOperationsFactory;
+    }
 }

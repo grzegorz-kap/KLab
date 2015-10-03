@@ -3,11 +3,24 @@ package interpreter.translate.service;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionValue;
+import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
+import java.util.Set;
 
+@Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class InstructionTranslatorService extends AbstractInstructionTranslator {
+
+    @Autowired
+    public InstructionTranslatorService(Set<TranslateHandler> translateHandlers) {
+        super(translateHandlers);
+    }
 
     @Override
     protected void translate() {
@@ -17,7 +30,7 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
-        getTranslateHandler(expression.getValue().getTokenClass()).handle(expression);
+        getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
     }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {

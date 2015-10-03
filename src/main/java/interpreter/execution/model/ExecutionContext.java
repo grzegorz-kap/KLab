@@ -18,10 +18,6 @@ public class ExecutionContext {
         code.add(instructions);
     }
 
-    public void pushToExecutionStack(ObjectData objectData) {
-        executionStack.push(objectData);
-    }
-
     public void setCode(Code code) {
         this.code = code;
     }

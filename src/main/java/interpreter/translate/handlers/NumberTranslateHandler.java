@@ -1,12 +1,19 @@
 package interpreter.translate.handlers;
 
-import interpreter.math.NumberScalarFactory;
+import interpreter.math.scalar.NumberScalarFactory;
+import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.tokens.NumberToken;
 import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class NumberTranslateHandler extends AbstractTranslateHandler {
 
     private NumberScalarFactory numberScalarFactory;
@@ -21,10 +28,16 @@ public class NumberTranslateHandler extends AbstractTranslateHandler {
         translateContextManager.addInstruction(instruction);
     }
 
+    @Override
+    public ParseClass getSupportedParseClass() {
+        return ParseClass.NUMBER;
+    }
+
     private Double format(NumberToken numberToken) {
         return Double.valueOf(numberToken.getToken().getLexeme());
     }
 
+    @Autowired
     public void setNumberScalarFactory(NumberScalarFactory numberScalarFactory) {
         this.numberScalarFactory = numberScalarFactory;
     }
