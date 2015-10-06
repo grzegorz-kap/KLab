@@ -2,6 +2,7 @@ package interpreter.parsing.handlers
 
 import interpreter.lexer.makers.TokenMaker
 import interpreter.lexer.model.TokenClass
+import interpreter.parsing.handlers.matrix.MatrixStartParseHandler
 import interpreter.parsing.model.BalanceType
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.model.tokens.MatrixStartToken

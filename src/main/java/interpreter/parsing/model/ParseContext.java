@@ -16,6 +16,7 @@ public class ParseContext {
     private int index;
     private ParseHandler[] parseHandlers;
     private BalanceContext balanceContext = new BalanceContext();
+    private boolean instructionStop;
 
     public ParseContext(TokenList tokenList) {
         this.tokenList = tokenList;
@@ -100,5 +101,13 @@ public class ParseContext {
 
     public BalanceContext getBalanceContext() {
         return balanceContext;
+    }
+
+    public boolean isInstructionStop() {
+        return instructionStop;
+    }
+
+    public void setInstructionStop(boolean instructionStop) {
+        this.instructionStop = instructionStop;
     }
 }

@@ -27,5 +27,4 @@ public class TokenList {
     public Stream<Token> stream() {
         return tokens.stream();
     }
-
 }

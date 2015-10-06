@@ -3,6 +3,8 @@ package interpreter.parsing.handlers
 import interpreter.lexer.model.TokenClass
 import interpreter.parsing.handlers.helpers.ExpressionHelper
 import interpreter.parsing.handlers.helpers.StackHelper
+import interpreter.parsing.handlers.matrix.MatrixEndParseHandler
+import interpreter.parsing.handlers.matrix.MatrixNewRowHandler
 import interpreter.parsing.model.BalanceType
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.model.ParseToken

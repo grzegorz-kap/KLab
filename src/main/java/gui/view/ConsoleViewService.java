@@ -1,7 +1,7 @@
 package gui.view;
 
 import gui.service.InterpreterEventsService;
-import interpreter.core.InterpreterService;
+import interpreter.core.Interpreter;
 import interpreter.core.events.PrintEvent;
 import org.fxmisc.richtext.CodeArea;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import javax.annotation.PreDestroy;
 public class ConsoleViewService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleViewService.class);
-    private InterpreterService interpreterService;
+    private Interpreter interpreter;
     private InterpreterEventsService interpreterEventsService;
     private CodeArea commandInput;
     private CodeArea consoleOutput;
@@ -29,7 +29,7 @@ public class ConsoleViewService {
     public void onCommandSubmit() {
         final String inputText = getInputTextAndClear();
         appendCommandToConsole(inputText);
-        interpreterService.start(inputText);
+        interpreter.start(inputText);
     }
 
     private void appendCommandToConsole(final String command) {
@@ -71,7 +71,7 @@ public class ConsoleViewService {
     }
 
     @Autowired
-    public void setInterpreterService(InterpreterService interpreterService) {
-        this.interpreterService = interpreterService;
+    public void setInterpreter(Interpreter interpreter) {
+        this.interpreter = interpreter;
     }
 }

@@ -5,5 +5,9 @@ import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 
 public interface Parser {
-    Expression<ParseToken> process(TokenList tokenList);
+    Expression<ParseToken> process();
+
+    void setTokenList(TokenList tokenList);
+
+    boolean hasNext();
 }
