@@ -4,8 +4,6 @@ import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenList;
 import interpreter.parsing.handlers.ParseHandler;
 import interpreter.parsing.model.ParseContext;
-import interpreter.parsing.model.ParseToken;
-import interpreter.parsing.model.expression.Expression;
 
 import java.util.Set;
 
@@ -20,15 +18,16 @@ public abstract class AbstractParser implements Parser {
         parseHandlers.forEach(this::addParseHandler);
     }
 
-    protected abstract void process();
-
     @Override
-    public Expression<ParseToken> process(TokenList tokenList) {
+    public void setTokenList(TokenList tokenList) {
         parseContext = new ParseContext(tokenList);
         parseContext.setParseHandlers(parseHandlers);
         parseContextManager.setParseContext(parseContext);
-        process();
-        return parseContext.getLastFromExpression(1).get(0);
+    }
+
+    @Override
+    public boolean hasNext() {
+        return !parseContextManager.isEndOfTokens();
     }
 
     public ParseHandler getParseHandler(TokenClass tokenClass) {

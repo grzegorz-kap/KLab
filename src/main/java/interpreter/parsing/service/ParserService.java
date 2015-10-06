@@ -1,6 +1,8 @@
 package interpreter.parsing.service;
 
 import interpreter.parsing.handlers.ParseHandler;
+import interpreter.parsing.model.ParseToken;
+import interpreter.parsing.model.expression.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class ParserService extends AbstractParser {
     }
 
     @Override
-    protected void process() {
+    public Expression<ParseToken> process() {
         while (!parseContextManager.isEndOfTokens()) {
             ParseHandler parseHandler = getParseHandler(parseContext.getCurrentToken().getTokenClass());
             isUnsupported(parseHandler);
@@ -33,6 +35,7 @@ public class ParserService extends AbstractParser {
             ParseHandler parseHandler = getParseHandler(parseContext.stackPeek().getTokenClass());
             parseHandler.handleStackFinish();
         }
+        return parseContext.getLastFromExpression(1).get(0);
     }
 
     private void isUnsupported(final ParseHandler parseHandler) {

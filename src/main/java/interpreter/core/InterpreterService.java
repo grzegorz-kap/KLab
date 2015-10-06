@@ -12,10 +12,18 @@ import org.springframework.stereotype.Service;
 class InterpreterService extends AbstractInterpreterService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
+    private TokenList tokenList;
 
     public void startExecution(String input) {
-        TokenList tokenList = tokenizer.readTokens(input);
-        Expression<ParseToken> expression = parser.process(tokenList);
+        tokenList = tokenizer.readTokens(input);
+        parser.setTokenList(tokenList);
+        while (parser.hasNext()) {
+            executionLoop();
+        }
+    }
+
+    public void executionLoop() {
+        Expression<ParseToken> expression = parser.process();
         LOGGER.info("\n{}", expressionPrinter.expressionToString(expression));
         MacroInstruction macroInstruction = instructionTranslator.translate(expression);
         LOGGER.info("\n{}", macroInstructionPrinter.print(macroInstruction));
