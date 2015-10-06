@@ -26,7 +26,7 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
 
     @Override
     public TokenClass getSupportedTokenClass() {
-        return TokenClass.SEMICOLON;
+        return null;
     }
 
     @Override
