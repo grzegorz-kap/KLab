@@ -26,16 +26,25 @@ public class ParserService extends AbstractParser {
 
     @Override
     public Expression<ParseToken> process() {
-        while (!parseContextManager.isEndOfTokens()) {
+        parseContext.setInstructionStop(false);
+        parseInstruction();
+        clearExecutionStack();
+        return parseContext.getLastFromExpression(1).get(0);
+    }
+
+    private void parseInstruction() {
+        while (!parseContext.isInstructionStop() && !parseContextManager.isEndOfTokens()) {
             ParseHandler parseHandler = getParseHandler(parseContext.getCurrentToken().getTokenClass());
             isUnsupported(parseHandler);
             parseHandler.handle();
         }
+    }
+
+    private void clearExecutionStack() {
         while (parseContextManager.stackSize() > 0) {
             ParseHandler parseHandler = getParseHandler(parseContext.stackPeek().getTokenClass());
             parseHandler.handleStackFinish();
         }
-        return parseContext.getLastFromExpression(1).get(0);
     }
 
     private void isUnsupported(final ParseHandler parseHandler) {

@@ -1,6 +1,7 @@
-package interpreter.parsing.handlers;
+package interpreter.parsing.handlers.matrix;
 
 import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.handlers.helpers.StackHelper;
 import interpreter.parsing.model.ParseClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class MatrixNewColumnParseHandler extends AbstractParseHandler {
 
     @Override
     public TokenClass getSupportedTokenClass() {
-        return TokenClass.COMMA;
+        return null;
     }
 
     @Autowired

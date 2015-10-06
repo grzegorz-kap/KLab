@@ -127,4 +127,8 @@ public class ParseContextManager {
     public BalanceContext getBalanceContext() {
         return parseContext.getBalanceContext();
     }
+
+    public void setInstructionStop(boolean instructionStop) {
+        parseContext.setInstructionStop(instructionStop);
+    }
 }

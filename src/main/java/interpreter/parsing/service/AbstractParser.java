@@ -5,6 +5,7 @@ import interpreter.lexer.model.TokenList;
 import interpreter.parsing.handlers.ParseHandler;
 import interpreter.parsing.model.ParseContext;
 
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class AbstractParser implements Parser {
@@ -15,7 +16,9 @@ public abstract class AbstractParser implements Parser {
 
     public AbstractParser(Set<ParseHandler> parseHandlers, ParseContextManager parseContextManager) {
         this.parseContextManager = parseContextManager;
-        parseHandlers.forEach(this::addParseHandler);
+        parseHandlers.stream()
+                .filter(parseHandler -> Objects.nonNull(parseHandler.getSupportedTokenClass()))
+                .forEach(this::addParseHandler);
     }
 
     @Override
