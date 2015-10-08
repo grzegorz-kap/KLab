@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Set;
 
+import static interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY;
+
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ParserService extends AbstractParser {
@@ -27,9 +29,16 @@ public class ParserService extends AbstractParser {
     @Override
     public Expression<ParseToken> process() {
         parseContext.setInstructionStop(false);
+        parseContext.setInstructionPrint(true);
         parseInstruction();
         clearExecutionStack();
+        setFinishProperties();
         return parseContext.getLastFromExpression(1).get(0);
+    }
+
+    private void setFinishProperties() {
+        boolean printFlag = parseContext.isInstructionPrint();
+        parseContext.forEachExpression(parseTokenExpression -> parseTokenExpression.setProperty(PRINT_PROPERTY_KEY, printFlag));
     }
 
     private void parseInstruction() {
