@@ -11,6 +11,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -47,6 +48,13 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void addPrint() {
-        translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0));
+        if (getPrintProperty()) {
+            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0));
+        }
+    }
+
+    private boolean getPrintProperty() {
+        return Optional.ofNullable(translateContext.getExpression().getProperty(Expression.PRINT_PROPERTY_KEY,
+                Boolean.class)).orElse(false);
     }
 }

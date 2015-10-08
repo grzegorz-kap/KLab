@@ -7,6 +7,7 @@ import interpreter.parsing.handlers.ParseHandler;
 import interpreter.parsing.model.expression.Expression;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ParseContext {
 
@@ -17,6 +18,7 @@ public class ParseContext {
     private ParseHandler[] parseHandlers;
     private BalanceContext balanceContext = new BalanceContext();
     private boolean instructionStop;
+    private boolean instructionPrint;
 
     public ParseContext(TokenList tokenList) {
         this.tokenList = tokenList;
@@ -109,5 +111,17 @@ public class ParseContext {
 
     public void setInstructionStop(boolean instructionStop) {
         this.instructionStop = instructionStop;
+    }
+
+    public boolean isInstructionPrint() {
+        return instructionPrint;
+    }
+
+    public void setInstructionPrint(boolean instructionPrint) {
+        this.instructionPrint = instructionPrint;
+    }
+
+    public void forEachExpression(Consumer<? super Expression<ParseToken>> consumer) {
+        expressionTree.forEach(consumer);
     }
 }

@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 public interface Expression<T> {
+
+    String PRINT_PROPERTY_KEY = "print";
+
     Expression<T> getParent();
 
     void setParent(Expression<T> expression);
@@ -19,4 +22,8 @@ public interface Expression<T> {
     void setValue(T value);
 
     int getChildrenCount();
+
+    void setProperty(String key, Object property);
+
+    <P> P getProperty(String key, Class<P> clazz);
 }

@@ -131,4 +131,8 @@ public class ParseContextManager {
     public void setInstructionStop(boolean instructionStop) {
         parseContext.setInstructionStop(instructionStop);
     }
+
+    public void setInstructionPrint(boolean printFlag) {
+        parseContext.setInstructionPrint(printFlag);
+    }
 }

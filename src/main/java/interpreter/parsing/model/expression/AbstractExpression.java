@@ -1,11 +1,13 @@
 package interpreter.parsing.model.expression;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class AbstractExpression<T> implements Expression<T> {
     protected Expression<T> parent;
     protected T value;
+    private HashMap<String, Object> properties = new HashMap<>();
 
     @Override
     public Expression<T> getParent() {
@@ -40,5 +42,15 @@ public abstract class AbstractExpression<T> implements Expression<T> {
     @Override
     public void setValue(T value) {
         this.value = value;
+    }
+
+    @Override
+    public void setProperty(String key, Object value) {
+        properties.put(key, value);
+    }
+
+    @Override
+    public <P> P getProperty(String key, Class<P> clazz) {
+        return clazz.cast(properties.get(key));
     }
 }
