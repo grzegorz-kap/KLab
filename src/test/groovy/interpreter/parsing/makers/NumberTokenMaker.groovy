@@ -4,7 +4,7 @@ import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
 import interpreter.lexer.model.Token
-import interpreter.parsing.model.NumberType
+import interpreter.parsing.model.NumericType
 import interpreter.parsing.model.tokens.NumberToken
 
 import static com.natpryce.makeiteasy.MakeItEasy.a
@@ -14,7 +14,7 @@ import static interpreter.lexer.makers.TokenMaker.saveToken
 
 class NumberTokenMaker {
 
-    static final Property<NumberToken, NumberType> numberType = newProperty()
+    static final Property<NumberToken, NumericType> numberType = newProperty()
     static final Property<NumberToken, Token> token = newProperty()
 
     static final saveNumberToken = new Instantiator<NumberToken>() {
@@ -22,7 +22,7 @@ class NumberTokenMaker {
         @Override
         NumberToken instantiate(PropertyLookup<NumberToken> lookup) {
             NumberToken numberToken = new NumberToken();
-            numberToken.numberType = lookup.valueOf(numberType, NumberType.DOUBLE)
+            numberToken.numericType = lookup.valueOf(numberType, NumericType.DOUBLE)
             numberToken.token = lookup.valueOf(token, make(a(saveToken)))
             return numberToken;
         }

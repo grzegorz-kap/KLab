@@ -2,6 +2,7 @@ package interpreter.parsing.model;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 
 public class BalanceContext {
 
@@ -17,5 +18,9 @@ public class BalanceContext {
 
     public BalanceType peek() {
         return balanceTypes.peek();
+    }
+
+    public boolean isBalanceType(BalanceType balanceType) {
+        return Objects.nonNull(balanceTypes.peek()) && balanceTypes.peek().equals(balanceType);
     }
 }

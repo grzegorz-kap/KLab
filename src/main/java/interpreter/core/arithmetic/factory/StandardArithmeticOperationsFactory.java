@@ -1,59 +1,66 @@
 package interpreter.core.arithmetic.factory;
 
-import interpreter.core.arithmetic.NumberAdder;
-import interpreter.core.arithmetic.NumberDivider;
-import interpreter.core.arithmetic.NumberMultiplicator;
-import interpreter.core.arithmetic.NumberSubtractor;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberAdder;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberDivider;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberMultiplicator;
-import interpreter.core.arithmetic.scalar.ScalarDoubleNumberSubtractor;
-import interpreter.parsing.model.NumberType;
+import interpreter.core.arithmetic.*;
+import interpreter.parsing.model.NumericType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class StandardArithmeticOperationsFactory implements ArithmeticOperationsFactory {
 
-    private static final int NUMBER_TYPES_COUNT = NumberType.values().length;
+    private static final int NUMBER_TYPES_COUNT = NumericType.values().length;
 
-    private static NumberAdder[] numberAdders = new NumberAdder[NUMBER_TYPES_COUNT];
-    private static NumberSubtractor[] numberSubtractors = new NumberSubtractor[NUMBER_TYPES_COUNT];
-    private static NumberMultiplicator[] numberMultiplicators = new NumberMultiplicator[NUMBER_TYPES_COUNT];
-    private static NumberDivider[] numberDividers = new NumberDivider[NUMBER_TYPES_COUNT];
+    private NumericObjectsAdder[] numericObjectsAdders = new NumericObjectsAdder[NUMBER_TYPES_COUNT];
+    private NumericObjectsSubtractor[] numericObjectsSubtractors = new NumericObjectsSubtractor[NUMBER_TYPES_COUNT];
+    private NumericObjectsMultiplicator[] numberMultiplicators = new NumericObjectsMultiplicator[NUMBER_TYPES_COUNT];
+    private NumericObjectsDivider[] numberDividers = new NumericObjectsDivider[NUMBER_TYPES_COUNT];
 
-    static {
-        numberAdders[NumberType.DOUBLE.getIndex()] = new ScalarDoubleNumberAdder();
-    }
-
-    static {
-        numberSubtractors[NumberType.DOUBLE.getIndex()] = new ScalarDoubleNumberSubtractor();
-    }
-
-    static {
-        numberMultiplicators[NumberType.DOUBLE.getIndex()] = new ScalarDoubleNumberMultiplicator();
-    }
-
-    static {
-        numberDividers[NumberType.DOUBLE.getIndex()] = new ScalarDoubleNumberDivider();
+    @Override
+    public NumericObjectsAdder getAdder(NumericType numericType) {
+        return numericObjectsAdders[numericType.getIndex()];
     }
 
     @Override
-    public NumberAdder getAdder(NumberType numberType) {
-        return numberAdders[numberType.getIndex()];
+    public NumericObjectsSubtractor getSubtractor(NumericType numericType) {
+        return numericObjectsSubtractors[numericType.getIndex()];
     }
 
     @Override
-    public NumberSubtractor getSubtractor(NumberType numberType) {
-        return numberSubtractors[numberType.getIndex()];
+    public NumericObjectsMultiplicator getMultiplicator(NumericType numericType) {
+        return numberMultiplicators[numericType.getIndex()];
     }
 
     @Override
-    public NumberMultiplicator getMultiplicator(NumberType numberType) {
-        return numberMultiplicators[numberType.getIndex()];
+    public NumericObjectsDivider getDivider(NumericType numericType) {
+        return numberDividers[numericType.getIndex()];
     }
 
-    @Override
-    public NumberDivider getDivider(NumberType numberType) {
-        return numberDividers[numberType.getIndex()];
+    @Autowired
+    public void setNumericObjectsAdders(Set<NumericObjectsAdder> numericObjectsAdders) {
+        setOperators(numericObjectsAdders, this.numericObjectsAdders);
+    }
+
+    @Autowired
+    public void setNumericObjectsSubtractors(Set<NumericObjectsSubtractor> numericObjectsSubtractors) {
+        setOperators(numericObjectsSubtractors, this.numericObjectsSubtractors);
+    }
+
+    @Autowired
+    public void setNumberMultiplicators(Set<NumericObjectsMultiplicator> numberMultiplicators) {
+        setOperators(numberMultiplicators, this.numberMultiplicators);
+    }
+
+    @Autowired
+    public void setNumberDividers(Set<NumericObjectsDivider> numberDividers) {
+        setOperators(numberDividers, this.numberDividers);
+    }
+
+    private void setOperators(Set<? extends NumericObjectsOperator> sources, NumericObjectsOperator[] destination) {
+        sources.stream()
+                .filter(numberOperator -> Objects.nonNull(numberOperator.getSupportedType()))
+                .forEach(operator -> destination[operator.getSupportedType().getIndex()] = operator);
     }
 }

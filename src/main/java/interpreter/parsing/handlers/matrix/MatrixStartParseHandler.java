@@ -1,6 +1,7 @@
-package interpreter.parsing.handlers;
+package interpreter.parsing.handlers.matrix;
 
 import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.model.BalanceType;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;

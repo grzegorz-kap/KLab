@@ -1,13 +1,14 @@
 package interpreter.math.scalar;
 
-import interpreter.parsing.model.NumberType;
+import interpreter.math.AbstractNumericObject;
+import interpreter.parsing.model.NumericType;
 
-public class DoubleScalar extends NumberObject {
+public class DoubleScalar extends AbstractNumericObject {
 
     private Double value;
 
     public DoubleScalar() {
-        setNumberType(NumberType.DOUBLE);
+        super(NumericType.DOUBLE);
     }
 
     public DoubleScalar(Double value) {

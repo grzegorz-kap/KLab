@@ -1,6 +1,8 @@
 package interpreter.math.scalar;
 
+import interpreter.math.NumericObject;
+
 public interface NumberScalarFactory {
 
-    NumberObject getDouble(Double value);
+    NumericObject getDouble(Double value);
 }

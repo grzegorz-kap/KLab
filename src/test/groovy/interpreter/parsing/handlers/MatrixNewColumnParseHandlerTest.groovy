@@ -1,7 +1,7 @@
 package interpreter.parsing.handlers
 
-import interpreter.lexer.model.TokenClass
 import interpreter.parsing.handlers.helpers.StackHelper
+import interpreter.parsing.handlers.matrix.MatrixNewColumnParseHandler
 import interpreter.parsing.model.ParseClass
 import interpreter.parsing.service.ParseContextManager
 import spock.lang.Specification
@@ -14,7 +14,7 @@ class MatrixNewColumnParseHandlerTest extends Specification {
         when:
         def supported = parseHandler.getSupportedTokenClass()
         then:
-        supported == TokenClass.COMMA
+        supported == null
     }
 
     def "Testing handle method"() {
