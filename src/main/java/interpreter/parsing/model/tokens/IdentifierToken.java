@@ -8,11 +8,11 @@ import interpreter.parsing.model.ParseToken;
 public class IdentifierToken extends ParseToken {
 
     private VariableScope variableScope;
-    private String variableName;
+    private String id;
     private Integer address;
 
     public IdentifierToken(Token token) {
-        variableName = token.getLexeme();
+        id = token.getLexeme();
         setToken(token);
         setParseClass(ParseClass.IDENTIFIER);
     }
@@ -25,12 +25,12 @@ public class IdentifierToken extends ParseToken {
         this.variableScope = variableScope;
     }
 
-    public String getVariableName() {
-        return variableName;
+    public String getId() {
+        return id;
     }
 
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Integer getAddress() {
