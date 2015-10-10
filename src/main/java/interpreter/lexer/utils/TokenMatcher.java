@@ -7,11 +7,21 @@ import java.util.regex.Pattern;
 public class TokenMatcher {
 
     private static final List<String> OPERATORS_PATTERNS = Arrays.asList(
-            "^\\+", "^\\*", "^-", "^/"
+            "^\\+",
+            "^\\*",
+            "^-",
+            "^/",
+            "^="
     );
 
     private static final List<String> SYMBOLS_PATTERNS = Arrays.asList(
-            "^,", "^:", "^;", "^\\[", "^\\]", "^\\(", "^\\)"
+            "^,",
+            "^:",
+            "^;",
+            "^\\[",
+            "^\\]",
+            "^\\(",
+            "^\\)"
     );
 
     private static Pattern OPERATOR_REGEX = Pattern.compile(mergeIntoPattern(OPERATORS_PATTERNS));
