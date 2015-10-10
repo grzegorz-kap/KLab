@@ -3,6 +3,7 @@ package interpreter.translate.service;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionValue;
+import interpreter.translate.exception.UnsupportedParseToken;
 import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
@@ -11,12 +12,15 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class InstructionTranslatorService extends AbstractInstructionTranslator {
+
+    public static final String UNEXPECTED_TOKEN_MESSAGE = "Unexpected token";
 
     @Autowired
     public InstructionTranslatorService(Set<TranslateHandler> translateHandlers) {
@@ -31,7 +35,9 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
-        getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
+        TranslateHandler translateHandler = getTranslateHandler(expression.getValue().getParseClass());
+        checkIfSupported(expression, translateHandler);
+        translateHandler.handle(expression);
     }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
@@ -56,5 +62,11 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     private boolean getPrintProperty() {
         return Optional.ofNullable(translateContext.getExpression().getProperty(Expression.PRINT_PROPERTY_KEY,
                 Boolean.class)).orElse(false);
+    }
+
+    private void checkIfSupported(Expression<ParseToken> expression, TranslateHandler translateHandler) {
+        if (Objects.isNull(translateHandler)) {
+            throw new UnsupportedParseToken(UNEXPECTED_TOKEN_MESSAGE, expression.getValue());
+        }
     }
 }
