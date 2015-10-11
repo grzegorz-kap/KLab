@@ -1,4 +1,4 @@
 package interpreter.types;
 
-public interface ObjectData {
+public interface ObjectData extends Copyable {
 }

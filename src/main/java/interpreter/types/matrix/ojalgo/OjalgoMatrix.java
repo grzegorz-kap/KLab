@@ -2,6 +2,7 @@ package interpreter.types.matrix.ojalgo;
 
 import interpreter.parsing.model.NumericType;
 import interpreter.types.AbstractNumericObject;
+import interpreter.types.ObjectData;
 import interpreter.types.matrix.Matrix;
 import org.ojalgo.matrix.store.PhysicalStore;
 
@@ -41,5 +42,10 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
     @Override
     public String toString() {
         return OjalgoMatrixPrinter.toString(matrixStore);
+    }
+
+    @Override
+    public ObjectData copyObjectData() {
+        return new OjalgoMatrix<T>(matrixStore.copy());
     }
 }

@@ -18,4 +18,9 @@ public class IdentifierObject implements ObjectData {
     public String toString() {
         return identifierToken.getParseClass() + " " + identifierToken.getId() + " " + identifierToken.getAddress();
     }
+
+    @Override
+    public ObjectData copyObjectData() {
+        return new IdentifierObject(identifierToken);
+    }
 }
