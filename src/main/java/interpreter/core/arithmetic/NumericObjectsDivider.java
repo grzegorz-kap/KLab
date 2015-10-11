@@ -1,6 +1,6 @@
 package interpreter.core.arithmetic;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 
 public interface NumericObjectsDivider extends NumericObjectsOperator {
     ObjectData div(ObjectData a, ObjectData b);

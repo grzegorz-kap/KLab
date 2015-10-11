@@ -1,6 +1,6 @@
 package interpreter.execution.model;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

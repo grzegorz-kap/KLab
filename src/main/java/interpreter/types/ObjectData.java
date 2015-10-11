@@ -1,4 +1,4 @@
-package interpreter.commons;
+package interpreter.types;
 
 public interface ObjectData {
 }

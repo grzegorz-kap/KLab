@@ -1,6 +1,6 @@
 package interpreter.core.arithmetic;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 
 public interface NumericObjectsAdder extends NumericObjectsOperator {
 

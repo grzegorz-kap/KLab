@@ -1,6 +1,6 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 

@@ -1,6 +1,5 @@
 package interpreter.types;
 
-import interpreter.commons.ObjectData;
 import interpreter.parsing.model.NumericType;
 
 public interface NumericObject extends ObjectData {

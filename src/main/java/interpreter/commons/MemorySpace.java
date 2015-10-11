@@ -1,5 +1,6 @@
 package interpreter.commons;
 
+import interpreter.types.ObjectData;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

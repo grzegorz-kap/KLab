@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.NumericObjectsDivider;
 import interpreter.parsing.model.NumericType;
+import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.task.SolverTask;

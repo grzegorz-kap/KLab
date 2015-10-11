@@ -1,6 +1,5 @@
 package interpreter.types;
 
-import interpreter.commons.ObjectData;
 import interpreter.parsing.model.tokens.IdentifierToken;
 
 public class IdentifierObject implements ObjectData {
