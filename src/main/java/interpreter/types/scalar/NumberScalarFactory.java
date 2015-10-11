@@ -1,6 +1,6 @@
-package interpreter.math.scalar;
+package interpreter.types.scalar;
 
-import interpreter.math.NumericObject;
+import interpreter.types.NumericObject;
 
 public interface NumberScalarFactory {
 

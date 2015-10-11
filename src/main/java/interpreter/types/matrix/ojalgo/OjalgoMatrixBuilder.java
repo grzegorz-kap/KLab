@@ -1,7 +1,7 @@
-package interpreter.math.matrix.ojalgo;
+package interpreter.types.matrix.ojalgo;
 
-import interpreter.math.matrix.Matrix;
-import interpreter.math.matrix.MatrixBuilder;
+import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.MatrixBuilder;
 import org.ojalgo.matrix.store.PhysicalStore;
 
 import java.util.Objects;

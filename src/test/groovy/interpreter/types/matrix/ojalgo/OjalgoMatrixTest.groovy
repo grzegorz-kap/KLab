@@ -1,6 +1,6 @@
-package interpreter.math.matrix.ojalgo
+package interpreter.types.matrix.ojalgo
 
-import interpreter.math.matrix.Matrix
+import interpreter.types.matrix.Matrix
 import org.ojalgo.matrix.store.PhysicalStore
 import spock.lang.Specification
 

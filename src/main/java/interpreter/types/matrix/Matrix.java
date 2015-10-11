@@ -1,6 +1,6 @@
-package interpreter.math.matrix;
+package interpreter.types.matrix;
 
-import interpreter.math.NumericObject;
+import interpreter.types.NumericObject;
 
 public interface Matrix<T extends Number> extends NumericObject {
 

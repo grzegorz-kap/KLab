@@ -2,8 +2,8 @@ package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.NumericObjectsMultiplicator;
-import interpreter.math.matrix.ojalgo.OjalgoMatrix;
 import interpreter.parsing.model.NumericType;
+import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.springframework.stereotype.Component;
 

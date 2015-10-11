@@ -1,12 +1,12 @@
 package interpreter.translate.handlers
 
-import interpreter.math.NumericObject
-import interpreter.math.scalar.NumberScalarFactory
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
 import interpreter.translate.model.instruction.Instruction
 import interpreter.translate.model.instruction.InstructionCode
 import interpreter.translate.service.TranslateContextManager
+import interpreter.types.NumericObject
+import interpreter.types.scalar.NumberScalarFactory
 import spock.lang.Specification
 
 import static com.natpryce.makeiteasy.MakeItEasy.a

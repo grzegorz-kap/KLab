@@ -1,4 +1,4 @@
-package interpreter.math.matrix.ojalgo;
+package interpreter.types.matrix.ojalgo;
 
 import org.ojalgo.matrix.store.MatrixStore;
 

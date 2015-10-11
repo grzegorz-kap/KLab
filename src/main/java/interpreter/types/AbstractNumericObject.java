@@ -1,4 +1,4 @@
-package interpreter.math;
+package interpreter.types;
 
 import interpreter.parsing.model.NumericType;
 

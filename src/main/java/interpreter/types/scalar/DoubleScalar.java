@@ -1,7 +1,7 @@
-package interpreter.math.scalar;
+package interpreter.types.scalar;
 
-import interpreter.math.AbstractNumericObject;
 import interpreter.parsing.model.NumericType;
+import interpreter.types.AbstractNumericObject;
 
 public class DoubleScalar extends AbstractNumericObject {
 
