@@ -23,4 +23,8 @@ public class IdentifierObject implements ObjectData {
     public ObjectData copyObjectData() {
         return new IdentifierObject(identifierToken);
     }
+
+    public Integer getAddress() {
+        return identifierToken.getAddress();
+    }
 }
