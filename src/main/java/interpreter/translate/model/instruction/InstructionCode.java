@@ -9,7 +9,8 @@ public enum InstructionCode {
     PRINT(5),
     MATRIX(6),
     MATRIX_VERSE(7),
-    LOAD(8);
+    LOAD(8),
+    STORE(9);
 
     private int index;
 
