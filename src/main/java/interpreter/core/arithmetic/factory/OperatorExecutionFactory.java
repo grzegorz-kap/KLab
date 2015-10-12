@@ -1,9 +1,6 @@
 package interpreter.core.arithmetic.factory;
 
-import interpreter.core.arithmetic.NumericObjectsAdder;
-import interpreter.core.arithmetic.NumericObjectsDivider;
-import interpreter.core.arithmetic.NumericObjectsMultiplicator;
-import interpreter.core.arithmetic.NumericObjectsSubtractor;
+import interpreter.core.arithmetic.*;
 import interpreter.parsing.model.NumericType;
 
 public interface OperatorExecutionFactory {
@@ -15,4 +12,6 @@ public interface OperatorExecutionFactory {
     NumericObjectsMultiplicator getMultiplicator(NumericType numericType);
 
     NumericObjectsDivider getDivider(NumericType numericType);
+
+    NumericObjectsComparator getComporator(NumericType numericType);
 }
