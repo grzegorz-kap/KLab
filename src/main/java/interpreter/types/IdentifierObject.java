@@ -2,7 +2,7 @@ package interpreter.types;
 
 import interpreter.parsing.model.tokens.IdentifierToken;
 
-public class IdentifierObject implements ObjectData {
+public class IdentifierObject extends AbstractObjectData {
 
     private IdentifierToken identifierToken;
 
