@@ -27,4 +27,8 @@ public class IdentifierObject implements ObjectData {
     public Integer getAddress() {
         return identifierToken.getAddress();
     }
+
+    public String getId() {
+        return identifierToken.getId();
+    }
 }
