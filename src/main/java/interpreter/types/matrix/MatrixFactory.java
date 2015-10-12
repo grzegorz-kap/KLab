@@ -1,4 +1,4 @@
-package interpreter.math.matrix;
+package interpreter.types.matrix;
 
 public interface MatrixFactory {
 

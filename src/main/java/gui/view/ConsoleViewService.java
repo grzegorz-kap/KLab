@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Objects;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -43,8 +44,11 @@ public class ConsoleViewService {
     }
 
     private void onPrintEvent(PrintEvent printEvent) {
-        String printData = printEvent.getObjectData().toString();
-        consoleOutput.appendText(String.format("   %s \n", printData));
+        String objectName = printEvent.getObjectData().getName();
+        if (Objects.nonNull(objectName)) {
+            consoleOutput.appendText(String.format("%s = ", objectName));
+        }
+        consoleOutput.appendText(String.format("%s\n", printEvent.getObjectData().toString()));
     }
 
     public void setCommandInput(CodeArea commandInput) {

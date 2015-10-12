@@ -3,9 +3,9 @@ package interpreter.translate.makers
 import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
-import interpreter.commons.ObjectData
 import interpreter.translate.model.instruction.Instruction
 import interpreter.translate.model.instruction.InstructionCode
+import interpreter.types.ObjectData
 
 import static com.natpryce.makeiteasy.Property.newProperty
 

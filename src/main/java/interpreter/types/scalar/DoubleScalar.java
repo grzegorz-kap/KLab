@@ -1,7 +1,8 @@
-package interpreter.math.scalar;
+package interpreter.types.scalar;
 
-import interpreter.math.AbstractNumericObject;
 import interpreter.parsing.model.NumericType;
+import interpreter.types.AbstractNumericObject;
+import interpreter.types.ObjectData;
 
 public class DoubleScalar extends AbstractNumericObject {
 
@@ -27,5 +28,10 @@ public class DoubleScalar extends AbstractNumericObject {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    @Override
+    public ObjectData copyObjectData() {
+        return new DoubleScalar(value);
     }
 }

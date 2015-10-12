@@ -1,6 +1,6 @@
 package interpreter.translate.model.instruction;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 
 import java.util.ArrayList;
 import java.util.List;

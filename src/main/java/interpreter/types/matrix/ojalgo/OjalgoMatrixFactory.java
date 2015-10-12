@@ -1,8 +1,8 @@
-package interpreter.math.matrix.ojalgo;
+package interpreter.types.matrix.ojalgo;
 
-import interpreter.math.matrix.Matrix;
-import interpreter.math.matrix.MatrixBuilder;
-import interpreter.math.matrix.MatrixFactory;
+import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.MatrixBuilder;
+import interpreter.types.matrix.MatrixFactory;
 import org.ojalgo.matrix.store.PhysicalStore;
 import org.ojalgo.matrix.store.PrimitiveDenseStore;
 import org.springframework.stereotype.Service;

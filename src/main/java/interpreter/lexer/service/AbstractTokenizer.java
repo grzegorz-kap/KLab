@@ -1,11 +1,13 @@
 package interpreter.lexer.service;
 
+import interpreter.lexer.exception.UnrecognizedTokenException;
 import interpreter.lexer.helper.TokenStartMatcher;
 import interpreter.lexer.model.TokenList;
 import interpreter.lexer.model.TokenizerContext;
 
 public abstract class AbstractTokenizer implements Tokenizer {
 
+    public static final String UNRECOGNIZED_TOKEN_MESSAGE = "Unrecognized token.";
     protected TokenizerContext tokenizerContext;
     protected TokenizerContextManager tokenizerContextManager;
     protected TokenRegexReader tokenReader;
@@ -66,6 +68,6 @@ public abstract class AbstractTokenizer implements Tokenizer {
         if (tryReadOtherSymbol()) {
             return;
         }
-        tokenizerContext.setIndex(tokenizerContext.getIndex() + 1);
+        throw new UnrecognizedTokenException(UNRECOGNIZED_TOKEN_MESSAGE, tokenizerContext);
     }
 }

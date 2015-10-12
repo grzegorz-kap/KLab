@@ -1,9 +1,9 @@
 package interpreter.core.arithmetic.scalar;
 
-import interpreter.commons.ObjectData;
 import interpreter.core.arithmetic.NumericObjectsSubtractor;
-import interpreter.math.scalar.DoubleScalar;
 import interpreter.parsing.model.NumericType;
+import interpreter.types.ObjectData;
+import interpreter.types.scalar.DoubleScalar;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -39,9 +39,7 @@ class RegexTokenizerTest extends Specification {
         where:
         input    | _
         "332-3"  | _
-        ".e12"   | _
         "3232e-" | _
-        "."      | _
         "323.e"  | _
     }
 

@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.commons.ObjectData;
-import interpreter.math.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.ObjectData;
+import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 
 public abstract class AbstractOjalgoMatrixBinaryOperator<T extends Number> {

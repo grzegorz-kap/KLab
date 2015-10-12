@@ -17,6 +17,6 @@ public abstract class AbstractParseHandler implements ParseHandler {
 
     @Override
     public void handleStackFinish() {
-
+        throw new UnsupportedOperationException();
     }
 }

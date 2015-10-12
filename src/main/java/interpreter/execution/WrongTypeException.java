@@ -1,6 +1,6 @@
 package interpreter.execution;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 
 public class WrongTypeException extends RuntimeException {
 

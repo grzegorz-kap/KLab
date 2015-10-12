@@ -3,11 +3,11 @@ package interpreter.execution.handlers
 import interpreter.execution.model.ExecutionContext
 import interpreter.execution.model.InstructionPointer
 import interpreter.execution.service.ExecutionContextManager
-import interpreter.math.matrix.Matrix
-import interpreter.math.matrix.MatrixBuilder
-import interpreter.math.matrix.MatrixFactory
-import interpreter.math.scalar.DoubleScalar
 import interpreter.translate.model.instruction.InstructionCode
+import interpreter.types.matrix.Matrix
+import interpreter.types.matrix.MatrixBuilder
+import interpreter.types.matrix.MatrixFactory
+import interpreter.types.scalar.DoubleScalar
 import spock.lang.Specification
 
 import static com.natpryce.makeiteasy.MakeItEasy.*
