@@ -16,7 +16,7 @@ public class IdentifierObject implements ObjectData {
 
     @Override
     public String toString() {
-        return identifierToken.getParseClass() + " " + identifierToken.getId() + " " + identifierToken.getAddress();
+        return identifierToken.getId() + "@" + identifierToken.getAddress();
     }
 
     @Override
