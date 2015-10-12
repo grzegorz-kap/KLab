@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Service
-public class StandardArithmeticOperationsFactory implements ArithmeticOperationsFactory {
+public class StandardOperatorExecutionFactory implements OperatorExecutionFactory {
 
     private static final int NUMBER_TYPES_COUNT = NumericType.values().length;
 

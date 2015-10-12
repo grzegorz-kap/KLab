@@ -6,7 +6,7 @@ import interpreter.core.arithmetic.NumericObjectsMultiplicator;
 import interpreter.core.arithmetic.NumericObjectsSubtractor;
 import interpreter.parsing.model.NumericType;
 
-public interface ArithmeticOperationsFactory {
+public interface OperatorExecutionFactory {
 
     NumericObjectsAdder getAdder(NumericType numericType);
 

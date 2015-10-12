@@ -1,6 +1,6 @@
-package interpreter.execution.handlers.arithmetic;
+package interpreter.execution.handlers.operators;
 
-import interpreter.core.arithmetic.factory.ArithmeticOperationsFactory;
+import interpreter.core.arithmetic.factory.OperatorExecutionFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.parsing.model.NumericType;
@@ -8,9 +8,9 @@ import interpreter.types.NumericObject;
 import interpreter.types.ObjectData;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractArithmeticInstructionHandler extends AbstractInstructionHandler {
+public abstract class AbstractOperatorInstructionHandler extends AbstractInstructionHandler {
 
-    protected ArithmeticOperationsFactory arithmeticOperationsFactory;
+    protected OperatorExecutionFactory operatorExecutionFactory;
 
     public NumericType numberType(ObjectData a, ObjectData b) {
         return ((NumericObject) a).getNumericType();
@@ -29,7 +29,7 @@ public abstract class AbstractArithmeticInstructionHandler extends AbstractInstr
     }
 
     @Autowired
-    public void setArithmeticOperationsFactory(ArithmeticOperationsFactory arithmeticOperationsFactory) {
-        this.arithmeticOperationsFactory = arithmeticOperationsFactory;
+    public void setOperatorExecutionFactory(OperatorExecutionFactory operatorExecutionFactory) {
+        this.operatorExecutionFactory = operatorExecutionFactory;
     }
 }
