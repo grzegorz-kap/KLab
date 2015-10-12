@@ -1,9 +1,9 @@
 package interpreter.execution.handlers;
 
-import interpreter.commons.ObjectData;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.instruction.Instruction;
 import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.types.ObjectData;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

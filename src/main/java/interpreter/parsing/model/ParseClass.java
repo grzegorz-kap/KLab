@@ -7,7 +7,8 @@ public enum ParseClass {
     MATRIX_START(2),
     MATRIX_END(3),
     MATRIX_VERSE(4),
-    MATRIX(5);
+    MATRIX(5),
+    IDENTIFIER(6);
 
     private int index;
 

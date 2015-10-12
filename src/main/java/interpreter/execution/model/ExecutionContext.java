@@ -1,7 +1,7 @@
 package interpreter.execution.model;
 
-import interpreter.commons.ObjectData;
 import interpreter.translate.model.instruction.Instruction;
+import interpreter.types.ObjectData;
 
 import java.util.Collection;
 

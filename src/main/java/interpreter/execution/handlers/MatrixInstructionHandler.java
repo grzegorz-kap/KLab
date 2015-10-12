@@ -1,13 +1,13 @@
 package interpreter.execution.handlers;
 
-import interpreter.commons.ObjectData;
 import interpreter.execution.WrongTypeException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
-import interpreter.math.matrix.Matrix;
-import interpreter.math.matrix.MatrixBuilder;
-import interpreter.math.matrix.MatrixFactory;
 import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.types.ObjectData;
+import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.MatrixBuilder;
+import interpreter.types.matrix.MatrixFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

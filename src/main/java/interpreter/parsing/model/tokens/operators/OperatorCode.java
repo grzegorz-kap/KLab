@@ -4,5 +4,6 @@ public enum OperatorCode {
     ADD,
     SUB,
     DIV,
+    ASSIGN,
     MULT
 }

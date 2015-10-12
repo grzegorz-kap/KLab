@@ -1,7 +1,7 @@
 package interpreter.execution.service;
 
-import interpreter.commons.ObjectData;
 import interpreter.execution.model.ExecutionContext;
+import interpreter.types.ObjectData;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

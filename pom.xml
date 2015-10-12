@@ -6,7 +6,7 @@
 
     <groupId>org</groupId>
     <artifactId>klab</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1.3-SNAPSHOT</version>
 
     <properties>
         <apache.commons.version>3.4</apache.commons.version>
@@ -19,7 +19,7 @@
         <javafx.plugin.version>8.1.4</javafx.plugin.version>
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <richtextfx.version>0.6.8</richtextfx.version>
+        <richtextfx.version>0.6.9</richtextfx.version>
         <ojalgo.version>38.2</ojalgo.version>
     </properties>
 

@@ -1,6 +1,6 @@
 package interpreter.core.events;
 
-import interpreter.commons.ObjectData;
+import interpreter.types.ObjectData;
 import org.springframework.context.ApplicationEvent;
 
 public class PrintEvent extends ApplicationEvent {

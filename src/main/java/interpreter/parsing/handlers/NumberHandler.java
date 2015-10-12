@@ -2,7 +2,7 @@ package interpreter.parsing.handlers;
 
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
-import interpreter.parsing.model.NumberType;
+import interpreter.parsing.model.NumericType;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.tokens.NumberToken;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -30,7 +30,7 @@ public class NumberHandler extends AbstractParseHandler {
     private NumberToken createNumberToken(Token token) {
         NumberToken numberToken = new NumberToken();
         numberToken.setToken(token);
-        numberToken.setNumberType(NumberType.DOUBLE);
+        numberToken.setNumericType(NumericType.DOUBLE);
         return numberToken;
     }
 }
