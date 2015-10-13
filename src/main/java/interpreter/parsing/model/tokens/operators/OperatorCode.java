@@ -7,5 +7,5 @@ public enum OperatorCode {
     ASSIGN,
     EQ,
     NEQ,
-    GT, GE, LE, MULT
+    GT, GE, LE, LT, MULT
 }

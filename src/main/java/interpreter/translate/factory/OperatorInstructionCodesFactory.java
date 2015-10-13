@@ -23,6 +23,7 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.GT, InstructionCode.GT);
         instructionCodeMap.put(OperatorCode.GE, InstructionCode.GE);
         instructionCodeMap.put(OperatorCode.LE, InstructionCode.LE);
+        instructionCodeMap.put(OperatorCode.LT, InstructionCode.LT);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {

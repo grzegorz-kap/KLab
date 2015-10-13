@@ -47,6 +47,10 @@ public class DoubleOjalgoMatrixComparator
         return operate(a, b, this::le);
     }
 
+    @Override
+    public ObjectData lt(ObjectData a, ObjectData b) {
+        return operate(a, b, this::lt);
+    }
 
     private MatrixStore<Double> eq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
         return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::eq, second.getMatrixStore());
@@ -68,6 +72,9 @@ public class DoubleOjalgoMatrixComparator
         return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::le, second.getMatrixStore());
     }
 
+    private MatrixStore<Double> lt(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::lt, second.getMatrixStore());
+    }
 
     private Double eq(Double value, Double second) {
         return value.equals(second) ? 1.0D : 0.0D;
@@ -87,6 +94,10 @@ public class DoubleOjalgoMatrixComparator
 
     private Double le(Double value, Double second) {
         return value.compareTo(second) <= 0 ? 1D : 0D;
+    }
+
+    private Double lt(Double value, Double second) {
+        return value.compareTo(second) == -1 ? 1D : 0D;
     }
 }
 
