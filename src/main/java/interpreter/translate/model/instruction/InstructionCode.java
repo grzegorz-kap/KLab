@@ -13,7 +13,8 @@ public enum InstructionCode {
     STORE(9),
     EQ(10),
     NEQ(11),
-    GT(12);
+    GT(12),
+    GE(13);
 
     private int index;
 
