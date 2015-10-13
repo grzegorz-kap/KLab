@@ -11,4 +11,6 @@ public interface NumericObjectsComparator extends NumericObjectsOperator {
     ObjectData gt(ObjectData a, ObjectData b);
 
     ObjectData ge(ObjectData a, ObjectData b);
+
+    ObjectData le(ObjectData a, ObjectData b);
 }
