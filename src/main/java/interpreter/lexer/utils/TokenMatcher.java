@@ -11,7 +11,13 @@ public class TokenMatcher {
             "^\\*",
             "^-",
             "^/",
-            "^="
+            "^==",
+            "^~=",
+            "^=",
+            "^>=",
+            "^<=",
+            "^<",
+            "^>"
     );
 
     private static final List<String> SYMBOLS_PATTERNS = Arrays.asList(

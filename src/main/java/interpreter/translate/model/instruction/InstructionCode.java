@@ -10,7 +10,13 @@ public enum InstructionCode {
     MATRIX(6),
     MATRIX_VERSE(7),
     LOAD(8),
-    STORE(9);
+    STORE(9),
+    EQ(10),
+    NEQ(11),
+    GT(12),
+    GE(13),
+    LE(14),
+    LT(15);
 
     private int index;
 

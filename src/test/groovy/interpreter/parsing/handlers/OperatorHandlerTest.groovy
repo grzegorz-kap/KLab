@@ -1,5 +1,6 @@
 package interpreter.parsing.handlers
 
+import interpreter.parsing.factory.operator.OperatorFactory
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.Expression
 import interpreter.parsing.model.expression.ExpressionNode
@@ -21,6 +22,7 @@ class OperatorHandlerTest extends Specification {
 
     def setup() {
         operatorHandler.contextManager = Mock(ParseContextManager)
+        operatorHandler.setOperatorFactory(new OperatorFactory());
         stack = new ArrayDeque<>();
         expressionList = new ArrayList<>();
         tokens = [

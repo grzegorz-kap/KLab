@@ -1,4 +1,4 @@
-package interpreter.execution.handlers.arithmetic;
+package interpreter.execution.handlers.operators;
 
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.instruction.InstructionCode;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class DivInstructionHandler extends AbstractArithmeticInstructionHandler {
+public class LtInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
@@ -17,12 +17,12 @@ public class DivInstructionHandler extends AbstractArithmeticInstructionHandler 
     }
 
     @Override
-    public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.DIV;
+    protected ObjectData calculate(ObjectData a, ObjectData b) {
+        return operatorExecutionFactory.getComporator(numberType(a, b)).lt(a, b);
     }
 
     @Override
-    public ObjectData calculate(ObjectData a, ObjectData b) {
-        return arithmeticOperationsFactory.getDivider(numberType(a, b)).div(a, b);
+    public InstructionCode getSupportedInstructionCode() {
+        return InstructionCode.LT;
     }
 }
