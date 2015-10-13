@@ -27,13 +27,26 @@ public class DoubleOjalgoMatrixComparator
         return operate(a, b, this::eq);
     }
 
+    @Override
+    public ObjectData neq(ObjectData a, ObjectData b) {
+        return operate(a, b, this::neq);
+    }
+
     private MatrixStore<Double> eq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
         return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::eq, second.getMatrixStore());
+    }
+
+    private MatrixStore<Double> neq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::neq, second.getMatrixStore());
     }
 
 
     private Double eq(Double value, Double second) {
         return value.equals(second) ? 1.0D : 0.0D;
+    }
+
+    private Double neq(Double value, Double second) {
+        return value.equals(second) ? 0.0D : 1.0D;
     }
 }
 

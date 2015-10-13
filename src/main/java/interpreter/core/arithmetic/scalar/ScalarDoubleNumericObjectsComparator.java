@@ -16,6 +16,13 @@ public class ScalarDoubleNumericObjectsComparator implements NumericObjectsCompa
         return new DoubleScalar(mapToDouble(first.getValue().equals(second.getValue())));
     }
 
+    @Override
+    public ObjectData neq(ObjectData a, ObjectData b) {
+        DoubleScalar first = (DoubleScalar) a;
+        DoubleScalar second = (DoubleScalar) b;
+        return new DoubleScalar(mapToDouble(!first.getValue().equals(second.getValue())));
+    }
+
     private double mapToDouble(boolean result) {
         return result ? 1.0D : 0.0D;
     }

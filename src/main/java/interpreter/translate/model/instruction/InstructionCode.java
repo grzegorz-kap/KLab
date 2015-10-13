@@ -11,7 +11,8 @@ public enum InstructionCode {
     MATRIX_VERSE(7),
     LOAD(8),
     STORE(9),
-    EQ(10);
+    EQ(10),
+    NEQ(11);
 
     private int index;
 
