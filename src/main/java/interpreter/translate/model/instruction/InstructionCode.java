@@ -12,7 +12,8 @@ public enum InstructionCode {
     LOAD(8),
     STORE(9),
     EQ(10),
-    NEQ(11);
+    NEQ(11),
+    GT(12);
 
     private int index;
 
