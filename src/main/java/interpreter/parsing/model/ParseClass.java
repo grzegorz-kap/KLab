@@ -10,7 +10,8 @@ public enum ParseClass {
     MATRIX(5),
     IDENTIFIER(6),
     OPEN_PARENTHESIS(7),
-    IF(8);
+    IF(8),
+    END_IF(9);
 
     private int index;
 

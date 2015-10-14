@@ -13,12 +13,12 @@ public class BalanceContext {
     	keywordBalance.add(balance);
     }
     
-    public void popKeyword() {
-    	keywordBalance.pop();
+    public KeywordBalance popKeyword() {
+    	return keywordBalance.pop();
     }
     
-    public void peekKeyword() {
-    	keywordBalance.peek();
+    public KeywordBalance peekKeyword() {
+    	return keywordBalance.peek();
     }
     
     public boolean isKeywordBalance(KeywordBalance balance) {

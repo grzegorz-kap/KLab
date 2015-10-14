@@ -1,7 +1,8 @@
-package interpreter.parsing.handlers;
+package interpreter.parsing.handlers.instruction;
 
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.exception.WrongIfInstructionException;
+import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.model.KeywordBalance;
 import interpreter.parsing.model.tokens.IfToken;
 import org.springframework.beans.factory.config.BeanDefinition;
