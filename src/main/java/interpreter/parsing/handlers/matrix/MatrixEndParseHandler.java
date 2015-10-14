@@ -63,7 +63,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     }
 
     private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, MATRIX_START)) {
+        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, MATRIX_START)) {
             throw new RuntimeException();
         }
         parseContextManager.stackPop();
