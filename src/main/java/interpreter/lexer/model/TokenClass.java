@@ -13,7 +13,8 @@ public enum TokenClass {
     OPEN_BRACKET(9),
     CLOSE_BRACKET(10),
     NEW_LINE(11),
-    IF_KEYWORD(12);
+    IF_KEYWORD(12),
+    ENDIF_KEYWORD(13);
 
     private int index;
 

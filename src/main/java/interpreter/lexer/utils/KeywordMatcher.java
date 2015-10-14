@@ -15,6 +15,7 @@ public class KeywordMatcher {
 
     public KeywordMatcher() {
         keywordMap.put("if", TokenClass.IF_KEYWORD);
+        keywordMap.put("endif", TokenClass.ENDIF_KEYWORD);
     }
 
     public void changeIfKeyword(Token token) {
