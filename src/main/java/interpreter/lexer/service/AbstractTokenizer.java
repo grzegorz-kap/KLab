@@ -1,42 +1,44 @@
 package interpreter.lexer.service;
 
 import interpreter.lexer.exception.UnrecognizedTokenException;
-import interpreter.lexer.helper.TokenStartMatcher;
 import interpreter.lexer.model.TokenList;
 import interpreter.lexer.model.TokenizerContext;
+import interpreter.lexer.utils.SymbolsMapper;
+import interpreter.lexer.utils.TokenMatcher;
+import interpreter.lexer.utils.TokenRegexReader;
+import interpreter.lexer.utils.TokenStartMatcher;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractTokenizer implements Tokenizer {
 
     public static final String UNRECOGNIZED_TOKEN_MESSAGE = "Unrecognized token.";
+
     protected TokenizerContext tokenizerContext;
     protected TokenizerContextManager tokenizerContextManager;
     protected TokenRegexReader tokenReader;
-
+    protected TokenMatcher tokenMatcher;
+    protected SymbolsMapper symbolsMapper;
     private TokenStartMatcher tokenStartMatcher;
 
-    public abstract void onNumber();
-
-    public abstract void onWord();
-
-    public abstract void onSpaceOrTabulator();
-
-    public abstract void onNewLine();
-
-    public abstract boolean tryReadOperator();
-
-    public abstract boolean tryReadOtherSymbol();
 
     public TokenList readTokens(String inputText) {
         setContext(inputText);
-        tokenStartMatcher = new TokenStartMatcher(tokenizerContext);
-        tokenizerContextManager = new TokenizerContextManager(tokenizerContext);
-        tokenReader = new TokenRegexReader(tokenizerContext);
+        setState();
         process();
         return tokenizerContext.getTokenList();
     }
 
-    protected void setContext(String inputText) {
-        tokenizerContext = new TokenizerContext(inputText);
+    public abstract void onNumber();
+    public abstract void onWord();
+    public abstract void onSpaceOrTabulator();
+    public abstract void onNewLine();
+    public abstract boolean tryReadOperator();
+    public abstract boolean tryReadOtherSymbol();
+
+    private void setState() {
+        tokenStartMatcher.setTokenizerContext(tokenizerContext);
+        tokenizerContextManager.setTokenizerContext(tokenizerContext);
+        tokenReader.setTokenizerContext(tokenizerContext);
     }
 
     private void process() {
@@ -69,5 +71,34 @@ public abstract class AbstractTokenizer implements Tokenizer {
             return;
         }
         throw new UnrecognizedTokenException(UNRECOGNIZED_TOKEN_MESSAGE, tokenizerContext);
+    }
+
+    protected void setContext(String inputText) {
+        tokenizerContext = new TokenizerContext(inputText);
+    }
+
+    @Autowired
+    public void setTokenizerContextManager(TokenizerContextManager tokenizerContextManager) {
+        this.tokenizerContextManager = tokenizerContextManager;
+    }
+
+    @Autowired
+    public void setTokenStartMatcher(TokenStartMatcher tokenStartMatcher) {
+        this.tokenStartMatcher = tokenStartMatcher;
+    }
+
+    @Autowired
+    public void setTokenReader(TokenRegexReader tokenReader) {
+        this.tokenReader = tokenReader;
+    }
+
+    @Autowired
+    public void setTokenMatcher(TokenMatcher tokenMatcher) {
+        this.tokenMatcher = tokenMatcher;
+    }
+
+    @Autowired
+    public void setSymbolsMapper(SymbolsMapper symbolsMapper) {
+        this.symbolsMapper = symbolsMapper;
     }
 }
