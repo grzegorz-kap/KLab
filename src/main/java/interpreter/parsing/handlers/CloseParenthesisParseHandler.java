@@ -1,7 +1,7 @@
-package interpreter.parsing.handlers.matrix;
+package interpreter.parsing.handlers;
 
 import interpreter.lexer.model.TokenClass;
-import interpreter.parsing.handlers.AbstractParseHandler;
+import interpreter.parsing.exception.UnexpectedCloseParenthesisException;
 import interpreter.parsing.handlers.helpers.StackHelper;
 import interpreter.parsing.model.ParseClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,25 +11,27 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class MatrixNewColumnParseHandler extends AbstractParseHandler {
+public class CloseParenthesisParseHandler extends AbstractParseHandler {
 
     private StackHelper stackHelper;
 
     @Override
     public void handle() {
-        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START)) {
-            throw new RuntimeException();
+        if(!stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.OPEN_PARENTHESIS)){
+            throw new UnexpectedCloseParenthesisException("Unexpected close parenthesis", parseContextManager.getParseContext());
         }
+        parseContextManager.stackPop();
         parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
     public TokenClass getSupportedTokenClass() {
-        return null;
+        return TokenClass.CLOSE_PARENTHESIS;
     }
 
     @Autowired
-    public void setStackHelper(StackHelper stackHelper) {
+    private void setStackHelper(StackHelper stackHelper) {
         this.stackHelper = stackHelper;
     }
+
 }

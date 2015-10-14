@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StackHelper {
 
-    public boolean stackToExpressionUntilTokenClass(ParseContextManager parseContextManager, ParseClass parseClass) {
+    public boolean stackToExpressionUntilParseClass(ParseContextManager parseContextManager, ParseClass parseClass) {
         while (!parseContextManager.isStackEmpty() && !parseContextManager.stackPeekClass().equals(parseClass)) {
             callStackFinishHandler(parseContextManager);
         }

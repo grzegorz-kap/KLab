@@ -36,7 +36,7 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
     }
 
     public void handleAction() {
-        stackHelper.stackToExpressionUntilTokenClass(parseContextManager, ParseClass.MATRIX_START);
+        stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START);
         List<Expression<ParseToken>> expressions = popExpressions();
         VerseToken verseToken = createVerseToken();
         parseContextManager.addExpression(createExpressionNode(expressions, verseToken));
