@@ -3,10 +3,7 @@ package interpreter.lexer.service;
 import interpreter.lexer.exception.UnrecognizedTokenException;
 import interpreter.lexer.model.TokenList;
 import interpreter.lexer.model.TokenizerContext;
-import interpreter.lexer.utils.SymbolsMapper;
-import interpreter.lexer.utils.TokenMatcher;
-import interpreter.lexer.utils.TokenRegexReader;
-import interpreter.lexer.utils.TokenStartMatcher;
+import interpreter.lexer.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractTokenizer implements Tokenizer {
@@ -15,9 +12,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     protected TokenizerContext tokenizerContext;
     protected TokenizerContextManager tokenizerContextManager;
-    protected TokenRegexReader tokenReader;
+    protected TokenRegexReader tokenRegexReader;
     protected TokenMatcher tokenMatcher;
     protected SymbolsMapper symbolsMapper;
+    protected KeywordMatcher keywordMatcher;
     private TokenStartMatcher tokenStartMatcher;
 
 
@@ -38,7 +36,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
     private void setState() {
         tokenStartMatcher.setTokenizerContext(tokenizerContext);
         tokenizerContextManager.setTokenizerContext(tokenizerContext);
-        tokenReader.setTokenizerContext(tokenizerContext);
+        tokenRegexReader.setTokenizerContext(tokenizerContext);
     }
 
     private void process() {
@@ -88,8 +86,8 @@ public abstract class AbstractTokenizer implements Tokenizer {
     }
 
     @Autowired
-    public void setTokenReader(TokenRegexReader tokenReader) {
-        this.tokenReader = tokenReader;
+    public void setTokenRegexReader(TokenRegexReader tokenRegexReader) {
+        this.tokenRegexReader = tokenRegexReader;
     }
 
     @Autowired
@@ -100,5 +98,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
     @Autowired
     public void setSymbolsMapper(SymbolsMapper symbolsMapper) {
         this.symbolsMapper = symbolsMapper;
+    }
+
+    @Autowired
+    public void setKeywordMatcher(KeywordMatcher keywordMatcher) {
+        this.keywordMatcher = keywordMatcher;
     }
 }
