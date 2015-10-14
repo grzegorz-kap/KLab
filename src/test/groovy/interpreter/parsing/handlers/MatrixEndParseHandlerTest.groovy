@@ -50,7 +50,7 @@ class MatrixEndParseHandlerTest extends Specification {
         handler.handle()
 
         then:
-        1 * stackHelper.stackToExpressionUntilTokenClass(parseContextManager, ParseClass.MATRIX_START) >> true
+        1 * stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START) >> true
         1 * expressionHelper.popUntilParseClass(parseContextManager, { predicate ->
             ParseClass.values().each { parseClass -> predicate.test(parseClass) == parseClass.equals(ParseClass.MATRIX_START) }
         }) >> expressions

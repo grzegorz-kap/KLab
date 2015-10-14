@@ -19,7 +19,7 @@ class StackHelperTest extends Specification {
         stackHandler.handleStackFinish() >> { count--; }
 
         when:
-        def result = stackHelper.stackToExpressionUntilTokenClass(contextManager, MATRIX_START)
+        def result = stackHelper.stackToExpressionUntilParseClass(contextManager, MATRIX_START)
 
         then:
         4 * contextManager.isStackEmpty() >> { return count == 0; }
@@ -34,7 +34,7 @@ class StackHelperTest extends Specification {
         contextManager.isStackEmpty() >> true
 
         when:
-        def result = stackHelper.stackToExpressionUntilTokenClass(contextManager, MATRIX_START)
+        def result = stackHelper.stackToExpressionUntilParseClass(contextManager, MATRIX_START)
 
         then:
         !result
