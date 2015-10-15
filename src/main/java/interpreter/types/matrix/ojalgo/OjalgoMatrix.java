@@ -48,4 +48,14 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
     public ObjectData copyObjectData() {
         return new OjalgoMatrix<T>(matrixStore.copy());
     }
+
+    @Override
+    public boolean isTrue() {
+        for (T value : matrixStore) {
+            if (value.equals(0)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -31,4 +31,9 @@ public class IdentifierObject extends AbstractObjectData {
     public String getId() {
         return identifierToken.getId();
     }
+
+    @Override
+    public boolean isTrue() {
+        throw new UnsupportedOperationException();
+    }
 }
