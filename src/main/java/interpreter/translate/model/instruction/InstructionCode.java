@@ -17,7 +17,8 @@ public enum InstructionCode {
     GE(13),
     LE(14),
     LT(15),
-    JMPF(16);
+    JMPF(16),
+    JMP(17);
 
     private int index;
 
