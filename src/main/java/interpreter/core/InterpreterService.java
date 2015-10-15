@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 class InterpreterService extends AbstractInterpreterService {
 
@@ -23,11 +25,15 @@ class InterpreterService extends AbstractInterpreterService {
     }
 
     public void executionLoop() {
-        Expression<ParseToken> expression = parser.process();
+        List<Expression<ParseToken>> expression = parser.process();
+        expression.forEach(this::process);
+        executionService.start();
+    }
+
+    private void process(Expression<ParseToken> expression) {
         LOGGER.info("\n{}", expressionPrinter.expressionToString(expression));
         MacroInstruction macroInstruction = instructionTranslator.translate(expression);
         LOGGER.info("\n{}", macroInstructionPrinter.print(macroInstruction));
         executionService.addInstructions(macroInstruction.getInstructions());
-        executionService.start();
     }
 }
