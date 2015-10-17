@@ -23,11 +23,6 @@ public class IfInstructionPostParseHandler implements PostParseHandler {
     }
 
     @Override
-    public boolean executionIsReady() {
-        return false;
-    }
-
-    @Override
     public MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator) {
         expressions.get(1).setProperty(Expression.PRINT_PROPERTY_KEY, false);
         MacroInstruction macroInstruction = instructionTranslator.translate(expressions.get(1));

@@ -18,4 +18,9 @@ public class JumperInstruction extends Instruction {
     public void setJumpIndex(Integer jumpIndex) {
         this.jumpIndex = jumpIndex;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + jumpIndex;
+    }
 }

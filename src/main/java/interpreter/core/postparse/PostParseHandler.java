@@ -11,7 +11,5 @@ public interface PostParseHandler {
 
     boolean canBeHandled(List<Expression<ParseToken>> expressions);
 
-    boolean executionIsReady();
-
     MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator);
 }
