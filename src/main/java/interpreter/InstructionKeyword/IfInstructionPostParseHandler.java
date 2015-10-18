@@ -1,5 +1,6 @@
-package interpreter.core.postparse;
+package interpreter.InstructionKeyword;
 
+import interpreter.InstructionKeyword.model.IfInstructionContext;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -17,19 +18,32 @@ import java.util.List;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IfInstructionPostParseHandler implements PostParseHandler {
 
+    private IfInstructionContext ifInstructionContext = new IfInstructionContext();
+
     @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
         return expressions.size() == 2 && expressions.get(0).getValue().getParseClass().equals(ParseClass.IF);
     }
 
     @Override
+    public boolean executionCanStart() {
+        return ifInstructionContext.size() == 0;
+    }
+
+    @Override
     public MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator) {
+        return handleIFStart(expressions, instructionTranslator);
+    }
+
+    private MacroInstruction handleIFStart(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator) {
+        ifInstructionContext.addIf();
         expressions.get(1).setProperty(Expression.PRINT_PROPERTY_KEY, false);
         MacroInstruction macroInstruction = instructionTranslator.translate(expressions.get(1));
         JumperInstruction jumperInstruction = new JumperInstruction();
         jumperInstruction.setArgumentsNumber(0);
         jumperInstruction.setInstructionCode(InstructionCode.JMPF);
         macroInstruction.add(jumperInstruction);
+        ifInstructionContext.setJumpOnFalse(jumperInstruction);
         return macroInstruction;
     }
 }
