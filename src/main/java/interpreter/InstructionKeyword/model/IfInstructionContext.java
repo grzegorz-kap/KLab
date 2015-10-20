@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class IfInstructionContext {
 
@@ -15,12 +16,24 @@ public class IfInstructionContext {
         ifContexts.push(new IfContext());
     }
 
+    public void removeLastIf() {
+        ifContexts.pop();
+    }
+
     public void addEndIfJumper(JumperInstruction jumperInstruction) {
-        ifContexts.peek().addEndIfJumper(jumperInstruction);
+        ifContexts.peek().endIfJumps.add(jumperInstruction);
+    }
+
+    public void forEachEndIfJumper(Consumer<? super JumperInstruction> action) {
+        ifContexts.peek().endIfJumps.forEach(action);
     }
 
     public void setJumpOnFalse(JumperInstruction jumperInstruction) {
-        ifContexts.peek().setJumpOnFalse(jumperInstruction);
+        ifContexts.peek().jumpOnFalse = jumperInstruction;
+    }
+
+    public JumperInstruction getJumpOnFalse() {
+        return ifContexts.peek().jumpOnFalse;
     }
 
     public int size() {
@@ -28,19 +41,7 @@ public class IfInstructionContext {
     }
 
     private static class IfContext {
-        private List<JumperInstruction> endIfJumps = new ArrayList<>();
-        private JumperInstruction jumpOnFalse;
-
-        public void addEndIfJumper(JumperInstruction jumperInstruction) {
-            endIfJumps.add(jumperInstruction);
-        }
-
-        public JumperInstruction getJumpOnFalse() {
-            return jumpOnFalse;
-        }
-
-        public void setJumpOnFalse(JumperInstruction jumpOnFalse) {
-            this.jumpOnFalse = jumpOnFalse;
-        }
+        public List<JumperInstruction> endIfJumps = new ArrayList<>();
+        public JumperInstruction jumpOnFalse;
     }
 }

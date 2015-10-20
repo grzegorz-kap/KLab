@@ -25,7 +25,7 @@ public class EndifKeywordParseHandler extends AbstractParseHandler {
     public void handle() {
         checkCorrectExpressionSize();
         checkKeywordBalance();
-        parseContextManager.addExpressionValue(new EndifToken(parseContextManager.tokenAt(1)));
+        parseContextManager.addExpressionValue(new EndifToken(parseContextManager.tokenAt(0)));
         parseContextManager.getBalanceContext().popKeyword();
         parseContextManager.incrementTokenPosition(1);
         parseContextManager.setInstructionStop(true);

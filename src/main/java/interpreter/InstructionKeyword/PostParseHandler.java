@@ -1,5 +1,6 @@
 package interpreter.InstructionKeyword;
 
+import interpreter.execution.model.Code;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.translate.model.MacroInstruction;
@@ -14,4 +15,6 @@ public interface PostParseHandler {
     boolean executionCanStart();
 
     MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator);
+
+    void setCode(Code code);
 }

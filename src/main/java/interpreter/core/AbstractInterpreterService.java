@@ -1,15 +1,16 @@
 package interpreter.core;
 
+import interpreter.InstructionKeyword.IfInstructionPostParseHandler;
 import interpreter.InstructionKeyword.PostParseHandler;
 import interpreter.commons.utils.ExpressionPrinter;
 import interpreter.commons.utils.MacroInstructionPrinter;
-import interpreter.InstructionKeyword.IfInstructionPostParseHandler;
 import interpreter.execution.service.ExecutionService;
 import interpreter.lexer.service.Tokenizer;
 import interpreter.parsing.service.Parser;
 import interpreter.translate.service.InstructionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,12 +30,17 @@ public abstract class AbstractInterpreterService {
     }
 
     protected boolean executionCanStart() {
-        for(PostParseHandler handler : postParseHandlers) {
-            if(!handler.executionCanStart()) {
+        for (PostParseHandler handler : postParseHandlers) {
+            if (!handler.executionCanStart()) {
                 return false;
             }
         }
         return true;
+    }
+
+    @PostConstruct
+    private void init() {
+        postParseHandlers.forEach(postParseHandler -> postParseHandler.setCode(executionService.getExecutionContext().getCode()));
     }
 
     @Autowired

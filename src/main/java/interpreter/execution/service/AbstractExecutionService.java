@@ -15,6 +15,20 @@ public abstract class AbstractExecutionService {
     protected ExecutionContext executionContext;
     protected InstructionPointer instructionPointer;
 
+    public ExecutionContext getExecutionContext() {
+        return executionContext;
+    }
+
+    public void addInstructions(Collection<? extends Instruction> instructions) {
+        executionContext.addInstruction(instructions);
+    }
+
+    public void resetCodeAndStack() {
+        executionContext.clearExecutionStack();
+        executionContext.clearCode();
+        instructionPointer = executionContext.newInstructionPointer();
+    }
+
     public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
         setupExecutionContext(new ExecutionContext());
         instructionHandlers.forEach(this::registerInstructionHandler);
@@ -29,15 +43,5 @@ public abstract class AbstractExecutionService {
         InstructionCode instructionCode = instructionHandler.getSupportedInstructionCode();
         instructionHandlers[instructionCode.getIndex()] = instructionHandler;
         instructionHandler.setExecutionContext(executionContext);
-    }
-
-    public void addInstructions(Collection<? extends Instruction> instructions) {
-        executionContext.addInstruction(instructions);
-    }
-
-    public void resetCodeAndStack() {
-        executionContext.clearExecutionStack();
-        executionContext.clearCode();
-        instructionPointer = executionContext.newInstructionPointer();
     }
 }
