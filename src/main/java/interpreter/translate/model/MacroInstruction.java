@@ -14,8 +14,9 @@ public class MacroInstruction {
         return instructions.get(index);
     }
 
-    public void add(Instruction instruction) {
+    public MacroInstruction add(Instruction instruction) {
         instructions.add(instruction);
+        return this;
     }
 
     public void forEach(Consumer<? super Instruction> consumer) {

@@ -14,7 +14,8 @@ public enum TokenClass {
     CLOSE_BRACKET(10),
     NEW_LINE(11),
     IF_KEYWORD(12),
-    ENDIF_KEYWORD(13);
+    ENDIF_KEYWORD(13),
+    ELSE_KEYWORD(14);
 
     private int index;
 

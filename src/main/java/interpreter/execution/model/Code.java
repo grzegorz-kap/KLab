@@ -29,4 +29,14 @@ public class Code {
     public void clear() {
         instructions.clear();
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder builder = new StringBuilder();
+    	int address = 0;
+    	for(Instruction instruction : instructions) {
+    		builder.append("\n").append(address++).append(") ").append(instruction);
+    	}
+    	return builder.toString();
+    }
 }

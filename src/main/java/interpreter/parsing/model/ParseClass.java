@@ -11,7 +11,8 @@ public enum ParseClass {
     IDENTIFIER(6),
     OPEN_PARENTHESIS(7),
     IF(8),
-    END_IF(9);
+    END_IF(9),
+    ELSE_KEYWORD(10);
 
     private int index;
 

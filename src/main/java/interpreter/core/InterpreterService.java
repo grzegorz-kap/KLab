@@ -21,6 +21,7 @@ class InterpreterService extends AbstractInterpreterService {
         while (parser.hasNext()) {
             executionLoop();
         }
+        LOGGER.info("{}", executionService.getExecutionContext().getCode());
     }
 
     public void executionLoop() {
