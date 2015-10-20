@@ -1,14 +1,15 @@
-package interpreter.lexer.helper;
+package interpreter.lexer.utils;
 
 import interpreter.lexer.model.TokenizerContext;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TokenStartMatcher {
 
     private TokenizerContext tokenizerContext;
-
-    public TokenStartMatcher(TokenizerContext tokenizerContext) {
-        this.tokenizerContext = tokenizerContext;
-    }
 
     public boolean isNumberStart() {
         return Character.isDigit(tokenizerContext.charAt(0)) ||
@@ -27,5 +28,9 @@ public class TokenStartMatcher {
 
     public boolean isNewLineStart() {
         return tokenizerContext.isCharAt(0, '\n');
+    }
+
+    public void setTokenizerContext(TokenizerContext tokenizerContext) {
+        this.tokenizerContext = tokenizerContext;
     }
 }

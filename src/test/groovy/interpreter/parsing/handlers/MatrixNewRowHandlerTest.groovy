@@ -32,7 +32,7 @@ class MatrixNewRowHandlerTest extends Specification {
         when:
         handler.handle()
         then:
-        1 * stackHelper.stackToExpressionUntilTokenClass(parseContextManager, ParseClass.MATRIX_START)
+        1 * stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START)
         1 * expressionHelper.popUntilParseClass(parseContextManager, { predicate ->
             ParseClass.values().each {
                 parseClass -> predicate.test(parseClass) == (parseClass == ParseClass.MATRIX_VERSE || parseClass == ParseClass.MATRIX_START)

@@ -9,7 +9,11 @@ public enum ParseClass {
     MATRIX_VERSE(4),
     MATRIX(5),
     IDENTIFIER(6),
-    OPEN_PARENTHESIS(7);
+    OPEN_PARENTHESIS(7),
+    IF(8),
+    END_IF(9),
+    ELSE_KEYWORD(10),
+    ELSEIF_KEYWORD(11);
 
     private int index;
 

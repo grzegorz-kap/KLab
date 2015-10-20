@@ -47,4 +47,13 @@ public class Instruction {
     public ObjectData getObjectDate(int index) {
         return objectDataList.get(index);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(instructionCode);
+        stringBuilder.append('\t');
+        objectDataList.forEach(objectData -> stringBuilder.append(objectData).append("\t"));
+        return stringBuilder.toString();
+    }
 }

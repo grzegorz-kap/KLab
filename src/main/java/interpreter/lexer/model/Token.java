@@ -6,6 +6,7 @@ public class Token {
     private Long line;
     private Long column;
     private TokenClass tokenClass;
+    private boolean isKeyword = false;
 
     public String getLexeme() {
         return lexeme;
@@ -37,5 +38,13 @@ public class Token {
 
     public void setTokenClass(TokenClass tokenClass) {
         this.tokenClass = tokenClass;
+    }
+
+    public boolean isKeyword() {
+        return isKeyword;
+    }
+
+    public void setIsKeyword(boolean isKeyword) {
+        this.isKeyword = isKeyword;
     }
 }

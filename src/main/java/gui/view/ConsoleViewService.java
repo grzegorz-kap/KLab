@@ -4,8 +4,6 @@ import gui.service.InterpreterEventsService;
 import interpreter.core.Interpreter;
 import interpreter.core.events.PrintEvent;
 import org.fxmisc.richtext.CodeArea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationListener;
@@ -20,7 +18,6 @@ import java.util.Objects;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ConsoleViewService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleViewService.class);
     private Interpreter interpreter;
     private InterpreterEventsService interpreterEventsService;
     private CodeArea commandInput;

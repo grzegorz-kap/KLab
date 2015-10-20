@@ -9,9 +9,7 @@ public class MacroInstructionPrinter {
     public String print(MacroInstruction macroInstruction) {
         StringBuilder stringBuilder = new StringBuilder();
         macroInstruction.forEach(instruction -> {
-            stringBuilder.append(instruction.getInstructionCode());
-            stringBuilder.append('\t');
-            instruction.forEachObjectData(objectData -> stringBuilder.append(objectData).append("\t"));
+            stringBuilder.append(instruction);
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();

@@ -1,5 +1,7 @@
 package interpreter.core;
 
+import interpreter.InstructionKeyword.IfInstructionPostParseHandler;
+import interpreter.InstructionKeyword.PostParseHandler;
 import interpreter.commons.utils.ExpressionPrinter;
 import interpreter.commons.utils.MacroInstructionPrinter;
 import interpreter.execution.service.ExecutionService;
@@ -7,6 +9,10 @@ import interpreter.lexer.service.Tokenizer;
 import interpreter.parsing.service.Parser;
 import interpreter.translate.service.InstructionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractInterpreterService {
 
@@ -16,9 +22,25 @@ public abstract class AbstractInterpreterService {
     protected InstructionTranslator instructionTranslator;
     protected ExpressionPrinter expressionPrinter;
     protected MacroInstructionPrinter macroInstructionPrinter;
+    protected IfInstructionPostParseHandler ifPostHandler;
+    private Set<PostParseHandler> postParseHandlers = new HashSet<>();
 
     public void resetCodeAndStack() {
         executionService.resetCodeAndStack();
+    }
+
+    protected boolean executionCanStart() {
+        for (PostParseHandler handler : postParseHandlers) {
+            if (!handler.executionCanStart()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @PostConstruct
+    private void init() {
+        postParseHandlers.forEach(postParseHandler -> postParseHandler.setCode(executionService.getExecutionContext().getCode()));
     }
 
     @Autowired
@@ -49,5 +71,11 @@ public abstract class AbstractInterpreterService {
     @Autowired
     public void setMacroInstructionPrinter(MacroInstructionPrinter macroInstructionPrinter) {
         this.macroInstructionPrinter = macroInstructionPrinter;
+    }
+
+    @Autowired
+    protected void setIfPostHandler(IfInstructionPostParseHandler ifPostHandler) {
+        this.ifPostHandler = ifPostHandler;
+        postParseHandlers.add(ifPostHandler);
     }
 }

@@ -60,8 +60,8 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private boolean getPrintProperty() {
-        return Optional.ofNullable(translateContext.getExpression().getProperty(Expression.PRINT_PROPERTY_KEY,
-                Boolean.class)).orElse(false);
+        return Optional.ofNullable(translateContext.getExpression().getProperty(
+                Expression.PRINT_PROPERTY_KEY, Boolean.class)).orElse(false);
     }
 
     private void checkIfSupported(Expression<ParseToken> expression, TranslateHandler translateHandler) {

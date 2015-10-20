@@ -34,6 +34,10 @@ public class ExecutionContext {
         code.clear();
     }
 
+    public Code getCode() {
+        return code;
+    }
+
     public ObjectData executionStackPop() {
         return executionStack.pop();
     }

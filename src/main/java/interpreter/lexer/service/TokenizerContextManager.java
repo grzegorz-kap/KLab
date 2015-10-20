@@ -2,13 +2,15 @@ package interpreter.lexer.service;
 
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenizerContext;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
+@Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TokenizerContextManager {
-    private TokenizerContext tokenizerContext;
 
-    public TokenizerContextManager(TokenizerContext tokenizerContext) {
-        this.tokenizerContext = tokenizerContext;
-    }
+    private TokenizerContext tokenizerContext;
 
     public void addToken(Token token) {
         token.setLine(tokenizerContext.getLine());
@@ -51,4 +53,7 @@ public class TokenizerContextManager {
         tokenizerContext.setIndex(tokenizerContext.getIndex() + value);
     }
 
+    public void setTokenizerContext(TokenizerContext tokenizerContext) {
+        this.tokenizerContext = tokenizerContext;
+    }
 }

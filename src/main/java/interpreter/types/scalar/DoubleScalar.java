@@ -4,6 +4,8 @@ import interpreter.parsing.model.NumericType;
 import interpreter.types.AbstractNumericObject;
 import interpreter.types.ObjectData;
 
+import java.util.Objects;
+
 public class DoubleScalar extends AbstractNumericObject {
 
     private Double value;
@@ -33,5 +35,10 @@ public class DoubleScalar extends AbstractNumericObject {
     @Override
     public ObjectData copyObjectData() {
         return new DoubleScalar(value);
+    }
+
+    @Override
+    public boolean isTrue() {
+        return Objects.nonNull(value) && !value.equals(0.0D);
     }
 }

@@ -2,13 +2,18 @@ package interpreter.lexer.service
 
 import interpreter.lexer.model.TokenClass
 import interpreter.lexer.model.TokenizerContext
+import interpreter.lexer.utils.TokenRegexReader
 import spock.lang.Specification
 
 import java.util.regex.Pattern
 
 class TokenRegexReaderTest extends Specification {
 
-    def tokenReader = new TokenRegexReader(new TokenizerContext("123.321"));
+    def tokenReader = new TokenRegexReader()
+
+    def setup() {
+        tokenReader.setTokenizerContext(new TokenizerContext("123.321"))
+    }
 
     def "Testing reading token for pattern"() {
         given: "Pattern and expected token class"
