@@ -6,7 +6,7 @@
 
     <groupId>org</groupId>
     <artifactId>klab</artifactId>
-    <version>0.0.2.2-SNAPSHOT</version>
+    <version>0.0.2.3-SNAPSHOT</version>
 
     <properties>
         <apache.commons.version>3.4</apache.commons.version>
