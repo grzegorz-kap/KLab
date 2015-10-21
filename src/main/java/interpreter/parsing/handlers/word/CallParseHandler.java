@@ -8,14 +8,17 @@ import org.springframework.stereotype.Component;
 import interpreter.commons.IdentifierMapper;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.handlers.AbstractParseHandler;
+import interpreter.parsing.model.BalanceType;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.tokens.IdentifierToken;
+import interpreter.parsing.service.BalanceContextService;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CallParseHandler extends AbstractParseHandler {
 
 	private IdentifierMapper identifierMapper;
+	private BalanceContextService balanceContextService;
 
 	@Override
 	public void handle() {
@@ -25,6 +28,7 @@ public class CallParseHandler extends AbstractParseHandler {
 		parseContextManager.addExpressionNode(identifierToken);
 		parseContextManager.stackPush(identifierToken);
 		parseContextManager.incrementTokenPosition(2);
+		balanceContextService.add(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
 	}
 
 	@Override
@@ -35,6 +39,11 @@ public class CallParseHandler extends AbstractParseHandler {
 	@Autowired
 	public void setIdentifierMapper(IdentifierMapper identifierMapper) {
 		this.identifierMapper = identifierMapper;
+	}
+
+	@Autowired
+	public void setBalanceContextService(BalanceContextService balanceContextService) {
+		this.balanceContextService = balanceContextService;
 	}
 
 }

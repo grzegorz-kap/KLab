@@ -11,9 +11,11 @@ import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.exception.UnexpectedCloseParenthesisException;
 import interpreter.parsing.handlers.helpers.ExpressionHelper;
 import interpreter.parsing.handlers.helpers.StackHelper;
+import interpreter.parsing.model.BalanceType;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
+import interpreter.parsing.service.BalanceContextService;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -23,6 +25,7 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 
 	private StackHelper stackHelper;
 	private ExpressionHelper expressionHelper;
+	private BalanceContextService balanceContextService;
 
 	@Override
 	public TokenClass getSupportedTokenClass() {
@@ -35,6 +38,7 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 		ParseToken stackPeek = parseContextManager.stackPop();
 		if (stackPeek.getParseClass().equals(ParseClass.CALL)) {
 			reduceExpression();
+			balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
 		}
 		parseContextManager.incrementTokenPosition(1);
 	}
@@ -65,6 +69,11 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 	@Autowired
 	public void setExpressionHelper(ExpressionHelper expressionHelper) {
 		this.expressionHelper = expressionHelper;
+	}
+
+	@Autowired
+	public void setBalanceContextService(BalanceContextService balanceContextService) {
+		this.balanceContextService = balanceContextService;
 	}
 
 }
