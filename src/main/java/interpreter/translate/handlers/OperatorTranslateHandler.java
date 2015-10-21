@@ -5,8 +5,9 @@ import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
 import interpreter.translate.factory.OperatorInstructionCodesFactory;
-import interpreter.translate.model.instruction.Instruction;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.Instruction;
+import interpreter.translate.model.InstructionCode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

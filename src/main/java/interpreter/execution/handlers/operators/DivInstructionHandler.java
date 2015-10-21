@@ -1,7 +1,7 @@
 package interpreter.execution.handlers.operators;
 
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
 import interpreter.types.ObjectData;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

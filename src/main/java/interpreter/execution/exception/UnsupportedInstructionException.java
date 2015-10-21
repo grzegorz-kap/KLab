@@ -1,6 +1,6 @@
 package interpreter.execution.exception;
 
-import interpreter.translate.model.instruction.Instruction;
+import interpreter.translate.model.Instruction;
 
 public class UnsupportedInstructionException extends RuntimeException {
     private Instruction instruction;

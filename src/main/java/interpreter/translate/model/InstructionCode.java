@@ -1,4 +1,4 @@
-package interpreter.translate.model.instruction;
+package interpreter.translate.model;
 
 public enum InstructionCode {
     PUSH(0),
@@ -18,7 +18,8 @@ public enum InstructionCode {
     LE(14),
     LT(15),
     JMPF(16),
-    JMP(17);
+    JMP(17),
+    CALL(18);
 
     private int index;
 

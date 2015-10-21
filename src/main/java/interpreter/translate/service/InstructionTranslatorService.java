@@ -5,8 +5,9 @@ import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionValue;
 import interpreter.translate.exception.UnsupportedParseToken;
 import interpreter.translate.handlers.TranslateHandler;
-import interpreter.translate.model.instruction.Instruction;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.Instruction;
+import interpreter.translate.model.InstructionCode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

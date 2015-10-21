@@ -1,4 +1,4 @@
-package interpreter.translate.model.instruction;
+package interpreter.translate.model;
 
 public class JumperInstruction extends Instruction {
 

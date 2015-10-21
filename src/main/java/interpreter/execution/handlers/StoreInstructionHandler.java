@@ -2,7 +2,7 @@ package interpreter.execution.handlers;
 
 import interpreter.commons.MemorySpace;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
 import interpreter.types.IdentifierObject;
 import interpreter.types.ObjectData;
 import org.springframework.beans.factory.annotation.Autowired;

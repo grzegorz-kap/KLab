@@ -16,9 +16,9 @@ import interpreter.execution.model.Code;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
+import interpreter.translate.model.InstructionCode;
+import interpreter.translate.model.JumperInstruction;
 import interpreter.translate.model.MacroInstruction;
-import interpreter.translate.model.instruction.InstructionCode;
-import interpreter.translate.model.instruction.JumperInstruction;
 import interpreter.translate.service.InstructionTranslator;
 
 @Component

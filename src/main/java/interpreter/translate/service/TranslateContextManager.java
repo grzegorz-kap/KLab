@@ -1,7 +1,8 @@
 package interpreter.translate.service;
 
+import interpreter.translate.model.Instruction;
 import interpreter.translate.model.TranslateContext;
-import interpreter.translate.model.instruction.Instruction;
+
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

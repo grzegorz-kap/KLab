@@ -2,7 +2,7 @@ package interpreter.execution.handlers;
 
 import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
 
 public interface InstructionHandler {
     void handle(InstructionPointer instructionPointer);

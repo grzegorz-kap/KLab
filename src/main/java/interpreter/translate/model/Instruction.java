@@ -1,4 +1,4 @@
-package interpreter.translate.model.instruction;
+package interpreter.translate.model;
 
 import interpreter.types.ObjectData;
 

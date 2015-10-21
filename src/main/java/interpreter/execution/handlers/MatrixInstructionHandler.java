@@ -3,7 +3,7 @@ package interpreter.execution.handlers;
 import interpreter.execution.WrongTypeException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
 import interpreter.types.ObjectData;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.MatrixBuilder;

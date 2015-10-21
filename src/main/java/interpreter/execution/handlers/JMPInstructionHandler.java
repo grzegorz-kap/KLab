@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.instruction.InstructionCode;
-import interpreter.translate.model.instruction.JumperInstruction;
+import interpreter.translate.model.InstructionCode;
+import interpreter.translate.model.JumperInstruction;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
