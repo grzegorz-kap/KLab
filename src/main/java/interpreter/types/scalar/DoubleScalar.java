@@ -1,44 +1,43 @@
 package interpreter.types.scalar;
 
-import interpreter.parsing.model.NumericType;
-import interpreter.types.AbstractNumericObject;
-import interpreter.types.ObjectData;
-
 import java.util.Objects;
 
-public class DoubleScalar extends AbstractNumericObject {
+import interpreter.parsing.model.NumericType;
+import interpreter.types.ObjectData;
 
-    private Double value;
+public class DoubleScalar extends AbstractScalar {
 
-    public DoubleScalar() {
-        super(NumericType.DOUBLE);
-    }
+	private Double value;
 
-    public DoubleScalar(Double value) {
-        this();
-        this.value = value;
-    }
+	public DoubleScalar() {
+		super(NumericType.DOUBLE);
+	}
 
-    public Double getValue() {
-        return value;
-    }
+	public DoubleScalar(Double value) {
+		this();
+		this.value = value;
+	}
 
-    public void setValue(Double value) {
-        this.value = value;
-    }
+	public Double getValue() {
+		return value;
+	}
 
-    @Override
-    public String toString() {
-        return value.toString();
-    }
+	public void setValue(Double value) {
+		this.value = value;
+	}
 
-    @Override
-    public ObjectData copyObjectData() {
-        return new DoubleScalar(value);
-    }
+	@Override
+	public String toString() {
+		return value.toString();
+	}
 
-    @Override
-    public boolean isTrue() {
-        return Objects.nonNull(value) && !value.equals(0.0D);
-    }
+	@Override
+	public ObjectData copyObjectData() {
+		return new DoubleScalar(value);
+	}
+
+	@Override
+	public boolean isTrue() {
+		return Objects.nonNull(value) && !value.equals(0.0D);
+	}
 }

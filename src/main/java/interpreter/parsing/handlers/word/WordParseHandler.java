@@ -32,7 +32,7 @@ public class WordParseHandler extends AbstractParseHandler {
 	public TokenClass getSupportedTokenClass() {
 		return TokenClass.WORD;
 	}
-	
+
 	@Override
 	public void setContextManager(ParseContextManager parseContextManager) {
 		this.parseContextManager = parseContextManager;
