@@ -4,10 +4,8 @@ import interpreter.lexer.model.TokenizerContext;
 
 public class TokenReadException extends RuntimeException {
 
-    private TokenizerContext tokenizerContext;
-
-    public TokenReadException(String message, TokenizerContext tokenizerContext) {
+	private static final long serialVersionUID = 1L;
+	public TokenReadException(String message, TokenizerContext tokenizerContext) {
         super(message);
-        this.tokenizerContext = tokenizerContext;
     }
 }

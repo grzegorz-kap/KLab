@@ -4,7 +4,9 @@ import interpreter.parsing.model.ParseContext;
 
 public class WrongNumberOfArgumentsException extends ParseException {
 
-    public WrongNumberOfArgumentsException(String message, ParseContext parseContext) {
+	private static final long serialVersionUID = 1L;
+
+	public WrongNumberOfArgumentsException(String message, ParseContext parseContext) {
         super(message, parseContext);
     }
 }

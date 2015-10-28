@@ -3,7 +3,9 @@ package interpreter.execution.exception;
 import interpreter.translate.model.Instruction;
 
 public class UnsupportedInstructionException extends RuntimeException {
-    private Instruction instruction;
+	
+	private static final long serialVersionUID = 1L;
+	private Instruction instruction;
 
     public UnsupportedInstructionException(String message, Instruction instruction) {
         super(message);

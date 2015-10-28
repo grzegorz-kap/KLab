@@ -4,6 +4,8 @@ import interpreter.service.functions.model.CallInstruction;
 
 public class UndefinedFunctionException extends RuntimeException {
 
+	private static final long serialVersionUID = 834347388412197049L;
+
 	public static final String MESSAGE_FORMAT = "No function '%s' found which takes '%d' arguments";
 
 	private CallInstruction instruction;

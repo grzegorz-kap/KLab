@@ -2,9 +2,10 @@ package interpreter.service.functions.exception;
 
 import interpreter.commons.exception.InterpreterException;
 import interpreter.service.functions.InternalFunction;
-import interpreter.service.functions.model.CallInstruction;
 
 public class WrongNumberOfArgumentsException extends InterpreterException {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private static final String MESSAGE_FORMAT = "Wrong number of argumens in '%s' function call.";
 	private InternalFunction internalFunction;
