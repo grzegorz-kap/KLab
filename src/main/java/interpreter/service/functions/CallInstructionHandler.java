@@ -7,8 +7,10 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import interpreter.execution.exception.UndefinedVariableException;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
+import interpreter.service.functions.exception.UndefinedFunctionException;
 import interpreter.service.functions.model.CallInstruction;
 import interpreter.translate.model.InstructionCode;
 
@@ -26,7 +28,7 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
 		} else if (nonNull(instruction.getInternalFunctionAddress())) {
 			handleInternalFunctionCall(instructionPointer);
 		} else {
-			throw new RuntimeException();
+			throw new UndefinedFunctionException(instruction);
 		}
 	}
 
@@ -36,7 +38,7 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
 	}
 
 	private void handleVariableCall(InstructionPointer instructionPointer) {
-		throw new RuntimeException();
+		throw new RuntimeException("Variable function call not supported yet");
 	}
 
 	@Override
