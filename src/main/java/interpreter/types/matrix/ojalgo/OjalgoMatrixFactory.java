@@ -19,6 +19,6 @@ public class OjalgoMatrixFactory implements MatrixFactory {
 
     @Override
     public Matrix<Double> createDouble(int rows, int columns) {
-        return new OjalgoMatrix<>(DOUBLE_FACTORY.makeZero(0, 0));
+        return new OjalgoMatrix<>(DOUBLE_FACTORY.makeZero(rows, columns));
     }
 }

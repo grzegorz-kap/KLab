@@ -1,5 +1,7 @@
 package interpreter.service.functions.model;
 
+import interpreter.types.ObjectData;
+
 public interface InternalFunction {
 	
 	String SIZE_FUNCTION = "size";
@@ -7,5 +9,6 @@ public interface InternalFunction {
 	int getArgumentsNumber();
 	Integer getAddress();
 	void setAddress(Integer address);
+	ObjectData call(ObjectData[] datas);
 
 }
