@@ -4,7 +4,7 @@ import interpreter.parsing.model.NumericType;
 import interpreter.types.AbstractNumericObject;
 import interpreter.types.Sizeable;
 
-public abstract class AbstractScalar extends AbstractNumericObject implements Sizeable {
+public abstract class AbstractScalar extends AbstractNumericObject implements Sizeable, Scalar {
 
 	public AbstractScalar(NumericType numericType) {
 		super(numericType);

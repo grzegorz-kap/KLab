@@ -6,6 +6,6 @@ public interface IdentifierMapper {
 	
 	Integer getMainAddress(String id);
 
-	Integer registerInternalFunction(String id, int argumentsNumber);
+	Integer registerInternalFunction(String id);
 
 }

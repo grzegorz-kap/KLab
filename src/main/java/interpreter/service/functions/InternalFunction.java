@@ -1,12 +1,14 @@
-package interpreter.service.functions.model;
+package interpreter.service.functions;
 
 import interpreter.types.ObjectData;
 
 public interface InternalFunction {
 	
 	String SIZE_FUNCTION = "size";
+	String RAND_FUNCTION = "rand";
 	String getName();
-	int getArgumentsNumber();
+	int getMinArgs();
+	int getMaxArgs();
 	Integer getAddress();
 	void setAddress(Integer address);
 	ObjectData call(ObjectData[] datas);

@@ -5,6 +5,9 @@ import interpreter.types.AbstractNumericObject;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
 import interpreter.types.matrix.Matrix;
+
+import java.util.function.Consumer;
+
 import org.ojalgo.matrix.store.PhysicalStore;
 
 public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implements Matrix<T>, Sizeable {
@@ -17,12 +20,17 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
 	}
 
 	@Override
-	public T getValueAt(int m, int n) {
+	public T get(int m, int n) {
 		return matrixStore.get(m, n);
+	}
+	
+	@Override
+	public T get(int m) {
+		return matrixStore.get(m);
 	}
 
 	@Override
-	public void setValueAt(int m, int n, T value) {
+	public void set(int m, int n, T value) {
 		matrixStore.set(m, n, value);
 	}
 
@@ -68,5 +76,10 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
 	@Override
 	public long getColumns() {
 		return matrixStore.countColumns();
+	}
+
+	@Override
+	public void forEach(Consumer<? super T> action) {
+		matrixStore.forEach(action);
 	}
 }

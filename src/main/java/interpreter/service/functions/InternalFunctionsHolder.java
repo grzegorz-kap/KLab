@@ -1,7 +1,5 @@
 package interpreter.service.functions;
 
-import interpreter.service.functions.model.InternalFunction;
-
 public interface InternalFunctionsHolder {
 	InternalFunction get(int address);
 

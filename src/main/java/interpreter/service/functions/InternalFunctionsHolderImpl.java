@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import interpreter.commons.IdentifierMapper;
-import interpreter.service.functions.model.InternalFunction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,15 +49,15 @@ public class InternalFunctionsHolderImpl implements InitializingBean, InternalFu
 	}
 
 	private Predicate<? super InternalFunction> nameAndArgumentsNumberFilter(String functionName, int argumentsNumber) {
-		return function -> function.getName().equals(functionName) && function.getArgumentsNumber() == argumentsNumber;
+		return function -> function.getName().equals(functionName) && function.getMinArgs() <= argumentsNumber
+				&& function.getMaxArgs() >= argumentsNumber;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		List<InternalFunction> list = new ArrayList<>(Collections.nCopies(internalFunctions.size(), null));
 		internalFunctions.forEach(internalFunction -> {
-			Integer address = identifierMapper.registerInternalFunction(internalFunction.getName(),
-					internalFunction.getArgumentsNumber());
+			Integer address = identifierMapper.registerInternalFunction(internalFunction.getName());
 			internalFunction.setAddress(address);
 			list.set(address, internalFunction);
 		});

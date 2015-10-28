@@ -11,7 +11,6 @@ import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.service.functions.exception.UndefinedFunctionException;
 import interpreter.service.functions.model.CallInstruction;
-import interpreter.service.functions.model.InternalFunction;
 import interpreter.translate.model.InstructionCode;
 import interpreter.types.ObjectData;
 

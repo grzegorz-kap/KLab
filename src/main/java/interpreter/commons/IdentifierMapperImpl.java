@@ -14,7 +14,7 @@ public class IdentifierMapperImpl implements IdentifierMapper {
 	private Integer mainIdentifierFreeAddress = 0;
 	private Integer internalFunctionFreeAddress = 0;
 	private Map<String, Integer> mainIdentifierAddressMap = new HashMap<>();
-	private Map<DistinctFunction, Integer> internalFunctionAddressMap = new HashMap<>();
+	private Map<String, Integer> internalFunctionAddressMap = new HashMap<>();
 	
 	@Override
 	public Integer getMainAddress(String id) {
@@ -33,12 +33,11 @@ public class IdentifierMapperImpl implements IdentifierMapper {
 	}
 
 	@Override
-	public Integer registerInternalFunction(String id, int argumentsNumber) {
-		DistinctFunction distinctFunction = new DistinctFunction(id, argumentsNumber);
-		Integer address = internalFunctionAddressMap.get(distinctFunction);
+	public Integer registerInternalFunction(String id) {
+		Integer address = internalFunctionAddressMap.get(id);
 		if (Objects.isNull(address)) {
 			address = getNextFreeInternalFunctionFreeAddressAndIncrement();
-			internalFunctionAddressMap.put(distinctFunction, address);
+			internalFunctionAddressMap.put(id, address);
 		}
 		return address;
 	}
@@ -54,28 +53,5 @@ public class IdentifierMapperImpl implements IdentifierMapper {
 	@Autowired
 	private void setMemorySpace(MemorySpace memorySpace) {
 		this.memorySpace = memorySpace;
-	}
-
-	private static class DistinctFunction {
-
-		private String name;
-		private Integer argumentsNumber;
-
-		public DistinctFunction(String name, Integer argumentsNumber) {
-			this.name = name;
-			this.argumentsNumber = argumentsNumber;
-		}
-
-		@Override
-		public boolean equals(Object second) {
-			DistinctFunction b = (DistinctFunction) second;
-			return name.equals(b.name) && argumentsNumber.equals(b.argumentsNumber);
-		}
-
-		@Override
-		public int hashCode() {
-			return name.hashCode();
-		}
-
 	}
 }

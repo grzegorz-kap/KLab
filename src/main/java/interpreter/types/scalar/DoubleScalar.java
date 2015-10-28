@@ -18,6 +18,7 @@ public class DoubleScalar extends AbstractScalar {
 		this.value = value;
 	}
 
+	@Override
 	public Double getValue() {
 		return value;
 	}
@@ -39,5 +40,10 @@ public class DoubleScalar extends AbstractScalar {
 	@Override
 	public boolean isTrue() {
 		return Objects.nonNull(value) && !value.equals(0.0D);
+	}
+
+	@Override
+	public boolean isMathematicalInteger() {
+		return Math.rint(value) == value;
 	}
 }
