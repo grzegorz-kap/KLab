@@ -1,5 +1,6 @@
 package interpreter.parsing.handlers.word;
 
+import interpreter.core.internal.function.InternalFunctionsHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +19,7 @@ import interpreter.parsing.service.BalanceContextService;
 public class CallParseHandler extends AbstractParseHandler {
 
 	private IdentifierMapper identifierMapper;
+	private InternalFunctionsHolder internalFunctionsHolder;
 	private BalanceContextService balanceContextService;
 
 	@Override
@@ -25,6 +27,7 @@ public class CallParseHandler extends AbstractParseHandler {
 		IdentifierToken identifierToken = new IdentifierToken(parseContextManager.tokenAt(0));
 		identifierToken.setParseClass(ParseClass.CALL);
 		identifierToken.setAddress(identifierMapper.registerMainIdentifier(identifierToken.getId()));
+		identifierToken.setInternalFunctionAddress(internalFunctionsHolder.getAddress(identifierToken.getId()));
 		parseContextManager.addExpressionNode(identifierToken);
 		parseContextManager.stackPush(identifierToken);
 		parseContextManager.incrementTokenPosition(2);
@@ -46,4 +49,8 @@ public class CallParseHandler extends AbstractParseHandler {
 		this.balanceContextService = balanceContextService;
 	}
 
+	@Autowired
+	public void setInternalFunctionsHolder(InternalFunctionsHolder internalFunctionsHolder) {
+		this.internalFunctionsHolder = internalFunctionsHolder;
+	}
 }

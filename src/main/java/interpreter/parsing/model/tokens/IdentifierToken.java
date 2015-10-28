@@ -10,6 +10,7 @@ public class IdentifierToken extends ParseToken {
     private VariableScope variableScope;
     private String id;
     private Integer address;
+    private Integer internalFunctionAddress;
 
     public IdentifierToken(Token token) {
         id = token.getLexeme();
@@ -39,5 +40,13 @@ public class IdentifierToken extends ParseToken {
 
     public void setAddress(Integer address) {
         this.address = address;
+    }
+
+    public Integer getInternalFunctionAddress() {
+        return internalFunctionAddress;
+    }
+
+    public void setInternalFunctionAddress(Integer internalFunctionAddress) {
+        this.internalFunctionAddress = internalFunctionAddress;
     }
 }

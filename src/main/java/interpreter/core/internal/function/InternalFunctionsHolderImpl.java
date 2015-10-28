@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @Scope(BeanDefinition.SCOPE_SINGLETON)
@@ -24,9 +25,24 @@ public class InternalFunctionsHolderImpl implements InitializingBean, InternalFu
     }
 
     @Override
+    public Integer getAddress(String functionName) {
+        InternalFunction internalFunction = internalFunctions.stream()
+                .filter(function-> function.getName().equals(functionName))
+                .findFirst().orElse(null);
+        return Objects.isNull(internalFunction) ? null : internalFunction.getAddress();
+    }
+
+    @Override
     public boolean contains(String functionName, int argumentsNumber) {
         return internalFunctions.stream()
                 .filter(function -> function.getName().equals(functionName) && function.getArgumentsNumber() == argumentsNumber)
+                .findFirst().orElse(null) != null;
+    }
+
+    @Override
+    public boolean contains(String functionName) {
+        return internalFunctions.stream()
+                .filter(function -> function.getName().equals(functionName))
                 .findFirst().orElse(null) != null;
     }
 
@@ -36,6 +52,7 @@ public class InternalFunctionsHolderImpl implements InitializingBean, InternalFu
         internalFunctions.forEach(internalFunction -> {
             Integer address = identifierMapper.registerInternalFunction(
                     internalFunction.getName(), internalFunction.getArgumentsNumber());
+            internalFunction.setAddress(address);
             list.set(address, internalFunction);
         });
         internalFunctions = list;

@@ -3,16 +3,9 @@ package interpreter.core.internal.function;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SizeFunction implements InternalFunction {
+public class SizeFunction extends AbstractInternalFunction implements InternalFunction {
 
-	@Override
-	public String getName() {
-		return InternalFunction.SIZE_FUNCTION;
+	public SizeFunction() {
+		super(null, 1, InternalFunction.SIZE_FUNCTION);
 	}
-
-	@Override
-	public int getArgumentsNumber() {
-		return 1;
-	}
-
 }
