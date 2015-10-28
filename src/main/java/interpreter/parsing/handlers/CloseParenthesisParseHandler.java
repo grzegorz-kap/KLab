@@ -16,6 +16,8 @@ import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.service.BalanceContextService;
+import interpreter.service.functions.InternalFunctionsHolder;
+import interpreter.service.functions.model.CallToken;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -26,6 +28,7 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 	private StackHelper stackHelper;
 	private ExpressionHelper expressionHelper;
 	private BalanceContextService balanceContextService;
+	private InternalFunctionsHolder internalFunctionHolder;
 
 	@Override
 	public TokenClass getSupportedTokenClass() {
@@ -46,8 +49,15 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 		List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager,
 				this::isCallToken);
 		Expression<ParseToken> callNode = parseContextManager.expressionPeek();
+		setupInternalFunctionAddress(expressions, callNode);
 		callNode.addChildren(expressions);
 		balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
+	}
+
+	private void setupInternalFunctionAddress(List<Expression<ParseToken>> expressions, Expression<ParseToken> callNode) {
+		CallToken callToken = (CallToken) callNode.getValue();
+		Integer address = internalFunctionHolder.getAddress(callToken.getCallName(), expressions.size());
+		callToken.setInternalFunctionAddress(address);
 	}
 
 	private boolean isFunctionCallEnd(ParseToken stackPeek) {
@@ -78,6 +88,11 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 	@Autowired
 	public void setBalanceContextService(BalanceContextService balanceContextService) {
 		this.balanceContextService = balanceContextService;
+	}
+
+	@Autowired
+	public void setInternalFunctionHolder(InternalFunctionsHolder internalFunctionHolder) {
+		this.internalFunctionHolder = internalFunctionHolder;
 	}
 
 }

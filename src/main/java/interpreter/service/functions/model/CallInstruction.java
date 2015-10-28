@@ -1,6 +1,7 @@
-package interpreter.translate.model;
+package interpreter.service.functions.model;
 
-import interpreter.parsing.model.tokens.CallToken;
+import interpreter.translate.model.Instruction;
+import interpreter.translate.model.InstructionCode;
 
 public class CallInstruction extends Instruction {
 

@@ -1,4 +1,4 @@
-package interpreter.core.internal.function;
+package interpreter.service.functions.model;
 
 public interface InternalFunction {
 	

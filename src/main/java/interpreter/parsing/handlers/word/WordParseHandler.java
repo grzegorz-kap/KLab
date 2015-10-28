@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.service.ParseContextManager;
+import interpreter.service.functions.CallParseHandler;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)

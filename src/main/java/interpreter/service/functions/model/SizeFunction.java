@@ -1,6 +1,8 @@
-package interpreter.core.internal.function;
+package interpreter.service.functions.model;
 
 import org.springframework.stereotype.Component;
+
+import interpreter.core.internal.function.AbstractInternalFunction;
 
 @Component
 public class SizeFunction extends AbstractInternalFunction implements InternalFunction {

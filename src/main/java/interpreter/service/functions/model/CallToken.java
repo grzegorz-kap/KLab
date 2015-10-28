@@ -1,4 +1,4 @@
-package interpreter.parsing.model.tokens;
+package interpreter.service.functions.model;
 
 import interpreter.lexer.model.Token;
 import interpreter.parsing.model.ParseClass;
