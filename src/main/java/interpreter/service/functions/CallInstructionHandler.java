@@ -2,14 +2,11 @@ package interpreter.service.functions;
 
 import static java.util.Objects.nonNull;
 
-import java.util.stream.IntStream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import interpreter.execution.exception.UndefinedVariableException;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.service.functions.exception.UndefinedFunctionException;
@@ -37,10 +34,10 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
 	}
 
 	private void handleInternalFunctionCall(InstructionPointer instructionPointer) {
-		CallInstruction instruction =  (CallInstruction) instructionPointer.current();
+		CallInstruction instruction = (CallInstruction) instructionPointer.current();
 		InternalFunction internalFunction = internalFunctionsHolder.get(instruction.getInternalFunctionAddress());
 		ObjectData[] data = new ObjectData[instruction.getArgumentsNumber()];
-		for(int index = instruction.getArgumentsNumber()-1 ; index >= 0 ; index --) {
+		for (int index = instruction.getArgumentsNumber() - 1; index >= 0; index--) {
 			data[index] = executionContext.executionStackPop();
 		}
 		executionContext.executionStackPush(internalFunction.call(data));

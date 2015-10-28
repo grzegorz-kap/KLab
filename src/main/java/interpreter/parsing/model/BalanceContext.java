@@ -10,34 +10,34 @@ public class BalanceContext {
     Deque<KeywordBalance> keywordBalance = new ArrayDeque<>();
     
     public void put(KeywordBalance balance) {
-    	keywordBalance.add(balance);
+    	keywordBalance.addFirst(balance);
     }
     
     public KeywordBalance popKeyword() {
-    	return keywordBalance.pop();
+    	return keywordBalance.removeFirst();
     }
     
     public KeywordBalance peekKeyword() {
-    	return keywordBalance.peek();
+    	return keywordBalance.peekFirst();
     }
     
     public boolean isKeywordBalance(KeywordBalance balance) {
-    	return Objects.nonNull(keywordBalance.peek()) && keywordBalance.peek().equals(balance);
+    	return Objects.nonNull(keywordBalance.peekFirst()) && keywordBalance.peekFirst().equals(balance);
     }
 
     public void put(BalanceType balanceType) {
-        balanceTypes.add(balanceType);
+        balanceTypes.addFirst(balanceType);
     }
 
     public BalanceType pop() {
-        return balanceTypes.pop();
+        return balanceTypes.removeFirst();
     }
 
     public BalanceType peek() {
-        return balanceTypes.peek();
+        return balanceTypes.peekFirst();
     }
 
     public boolean isBalanceType(BalanceType balanceType) {
-        return Objects.nonNull(balanceTypes.peek()) && balanceTypes.peek().equals(balanceType);
+        return balanceType.equals(balanceTypes.peekFirst());
     }
 }
