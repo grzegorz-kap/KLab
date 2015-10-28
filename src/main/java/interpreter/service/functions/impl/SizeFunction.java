@@ -1,7 +1,8 @@
-package interpreter.service.functions;
+package interpreter.service.functions.impl;
 
 import org.springframework.stereotype.Component;
 
+import interpreter.service.functions.InternalFunction;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
 import interpreter.types.matrix.Matrix;

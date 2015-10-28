@@ -1,7 +1,8 @@
-package interpreter.service.functions;
+package interpreter.service.functions.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import interpreter.service.functions.InternalFunction;
 import interpreter.types.matrix.MatrixFactory;
 
 public abstract class AbstractInternalFunction implements InternalFunction {

@@ -1,10 +1,12 @@
-package interpreter.service.functions;
+package interpreter.service.functions.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import interpreter.service.functions.IntegerArgumentsMapper;
+import interpreter.service.functions.InternalFunction;
 import interpreter.types.ObjectData;
 
 @Component
