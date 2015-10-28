@@ -19,7 +19,7 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
     @Override
     public void handle(InstructionPointer instructionPointer) {
         CallInstruction instruction = (CallInstruction) instructionPointer.current();
-        InternalFunction internalFunction = internalFunctionsHolder.get(instruction.getAddress());
+        InternalFunction internalFunction = internalFunctionsHolder.get(instruction.getVariableAddress());
         throw new RuntimeException();
     }
 

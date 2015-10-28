@@ -1,30 +1,35 @@
 package interpreter.translate.model;
 
-import interpreter.parsing.model.tokens.IdentifierToken;
+import interpreter.parsing.model.tokens.CallToken;
 
 public class CallInstruction extends Instruction {
 
-	private IdentifierToken identifierToken;
+	private CallToken callToken;
 
-	public CallInstruction(IdentifierToken identifierToken) {
-		this.identifierToken = identifierToken;
+	public CallInstruction(CallToken identifierToken) {
+		this.callToken = identifierToken;
 		setInstructionCode(InstructionCode.CALL);
 	}
 
-	public Integer getAddress() {
-		return identifierToken.getAddress();
+	public Integer getVariableAddress() {
+		return callToken.getVariableAddress();
+	}
+
+	public Integer getInternalFunctionAddress() {
+		return callToken.getInternalFunctionAddress();
 	}
 
 	public String getName() {
-		return identifierToken.getId();
+		return callToken.getCallName();
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
-		builder.append(identifierToken.getId()).append("@");
-		builder.append(identifierToken.getAddress()).append("$");
+		builder.append(callToken.getCallName()).append("@");
+		builder.append(callToken.getVariableAddress()).append("$");
+		builder.append(callToken.getInternalFunctionAddress()).append("#");
 		builder.append(getArgumentsNumber());
 		return builder.toString();
 	}

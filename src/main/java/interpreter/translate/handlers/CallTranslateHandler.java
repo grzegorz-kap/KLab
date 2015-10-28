@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
-import interpreter.parsing.model.tokens.IdentifierToken;
+import interpreter.parsing.model.tokens.CallToken;
 import interpreter.translate.model.CallInstruction;
 
 @Component
@@ -16,8 +16,8 @@ public class CallTranslateHandler extends AbstractTranslateHandler {
 
 	@Override
 	public void handle(Expression<ParseToken> expression) {
-		IdentifierToken identifierToken = (IdentifierToken) expression.getValue();
-		CallInstruction callInstruction = new CallInstruction(identifierToken);
+		CallToken callToken = (CallToken) expression.getValue();
+		CallInstruction callInstruction = new CallInstruction(callToken);
 		callInstruction.setArgumentsNumber(expression.getChildrenCount());
 		translateContextManager.addInstruction(callInstruction);
 	}

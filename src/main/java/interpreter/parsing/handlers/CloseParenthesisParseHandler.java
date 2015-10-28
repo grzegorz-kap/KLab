@@ -36,18 +36,22 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 	public void handle() {
 		moveStackToExpression();
 		ParseToken stackPeek = parseContextManager.stackPop();
-		if (stackPeek.getParseClass().equals(ParseClass.CALL)) {
-			reduceExpression();
-			balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
+		if (isFunctionCallEnd(stackPeek)) {
+			handleFunctionEnd();
 		}
 		parseContextManager.incrementTokenPosition(1);
 	}
 
-	private void reduceExpression() {
-		List<Expression<ParseToken>> expressions;
-		expressions = expressionHelper.popUntilParseClass(parseContextManager, this::isCallToken);
+	private void handleFunctionEnd() {
+		List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager,
+				this::isCallToken);
 		Expression<ParseToken> callNode = parseContextManager.expressionPeek();
 		callNode.addChildren(expressions);
+		balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
+	}
+
+	private boolean isFunctionCallEnd(ParseToken stackPeek) {
+		return stackPeek.getParseClass().equals(ParseClass.CALL);
 	}
 
 	private boolean isCallToken(ParseClass parseClass) {

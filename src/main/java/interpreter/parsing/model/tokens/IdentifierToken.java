@@ -7,46 +7,37 @@ import interpreter.parsing.model.ParseToken;
 
 public class IdentifierToken extends ParseToken {
 
-    private VariableScope variableScope;
-    private String id;
-    private Integer address;
-    private Integer internalFunctionAddress;
+	private VariableScope variableScope;
+	private String id;
+	private Integer address;
 
-    public IdentifierToken(Token token) {
-        id = token.getLexeme();
-        setToken(token);
-        setParseClass(ParseClass.IDENTIFIER);
-    }
+	public IdentifierToken(Token token) {
+		id = token.getLexeme();
+		setToken(token);
+		setParseClass(ParseClass.IDENTIFIER);
+	}
 
-    public VariableScope getVariableScope() {
-        return variableScope;
-    }
+	public VariableScope getVariableScope() {
+		return variableScope;
+	}
 
-    public void setVariableScope(VariableScope variableScope) {
-        this.variableScope = variableScope;
-    }
+	public void setVariableScope(VariableScope variableScope) {
+		this.variableScope = variableScope;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Integer getAddress() {
-        return address;
-    }
+	public Integer getAddress() {
+		return address;
+	}
 
-    public void setAddress(Integer address) {
-        this.address = address;
-    }
-
-    public Integer getInternalFunctionAddress() {
-        return internalFunctionAddress;
-    }
-
-    public void setInternalFunctionAddress(Integer internalFunctionAddress) {
-        this.internalFunctionAddress = internalFunctionAddress;
-    }
+	public void setAddress(Integer address) {
+		this.address = address;
+	}
 }
