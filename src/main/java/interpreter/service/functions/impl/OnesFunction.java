@@ -6,15 +6,15 @@ import interpreter.service.functions.InternalFunction;
 import interpreter.types.ObjectData;
 
 @Component
-public class RandFunction extends AbstractInternalFunction {
+public class OnesFunction extends AbstractInternalFunction {
 
-	public RandFunction() {
-		super(1, 2, InternalFunction.RAND_FUNCTION);
+	public OnesFunction() {
+		super(1, 2, InternalFunction.ONES_FUNCTION);
 	}
 
 	@Override
 	public ObjectData call(ObjectData[] datas) {
-		return createMatrix(datas, matrixFactory::createRandDouble);
+		return createMatrix(datas, matrixFactory::createOnesDouble);
 	}
 
 }

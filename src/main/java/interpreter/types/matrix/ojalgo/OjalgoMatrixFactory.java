@@ -16,6 +16,7 @@ public class OjalgoMatrixFactory implements MatrixFactory {
 	private static final PhysicalStore.Factory<Double, PrimitiveDenseStore> DOUBLE_FACTORY = PrimitiveDenseStore.FACTORY;
 
 	private NullaryFunction<Double> randGenerator = new Uniform();
+	private NullaryFunction<Double> onesGenerator = new OnesFunctionFiller();
 
 	@Override
 	public MatrixBuilder<Double> createDoubleBuilder() {
@@ -39,5 +40,22 @@ public class OjalgoMatrixFactory implements MatrixFactory {
 	@Override
 	public Matrix<Double> createEyeDouble(int rows, int cols) {
 		return new OjalgoMatrix<>(DOUBLE_FACTORY.makeEye(rows, cols));
+	}
+
+	@Override
+	public Matrix<Double> createOnesDouble(int rows, int cols) {
+		return new OjalgoMatrix<>(DOUBLE_FACTORY.makeFilled(rows, cols, onesGenerator));
+	}
+
+	private final class OnesFunctionFiller implements NullaryFunction<Double> {
+		@Override
+		public double doubleValue() {
+			return 1D;
+		}
+
+		@Override
+		public Double invoke() {
+			return 1D;
+		}
 	}
 }

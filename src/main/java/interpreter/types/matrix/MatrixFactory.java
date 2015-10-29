@@ -9,4 +9,6 @@ public interface MatrixFactory {
 	Matrix<Double> createRandDouble(int rows, int columns);
 
 	Matrix<Double> createEyeDouble(int rows, int cols);
+	
+	Matrix<Double> createOnesDouble(int rows, int cols);
 }
