@@ -1,4 +1,4 @@
-package interpreter.service.functions.impl;
+package interpreter.service.functions.matrix.generation;
 
 import org.springframework.stereotype.Component;
 
@@ -6,7 +6,7 @@ import interpreter.service.functions.InternalFunction;
 import interpreter.types.ObjectData;
 
 @Component
-public class RandFunction extends AbstractInternalFunction {
+public class RandFunction extends AbstractMatrixGeneratorFunction {
 
 	public RandFunction() {
 		super(1, 2, InternalFunction.RAND_FUNCTION);

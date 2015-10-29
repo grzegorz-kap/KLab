@@ -21,7 +21,7 @@ abstract class AbstractOjalgoMatrixSubtractor<T extends Number>
 
     @Override
     protected MatrixStore<T> operate(OjalgoMatrix<T> first, OjalgoMatrix<T> second) {
-        return first.getMatrixStore().subtract(second.getMatrixStore());
+        return first.getLazyStore().subtract(second.getLazyStore());
     }
 
     @Override

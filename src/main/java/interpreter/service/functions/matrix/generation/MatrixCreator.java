@@ -1,4 +1,4 @@
-package interpreter.service.functions.impl;
+package interpreter.service.functions.matrix.generation;
 
 import interpreter.types.matrix.Matrix;
 

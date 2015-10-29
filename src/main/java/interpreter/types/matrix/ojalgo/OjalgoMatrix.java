@@ -1,66 +1,67 @@
 package interpreter.types.matrix.ojalgo;
 
+import java.util.function.Consumer;
+
+import org.ojalgo.matrix.store.MatrixStore;
+import org.ojalgo.matrix.store.PhysicalStore;
+
 import interpreter.parsing.model.NumericType;
 import interpreter.types.AbstractNumericObject;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
 import interpreter.types.matrix.Matrix;
 
-import java.util.function.Consumer;
-
-import org.ojalgo.matrix.store.PhysicalStore;
-
 public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implements Matrix<T>, Sizeable {
 
 	private PhysicalStore<T> matrixStore;
+	private MatrixStore<T> lazyStore;
 
 	public <P extends PhysicalStore<T>> OjalgoMatrix(P matrixStore) {
 		super(NumericType.MATRIX_DOUBLE);
-		this.matrixStore = matrixStore;
+		this.setMatrixStore(matrixStore);
+		this.setLazyStore(matrixStore);
 	}
 
-	@Override
-	public T get(int m, int n) {
-		return matrixStore.get(m, n);
-	}
-	
-	@Override
-	public T get(int m) {
-		return matrixStore.get(m);
-	}
-
-	@Override
-	public void set(int m, int n, T value) {
-		matrixStore.set(m, n, value);
-	}
-
-	@Override
-	public long getRowsCount() {
-		return matrixStore.countRows();
-	}
-
-	@Override
-	public long getColumnsCount() {
-		return matrixStore.countColumns();
+	public OjalgoMatrix(MatrixStore<T> store) {
+		super(NumericType.MATRIX_DOUBLE);
+		setLazyStore(store);
 	}
 
 	public PhysicalStore<T> getMatrixStore() {
+		if (matrixStore == null) {
+			matrixStore = getLazyStore().copy();
+		}
 		return matrixStore;
 	}
 
 	@Override
+	public T get(int m, int n) {
+		return getMatrixStore().get(m, n);
+	}
+
+	@Override
+	public T get(int m) {
+		return getMatrixStore().get(m);
+	}
+
+	@Override
+	public void set(int m, int n, T value) {
+		getMatrixStore().set(m, n, value);
+	}
+
+	@Override
 	public String toString() {
-		return OjalgoMatrixPrinter.toString(matrixStore);
+		return OjalgoMatrixPrinter.toString(getMatrixStore());
 	}
 
 	@Override
 	public ObjectData copyObjectData() {
-		return new OjalgoMatrix<T>(matrixStore.copy());
+		return new OjalgoMatrix<T>(getMatrixStore().copy());
 	}
 
 	@Override
 	public boolean isTrue() {
-		for (T value : matrixStore) {
+		for (T value : getMatrixStore()) {
 			if (value.doubleValue() == 0.0D) {
 				return false;
 			}
@@ -70,16 +71,28 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
 
 	@Override
 	public long getRows() {
-		return matrixStore.countRows();
+		return getMatrixStore().countRows();
 	}
 
 	@Override
 	public long getColumns() {
-		return matrixStore.countColumns();
+		return getMatrixStore().countColumns();
 	}
 
 	@Override
 	public void forEach(Consumer<? super T> action) {
-		matrixStore.forEach(action);
+		getMatrixStore().forEach(action);
+	}
+
+	public void setMatrixStore(PhysicalStore<T> matrixStore) {
+		this.matrixStore = matrixStore;
+	}
+
+	public MatrixStore<T> getLazyStore() {
+		return lazyStore;
+	}
+
+	public void setLazyStore(MatrixStore<T> lazyStore) {
+		this.lazyStore = lazyStore;
 	}
 }

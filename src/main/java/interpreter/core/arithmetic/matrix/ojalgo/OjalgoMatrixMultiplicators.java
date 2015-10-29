@@ -25,6 +25,6 @@ abstract class AbstractOjalgoMatrixMultiplicator<T extends Number>
 
     @Override
     protected MatrixStore<T> operate(OjalgoMatrix<T> first, OjalgoMatrix<T> second) {
-        return first.getMatrixStore().multiply(second.getMatrixStore());
+        return first.getLazyStore().multiply(second.getLazyStore());
     }
 }

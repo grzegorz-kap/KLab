@@ -19,7 +19,7 @@ abstract class AbstractOjalgoMatrixAdder<T extends Number> extends AbstractOjalg
 
     @Override
     protected MatrixStore<T> operate(OjalgoMatrix<T> first, OjalgoMatrix<T> second) {
-        return first.getMatrixStore().add(second.getMatrixStore());
+        return first.getLazyStore().add(second.getLazyStore());
     }
 
     @Override
