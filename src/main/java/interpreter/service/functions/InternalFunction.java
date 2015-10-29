@@ -14,6 +14,7 @@ public interface InternalFunction {
 	String SINUS = "sin";
 	String DETERMINANT = "det";
 	String TANGENS = "tan";
+	String COSINUS = "cos";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();

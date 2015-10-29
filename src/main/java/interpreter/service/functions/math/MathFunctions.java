@@ -11,4 +11,5 @@ public interface MathFunctions {
 	NumericObject sin(NumericObject value);
 	NumericObject det(NumericObject value);
 	NumericObject tan(NumericObject value);
+	NumericObject cos(NumericObject value);
 }

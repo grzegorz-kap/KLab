@@ -43,4 +43,10 @@ public class ScalarDoubleMathFunction implements MathFunctions {
 		return new DoubleScalar(Math.tan(scalar.getValue()));
 	}
 
+	@Override
+	public NumericObject cos(NumericObject value) {
+		DoubleScalar scalar = (DoubleScalar) value;
+		return new DoubleScalar(Math.cos(scalar.getValue()));
+	}
+
 }

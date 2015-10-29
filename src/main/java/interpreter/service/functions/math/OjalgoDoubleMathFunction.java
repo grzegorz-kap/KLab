@@ -20,6 +20,7 @@ public class OjalgoDoubleMathFunction implements MathFunctions {
 	private UnaryFunction<Double> sqrtFunction = factory.function().sqrt();
 	private UnaryFunction<Double> sinFunction = factory.function().sin();
 	private UnaryFunction<Double> tanFunction = factory.function().tan();
+	private UnaryFunction<Double> cosFunction = factory.function().cos();
 
 	@Override
 	public NumericType supports() {
@@ -61,6 +62,13 @@ public class OjalgoDoubleMathFunction implements MathFunctions {
 	public NumericObject tan(NumericObject value) {
 		MatrixStore<Double> matrix = ((OjalgoMatrix<Double>) value).getLazyStore() ;
 		return new OjalgoMatrix<Double>(matrix.operateOnAll(tanFunction));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public NumericObject cos(NumericObject value) {
+		MatrixStore<Double> matrix = ((OjalgoMatrix<Double>) value).getLazyStore() ;
+		return new OjalgoMatrix<Double>(matrix.operateOnAll(cosFunction));
 	}
 
 }
