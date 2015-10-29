@@ -44,6 +44,8 @@ public class ConsoleController implements Initializable {
             onArrowUp(keyEvent);
         } else if (keyboardHelper.isArrowDownPressed(keyEvent)) {
             onArrowDown(keyEvent);
+        } else if (keyboardHelper.isEnterShift(keyEvent)) {
+            commandInput.appendText("\n");
         }
     }
 

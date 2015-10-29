@@ -124,4 +124,8 @@ public class ParseContext {
     public void forEachExpression(Consumer<? super Expression<ParseToken>> consumer) {
         expressionTree.forEach(consumer);
     }
+
+    public List<Expression<ParseToken>> getExpression() {
+        return expressionTree;
+    }
 }

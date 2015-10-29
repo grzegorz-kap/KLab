@@ -3,8 +3,6 @@ package interpreter.lexer.service;
 import interpreter.lexer.model.RegexTokenizerContext;
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
-import interpreter.lexer.utils.SymbolsMapper;
-import interpreter.lexer.utils.TokenMatcher;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,9 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public void onWord() {
-        addToken(WORD_REGEX, TokenClass.WORD);
+        Token token = tokenRegexReader.readToken(WORD_REGEX, TokenClass.WORD);
+        keywordMatcher.changeIfKeyword(token);
+        tokenizerContextManager.addToken(token);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public boolean tryReadOperator() {
-        String result = tryRead(TokenMatcher.getOperatorRegex());
+        String result = tryRead(tokenMatcher.getOperatorRegex());
         if (Objects.nonNull(result)) {
             addToken(result, TokenClass.OPERATOR);
         }
@@ -58,9 +58,9 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public boolean tryReadOtherSymbol() {
-        String result = tryRead(TokenMatcher.getSymbolsRegex());
+        String result = tryRead(tokenMatcher.getSymbolsRegex());
         if (Objects.nonNull(result)) {
-            addToken(result, SymbolsMapper.getTokenClass(result));
+            addToken(result, symbolsMapper.getTokenClass(result));
         }
         return Objects.nonNull(result);
     }
@@ -76,7 +76,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     }
 
     private void addToken(final Pattern pattern, TokenClass tokenClass) {
-        tokenizerContextManager.addToken(tokenReader.readToken(pattern, tokenClass));
+        tokenizerContextManager.addToken(tokenRegexReader.readToken(pattern, tokenClass));
     }
 
     private void addToken(final String lexame, TokenClass tokenClass) {

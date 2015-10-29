@@ -25,6 +25,11 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     private ExpressionHelper expressionHelper;
     private BalanceContextService balanceContextService;
     private MatrixNewRowHandler matrixNewRowHandler;
+    
+    @Override
+    public TokenClass getSupportedTokenClass() {
+        return TokenClass.CLOSE_BRACKET;
+    }
 
     @Override
     public void handle() {
@@ -37,11 +42,6 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
         endRow();
         moveStackToExpression();
         reduceExpression();
-    }
-
-    @Override
-    public TokenClass getSupportedTokenClass() {
-        return TokenClass.CLOSE_BRACKET;
     }
 
     private void endRow() {
@@ -63,7 +63,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     }
 
     private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilTokenClass(parseContextManager, MATRIX_START)) {
+        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, MATRIX_START)) {
             throw new RuntimeException();
         }
         parseContextManager.stackPop();

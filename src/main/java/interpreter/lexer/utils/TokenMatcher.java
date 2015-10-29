@@ -1,42 +1,31 @@
 package interpreter.lexer.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Component
 public class TokenMatcher {
 
-    private static final List<String> OPERATORS_PATTERNS = Arrays.asList(
-            "^\\+",
-            "^\\*",
-            "^-",
-            "^/",
-            "^="
-    );
+    private Pattern operatorRegex;
+    private Pattern symbolsRegex;
 
-    private static final List<String> SYMBOLS_PATTERNS = Arrays.asList(
-            "^,",
-            "^:",
-            "^;",
-            "^\\[",
-            "^\\]",
-            "^\\(",
-            "^\\)"
-    );
-
-    private static Pattern OPERATOR_REGEX = Pattern.compile(mergeIntoPattern(OPERATORS_PATTERNS));
-
-    private static Pattern SYMBOLS_REGEX = Pattern.compile(mergeIntoPattern(SYMBOLS_PATTERNS));
-
-    public static Pattern getOperatorRegex() {
-        return OPERATOR_REGEX;
+    public TokenMatcher() {
+        operatorRegex = Pattern.compile(mergeIntoPattern(operatorsPatterns));
+        symbolsRegex = Pattern.compile(mergeIntoPattern(symbolsPatterns));
     }
 
-    public static Pattern getSymbolsRegex() {
-        return SYMBOLS_REGEX;
+    public Pattern getOperatorRegex() {
+        return operatorRegex;
     }
 
-    private static String mergeIntoPattern(List<String> list) {
+    public Pattern getSymbolsRegex() {
+        return symbolsRegex;
+    }
+
+    private String mergeIntoPattern(List<String> list) {
         StringBuilder builder = new StringBuilder("");
         list.forEach(op -> {
             builder.append("(");
@@ -48,4 +37,28 @@ public class TokenMatcher {
         }
         return builder.toString();
     }
+
+    private  List<String> operatorsPatterns = Arrays.asList(
+            "^\\+",
+            "^\\*",
+            "^-",
+            "^/",
+            "^==",
+            "^~=",
+            "^=",
+            "^>=",
+            "^<=",
+            "^<",
+            "^>"
+    );
+
+    private List<String> symbolsPatterns = Arrays.asList(
+            "^,",
+            "^:",
+            "^;",
+            "^\\[",
+            "^\\]",
+            "^\\(",
+            "^\\)"
+    );
 }

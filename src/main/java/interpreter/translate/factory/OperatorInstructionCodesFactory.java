@@ -1,7 +1,8 @@
 package interpreter.translate.factory;
 
 import interpreter.parsing.model.tokens.operators.OperatorCode;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
+
 import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
@@ -18,6 +19,12 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.MULT, InstructionCode.MULT);
         instructionCodeMap.put(OperatorCode.SUB, InstructionCode.SUB);
         instructionCodeMap.put(OperatorCode.ASSIGN, InstructionCode.STORE);
+        instructionCodeMap.put(OperatorCode.EQ, InstructionCode.EQ);
+        instructionCodeMap.put(OperatorCode.NEQ, InstructionCode.NEQ);
+        instructionCodeMap.put(OperatorCode.GT, InstructionCode.GT);
+        instructionCodeMap.put(OperatorCode.GE, InstructionCode.GE);
+        instructionCodeMap.put(OperatorCode.LE, InstructionCode.LE);
+        instructionCodeMap.put(OperatorCode.LT, InstructionCode.LT);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {

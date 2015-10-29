@@ -10,6 +10,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,13 +28,14 @@ public class ParserService extends AbstractParser {
     }
 
     @Override
-    public Expression<ParseToken> process() {
+    public List<Expression<ParseToken>> process() {
         parseContext.setInstructionStop(false);
         parseContext.setInstructionPrint(true);
+        parseContext.getExpression().clear();
         parseInstruction();
-        clearExecutionStack();
+        finishParseStack();
         setFinishProperties();
-        return parseContext.getLastFromExpression(1).get(0);
+        return parseContext.getExpression();
     }
 
     private void setFinishProperties() {
@@ -49,7 +51,7 @@ public class ParserService extends AbstractParser {
         }
     }
 
-    private void clearExecutionStack() {
+    private void finishParseStack() {
         while (parseContextManager.stackSize() > 0) {
             ParseHandler parseHandler = getParseHandler(parseContext.stackPeek().getTokenClass());
             parseHandler.handleStackFinish();

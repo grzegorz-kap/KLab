@@ -1,6 +1,6 @@
 package interpreter.execution.model;
 
-import interpreter.translate.model.instruction.Instruction;
+import interpreter.translate.model.Instruction;
 import interpreter.types.ObjectData;
 
 import java.util.Collection;
@@ -34,11 +34,19 @@ public class ExecutionContext {
         code.clear();
     }
 
+    public Code getCode() {
+        return code;
+    }
+
     public ObjectData executionStackPop() {
         return executionStack.pop();
     }
 
     public void executionStackPush(ObjectData objectData) {
         executionStack.push(objectData);
+    }
+    
+    public int executionStackSize() {
+    	return executionStack.size();
     }
 }

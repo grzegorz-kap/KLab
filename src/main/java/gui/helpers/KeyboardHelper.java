@@ -18,4 +18,8 @@ public class KeyboardHelper {
     public boolean isArrowDownPressed(KeyEvent keyEvent) {
         return keyEvent.getCode().equals(KeyCode.DOWN);
     }
+
+    public boolean isEnterShift(KeyEvent keyEvent) {
+        return keyEvent.isShiftDown() && keyEvent.getCode().equals(KeyCode.ENTER);
+    }
 }

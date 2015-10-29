@@ -1,11 +1,12 @@
 package interpreter.parsing.handlers;
 
 import interpreter.lexer.model.TokenClass;
-import interpreter.parsing.factory.OperatorFactory;
+import interpreter.parsing.factory.operator.OperatorFactory;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -17,9 +18,11 @@ import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.R
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OperatorHandler extends AbstractParseHandler {
 
+    private OperatorFactory operatorFactory;
+
     @Override
     public void handle() {
-        OperatorToken o1 = OperatorFactory.get(getContextManager().tokenAt(0));
+        OperatorToken o1 = operatorFactory.getOperator(getContextManager().tokenAt(0));
         o1.setParseClass(ParseClass.OPERATOR);
         while (operateOnStack(o1)) {
             stackToExpression();
@@ -59,5 +62,10 @@ public class OperatorHandler extends AbstractParseHandler {
         int compereResult = o1.getPriority().compareTo(o2.getPriority());
         return o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 ||
                 o1.getAssociativity() == RIGHT_TO_LEFT && compereResult == -1;
+    }
+
+    @Autowired
+    public void setOperatorFactory(OperatorFactory operatorFactory) {
+        this.operatorFactory = operatorFactory;
     }
 }

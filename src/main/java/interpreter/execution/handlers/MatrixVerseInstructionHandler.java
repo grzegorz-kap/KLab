@@ -1,9 +1,9 @@
 package interpreter.execution.handlers;
 
-import interpreter.execution.WrongTypeException;
+import interpreter.execution.exception.WrongTypeException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
 import interpreter.types.ObjectData;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.MatrixBuilder;
@@ -45,11 +45,12 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
         this.matrixFactory = matrixFactory;
     }
 
-    private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
+    @SuppressWarnings("unchecked")
+	private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
         if (objectData instanceof DoubleScalar) {
             builder.appendRight(((DoubleScalar) objectData).getValue());
         } else if (objectData instanceof Matrix) {
-            builder.appendRight(((Matrix) objectData));
+            builder.appendRight(((Matrix<Double>) objectData));
         } else {
             throw new WrongTypeException(objectData);
         }

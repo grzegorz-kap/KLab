@@ -1,15 +1,16 @@
 package interpreter.lexer.helper
 
 import interpreter.lexer.model.TokenizerContext
+import interpreter.lexer.utils.TokenStartMatcher
 import spock.lang.Specification
 
 class TokenStartMatcherTest extends Specification {
 
-    private TokenStartMatcher tokenStartMatcher;
+    private TokenStartMatcher tokenStartMatcher = new TokenStartMatcher();
     private TokenizerContext tokenizerContext = Mock(TokenizerContext)
 
     def setup() {
-        tokenStartMatcher = new TokenStartMatcher(tokenizerContext)
+        tokenStartMatcher.setTokenizerContext(tokenizerContext);
     }
 
     def "Testing number start detection"() {

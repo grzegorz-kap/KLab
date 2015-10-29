@@ -1,9 +1,9 @@
 package interpreter.execution.handlers;
 
-import interpreter.execution.WrongTypeException;
+import interpreter.execution.exception.WrongTypeException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
 import interpreter.types.ObjectData;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.MatrixBuilder;
@@ -33,9 +33,10 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
         executionContext.executionStackPush(matrixBuilder.build());
     }
 
-    private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
+    @SuppressWarnings("unchecked")
+	private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
         if (objectData instanceof Matrix) {
-            matrixBuilder.appendBelow((Matrix) objectData);
+            matrixBuilder.appendBelow((Matrix<Double>) objectData);
         } else {
             throw new WrongTypeException(objectData);
         }

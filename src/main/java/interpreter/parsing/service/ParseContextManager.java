@@ -135,4 +135,8 @@ public class ParseContextManager {
     public void setInstructionPrint(boolean printFlag) {
         parseContext.setInstructionPrint(printFlag);
     }
+
+    public ParseContext getParseContext() {
+        return parseContext;
+    }
 }

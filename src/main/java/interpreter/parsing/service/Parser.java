@@ -4,8 +4,10 @@ import interpreter.lexer.model.TokenList;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 
+import java.util.List;
+
 public interface Parser {
-    Expression<ParseToken> process();
+    List<Expression<ParseToken>> process();
 
     void setTokenList(TokenList tokenList);
 

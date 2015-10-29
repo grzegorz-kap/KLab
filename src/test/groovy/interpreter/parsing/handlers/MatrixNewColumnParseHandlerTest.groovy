@@ -26,7 +26,7 @@ class MatrixNewColumnParseHandlerTest extends Specification {
         parseHandler.handle()
 
         then:
-        1 * parseHandler.stackHelper.stackToExpressionUntilTokenClass(parseHandler.parseContextManager, ParseClass.MATRIX_START) >> 1
+        1 * parseHandler.stackHelper.stackToExpressionUntilParseClass(parseHandler.parseContextManager, ParseClass.MATRIX_START) >> 1
         1 * parseHandler.parseContextManager.incrementTokenPosition(1)
     }
 }

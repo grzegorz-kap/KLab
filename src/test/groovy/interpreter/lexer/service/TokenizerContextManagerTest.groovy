@@ -14,7 +14,8 @@ class TokenizerContextManagerTest extends Specification {
 
     def setup() {
         tokenizerContext = Mock(TokenizerContext)
-        manager = new TokenizerContextManager(tokenizerContext)
+        manager = new TokenizerContextManager()
+        manager.setTokenizerContext(tokenizerContext)
     }
 
     def "Testing addToken(Token) method (number)"() {
