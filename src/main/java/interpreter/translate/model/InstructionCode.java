@@ -19,7 +19,8 @@ public enum InstructionCode {
     LT(15),
     JMPF(16),
     JMP(17),
-    CALL(18);
+    CALL(18),
+    ANS(19);
 
     private int index;
 
