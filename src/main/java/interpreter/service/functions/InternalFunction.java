@@ -9,6 +9,7 @@ public interface InternalFunction {
 	String EYE_FUNCTION = "eye";
 	String ONES_FUNCTION = "ones";
 	String ZEROS_FUNCTION = "zeros";
+	String SQRT_FUNCTION = "sqrt";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();

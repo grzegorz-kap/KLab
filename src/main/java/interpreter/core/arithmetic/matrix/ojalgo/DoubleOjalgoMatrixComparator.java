@@ -53,27 +53,27 @@ public class DoubleOjalgoMatrixComparator
     }
 
     private MatrixStore<Double> eq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
-        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::eq, second.getMatrixStore());
+        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::eq, second.getLazyStore());
     }
 
     private MatrixStore<Double> neq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
-        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::neq, second.getMatrixStore());
+        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::neq, second.getLazyStore());
     }
 
     private MatrixStore<Double> gt(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
-        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::gt, second.getMatrixStore());
+        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::gt, second.getLazyStore());
     }
 
     private MatrixStore<Double> ge(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
-        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::ge, second.getMatrixStore());
+        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::ge, second.getLazyStore());
     }
 
     private MatrixStore<Double> le(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
-        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::le, second.getMatrixStore());
+        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::le, second.getLazyStore());
     }
 
     private MatrixStore<Double> lt(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
-        return first.getMatrixStore().operateOnMatching((PrimitiveFunction.Binary) this::lt, second.getMatrixStore());
+        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::lt, second.getLazyStore());
     }
 
     private Double eq(Double value, Double second) {

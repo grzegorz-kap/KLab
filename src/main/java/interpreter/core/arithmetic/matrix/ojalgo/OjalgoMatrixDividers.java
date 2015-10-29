@@ -20,8 +20,8 @@ class OjalgoMatrixDoubleDivider extends AbstractOjalgoMatrixBinaryOperator<Doubl
     @Override
     protected MatrixStore<Double> operate(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
         try {
-            MatrixStore<Double> aT = first.getMatrixStore().transpose();
-            MatrixStore<Double> bT = second.getMatrixStore().transpose();
+            MatrixStore<Double> aT = first.getLazyStore().transpose();
+            MatrixStore<Double> bT = second.getLazyStore().transpose();
             return SolverTask.PRIMITIVE.make(aT, bT).solve(aT, bT).transpose();
         } catch (TaskException e) {
             throw new RuntimeException(e);
