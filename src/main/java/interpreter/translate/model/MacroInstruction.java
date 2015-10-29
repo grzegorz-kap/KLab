@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import interpreter.translate.model.instruction.Instruction;
-
 public class MacroInstruction {
 	private List<Instruction> instructions = new ArrayList<>();
 

@@ -3,8 +3,8 @@ package interpreter.execution.service;
 import interpreter.execution.handlers.InstructionHandler;
 import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.instruction.Instruction;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.Instruction;
+import interpreter.translate.model.InstructionCode;
 
 import java.util.Collection;
 import java.util.Set;

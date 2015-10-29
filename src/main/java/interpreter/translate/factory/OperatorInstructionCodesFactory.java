@@ -1,7 +1,8 @@
 package interpreter.translate.factory;
 
 import interpreter.parsing.model.tokens.operators.OperatorCode;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
+
 import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;

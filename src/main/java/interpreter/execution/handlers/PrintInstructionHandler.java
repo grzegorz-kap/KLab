@@ -2,7 +2,8 @@ package interpreter.execution.handlers;
 
 import interpreter.core.events.PrintEvent;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.instruction.InstructionCode;
+import interpreter.translate.model.InstructionCode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationEventPublisher;

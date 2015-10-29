@@ -1,10 +1,10 @@
 package interpreter.execution.model;
 
-import interpreter.translate.model.instruction.Instruction;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import interpreter.translate.model.Instruction;
 
 public class Code {
 

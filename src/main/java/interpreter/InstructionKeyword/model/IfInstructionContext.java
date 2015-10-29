@@ -1,12 +1,12 @@
 package interpreter.InstructionKeyword.model;
 
-import interpreter.translate.model.instruction.JumperInstruction;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.function.Consumer;
+
+import interpreter.translate.model.JumperInstruction;
 
 public class IfInstructionContext {
 

@@ -10,15 +10,15 @@ class ExecutionStack {
     private Deque<ObjectData> stack = new ArrayDeque<>();
 
     public void push(ObjectData objectData) {
-        stack.push(objectData);
+        stack.addFirst(objectData);
     }
 
     public ObjectData pop() {
-        return stack.pop();
+        return stack.removeFirst();
     }
 
     public ObjectData peek() {
-        return stack.peek();
+        return stack.peekFirst();
     }
 
     public int size() {
