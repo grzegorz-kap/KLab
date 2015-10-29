@@ -23,7 +23,7 @@ public class CallParseHandler extends AbstractParseHandler {
 	@Override
 	public void handle() {
 		CallToken callToken = new CallToken(parseContextManager.tokenAt(0));
-		callToken.setParseClass(ParseClass.CALL);
+		callToken.setParseClass(ParseClass.CALL_START);
 		callToken.setVariableAddress(identifierMapper.getMainAddress(callToken.getCallName()));
 		parseContextManager.addExpressionNode(callToken);
 		parseContextManager.stackPush(callToken);

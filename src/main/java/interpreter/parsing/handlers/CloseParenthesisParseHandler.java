@@ -23,7 +23,7 @@ import interpreter.service.functions.model.CallToken;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CloseParenthesisParseHandler extends AbstractParseHandler {
 
-	private static final ParseClass[] STOP_CLASSES = new ParseClass[] { ParseClass.OPEN_PARENTHESIS, ParseClass.CALL };
+	private static final ParseClass[] STOP_CLASSES = new ParseClass[] { ParseClass.OPEN_PARENTHESIS, ParseClass.CALL_START };
 
 	private StackHelper stackHelper;
 	private ExpressionHelper expressionHelper;
@@ -49,6 +49,7 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 		List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager,
 				this::isCallToken);
 		Expression<ParseToken> callNode = parseContextManager.expressionPeek();
+		callNode.getValue().setParseClass(ParseClass.CALL);
 		setupInternalFunctionAddress(expressions, callNode);
 		callNode.addChildren(expressions);
 		balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
@@ -61,11 +62,11 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 	}
 
 	private boolean isFunctionCallEnd(ParseToken stackPeek) {
-		return stackPeek.getParseClass().equals(ParseClass.CALL);
+		return stackPeek.getParseClass().equals(ParseClass.CALL_START);
 	}
 
 	private boolean isCallToken(ParseClass parseClass) {
-		return parseClass.equals(ParseClass.CALL);
+		return parseClass.equals(ParseClass.CALL_START);
 	}
 
 	private void moveStackToExpression() {
