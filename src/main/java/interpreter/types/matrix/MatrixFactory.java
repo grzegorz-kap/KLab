@@ -2,8 +2,11 @@ package interpreter.types.matrix;
 
 public interface MatrixFactory {
 
-    MatrixBuilder<Double> createDoubleBuilder();
+	MatrixBuilder<Double> createDoubleBuilder();
 
-    Matrix<Double> createDouble(int rows, int columns);
-    Matrix<Double> createRandDouble(int rows, int columns);
+	Matrix<Double> createDouble(int rows, int columns);
+
+	Matrix<Double> createRandDouble(int rows, int columns);
+
+	Matrix<Double> createEyeDouble(int rows, int cols);
 }

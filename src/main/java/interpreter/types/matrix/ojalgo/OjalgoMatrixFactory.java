@@ -35,4 +35,9 @@ public class OjalgoMatrixFactory implements MatrixFactory {
 	public void setRandGenerator(NullaryFunction<Double> randGenerator) {
 		this.randGenerator = randGenerator;
 	}
+
+	@Override
+	public Matrix<Double> createEyeDouble(int rows, int cols) {
+		return new OjalgoMatrix<>(DOUBLE_FACTORY.makeEye(rows, cols));
+	}
 }

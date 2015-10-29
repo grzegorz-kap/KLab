@@ -6,6 +6,7 @@ public interface InternalFunction {
 	
 	String SIZE_FUNCTION = "size";
 	String RAND_FUNCTION = "rand";
+	String EYE_FUNCTION = "eye";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();
