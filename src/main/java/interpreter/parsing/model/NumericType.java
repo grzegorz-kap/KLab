@@ -4,7 +4,8 @@ public enum NumericType {
     INTEGER(0),
     FLOAT(1),
     DOUBLE(2),
-    MATRIX_DOUBLE(3);
+    MATRIX_DOUBLE(3),
+    COMPLEX_DOUBLE(4);
 
     private int index;
 
