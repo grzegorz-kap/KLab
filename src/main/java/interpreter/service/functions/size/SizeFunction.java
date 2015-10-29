@@ -1,14 +1,20 @@
-package interpreter.service.functions.impl;
+package interpreter.service.functions.size;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import interpreter.service.functions.AbstractInternalFunction;
 import interpreter.service.functions.InternalFunction;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
 import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.MatrixFactory;
 
 @Component
 public class SizeFunction extends AbstractInternalFunction {
+
+	@Autowired
+	private MatrixFactory matrixFactory;
 
 	public SizeFunction() {
 		super(1, 1, InternalFunction.SIZE_FUNCTION);
