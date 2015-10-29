@@ -32,4 +32,9 @@ public class ScalarDoubleMathFunction implements MathFunctions {
 		return new DoubleScalar(Math.sin(scalar.getValue()));
 	}
 
+	@Override
+	public NumericObject det(NumericObject value) {
+		return value;
+	}
+
 }

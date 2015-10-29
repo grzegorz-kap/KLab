@@ -12,6 +12,7 @@ public interface InternalFunction {
 	String SQRT_FUNCTION = "sqrt";
 	String INV_FUNCTION = "inv";
 	String SINUS = "sin";
+	String DETERMINANT = "det";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();
