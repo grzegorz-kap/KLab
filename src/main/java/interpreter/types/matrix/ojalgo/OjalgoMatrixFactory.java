@@ -46,6 +46,11 @@ public class OjalgoMatrixFactory implements MatrixFactory {
 	public Matrix<Double> createOnesDouble(int rows, int cols) {
 		return new OjalgoMatrix<>(DOUBLE_FACTORY.makeFilled(rows, cols, onesGenerator));
 	}
+	
+	@Override
+	public Matrix<Double> createZerosDouble(int rows, int columns) {
+		return new OjalgoMatrix<>(DOUBLE_FACTORY.makeZero(rows, columns));
+	}
 
 	private final class OnesFunctionFiller implements NullaryFunction<Double> {
 		@Override

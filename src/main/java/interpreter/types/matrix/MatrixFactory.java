@@ -11,4 +11,6 @@ public interface MatrixFactory {
 	Matrix<Double> createEyeDouble(int rows, int cols);
 	
 	Matrix<Double> createOnesDouble(int rows, int cols);
+	
+	Matrix<Double> createZerosDouble(int rows, int columns);
 }

@@ -61,7 +61,7 @@ public class OjalgoMatrix<T extends Number> extends AbstractNumericObject implem
 	@Override
 	public boolean isTrue() {
 		for (T value : matrixStore) {
-			if (value.equals(0)) {
+			if (value.doubleValue() == 0.0D) {
 				return false;
 			}
 		}

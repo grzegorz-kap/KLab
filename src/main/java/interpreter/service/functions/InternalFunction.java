@@ -8,6 +8,7 @@ public interface InternalFunction {
 	String RAND_FUNCTION = "rand";
 	String EYE_FUNCTION = "eye";
 	String ONES_FUNCTION = "ones";
+	String ZEROS_FUNCTION = "zeros";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();
