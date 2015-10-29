@@ -7,4 +7,5 @@ public interface MathFunctions {
 	
 	NumericType supports();
 	NumericObject sqrt(NumericObject value);
+	NumericObject inv(NumericObject value) throws Exception;
 }

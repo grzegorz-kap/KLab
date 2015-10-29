@@ -2,7 +2,6 @@ package interpreter.service.functions.math;
 
 import org.springframework.stereotype.Component;
 
-import interpreter.commons.exception.IllegalArgumentException;
 import interpreter.service.functions.InternalFunction;
 import interpreter.types.NumericObject;
 import interpreter.types.ObjectData;
@@ -15,13 +14,8 @@ public class SqrtInternalFunction extends AbstractMathFunction {
 	}
 
 	@Override
-	public ObjectData call(ObjectData[] datas) {
-		if (datas[0] instanceof NumericObject) {
-			NumericObject numericObject = (NumericObject) datas[0];
-			return functionsHolder.get(numericObject.getNumericType(), this).sqrt(numericObject);
-		} else {
-			throw new IllegalArgumentException("Numeric object expected");
-		}
+	public ObjectData process(NumericObject[] datas) {
+		return functionsHolder.get(datas[0].getNumericType(), this).sqrt(datas[0]);
 	}
 
 }

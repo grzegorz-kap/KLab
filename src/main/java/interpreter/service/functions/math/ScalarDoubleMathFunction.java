@@ -20,4 +20,10 @@ public class ScalarDoubleMathFunction implements MathFunctions {
 		return new DoubleScalar(Math.sqrt(scalar.getValue()));
 	}
 
+	@Override
+	public NumericObject inv(NumericObject value) throws Exception {
+		DoubleScalar scalar = (DoubleScalar) value;
+		return new DoubleScalar(1.0D/scalar.getValue());
+	}
+
 }

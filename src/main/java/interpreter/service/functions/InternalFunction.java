@@ -10,6 +10,7 @@ public interface InternalFunction {
 	String ONES_FUNCTION = "ones";
 	String ZEROS_FUNCTION = "zeros";
 	String SQRT_FUNCTION = "sqrt";
+	String INV_FUNCTION = "inv";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();
