@@ -26,4 +26,10 @@ public class ScalarDoubleMathFunction implements MathFunctions {
 		return new DoubleScalar(1.0D/scalar.getValue());
 	}
 
+	@Override
+	public NumericObject sin(NumericObject value) {
+		DoubleScalar scalar = (DoubleScalar) value;
+		return new DoubleScalar(Math.sin(scalar.getValue()));
+	}
+
 }

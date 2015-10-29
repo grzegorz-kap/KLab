@@ -15,6 +15,7 @@ public class OjalgoDoubleMathFunction implements MathFunctions {
 
 	private PhysicalStore.Factory<Double, PrimitiveDenseStore> factory = PrimitiveDenseStore.FACTORY;
 	private UnaryFunction<Double> sqrtFunction = factory.function().sqrt();
+	private UnaryFunction<Double> sinFunction = factory.function().sin();
 
 	@Override
 	public NumericType supports() {
@@ -35,6 +36,13 @@ public class OjalgoDoubleMathFunction implements MathFunctions {
 		return new OjalgoMatrix<Double>(
 				InverterTask.PRIMITIVE.make(matrix.getLazyStore()).invert(matrix.getLazyStore()));
 
+	}
+
+	@Override
+	public NumericObject sin(NumericObject value) {
+		@SuppressWarnings("unchecked")
+		OjalgoMatrix<Double> matrix = (OjalgoMatrix<Double>) value;
+		return new OjalgoMatrix<Double>(matrix.getLazyStore().operateOnAll(sinFunction));
 	}
 
 }

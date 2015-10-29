@@ -11,6 +11,7 @@ public interface InternalFunction {
 	String ZEROS_FUNCTION = "zeros";
 	String SQRT_FUNCTION = "sqrt";
 	String INV_FUNCTION = "inv";
+	String SINUS = "sin";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();

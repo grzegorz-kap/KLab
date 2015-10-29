@@ -18,7 +18,7 @@ public abstract class AbstractMathFunction extends AbstractInternalFunction {
 		super(argsMin, argsMax, name);
 	}
 
-	protected abstract ObjectData process(NumericObject[] numericObjects);
+	protected abstract ObjectData process(NumericObject[] datas);
 
 	@Override
 	public ObjectData call(ObjectData[] datas) {
