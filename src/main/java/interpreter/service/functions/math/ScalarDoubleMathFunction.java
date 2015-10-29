@@ -37,4 +37,10 @@ public class ScalarDoubleMathFunction implements MathFunctions {
 		return value;
 	}
 
+	@Override
+	public NumericObject tan(NumericObject value) {
+		DoubleScalar scalar = (DoubleScalar) value;
+		return new DoubleScalar(Math.tan(scalar.getValue()));
+	}
+
 }

@@ -13,6 +13,7 @@ public interface InternalFunction {
 	String INV_FUNCTION = "inv";
 	String SINUS = "sin";
 	String DETERMINANT = "det";
+	String TANGENS = "tan";
 	String getName();
 	int getMinArgs();
 	int getMaxArgs();

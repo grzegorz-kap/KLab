@@ -45,7 +45,7 @@ public class ConsoleViewService {
         if (Objects.nonNull(objectName)) {
             consoleOutput.appendText(String.format("%s = ", objectName));
         }
-        consoleOutput.appendText(String.format("%s\n", printEvent.getObjectData().toString()));
+        consoleOutput.appendText(String.format("%s\n\n", printEvent.getObjectData().toString()));
     }
 
     public void setCommandInput(CodeArea commandInput) {

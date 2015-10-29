@@ -19,6 +19,7 @@ public class OjalgoDoubleMathFunction implements MathFunctions {
 	private PhysicalStore.Factory<Double, PrimitiveDenseStore> factory = PrimitiveDenseStore.FACTORY;
 	private UnaryFunction<Double> sqrtFunction = factory.function().sqrt();
 	private UnaryFunction<Double> sinFunction = factory.function().sin();
+	private UnaryFunction<Double> tanFunction = factory.function().tan();
 
 	@Override
 	public NumericType supports() {
@@ -53,6 +54,13 @@ public class OjalgoDoubleMathFunction implements MathFunctions {
 	public NumericObject det(NumericObject value) {
 		MatrixStore<Double> matrix = ((OjalgoMatrix<Double>) value).getLazyStore() ;
 		return new DoubleScalar(DeterminantTask.PRIMITIVE.make(matrix).calculateDeterminant(matrix));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public NumericObject tan(NumericObject value) {
+		MatrixStore<Double> matrix = ((OjalgoMatrix<Double>) value).getLazyStore() ;
+		return new OjalgoMatrix<Double>(matrix.operateOnAll(tanFunction));
 	}
 
 }

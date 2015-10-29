@@ -10,4 +10,5 @@ public interface MathFunctions {
 	NumericObject inv(NumericObject value) throws Exception;
 	NumericObject sin(NumericObject value);
 	NumericObject det(NumericObject value);
+	NumericObject tan(NumericObject value);
 }
