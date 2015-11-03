@@ -1,102 +1,85 @@
 package interpreter.service.functions.math;
 
+import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericObject;
+import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import org.ojalgo.function.FunctionSet;
 import org.ojalgo.function.UnaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.task.DeterminantTask;
 import org.ojalgo.matrix.task.InverterTask;
-import org.springframework.beans.factory.annotation.Required;
 
-import interpreter.parsing.model.NumericType;
-import interpreter.types.NumericObject;
-import interpreter.types.matrix.Matrix;
-import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+public abstract class AbstractOjalgoMatrixMathFunction<T extends Number> implements MathFunctions {
+    protected UnaryFunction<T> sqrtFunction;
+    protected UnaryFunction<T> sinFunction;
+    protected UnaryFunction<T> tanFunction;
+    protected UnaryFunction<T> cosFunction;
 
-public abstract class AbstractOjalgoMatrixMathFunction <T extends Number> implements MathFunctions {
+    protected InverterTask.Factory<T> inverterFactory;
+    protected DeterminantTask.Factory<T> determinantFactory;
 
-	private UnaryFunction<T> sqrtFunction;
-	private UnaryFunction<T> sinFunction;
-	private UnaryFunction<T> tanFunction;
-	private UnaryFunction<T> cosFunction;
-	private InverterTask.Factory<T> invTask;
-	private DeterminantTask.Factory<T> detTask;
-	
-	protected abstract Matrix<T> create(MatrixStore<T> store);
+    protected abstract Matrix<T> create(MatrixStore<T> store);
 
-	@Override
-	public NumericType supports() {
-		return NumericType.COMPLEX_MATRIX;
-	}
+    protected abstract NumericObject create(T scalar);
 
-	@Override
-	public NumericObject sqrt(NumericObject value) {
-		return create(value, sqrtFunction);
-	}
+    @Override
+    public NumericType supports() {
+        return NumericType.COMPLEX_MATRIX;
+    }
 
-	@Override
-	public NumericObject inv(NumericObject value) throws Exception {
-		MatrixStore<T> data = process(value);
-		return create(invTask.make(data).invert(data));
-	}
+    @Override
+    public NumericObject sqrt(NumericObject value) {
+        return create(value, sqrtFunction);
+    }
 
-	@Override
-	public NumericObject sin(NumericObject value) {
-		return create(value, sinFunction);
-	}
+    @Override
+    public NumericObject inv(NumericObject value) throws Exception {
+        MatrixStore<T> matrixStore = process(value);
+        return create(inverterFactory.make(matrixStore).invert(matrixStore));
+    }
 
-	@Override
-	public NumericObject det(NumericObject value) {
-		
-	}
+    @Override
+    public NumericObject det(NumericObject value) {
+        MatrixStore<T> matrixStore = process(value);
+        return create(determinantFactory.make(matrixStore).calculateDeterminant(matrixStore));
+    }
 
-	@Override
-	public NumericObject tan(NumericObject value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public NumericObject sin(NumericObject value) {
+        return create(value, sinFunction);
+    }
 
-	@Override
-	public NumericObject cos(NumericObject value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private MatrixStore<T> process(NumericObject numericObject) {
-		return ((OjalgoMatrix<T>) numericObject).getLazyStore();
-	}
-	
-	protected NumericObject create(NumericObject value, UnaryFunction<T> function) {
-		return create(process(value).operateOnAll(function));
-	}
-	
-	@Required
-	public void setSqrtFunction(UnaryFunction<T> sqrtFunction) {
-		this.sqrtFunction = sqrtFunction;
-	}
+    @Override
+    public NumericObject tan(NumericObject value) {
+        return create(value, tanFunction);
+    }
 
-	@Required
-	public void setSinFunction(UnaryFunction<T> sinFunction) {
-		this.sinFunction = sinFunction;
-	}
+    @Override
+    public NumericObject cos(NumericObject value) {
+        return create(value, cosFunction);
+    }
 
-	@Required
-	public void setTanFunction(UnaryFunction<T> tanFunction) {
-		this.tanFunction = tanFunction;
-	}
+    private MatrixStore<T> process(NumericObject numericObject) {
+        return ((OjalgoMatrix<T>) numericObject).getLazyStore();
+    }
 
-	@Required
-	public void setCosFunction(UnaryFunction<T> cosFunction) {
-		this.cosFunction = cosFunction;
-	}
-	
-	@Required
-	public void setInvTask(InverterTask.Factory<T> invTask) {
-		this.invTask = invTask;
-	}
+    protected NumericObject create(NumericObject value, UnaryFunction<T> function) {
+        return create(process(value).operateOnAll(function));
+    }
 
-	@Required
-	public void setDetTask(DeterminantTask.Factory<T> detTask) {
-		this.detTask = detTask;
-	}
+    public void setFunctionSet(FunctionSet<T> functions) {
+        this.sqrtFunction = functions.sqrt();
+        this.sinFunction = functions.sin();
+        this.cosFunction = functions.cos();
+        this.tanFunction = functions.tan();
+    }
+
+    public void setInverterFactory(InverterTask.Factory<T> inverterFactory) {
+        this.inverterFactory = inverterFactory;
+    }
+
+    public void setDeterminantFactory(DeterminantTask.Factory<T> determinantFactory) {
+        this.determinantFactory = determinantFactory;
+    }
 }
