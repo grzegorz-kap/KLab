@@ -4,8 +4,8 @@ import interpreter.types.IdentifierObject;
 
 public class UndefinedVariableException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-	private IdentifierObject identifierObject;
+    private static final long serialVersionUID = 1L;
+    private IdentifierObject identifierObject;
 
     public UndefinedVariableException(String message, IdentifierObject identifierObject) {
         super(message);

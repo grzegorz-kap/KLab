@@ -25,7 +25,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     private ExpressionHelper expressionHelper;
     private BalanceContextService balanceContextService;
     private MatrixNewRowHandler matrixNewRowHandler;
-    
+
     @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.CLOSE_BRACKET;

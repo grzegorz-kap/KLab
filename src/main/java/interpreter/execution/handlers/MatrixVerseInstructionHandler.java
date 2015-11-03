@@ -46,7 +46,7 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
     }
 
     @SuppressWarnings("unchecked")
-	private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
+    private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
         if (objectData instanceof DoubleScalar) {
             builder.appendRight(((DoubleScalar) objectData).getValue());
         } else if (objectData instanceof Matrix) {

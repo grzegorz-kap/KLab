@@ -31,7 +31,7 @@ class InterpreterService extends AbstractInterpreterService {
     }
 
     private void execute() {
-        if(executionCanStart()) {
+        if (executionCanStart()) {
             executionService.start();
         }
     }

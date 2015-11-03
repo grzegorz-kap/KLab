@@ -6,31 +6,31 @@ import interpreter.parsing.model.ParseToken;
 
 public class CallToken extends ParseToken {
 
-	private Integer variableAddress;
-	private Integer internalFunctionAddress;
-	
-	public CallToken(Token token) {
-		setToken(token);
-		setParseClass(ParseClass.CALL);
-	}
-	
-	public String getCallName() {
-		return getToken().getLexeme();
-	}
+    private Integer variableAddress;
+    private Integer internalFunctionAddress;
 
-	public Integer getVariableAddress() {
-		return variableAddress;
-	}
+    public CallToken(Token token) {
+        setToken(token);
+        setParseClass(ParseClass.CALL);
+    }
 
-	public void setVariableAddress(Integer variableAddress) {
-		this.variableAddress = variableAddress;
-	}
+    public String getCallName() {
+        return getToken().getLexeme();
+    }
 
-	public Integer getInternalFunctionAddress() {
-		return internalFunctionAddress;
-	}
+    public Integer getVariableAddress() {
+        return variableAddress;
+    }
 
-	public void setInternalFunctionAddress(Integer internalFunctionAddress) {
-		this.internalFunctionAddress = internalFunctionAddress;
-	}
+    public void setVariableAddress(Integer variableAddress) {
+        this.variableAddress = variableAddress;
+    }
+
+    public Integer getInternalFunctionAddress() {
+        return internalFunctionAddress;
+    }
+
+    public void setInternalFunctionAddress(Integer internalFunctionAddress) {
+        this.internalFunctionAddress = internalFunctionAddress;
+    }
 }

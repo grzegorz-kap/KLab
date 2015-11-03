@@ -1,36 +1,34 @@
 package interpreter.service.functions.math;
 
-import java.util.stream.Stream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import interpreter.commons.exception.IllegalArgumentException;
 import interpreter.service.functions.AbstractInternalFunction;
 import interpreter.types.NumericObject;
 import interpreter.types.ObjectData;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.stream.Stream;
 
 public abstract class AbstractMathFunction extends AbstractInternalFunction {
 
-	@Autowired
-	protected MathFunctionsHolder functionsHolder;
+    @Autowired
+    protected MathFunctionsHolder functionsHolder;
 
-	public AbstractMathFunction(int argsMin, int argsMax, String name) {
-		super(argsMin, argsMax, name);
-	}
+    public AbstractMathFunction(int argsMin, int argsMax, String name) {
+        super(argsMin, argsMax, name);
+    }
 
-	protected abstract ObjectData process(NumericObject[] datas);
+    protected abstract ObjectData process(NumericObject[] datas);
 
-	@Override
-	public ObjectData call(ObjectData[] datas) {
-		return process(Stream.of(datas).map(this::mapToNumeric).toArray(size -> new NumericObject[size]));
-	}
+    @Override
+    public ObjectData call(ObjectData[] datas) {
+        return process(Stream.of(datas).map(this::mapToNumeric).toArray(NumericObject[]::new));
+    }
 
-	protected NumericObject mapToNumeric(ObjectData data) {
-		if (!(data instanceof NumericObject)) {
-			throw new IllegalArgumentException("Numeric object expected");
-
-		}
-		return (NumericObject) data;
-	}
+    protected NumericObject mapToNumeric(ObjectData data) {
+        if (!(data instanceof NumericObject)) {
+            throw new IllegalArgumentException("Numeric object expected");
+        }
+        return (NumericObject) data;
+    }
 
 }

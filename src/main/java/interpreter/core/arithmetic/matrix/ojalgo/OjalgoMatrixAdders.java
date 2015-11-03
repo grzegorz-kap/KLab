@@ -19,10 +19,10 @@ class OjalgoMatrixDoubleAdder extends AbstractOjalgoMatrixAdder<Double> {
 @Component
 class OjalgoMatrixComplexAdder extends AbstractOjalgoMatrixAdder<ComplexNumber> {
 
-	@Override
-	public NumericType getSupportedType() {
-		return NumericType.COMPLEX_MATRIX;
-	}	
+    @Override
+    public NumericType getSupportedType() {
+        return NumericType.COMPLEX_MATRIX;
+    }
 }
 
 abstract class AbstractOjalgoMatrixAdder<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsAdder {

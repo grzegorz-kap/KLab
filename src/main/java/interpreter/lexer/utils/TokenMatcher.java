@@ -11,6 +11,28 @@ public class TokenMatcher {
 
     private Pattern operatorRegex;
     private Pattern symbolsRegex;
+    private List<String> operatorsPatterns = Arrays.asList(
+            "^\\+",
+            "^\\*",
+            "^-",
+            "^/",
+            "^==",
+            "^~=",
+            "^=",
+            "^>=",
+            "^<=",
+            "^<",
+            "^>"
+    );
+    private List<String> symbolsPatterns = Arrays.asList(
+            "^,",
+            "^:",
+            "^;",
+            "^\\[",
+            "^\\]",
+            "^\\(",
+            "^\\)"
+    );
 
     public TokenMatcher() {
         operatorRegex = Pattern.compile(mergeIntoPattern(operatorsPatterns));
@@ -37,28 +59,4 @@ public class TokenMatcher {
         }
         return builder.toString();
     }
-
-    private  List<String> operatorsPatterns = Arrays.asList(
-            "^\\+",
-            "^\\*",
-            "^-",
-            "^/",
-            "^==",
-            "^~=",
-            "^=",
-            "^>=",
-            "^<=",
-            "^<",
-            "^>"
-    );
-
-    private List<String> symbolsPatterns = Arrays.asList(
-            "^,",
-            "^:",
-            "^;",
-            "^\\[",
-            "^\\]",
-            "^\\(",
-            "^\\)"
-    );
 }

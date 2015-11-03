@@ -6,7 +6,7 @@ import java.util.List;
 public interface Expression<T> {
 
     String PRINT_PROPERTY_KEY = "print";
-	String ANS_PROPERTY_KEY = "ans";
+    String ANS_PROPERTY_KEY = "ans";
 
     Expression<T> getParent();
 

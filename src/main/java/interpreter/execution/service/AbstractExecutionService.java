@@ -15,6 +15,11 @@ public abstract class AbstractExecutionService {
     protected ExecutionContext executionContext;
     protected InstructionPointer instructionPointer;
 
+    public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
+        setupExecutionContext(new ExecutionContext());
+        instructionHandlers.forEach(this::registerInstructionHandler);
+    }
+
     public ExecutionContext getExecutionContext() {
         return executionContext;
     }
@@ -27,11 +32,6 @@ public abstract class AbstractExecutionService {
         executionContext.clearExecutionStack();
         executionContext.clearCode();
         instructionPointer = executionContext.newInstructionPointer();
-    }
-
-    public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
-        setupExecutionContext(new ExecutionContext());
-        instructionHandlers.forEach(this::registerInstructionHandler);
     }
 
     private void setupExecutionContext(ExecutionContext executionContext) {

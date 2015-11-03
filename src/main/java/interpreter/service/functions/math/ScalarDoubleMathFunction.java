@@ -1,11 +1,10 @@
 package interpreter.service.functions.math;
 
-import org.springframework.stereotype.Component;
-
 import interpreter.parsing.model.NumericType;
 import interpreter.types.NumericObject;
 import interpreter.types.scalar.ComplexScalar;
 import interpreter.types.scalar.DoubleScalar;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ScalarDoubleMathFunction implements MathFunctions {
@@ -17,8 +16,8 @@ public class ScalarDoubleMathFunction implements MathFunctions {
 
 	@Override
 	public NumericObject sqrt(NumericObject value) {
-		double val =  getValue(value);
-		if(val<0) {
+		double val = getValue(value);
+		if (val < 0) {
 			return new ComplexScalar(0.0D, Math.sqrt(-val));
 		} else {
 			return new DoubleScalar(Math.sqrt(val));

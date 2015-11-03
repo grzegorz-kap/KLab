@@ -34,7 +34,7 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
     }
 
     @SuppressWarnings("unchecked")
-	private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
+    private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
         if (objectData instanceof Matrix) {
             matrixBuilder.appendBelow((Matrix<Double>) objectData);
         } else {

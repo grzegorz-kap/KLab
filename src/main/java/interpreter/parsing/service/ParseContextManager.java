@@ -25,10 +25,6 @@ public class ParseContextManager {
 
     private ParseContext parseContext;
 
-    public void setParseContext(ParseContext parseContext) {
-        this.parseContext = parseContext;
-    }
-
     public Token tokenAt(int offset) {
         return parseContext.tokenAt(offset);
     }
@@ -138,5 +134,9 @@ public class ParseContextManager {
 
     public ParseContext getParseContext() {
         return parseContext;
+    }
+
+    public void setParseContext(ParseContext parseContext) {
+        this.parseContext = parseContext;
     }
 }

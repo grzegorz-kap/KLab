@@ -1,11 +1,7 @@
 package interpreter.lexer.service
 
 import interpreter.lexer.model.TokenClass
-import interpreter.lexer.utils.KeywordMatcher
-import interpreter.lexer.utils.SymbolsMapper
-import interpreter.lexer.utils.TokenMatcher
-import interpreter.lexer.utils.TokenRegexReader
-import interpreter.lexer.utils.TokenStartMatcher
+import interpreter.lexer.utils.*
 import spock.lang.Specification
 
 class RegexTokenizerTest extends Specification {
@@ -13,7 +9,7 @@ class RegexTokenizerTest extends Specification {
     Tokenizer tokenizer
 
     def setup() {
-        RegexTokenizer regexTokenizer =  new RegexTokenizer()
+        RegexTokenizer regexTokenizer = new RegexTokenizer()
         regexTokenizer.setKeywordMatcher(new KeywordMatcher())
         regexTokenizer.setSymbolsMapper(new SymbolsMapper())
         regexTokenizer.setTokenizerContextManager(new TokenizerContextManager())

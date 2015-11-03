@@ -18,10 +18,6 @@ public class ExecutionContext {
         code.add(instructions);
     }
 
-    public void setCode(Code code) {
-        this.code = code;
-    }
-
     public void setExecutionStack(ExecutionStack executionStack) {
         this.executionStack = executionStack;
     }
@@ -38,6 +34,10 @@ public class ExecutionContext {
         return code;
     }
 
+    public void setCode(Code code) {
+        this.code = code;
+    }
+
     public ObjectData executionStackPop() {
         return executionStack.pop();
     }
@@ -45,8 +45,8 @@ public class ExecutionContext {
     public void executionStackPush(ObjectData objectData) {
         executionStack.push(objectData);
     }
-    
+
     public int executionStackSize() {
-    	return executionStack.size();
+        return executionStack.size();
     }
 }

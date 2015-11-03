@@ -1,12 +1,12 @@
 package interpreter.InstructionKeyword.model;
 
+import interpreter.translate.model.JumperInstruction;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.function.Consumer;
-
-import interpreter.translate.model.JumperInstruction;
 
 public class IfInstructionContext {
 
@@ -28,12 +28,12 @@ public class IfInstructionContext {
         ifContexts.peek().endIfJumps.forEach(action);
     }
 
-    public void setJumpOnFalse(JumperInstruction jumperInstruction) {
-        ifContexts.peek().jumpOnFalse = jumperInstruction;
-    }
-
     public JumperInstruction getJumpOnFalse() {
         return ifContexts.peek().jumpOnFalse;
+    }
+
+    public void setJumpOnFalse(JumperInstruction jumperInstruction) {
+        ifContexts.peek().jumpOnFalse = jumperInstruction;
     }
 
     public int size() {
