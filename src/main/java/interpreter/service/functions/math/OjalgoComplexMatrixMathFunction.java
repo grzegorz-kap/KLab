@@ -1,7 +1,7 @@
 package interpreter.service.functions.math;
 
-import interpreter.parsing.model.NumericType;
 import interpreter.types.NumericObject;
+import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
 import interpreter.types.scalar.ComplexScalar;

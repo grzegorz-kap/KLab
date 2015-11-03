@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsAdder;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;

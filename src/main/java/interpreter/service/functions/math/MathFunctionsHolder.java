@@ -1,8 +1,8 @@
 package interpreter.service.functions.math;
 
 import interpreter.commons.exception.IllegalArgumentException;
-import interpreter.parsing.model.NumericType;
 import interpreter.service.functions.InternalFunction;
+import interpreter.types.NumericType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

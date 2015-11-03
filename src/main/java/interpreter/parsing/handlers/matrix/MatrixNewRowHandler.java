@@ -5,6 +5,7 @@ import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.handlers.helpers.ExpressionHelper;
 import interpreter.parsing.handlers.helpers.StackHelper;
+import interpreter.parsing.handlers.helpers.TypeResolver;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -20,9 +21,9 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MatrixNewRowHandler extends AbstractParseHandler {
-
     private StackHelper stackHelper;
     private ExpressionHelper expressionHelper;
+    private TypeResolver typeResolver;
 
     @Override
     public TokenClass getSupportedTokenClass() {
@@ -44,6 +45,7 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
 
     private ExpressionNode<ParseToken> createExpressionNode(List<Expression<ParseToken>> expressions, VerseToken verseToken) {
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(verseToken);
+        expressionNode.setResolvedNumericType(typeResolver.resolveNumeric(expressions));
         expressionNode.addChildren(expressions);
         return expressionNode;
     }
@@ -72,5 +74,10 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
     @Autowired
     public void setExpressionHelper(ExpressionHelper expressionHelper) {
         this.expressionHelper = expressionHelper;
+    }
+
+    @Autowired
+    public void setTypeResolver(TypeResolver typeResolver) {
+        this.typeResolver = typeResolver;
     }
 }

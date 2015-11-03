@@ -1,7 +1,7 @@
 package interpreter.types.scalar;
 
 import interpreter.commons.exception.InterpreterCastException;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import org.ojalgo.scalar.ComplexNumber;
 

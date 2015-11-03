@@ -4,8 +4,8 @@ import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
 import interpreter.lexer.model.Token
-import interpreter.parsing.model.NumericType
 import interpreter.parsing.model.tokens.NumberToken
+import interpreter.types.NumericType
 
 import static com.natpryce.makeiteasy.MakeItEasy.a
 import static com.natpryce.makeiteasy.MakeItEasy.make

@@ -1,6 +1,6 @@
 package interpreter.types.matrix.ojalgo;
 
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 

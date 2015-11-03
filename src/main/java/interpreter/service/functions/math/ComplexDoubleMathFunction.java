@@ -1,7 +1,7 @@
 package interpreter.service.functions.math;
 
-import interpreter.parsing.model.NumericType;
 import interpreter.types.NumericObject;
+import interpreter.types.NumericType;
 import interpreter.types.scalar.ComplexScalar;
 import org.ojalgo.scalar.ComplexNumber;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.scalar;
 
 import interpreter.core.arithmetic.NumericObjectsAdder;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.scalar.DoubleScalar;
 import org.springframework.stereotype.Component;

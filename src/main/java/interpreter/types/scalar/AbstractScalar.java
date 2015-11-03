@@ -1,7 +1,7 @@
 package interpreter.types.scalar;
 
-import interpreter.parsing.model.NumericType;
 import interpreter.types.AbstractNumericObject;
+import interpreter.types.NumericType;
 import interpreter.types.Sizeable;
 
 public abstract class AbstractScalar extends AbstractNumericObject implements Sizeable, Scalar {

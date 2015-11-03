@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.factory;
 
 import interpreter.core.arithmetic.*;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package interpreter.types.scalar;
 
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 
 import java.util.Objects;

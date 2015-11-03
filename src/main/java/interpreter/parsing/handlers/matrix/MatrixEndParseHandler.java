@@ -4,16 +4,21 @@ import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.handlers.helpers.ExpressionHelper;
 import interpreter.parsing.handlers.helpers.StackHelper;
+import interpreter.parsing.handlers.helpers.TypeResolver;
 import interpreter.parsing.model.BalanceType;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
+import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.service.BalanceContextService;
 import interpreter.parsing.service.ParseContextManager;
+import interpreter.types.NumericType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static interpreter.parsing.model.ParseClass.MATRIX_START;
 
@@ -25,6 +30,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     private ExpressionHelper expressionHelper;
     private BalanceContextService balanceContextService;
     private MatrixNewRowHandler matrixNewRowHandler;
+    private TypeResolver typeResolver;
 
     @Override
     public TokenClass getSupportedTokenClass() {
@@ -52,7 +58,11 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
 
     private void reduceExpression() {
         ExpressionNode<ParseToken> matrixNode = new ExpressionNode<>();
-        matrixNode.addChildren(expressionHelper.popUntilParseClass(parseContextManager, this::popUntilPredicate));
+        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, this::popUntilPredicate);
+        NumericType numericType = typeResolver.resolveNumeric(expressions);
+        matrixNode.visitEach(node -> node.setResolvedNumericType(numericType));
+        matrixNode.setResolvedNumericType(numericType);
+        matrixNode.addChildren(expressions);
         matrixNode.setValue(parseContextManager.expressionPop().getValue());
         matrixNode.getValue().setParseClass(ParseClass.MATRIX);
         parseContextManager.addExpression(matrixNode);
@@ -93,5 +103,10 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     @Autowired
     public void setMatrixNewRowHandler(MatrixNewRowHandler matrixNewRowHandler) {
         this.matrixNewRowHandler = matrixNewRowHandler;
+    }
+
+    @Autowired
+    public void setTypeResolver(TypeResolver typeResolver) {
+        this.typeResolver = typeResolver;
     }
 }

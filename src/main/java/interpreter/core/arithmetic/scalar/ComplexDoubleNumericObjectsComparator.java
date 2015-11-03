@@ -1,6 +1,6 @@
 package interpreter.core.arithmetic.scalar;
 
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.scalar.ComplexScalar;
 import interpreter.types.scalar.DoubleScalar;

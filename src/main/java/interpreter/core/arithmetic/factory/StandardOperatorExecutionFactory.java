@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.factory;
 
 import interpreter.core.arithmetic.*;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import org.springframework.stereotype.Service;
 
 @Service

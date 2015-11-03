@@ -1,7 +1,7 @@
 package interpreter.types.matrix.ojalgo;
 
-import interpreter.parsing.model.NumericType;
 import interpreter.types.AbstractNumericObject;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
 import interpreter.types.matrix.Matrix;

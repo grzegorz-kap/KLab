@@ -1,7 +1,10 @@
 package interpreter.parsing.model.expression;
 
+import interpreter.types.NumericType;
+
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 public interface Expression<T> {
 
@@ -11,8 +14,6 @@ public interface Expression<T> {
     Expression<T> getParent();
 
     void setParent(Expression<T> expression);
-
-    void addChild(Expression<T> expression);
 
     void addChildren(Collection<? extends Expression<T>> expressions);
 
@@ -27,4 +28,10 @@ public interface Expression<T> {
     void setProperty(String key, Object property);
 
     <P> P getProperty(String key, Class<P> clazz);
+
+    NumericType getResolvedNumericType();
+
+    void setResolvedNumericType(NumericType resolvedNumericType);
+
+    void visitEach(Consumer<Expression<? super T>> consumer);
 }

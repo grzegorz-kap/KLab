@@ -1,6 +1,6 @@
 package interpreter.core.arithmetic;
 
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 
 public interface NumericObjectsOperator {
 

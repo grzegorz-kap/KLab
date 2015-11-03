@@ -1,7 +1,7 @@
 package interpreter.types.matrix.ojalgo;
 
 import interpreter.commons.exception.InterpreterCastException;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 import org.ojalgo.scalar.ComplexNumber;

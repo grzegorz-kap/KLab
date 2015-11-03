@@ -3,6 +3,7 @@ package interpreter.parsing.model.expression;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ExpressionNode<T> extends AbstractExpression<T> implements Expression<T> {
 
@@ -16,9 +17,9 @@ public class ExpressionNode<T> extends AbstractExpression<T> implements Expressi
     }
 
     @Override
-    public void addChild(Expression<T> expression) {
-        children.add(expression);
-        expression.setParent(this);
+    public void visitEach(Consumer<Expression<? super T>> consumer) {
+        super.visitEach(consumer);
+        children.forEach(child -> child.visitEach(consumer));
     }
 
     @Override

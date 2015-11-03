@@ -1,9 +1,9 @@
 package interpreter.parsing.handlers
 
 import interpreter.lexer.model.TokenClass
-import interpreter.parsing.model.NumericType
 import interpreter.parsing.model.tokens.NumberToken
 import interpreter.parsing.service.ParseContextManager
+import interpreter.types.NumericType
 import spock.lang.Specification
 
 import static com.natpryce.makeiteasy.MakeItEasy.*
@@ -11,7 +11,7 @@ import static interpreter.lexer.makers.TokenMaker.*
 
 class NumberHandlerTest extends Specification {
 
-    def NumberHandler numberHandler = new NumberHandler();
+    def NumberParseHandler numberHandler = new NumberParseHandler();
 
     def "Testing handle method for numbers"() {
         given:
