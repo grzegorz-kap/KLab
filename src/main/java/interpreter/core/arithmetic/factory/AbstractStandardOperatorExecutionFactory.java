@@ -14,7 +14,7 @@ public abstract class AbstractStandardOperatorExecutionFactory implements Operat
     protected NumericObjectsAdder[] numericObjectsAdders = new NumericObjectsAdder[NUMBER_TYPES_COUNT];
     protected NumericObjectsSubtractor[] numericObjectsSubtractors = new NumericObjectsSubtractor[NUMBER_TYPES_COUNT];
     protected NumericObjectsMultiplicator[] numberMultiplicators = new NumericObjectsMultiplicator[NUMBER_TYPES_COUNT];
-    protected NumericObjectsDivider[] numberDividers = new NumericObjectsDivider[NUMBER_TYPES_COUNT];
+    protected NumericObjectsDivder[] numberDividers = new NumericObjectsDivder[NUMBER_TYPES_COUNT];
     protected NumericObjectsComparator[] objectsComparators = new NumericObjectsComparator[NUMBER_TYPES_COUNT];
 
     @Autowired
@@ -33,7 +33,7 @@ public abstract class AbstractStandardOperatorExecutionFactory implements Operat
     }
 
     @Autowired
-    private void setNumberDividers(Set<NumericObjectsDivider> numberDividers) {
+    private void setNumberDividers(Set<NumericObjectsDivder> numberDividers) {
         setOperators(numberDividers, this.numberDividers);
     }
 

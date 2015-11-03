@@ -23,7 +23,7 @@ public class StandardOperatorExecutionFactory extends AbstractStandardOperatorEx
     }
 
     @Override
-    public NumericObjectsDivider getDivider(NumericType numericType) {
+    public NumericObjectsDivder getDivider(NumericType numericType) {
         return numberDividers[numericType.getIndex()];
     }
 

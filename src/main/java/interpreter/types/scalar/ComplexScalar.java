@@ -9,14 +9,13 @@ import interpreter.parsing.model.NumericType;
 import interpreter.types.ObjectData;
 
 public class ComplexScalar extends AbstractScalar {
-
 	private ComplexNumber value;
 
 	public ComplexScalar(ComplexScalar c) {
 		super(NumericType.COMPLEX_DOUBLE);
 		value = new ComplexNumber(c.value.getReal(), c.value.getImaginary());
 	}
-	
+
 	public ComplexScalar(ComplexNumber c) {
 		super(NumericType.COMPLEX_DOUBLE);
 		value = new ComplexNumber(c.getReal(), c.getImaginary());
@@ -26,7 +25,7 @@ public class ComplexScalar extends AbstractScalar {
 		super(NumericType.COMPLEX_DOUBLE);
 		value = new ComplexNumber(re, im);
 	}
-	
+
 	public ComplexNumber getComplex() {
 		return value;
 	}
@@ -53,10 +52,9 @@ public class ComplexScalar extends AbstractScalar {
 	public ObjectData copyObjectData() {
 		return new ComplexScalar(this);
 	}
-	
+
 	@Override
 	public String toString() {
 		return value.toString();
 	}
-
 }

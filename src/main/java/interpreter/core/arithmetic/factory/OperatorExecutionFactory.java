@@ -11,7 +11,7 @@ public interface OperatorExecutionFactory {
 
     NumericObjectsMultiplicator getMultiplicator(NumericType numericType);
 
-    NumericObjectsDivider getDivider(NumericType numericType);
+    NumericObjectsDivder getDivider(NumericType numericType);
 
     NumericObjectsComparator getComporator(NumericType numericType);
 }
