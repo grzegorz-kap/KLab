@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 @Service
-public class OjalgoDoubleMathFunction extends AbstractOjalgoMatrixMathFunction<Double> {
+public class OjalgoDoubleMathFunction extends OjalgoAbstractMatrixMathFunction<Double> {
 
     @PostConstruct
     public void init() {

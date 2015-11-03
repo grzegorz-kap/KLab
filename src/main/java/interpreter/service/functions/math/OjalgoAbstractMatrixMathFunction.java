@@ -1,6 +1,5 @@
 package interpreter.service.functions.math;
 
-import interpreter.parsing.model.NumericType;
 import interpreter.types.NumericObject;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
@@ -10,23 +9,17 @@ import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.task.DeterminantTask;
 import org.ojalgo.matrix.task.InverterTask;
 
-public abstract class AbstractOjalgoMatrixMathFunction<T extends Number> implements MathFunctions {
+public abstract class OjalgoAbstractMatrixMathFunction<T extends Number> implements MathFunctions {
     protected UnaryFunction<T> sqrtFunction;
     protected UnaryFunction<T> sinFunction;
     protected UnaryFunction<T> tanFunction;
     protected UnaryFunction<T> cosFunction;
-
     protected InverterTask.Factory<T> inverterFactory;
     protected DeterminantTask.Factory<T> determinantFactory;
 
     protected abstract Matrix<T> create(MatrixStore<T> store);
 
     protected abstract NumericObject create(T scalar);
-
-    @Override
-    public NumericType supports() {
-        return NumericType.COMPLEX_MATRIX;
-    }
 
     @Override
     public NumericObject sqrt(NumericObject value) {
