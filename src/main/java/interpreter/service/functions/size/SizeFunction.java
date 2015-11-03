@@ -21,7 +21,7 @@ public class SizeFunction extends AbstractInternalFunction {
 
     @Override
     public ObjectData call(ObjectData[] datas) {
-        Matrix<Double> matrix = matrixFactory.createDouble(1, 2);
+        Matrix<Double> matrix = matrixFactory.create(1, 2);
         Sizeable sizeable = (Sizeable) datas[0];
         matrix.set(0, 0, (double) sizeable.getRows());
         matrix.set(0, 1, (double) sizeable.getColumns());

@@ -13,7 +13,7 @@ public class OnesFunction extends AbstractMatrixGeneratorFunction {
 
     @Override
     public ObjectData call(ObjectData[] datas) {
-        return createMatrix(datas, matrixFactory::createOnesDouble);
+        return createMatrix(datas, matrixFactory::ones);
     }
 
 }

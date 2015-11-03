@@ -13,7 +13,7 @@ public class EyeFunction extends AbstractMatrixGeneratorFunction {
 
     @Override
     public ObjectData call(ObjectData[] datas) {
-        return createMatrix(datas, matrixFactory::createEyeDouble);
+        return createMatrix(datas, matrixFactory::eye);
     }
 
 }

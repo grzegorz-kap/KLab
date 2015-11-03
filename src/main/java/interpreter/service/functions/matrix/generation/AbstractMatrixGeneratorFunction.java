@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class AbstractMatrixGeneratorFunction extends AbstractInternalFunction {
 
     @Autowired
-    protected MatrixFactory matrixFactory;
+    protected MatrixFactory<Double> matrixFactory;
 
     @Autowired
     protected IntegerArgumentsMapper integerArgumentsMapper;

@@ -19,7 +19,7 @@ import java.util.List;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MatrixInstructionHandler extends AbstractInstructionHandler {
 
-    private MatrixFactory matrixFactory;
+    private MatrixFactory<Double> matrixFactory;
     private ExecutionContextManager executionContextManager;
 
     public void handle(InstructionPointer instructionPointer) {
@@ -28,12 +28,11 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
     }
 
     private void process(List<ObjectData> objectDataList) {
-        MatrixBuilder<Double> matrixBuilder = matrixFactory.createDoubleBuilder();
+        MatrixBuilder<Double> matrixBuilder = matrixFactory.builder();
         objectDataList.forEach(objectData -> process(objectData, matrixBuilder));
         executionContext.executionStackPush(matrixBuilder.build());
     }
 
-    @SuppressWarnings("unchecked")
     private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
         if (objectData instanceof Matrix) {
             matrixBuilder.appendBelow((Matrix<Double>) objectData);
@@ -48,7 +47,7 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
     }
 
     @Autowired
-    public void setMatrixFactory(MatrixFactory matrixFactory) {
+    public void setMatrixFactory(MatrixFactory<Double> matrixFactory) {
         this.matrixFactory = matrixFactory;
     }
 

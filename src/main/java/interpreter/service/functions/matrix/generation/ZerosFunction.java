@@ -13,7 +13,7 @@ public class ZerosFunction extends AbstractMatrixGeneratorFunction {
 
     @Override
     public ObjectData call(ObjectData[] datas) {
-        return createMatrix(datas, matrixFactory::createZerosDouble);
+        return createMatrix(datas, matrixFactory::zeros);
     }
 
 }

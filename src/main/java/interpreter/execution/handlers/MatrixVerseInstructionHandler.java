@@ -24,28 +24,22 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
     private ExecutionContextManager executionContextManager;
 
     @Override
+    public InstructionCode getSupportedInstructionCode() {
+        return InstructionCode.MATRIX_VERSE;
+    }
+
+    @Override
     public void handle(InstructionPointer instructionPointer) {
         process(executionContextManager.executionStackPop(executionContext, instructionPointer.current().getArgumentsNumber()));
         instructionPointer.increment();
     }
 
     private void process(List<ObjectData> objectDataList) {
-        MatrixBuilder<Double> matrixBuilder = matrixFactory.createDoubleBuilder();
+        MatrixBuilder<Double> matrixBuilder = matrixFactory.builder();
         objectDataList.forEach(objectData -> process(matrixBuilder, objectData));
         executionContext.executionStackPush(matrixBuilder.build());
     }
 
-    @Override
-    public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.MATRIX_VERSE;
-    }
-
-    @Autowired
-    public void setMatrixFactory(MatrixFactory matrixFactory) {
-        this.matrixFactory = matrixFactory;
-    }
-
-    @SuppressWarnings("unchecked")
     private void process(MatrixBuilder<Double> builder, ObjectData objectData) {
         if (objectData instanceof DoubleScalar) {
             builder.appendRight(((DoubleScalar) objectData).getValue());
@@ -59,5 +53,10 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
     @Autowired
     public void setExecutionContextManager(ExecutionContextManager executionContextManager) {
         this.executionContextManager = executionContextManager;
+    }
+
+    @Autowired
+    public void setMatrixFactory(MatrixFactory matrixFactory) {
+        this.matrixFactory = matrixFactory;
     }
 }

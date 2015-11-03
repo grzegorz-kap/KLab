@@ -45,7 +45,7 @@ public class OjalgoMatrixBuilder<T extends Number, I extends PhysicalStore<T>> i
 
     @Override
     public OjalgoMatrix<T> build() {
-        return new OjalgoMatrix<>(builder.copy());
+        return new OjalgoMatrix<>(builder.build());
     }
 
     private void createIfEmpty(long rowsNumber, long colsNumber) {
