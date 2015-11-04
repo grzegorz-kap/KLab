@@ -2,6 +2,8 @@ package interpreter.execution.handlers.operators;
 
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
+import interpreter.types.NumericObject;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -22,7 +24,7 @@ public class AddInstructionHandler extends AbstractOperatorInstructionHandler {
     }
 
     @Override
-    public ObjectData calculate(ObjectData a, ObjectData b) {
-        return operatorExecutionFactory.getAdder(numberType(a, b)).add(a, b);
+    public ObjectData calculate(NumericObject a, NumericObject b, NumericType type) {
+        return operatorExecutionFactory.getAdder(type).add(convert(a, type), convert(b, type));
     }
 }

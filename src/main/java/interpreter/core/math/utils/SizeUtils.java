@@ -11,4 +11,8 @@ public class SizeUtils {
     public static long getLength(Sizeable sizeable) {
         return sizeable.getColumns() * sizeable.getRows();
     }
+
+    public static boolean isScalar(Sizeable sizeable) {
+        return sizeable.getRows() == 1 && sizeable.getColumns() == 1;
+    }
 }

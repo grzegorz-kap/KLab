@@ -25,6 +25,11 @@ public class ComplexScalar extends AbstractScalar {
         value = new ComplexNumber(re, im);
     }
 
+    public ComplexScalar(Number numberValue) {
+        super(NumericType.COMPLEX_DOUBLE);
+        value = ComplexNumber.valueOf(numberValue);
+    }
+
     public ComplexNumber getComplex() {
         return value;
     }
