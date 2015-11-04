@@ -29,4 +29,8 @@ public class MacroInstruction {
     public Collection<? extends Instruction> getInstructions() {
         return instructions;
     }
+
+    public int size() {
+        return instructions.size();
+    }
 }

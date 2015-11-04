@@ -20,7 +20,11 @@ public enum InstructionCode {
     JMPF(16),
     JMP(17),
     CALL(18),
-    ANS(19);
+    ANS(19),
+    FLSTART(20),
+    FLHNEXT(21),
+    FLGNEXT(22),
+    FLEND(23);
 
     private int index;
 

@@ -1,5 +1,5 @@
 package interpreter.parsing.model;
 
 public enum KeywordBalance {
-    IF_INSTRUCTION
+    FOR_INSTRUCTION, IF_INSTRUCTION
 }

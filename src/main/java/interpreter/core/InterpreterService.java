@@ -1,5 +1,6 @@
 package interpreter.core;
 
+import interpreter.InstructionKeyword.PostParseHandler;
 import interpreter.lexer.model.TokenList;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 class InterpreterService extends AbstractInterpreterService {
@@ -21,6 +23,10 @@ class InterpreterService extends AbstractInterpreterService {
         while (parser.hasNext()) {
             executionLoop();
         }
+        printCode();
+    }
+
+    public void printCode() {
         LOGGER.info("{}", executionService.getExecutionContext().getCode());
     }
 
@@ -37,15 +43,18 @@ class InterpreterService extends AbstractInterpreterService {
     }
 
     private void translate(List<Expression<ParseToken>> expression) {
-        if (ifPostHandler.canBeHandled(expression)) {
-            handleIf(expression);
+        PostParseHandler postParseHandler = findPostParseHandler(expression);
+        if (Objects.nonNull(postParseHandler)) {
+            addMacroInstruction(postParseHandler.handle(expression, instructionTranslator));
         } else {
             expression.forEach(this::process);
         }
     }
 
-    private void handleIf(List<Expression<ParseToken>> expression) {
-        addMacroInstruction(ifPostHandler.handle(expression, instructionTranslator));
+    private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expression) {
+        return postParseHandlers.stream()
+                .filter(handler -> handler.canBeHandled(expression))
+                .findFirst().orElse(null);
     }
 
     private void process(Expression<ParseToken> expression) {

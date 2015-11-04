@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 public class Instruction {
 
     private InstructionCode instructionCode;
-    private Integer argumentsNumber;
+    private Integer argumentsNumber = 0;
     private List<ObjectData> objectDataList = new ArrayList<>();
 
     public Instruction() {
