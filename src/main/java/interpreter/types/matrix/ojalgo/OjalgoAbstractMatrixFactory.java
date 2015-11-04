@@ -1,7 +1,6 @@
 package interpreter.types.matrix.ojalgo;
 
 import interpreter.types.matrix.Matrix;
-import interpreter.types.matrix.MatrixBuilder;
 import interpreter.types.matrix.MatrixFactory;
 import org.ojalgo.function.NullaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -15,11 +14,6 @@ public abstract class OjalgoAbstractMatrixFactory<N extends Number> implements M
     private Uniform randGenerator = new Uniform();
 
     protected abstract Matrix<N> create(MatrixStore<N> store);
-
-    @Override
-    public MatrixBuilder<N> builder() {
-        return new OjalgoMatrixBuilder<>(factory);
-    }
 
     @Override
     public Matrix<N> create(int rows, int columns) {

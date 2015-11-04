@@ -2,6 +2,7 @@ package interpreter.types.matrix.ojalgo;
 
 import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.MatrixBuilder;
 import org.ojalgo.function.NullaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PrimitiveDenseStore;
@@ -31,6 +32,11 @@ public class OjalgoDoubleMatrixFactory extends OjalgoAbstractMatrixFactory<Doubl
     @Override
     protected Matrix<Double> create(MatrixStore<Double> store) {
         return new OjalgoMatrix<>(store);
+    }
+
+    @Override
+    public MatrixBuilder<Double> builder() {
+        return new OjalgoDoubleMatrixBuilder();
     }
 
     @Override

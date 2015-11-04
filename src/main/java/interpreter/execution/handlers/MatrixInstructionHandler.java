@@ -1,13 +1,14 @@
 package interpreter.execution.handlers;
 
 import interpreter.execution.exception.WrongTypeException;
+import interpreter.execution.helper.NumericUtils;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.execution.service.ExecutionContextManager;
 import interpreter.translate.model.InstructionCode;
+import interpreter.types.NumericObject;
 import interpreter.types.ObjectData;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.MatrixBuilder;
-import interpreter.types.matrix.MatrixFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -18,9 +19,8 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MatrixInstructionHandler extends AbstractInstructionHandler {
-
-    private MatrixFactory<Double> matrixFactory;
     private ExecutionContextManager executionContextManager;
+    private NumericUtils numericUtils;
 
     public void handle(InstructionPointer instructionPointer) {
         process(executionContextManager.executionStackPop(executionContext, instructionPointer.current().getArgumentsNumber()));
@@ -28,16 +28,15 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
     }
 
     private void process(List<ObjectData> objectDataList) {
-        MatrixBuilder<Double> matrixBuilder = matrixFactory.builder();
-        objectDataList.forEach(objectData -> process(objectData, matrixBuilder));
-        executionContext.executionStackPush(matrixBuilder.build());
+        Matrix<? extends Number> matrix = numericUtils.createMatrix(objectDataList, this::process);
+        executionContext.executionStackPush(matrix);
     }
 
-    private void process(ObjectData objectData, MatrixBuilder<Double> matrixBuilder) {
-        if (objectData instanceof Matrix) {
-            matrixBuilder.appendBelow((Matrix<Double>) objectData);
+    private void process(MatrixBuilder<? extends Number> matrixBuilder, NumericObject numericObject) {
+        if (numericObject instanceof Matrix) {
+            matrixBuilder.appendBelow((Matrix<Number>) numericObject);
         } else {
-            throw new WrongTypeException(objectData);
+            throw new WrongTypeException(numericObject);
         }
     }
 
@@ -47,12 +46,12 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
     }
 
     @Autowired
-    public void setMatrixFactory(MatrixFactory<Double> matrixFactory) {
-        this.matrixFactory = matrixFactory;
+    public void setExecutionContextManager(ExecutionContextManager executionContextManager) {
+        this.executionContextManager = executionContextManager;
     }
 
     @Autowired
-    public void setExecutionContextManager(ExecutionContextManager executionContextManager) {
-        this.executionContextManager = executionContextManager;
+    public void setNumericUtils(NumericUtils numericUtils) {
+        this.numericUtils = numericUtils;
     }
 }

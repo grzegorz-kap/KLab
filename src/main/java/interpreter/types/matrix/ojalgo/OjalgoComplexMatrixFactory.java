@@ -2,6 +2,7 @@ package interpreter.types.matrix.ojalgo;
 
 import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
+import interpreter.types.matrix.MatrixBuilder;
 import org.ojalgo.function.NullaryFunction;
 import org.ojalgo.matrix.store.ComplexDenseStore;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -32,6 +33,11 @@ public class OjalgoComplexMatrixFactory extends OjalgoAbstractMatrixFactory<Comp
     @Override
     protected Matrix<ComplexNumber> create(MatrixStore<ComplexNumber> store) {
         return new OjalgoComplexMatrix(store);
+    }
+
+    @Override
+    public MatrixBuilder<ComplexNumber> builder() {
+        return new OjalgoComplexMatrixBuilder();
     }
 
     @Override
