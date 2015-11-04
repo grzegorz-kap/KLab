@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsAdder;
+import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
@@ -33,7 +33,7 @@ abstract class AbstractOjalgoMatrixAdder<T extends Number> extends AbstractOjalg
     }
 
     @Override
-    public ObjectData add(ObjectData a, ObjectData b) {
+    public NumericObject add(NumericObject a, NumericObject b) {
         return operate(a, b);
     }
 }

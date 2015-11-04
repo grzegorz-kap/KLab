@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsDivder;
+import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.task.SolverTask;
@@ -25,8 +25,7 @@ public class OjalgoMatrixDoubleDividerConfig {
         return new OjalgoMatrixDivder<ComplexNumber>(SolverTask.COMPLEX, NumericType.COMPLEX_MATRIX);
     }
 
-    private static class OjalgoMatrixDivder<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T>
-            implements NumericObjectsDivder {
+    private static class OjalgoMatrixDivder<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsDivder {
 
         private SolverTask.Factory<T> factory;
         private NumericType supported;
@@ -48,7 +47,7 @@ public class OjalgoMatrixDoubleDividerConfig {
         }
 
         @Override
-        public ObjectData div(ObjectData a, ObjectData b) {
+        public NumericObject div(NumericObject a, NumericObject b) {
             return operate(a, b);
         }
 

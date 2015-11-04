@@ -1,12 +1,12 @@
 package interpreter.types.matrix.ojalgo;
 
-import interpreter.types.NumericType;
+import interpreter.types.converters.OjalgoMatrixComplexConverter;
 import interpreter.types.matrix.Matrix;
 import org.ojalgo.matrix.store.ComplexDenseStore;
-import org.ojalgo.matrix.store.PhysicalStore;
 import org.ojalgo.scalar.ComplexNumber;
 
 public class OjalgoComplexMatrixBuilder extends OjalgoAbstractMatrixBuilder<ComplexNumber> {
+    private OjalgoMatrixComplexConverter ojalgoMatrixComplexConverter = new OjalgoMatrixComplexConverter();
 
     public OjalgoComplexMatrixBuilder() {
         super(ComplexDenseStore.FACTORY);
@@ -14,21 +14,12 @@ public class OjalgoComplexMatrixBuilder extends OjalgoAbstractMatrixBuilder<Comp
 
     @Override
     protected ComplexNumber convert(Number number) {
-        return ComplexNumber.FACTORY.cast(number);
+        return ojalgoMatrixComplexConverter.convert(number);
     }
 
     @Override
     protected OjalgoMatrix<ComplexNumber> convert(Matrix<? extends Number> matrix) {
-        if (NumericType.COMPLEX_MATRIX.equals(matrix.getNumericType())) {
-            return ((OjalgoComplexMatrix) matrix);
-        }
-        PhysicalStore<Number> source = ((OjalgoMatrix) matrix).getMatrixStore();
-        PhysicalStore<ComplexNumber> destination = factory.makeZero(source.countRows(), source.countColumns());
-        final long length = destination.count();
-        for (long index = 0; index < length; index++) {
-            destination.set(index, convert(destination.get(index)));
-        }
-        return new OjalgoComplexMatrix(destination);
+        return ojalgoMatrixComplexConverter.convert(matrix);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsMultiplicator;
+import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
@@ -27,7 +27,7 @@ class OjalgoMatrixComplexMultiplicator extends AbstractOjalgoMatrixMultiplicator
 abstract class AbstractOjalgoMatrixMultiplicator<T extends Number>
         extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsMultiplicator {
     @Override
-    public ObjectData mult(ObjectData a, ObjectData b) {
+    public NumericObject mult(NumericObject a, NumericObject b) {
         return operate(a, b);
     }
 

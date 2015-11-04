@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsSubtractor;
+import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
@@ -32,7 +32,7 @@ abstract class AbstractOjalgoMatrixSubtractor<T extends Number> extends Abstract
     }
 
     @Override
-    public ObjectData sub(ObjectData a, ObjectData b) {
+    public NumericObject sub(NumericObject a, NumericObject b) {
         return operate(a, b);
     }
 }

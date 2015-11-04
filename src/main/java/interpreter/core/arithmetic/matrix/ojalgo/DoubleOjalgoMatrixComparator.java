@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsComparator;
+import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.function.PrimitiveFunction;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -23,32 +23,32 @@ public class DoubleOjalgoMatrixComparator
     }
 
     @Override
-    public ObjectData eq(ObjectData a, ObjectData b) {
+    public NumericObject eq(NumericObject a, NumericObject b) {
         return operate(a, b, this::eq);
     }
 
     @Override
-    public ObjectData neq(ObjectData a, ObjectData b) {
+    public NumericObject neq(NumericObject a, NumericObject b) {
         return operate(a, b, this::neq);
     }
 
     @Override
-    public ObjectData gt(ObjectData a, ObjectData b) {
+    public NumericObject gt(NumericObject a, NumericObject b) {
         return operate(a, b, this::gt);
     }
 
     @Override
-    public ObjectData ge(ObjectData a, ObjectData b) {
+    public NumericObject ge(NumericObject a, NumericObject b) {
         return operate(a, b, this::ge);
     }
 
     @Override
-    public ObjectData le(ObjectData a, ObjectData b) {
+    public NumericObject le(NumericObject a, NumericObject b) {
         return operate(a, b, this::le);
     }
 
     @Override
-    public ObjectData lt(ObjectData a, ObjectData b) {
+    public NumericObject lt(NumericObject a, NumericObject b) {
         return operate(a, b, this::lt);
     }
 

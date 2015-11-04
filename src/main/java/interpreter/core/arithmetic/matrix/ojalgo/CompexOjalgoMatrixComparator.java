@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsComparator;
+import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import interpreter.types.matrix.ojalgo.OjalgoMatrix;
 import org.ojalgo.function.ComplexFunction;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -10,47 +10,44 @@ import org.ojalgo.scalar.ComplexNumber;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixBinaryOperator<ComplexNumber>
-        implements NumericObjectsComparator {
-
+public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixBinaryOperator<ComplexNumber> implements NumericObjectsComparator {
     @Override
     public NumericType getSupportedType() {
         return NumericType.COMPLEX_MATRIX;
     }
 
     @Override
-    protected MatrixStore<ComplexNumber> operate(OjalgoMatrix<ComplexNumber> first,
-                                                 OjalgoMatrix<ComplexNumber> second) {
+    protected MatrixStore<ComplexNumber> operate(OjalgoMatrix<ComplexNumber> first, OjalgoMatrix<ComplexNumber> second) {
         return null;
     }
 
     @Override
-    public ObjectData eq(ObjectData a, ObjectData b) {
+    public NumericObject eq(NumericObject a, NumericObject b) {
         return operate(a, b, this::eq);
     }
 
     @Override
-    public ObjectData neq(ObjectData a, ObjectData b) {
+    public NumericObject neq(NumericObject a, NumericObject b) {
         return operate(a, b, this::neq);
     }
 
     @Override
-    public ObjectData gt(ObjectData a, ObjectData b) {
+    public NumericObject gt(NumericObject a, NumericObject b) {
         return operate(a, b, this::gt);
     }
 
     @Override
-    public ObjectData ge(ObjectData a, ObjectData b) {
+    public NumericObject ge(NumericObject a, NumericObject b) {
         return operate(a, b, this::ge);
     }
 
     @Override
-    public ObjectData le(ObjectData a, ObjectData b) {
+    public NumericObject le(NumericObject a, NumericObject b) {
         return operate(a, b, this::le);
     }
 
     @Override
-    public ObjectData lt(ObjectData a, ObjectData b) {
+    public NumericObject lt(NumericObject a, NumericObject b) {
         return operate(a, b, this::lt);
     }
 
@@ -101,5 +98,4 @@ public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixBinaryOper
     private ComplexNumber lt(ComplexNumber value, ComplexNumber second) {
         return new ComplexNumber(value.compareTo(second) == -1 ? 1D : 0D);
     }
-
 }

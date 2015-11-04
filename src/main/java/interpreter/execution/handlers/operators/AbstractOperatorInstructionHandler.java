@@ -17,6 +17,9 @@ public abstract class AbstractOperatorInstructionHandler extends AbstractInstruc
     private ConvertersHolder convertersHolder;
 
     public NumericObject convert(NumericObject data, NumericType destType) {
+        if (destType.equals(data.getNumericType())) {
+            return data;
+        }
         return convertersHolder.getConverter(data.getNumericType(), destType).convert(data);
     }
 

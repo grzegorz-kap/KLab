@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Component
 public class ConvertsHolderImpl implements ConvertersHolder {
-
     private Converter[] converters = new Converter[NumericType.values().length];
 
     @Override

@@ -8,11 +8,11 @@ import interpreter.types.scalar.Scalar;
 
 import static interpreter.commons.exception.InterpreterCastException.CANNOT_CAST_MATRIX_TO_SCALAR;
 
-public abstract class AbstractConverter implements Converter {
+public abstract class AbstractConverter<N extends NumericObject> implements Converter {
 
-    protected abstract NumericObject convert(Scalar scalar);
+    protected abstract N convert(Scalar scalar);
 
-    protected abstract NumericObject convert(Matrix matrix);
+    public abstract N convert(Matrix<? extends Number> matrix);
 
     @Override
     public NumericObject convert(NumericObject numericObject) {
