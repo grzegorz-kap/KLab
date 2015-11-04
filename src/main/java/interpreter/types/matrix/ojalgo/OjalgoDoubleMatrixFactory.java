@@ -1,5 +1,6 @@
 package interpreter.types.matrix.ojalgo;
 
+import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
 import org.ojalgo.function.NullaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -32,4 +33,8 @@ public class OjalgoDoubleMatrixFactory extends OjalgoAbstractMatrixFactory<Doubl
         return new OjalgoMatrix<>(store);
     }
 
+    @Override
+    public NumericType supports() {
+        return NumericType.MATRIX_DOUBLE;
+    }
 }

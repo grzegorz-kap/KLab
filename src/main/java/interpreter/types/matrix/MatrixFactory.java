@@ -1,5 +1,7 @@
 package interpreter.types.matrix;
 
+import interpreter.types.NumericType;
+
 public interface MatrixFactory<N extends Number> {
 
     MatrixBuilder<N> builder();
@@ -13,4 +15,6 @@ public interface MatrixFactory<N extends Number> {
     Matrix<N> ones(int rows, int cols);
 
     Matrix<N> zeros(int rows, int columns);
+
+    NumericType supports();
 }
