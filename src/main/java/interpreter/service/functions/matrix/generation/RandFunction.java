@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RandFunction extends AbstractMatrixGeneratorFunction {
-
     public RandFunction() {
         super(1, 2, InternalFunction.RAND_FUNCTION);
     }
@@ -15,5 +14,4 @@ public class RandFunction extends AbstractMatrixGeneratorFunction {
     public ObjectData call(ObjectData[] datas) {
         return createMatrix(datas, matrixFactory::rand);
     }
-
 }
