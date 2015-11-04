@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public abstract class AbstractMatrixGeneratorFunction extends AbstractInternalFunction {
-
     @Autowired
     protected MatrixFactory<Double> matrixFactory;
 
@@ -25,7 +24,5 @@ public abstract class AbstractMatrixGeneratorFunction extends AbstractInternalFu
         int rows = arguments.get(0);
         int columns = arguments.size() == 2 ? arguments.get(1) : rows;
         return creator.create(rows, columns);
-
     }
-
 }

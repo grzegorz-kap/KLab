@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SinFunction extends AbstractMathFunction {
-
     public SinFunction() {
         super(1, 1, InternalFunction.SINUS);
     }
@@ -16,5 +15,4 @@ public class SinFunction extends AbstractMathFunction {
     protected ObjectData process(NumericObject[] datas) {
         return functionsHolder.get(datas[0].getNumericType(), this).sin(datas[0]);
     }
-
 }

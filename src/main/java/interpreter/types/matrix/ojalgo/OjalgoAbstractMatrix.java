@@ -40,7 +40,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     @Override
     public void forEach(Consumer<? super T> action) {
-        getLazyStore().forEach(action);
+        getMatrixStore().forEach(action);
     }
 
     @Override

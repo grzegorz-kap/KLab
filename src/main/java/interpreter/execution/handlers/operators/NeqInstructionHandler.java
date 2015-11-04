@@ -4,7 +4,6 @@ import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class NeqInstructionHandler extends AbstractOperatorInstructionHandler {
     }
 
     @Override
-    protected ObjectData calculate(NumericObject a, NumericObject b, NumericType type) {
+    protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
         return operatorExecutionFactory.getComporator(type).neq(convert(a, type), convert(b, type));
     }
 

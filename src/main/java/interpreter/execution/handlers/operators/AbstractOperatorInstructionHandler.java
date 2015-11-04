@@ -27,12 +27,13 @@ public abstract class AbstractOperatorInstructionHandler extends AbstractInstruc
         NumericObject b = (NumericObject) executionContext.executionStackPop();
         NumericObject a = ((NumericObject) executionContext.executionStackPop());
         NumericType numericType = numberType(a, b);
-        ObjectData result = calculate(a, b, numericType);
+        NumericObject result = calculate(a, b, numericType);
+        result.setNumericType(numericType);
         executionContext.executionStackPush(result);
         instructionPointer.increment();
     }
 
-    protected ObjectData calculate(NumericObject a, NumericObject b, NumericType type) {
+    protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
         throw new UnsupportedOperationException();
     }
 
