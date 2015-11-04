@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.factory;
 
 import interpreter.core.arithmetic.*;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 
 public interface OperatorExecutionFactory {
 
@@ -11,7 +11,7 @@ public interface OperatorExecutionFactory {
 
     NumericObjectsMultiplicator getMultiplicator(NumericType numericType);
 
-    NumericObjectsDivider getDivider(NumericType numericType);
+    NumericObjectsDivder getDivider(NumericType numericType);
 
     NumericObjectsComparator getComporator(NumericType numericType);
 }

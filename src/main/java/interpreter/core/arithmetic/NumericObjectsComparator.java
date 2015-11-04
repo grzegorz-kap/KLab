@@ -1,18 +1,18 @@
 package interpreter.core.arithmetic;
 
-import interpreter.types.ObjectData;
+import interpreter.types.NumericObject;
 
 public interface NumericObjectsComparator extends NumericObjectsOperator {
 
-    ObjectData eq(ObjectData a, ObjectData b);
+    NumericObject eq(NumericObject a, NumericObject b);
 
-    ObjectData neq(ObjectData a, ObjectData b);
+    NumericObject neq(NumericObject a, NumericObject b);
 
-    ObjectData gt(ObjectData a, ObjectData b);
+    NumericObject gt(NumericObject a, NumericObject b);
 
-    ObjectData ge(ObjectData a, ObjectData b);
+    NumericObject ge(NumericObject a, NumericObject b);
 
-    ObjectData le(ObjectData a, ObjectData b);
+    NumericObject le(NumericObject a, NumericObject b);
 
-    ObjectData lt(ObjectData a, ObjectData b);
+    NumericObject lt(NumericObject a, NumericObject b);
 }

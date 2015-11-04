@@ -1,7 +1,5 @@
 package interpreter.types;
 
-import interpreter.parsing.model.NumericType;
-
 public abstract class AbstractNumericObject extends AbstractObjectData implements NumericObject {
 
     private NumericType numericType;

@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic;
 
-import interpreter.types.ObjectData;
+import interpreter.types.NumericObject;
 
 public interface NumericObjectsMultiplicator extends NumericObjectsOperator {
-    ObjectData mult(ObjectData a, ObjectData b);
+    NumericObject mult(NumericObject a, NumericObject b);
 }

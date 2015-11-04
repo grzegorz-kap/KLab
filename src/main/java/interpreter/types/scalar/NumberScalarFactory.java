@@ -4,5 +4,5 @@ import interpreter.types.NumericObject;
 
 public interface NumberScalarFactory {
 
-    NumericObject getDouble(Double value);
+    NumericObject getDouble(String value);
 }

@@ -1,10 +1,10 @@
 package interpreter.execution.model;
 
+import interpreter.translate.model.Instruction;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import interpreter.translate.model.Instruction;
 
 public class Code {
 
@@ -29,14 +29,14 @@ public class Code {
     public void clear() {
         instructions.clear();
     }
-    
+
     @Override
     public String toString() {
-    	StringBuilder builder = new StringBuilder();
-    	int address = 0;
-    	for(Instruction instruction : instructions) {
-    		builder.append("\n").append(address++).append(") ").append(instruction);
-    	}
-    	return builder.toString();
+        StringBuilder builder = new StringBuilder();
+        int address = 0;
+        for (Instruction instruction : instructions) {
+            builder.append("\n").append(address++).append(") ").append(instruction);
+        }
+        return builder.toString();
     }
 }

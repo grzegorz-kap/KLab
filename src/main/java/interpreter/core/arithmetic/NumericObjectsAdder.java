@@ -1,9 +1,7 @@
 package interpreter.core.arithmetic;
 
-import interpreter.types.ObjectData;
+import interpreter.types.NumericObject;
 
 public interface NumericObjectsAdder extends NumericObjectsOperator {
-
-    ObjectData add(final ObjectData a, final ObjectData b);
-
+    NumericObject add(final NumericObject a, final NumericObject b);
 }

@@ -21,14 +21,14 @@ public class CommaParseHandler extends AbstractParseHandler {
     public void handle() {
         if (isThisCommaInsideMatrix()) {
             matrixNewColumnParseHandler.handle();
-        } else if(isThisCommaInsideFunctionCall()) {
-        	argumentDilimiterHandler.handle();
+        } else if (isThisCommaInsideFunctionCall()) {
+            argumentDilimiterHandler.handle();
         } else {
             instructionEndHandler.handle();
         }
     }
 
-	@Override
+    @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.COMMA;
     }
@@ -44,10 +44,10 @@ public class CommaParseHandler extends AbstractParseHandler {
     private boolean isThisCommaInsideMatrix() {
         return parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
     }
-    
+
     private boolean isThisCommaInsideFunctionCall() {
-		return parseContextManager.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS);
-	}
+        return parseContextManager.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS);
+    }
 
     @Autowired
     public void setMatrixNewColumnParseHandler(MatrixNewColumnParseHandler matrixNewColumnParseHandler) {
@@ -59,8 +59,8 @@ public class CommaParseHandler extends AbstractParseHandler {
         this.instructionEndHandler = instructionEndHandler;
     }
 
-	@Autowired
-	public void setArgumentDilimiterHandler(FunctionArgumentDelimiterParseHandler argumentDilimiterHandler) {
-		this.argumentDilimiterHandler = argumentDilimiterHandler;
-	}
+    @Autowired
+    public void setArgumentDilimiterHandler(FunctionArgumentDelimiterParseHandler argumentDilimiterHandler) {
+        this.argumentDilimiterHandler = argumentDilimiterHandler;
+    }
 }
