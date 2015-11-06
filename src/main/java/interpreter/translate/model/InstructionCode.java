@@ -22,7 +22,8 @@ public enum InstructionCode {
     CALL(18),
     ANS(19),
     FLNEXT(20),
-    FLINIT(21);
+    FLINIT(21),
+    CLEAR(22);
 
     private int index;
 

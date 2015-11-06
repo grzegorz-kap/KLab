@@ -4,7 +4,6 @@ import interpreter.types.ObjectData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Instruction {
 
@@ -42,6 +41,10 @@ public class Instruction {
 
     public ObjectData getObjectData(int index) {
         return objectDataList.get(index);
+    }
+
+    public <T> T getObjectData(int index, Class<T> clazz) {
+        return clazz.cast(objectDataList.get(index));
     }
 
     @Override

@@ -70,9 +70,15 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private MacroInstruction handleForEnd() {
         JumperInstruction flhnextJump = createJmpInstruction();
         flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
-        forInstructionContext.getJumpOnFalse().setJumpIndex(code.size() + 1); // jump to FLEND
+        forInstructionContext.getJumpOnFalse().setJumpIndex(code.size() + 1);
+        String iteratorName = String.format(DATA_FORMAT, forInstructionContext.getName());
+        Integer iteratorAddress = identifierMapper.getMainAddress(iteratorName);
+        Instruction clearInstruction = new Instruction(InstructionCode.CLEAR, 0);
+        clearInstruction.add(new IdentifierObject(iteratorName, iteratorAddress));
         forInstructionContext.pop();
-        return new MacroInstruction().add(flhnextJump);
+        return new MacroInstruction()
+                .add(flhnextJump)
+                .add(clearInstruction);
     }
 
     private void findIteratorTarget(MacroInstruction macroInstruction, FLNextInstruction flnextInstruction) {
