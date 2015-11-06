@@ -10,6 +10,12 @@ public class IdentifierObject extends AbstractObjectData {
         this.identifierToken = identifierToken;
     }
 
+    public IdentifierObject(String name, Integer address) {
+        identifierToken = new IdentifierToken();
+        identifierToken.setId(name);
+        identifierToken.setAddress(address);
+    }
+
     public IdentifierToken getIdentifierToken() {
         return identifierToken;
     }

@@ -11,10 +11,14 @@ public class IdentifierToken extends ParseToken {
     private String id;
     private Integer address;
 
+    public IdentifierToken() {
+        setParseClass(ParseClass.IDENTIFIER);
+    }
+
     public IdentifierToken(Token token) {
+        this();
         id = token.getLexeme();
         setToken(token);
-        setParseClass(ParseClass.IDENTIFIER);
     }
 
     public VariableScope getVariableScope() {
