@@ -1,6 +1,8 @@
 package interpreter.types.matrix.ojalgo;
 
 import interpreter.types.NumericType;
+import interpreter.types.foriterator.ForIterator;
+import interpreter.types.foriterator.OjalgoForIteratorFactory;
 import org.ojalgo.matrix.store.MatrixStore;
 
 public class OjalgoMatrix<T extends Number> extends OjalgoAbstractMatrix<T> {
@@ -18,5 +20,10 @@ public class OjalgoMatrix<T extends Number> extends OjalgoAbstractMatrix<T> {
             }
         }
         return true;
+    }
+
+    @Override
+    public ForIterator getForIterator() {
+        return OjalgoForIteratorFactory.create(this);
     }
 }

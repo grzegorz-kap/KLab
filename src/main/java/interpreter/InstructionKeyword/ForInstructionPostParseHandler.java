@@ -23,6 +23,7 @@ import static interpreter.InstructionKeyword.exception.KeywordParseException.FOR
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
+    private static final String DATA_FORMAT = "$$%s$iterator";
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
 
@@ -61,7 +62,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
 
     private Instruction createFlInit() {
         Instruction instruction = new Instruction(InstructionCode.FLINIT, 0);
-        String name = forInstructionContext.getName();
+        String name = String.format(DATA_FORMAT, forInstructionContext.getName());
         instruction.add(new IdentifierObject(name, identifierMapper.getMainAddress(name)));
         return instruction;
     }
@@ -79,6 +80,11 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
         forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new IdentifierObject(id.getId(), id.getAddress()));
+        String name = String.format(DATA_FORMAT, id.getId());
+        Integer address = identifierMapper.registerMainIdentifier(name);
+        flnextInstruction.setIteratorData(new IdentifierObject(name, address));
+        id.getIdentifierToken().setAddress(address);
+        id.getIdentifierToken().setId(name);
     }
 
     private void checkIfAssignOperator(List<Expression<ParseToken>> expressions) {

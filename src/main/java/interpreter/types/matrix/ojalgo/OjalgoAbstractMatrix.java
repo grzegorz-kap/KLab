@@ -4,7 +4,6 @@ import interpreter.types.AbstractNumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
-import interpreter.types.foriterator.ForIterator;
 import interpreter.types.matrix.Matrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
@@ -21,7 +20,24 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     @Override
     public ObjectData copyObjectData() {
-        return new OjalgoMatrix<>(getMatrixStore().copy());
+        OjalgoMatrix<T> ojalgoMatrix = new OjalgoMatrix<>(getMatrixStore().copy());
+        ojalgoMatrix.setNumericType(getNumericType());
+        return ojalgoMatrix;
+    }
+
+    @Override
+    public T get(long m, long n) {
+        return getLazyStore().get(m, n);
+    }
+
+    @Override
+    public T get(int m) {
+        return getLazyStore().get(m);
+    }
+
+    @Override
+    public void set(int m, int n, T value) {
+        getMatrixStore().set(m, n, value);
     }
 
     @Override
@@ -44,30 +60,11 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
         getMatrixStore().forEach(action);
     }
 
-    @Override
-    public T get(int m, int n) {
-        return getLazyStore().get(m, n);
-    }
-
-    @Override
-    public T get(int m) {
-        return getLazyStore().get(m);
-    }
-
-    @Override
-    public void set(int m, int n, T value) {
-        getMatrixStore().set(m, n, value);
-    }
-
     public PhysicalStore<T> getMatrixStore() {
         if (matrixStore == null) {
             matrixStore = getLazyStore().copy();
         }
         return matrixStore;
-    }
-
-    public void setMatrixStore(PhysicalStore<T> matrixStore) {
-        this.matrixStore = matrixStore;
     }
 
     public MatrixStore<T> getLazyStore() {
@@ -76,10 +73,5 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public void setLazyStore(MatrixStore<T> lazyStore) {
         this.lazyStore = lazyStore;
-    }
-
-    @Override
-    public ForIterator getForIterator() {
-        return null;
     }
 }

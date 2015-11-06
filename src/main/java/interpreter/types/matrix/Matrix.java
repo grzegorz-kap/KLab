@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public interface Matrix<T extends Number> extends NumericObject, Sizeable, ForIterable {
 
-    T get(int m, int n);
+    T get(long m, long n);
 
     T get(int m);
 

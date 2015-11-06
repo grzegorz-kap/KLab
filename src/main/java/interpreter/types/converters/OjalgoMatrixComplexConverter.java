@@ -12,11 +12,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OjalgoMatrixComplexConverter extends AbstractConverter<OjalgoComplexMatrix> {
+
     @Override
     protected OjalgoComplexMatrix convert(Scalar scalar) {
-        PhysicalStore<ComplexNumber> physicalStore = ComplexDenseStore.FACTORY.makeZero(1, 1);
-        physicalStore.set(0, scalar.getValue());
-        return new OjalgoComplexMatrix(physicalStore);
+        return convert(scalar.getValue());
     }
 
     @Override
@@ -24,17 +23,24 @@ public class OjalgoMatrixComplexConverter extends AbstractConverter<OjalgoComple
         if (NumericType.COMPLEX_MATRIX.equals(matrix.getNumericType())) {
             return ((OjalgoComplexMatrix) matrix);
         }
-        PhysicalStore<Number> source = ((OjalgoMatrix) matrix).getMatrixStore();
+        PhysicalStore<Number> source = ((OjalgoMatrix<Number>) matrix).getMatrixStore();
         PhysicalStore<ComplexNumber> destination = ComplexDenseStore.FACTORY.makeZero(source.countRows(), source.countColumns());
         final long length = destination.count();
         for (long index = 0; index < length; index++) {
-            destination.set(index, convert(destination.get(index)));
+            destination.set(index, convertComplex(destination.get(index)));
         }
         return new OjalgoComplexMatrix(destination);
     }
 
-    public ComplexNumber convert(Number number) {
+    public ComplexNumber convertComplex(Number number) {
         return ComplexNumber.FACTORY.cast(number);
+    }
+
+    @Override
+    public OjalgoComplexMatrix convert(Number number) {
+        PhysicalStore<ComplexNumber> physicalStore = ComplexDenseStore.FACTORY.makeZero(1, 1);
+        physicalStore.set(0, number);
+        return new OjalgoComplexMatrix(physicalStore);
     }
 
     @Override

@@ -6,6 +6,7 @@ import static interpreter.translate.model.InstructionCode.FLNEXT;
 
 public class FLNextInstruction extends JumperInstruction {
     private IdentifierObject iteratorId;
+    private IdentifierObject iteratorData;
 
     public FLNextInstruction() {
         super(FLNEXT, 0);
@@ -14,9 +15,11 @@ public class FLNextInstruction extends JumperInstruction {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(FLNEXT).append("\t")
+                .append(String.valueOf(FLNEXT)).append("\t")
                 .append(iteratorId).append("\t")
-                .append(getJumpIndex()).toString();
+                .append(iteratorData).append("\t")
+                .append(getJumpIndex())
+                .toString();
     }
 
     public IdentifierObject getIteratorId() {
@@ -25,5 +28,13 @@ public class FLNextInstruction extends JumperInstruction {
 
     public void setIteratorId(IdentifierObject iteratorId) {
         this.iteratorId = iteratorId;
+    }
+
+    public IdentifierObject getIteratorData() {
+        return iteratorData;
+    }
+
+    public void setIteratorData(IdentifierObject iteratorData) {
+        this.iteratorData = iteratorData;
     }
 }
