@@ -16,8 +16,7 @@ import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.R
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class OperatorHandler extends AbstractParseHandler {
-
+public class OperatorParseHandler extends AbstractParseHandler {
     private OperatorFactory operatorFactory;
 
     @Override

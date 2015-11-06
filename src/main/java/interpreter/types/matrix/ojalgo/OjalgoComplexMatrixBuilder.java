@@ -14,7 +14,7 @@ public class OjalgoComplexMatrixBuilder extends OjalgoAbstractMatrixBuilder<Comp
 
     @Override
     protected ComplexNumber convert(Number number) {
-        return ojalgoMatrixComplexConverter.convert(number);
+        return ojalgoMatrixComplexConverter.convertComplex(number);
     }
 
     @Override

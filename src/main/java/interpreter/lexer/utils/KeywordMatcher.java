@@ -18,6 +18,8 @@ public class KeywordMatcher {
         keywordMap.put("endif", TokenClass.ENDIF_KEYWORD);
         keywordMap.put("else", TokenClass.ELSE_KEYWORD);
         keywordMap.put("elseif", TokenClass.ELSEIF_KEYWORD);
+        keywordMap.put("for", TokenClass.FOR_KEYWORD);
+        keywordMap.put("endfor", TokenClass.ENDFOR_KEYWORD);
     }
 
     public void changeIfKeyword(Token token) {

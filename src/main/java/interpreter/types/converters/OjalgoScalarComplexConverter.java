@@ -10,12 +10,17 @@ import org.springframework.stereotype.Component;
 public class OjalgoScalarComplexConverter extends AbstractConverter<ComplexScalar> {
     @Override
     protected ComplexScalar convert(Scalar scalar) {
-        return new ComplexScalar(scalar.getValue());
+        return convert(scalar.getValue());
     }
 
     @Override
     public ComplexScalar convert(Matrix<? extends Number> matrix) {
-        return new ComplexScalar(evaluteToScalar(matrix));
+        return new ComplexScalar(evaluateToScalar(matrix));
+    }
+
+    @Override
+    public ComplexScalar convert(Number number) {
+        return new ComplexScalar(number);
     }
 
     @Override

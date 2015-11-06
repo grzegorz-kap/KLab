@@ -8,21 +8,25 @@ import interpreter.types.scalar.Scalar;
 
 import static interpreter.commons.exception.InterpreterCastException.CANNOT_CAST_MATRIX_TO_SCALAR;
 
-public abstract class AbstractConverter<N extends NumericObject> implements Converter {
+public abstract class AbstractConverter<N extends NumericObject> implements Converter<N> {
 
     protected abstract N convert(Scalar scalar);
 
     public abstract N convert(Matrix<? extends Number> matrix);
 
     @Override
-    public NumericObject convert(NumericObject numericObject) {
+    public N convert(NumericObject numericObject) {
         if (supportTo().equals(numericObject.getNumericType())) {
-            return numericObject;
+            return (N) numericObject;
         }
-        return numericObject instanceof Scalar ? convert(((Scalar) numericObject)) : convert(((Matrix) numericObject));
+        if (numericObject instanceof Scalar) {
+            return convert(((Scalar) numericObject));
+        } else {
+            return convert(((Matrix<?>) numericObject));
+        }
     }
 
-    protected Number evaluteToScalar(Matrix<? extends Number> matrix) {
+    protected Number evaluateToScalar(Matrix<? extends Number> matrix) {
         if (SizeUtils.isScalar(matrix)) {
             return matrix.get(0);
         }

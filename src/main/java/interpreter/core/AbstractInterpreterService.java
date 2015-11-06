@@ -1,6 +1,5 @@
 package interpreter.core;
 
-import interpreter.InstructionKeyword.IfInstructionPostParseHandler;
 import interpreter.InstructionKeyword.PostParseHandler;
 import interpreter.commons.utils.ExpressionPrinter;
 import interpreter.commons.utils.MacroInstructionPrinter;
@@ -11,8 +10,7 @@ import interpreter.translate.service.InstructionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public abstract class AbstractInterpreterService {
 
@@ -22,8 +20,7 @@ public abstract class AbstractInterpreterService {
     protected InstructionTranslator instructionTranslator;
     protected ExpressionPrinter expressionPrinter;
     protected MacroInstructionPrinter macroInstructionPrinter;
-    protected IfInstructionPostParseHandler ifPostHandler;
-    private Set<PostParseHandler> postParseHandlers = new HashSet<>();
+    protected List<PostParseHandler> postParseHandlers;
 
     public void resetCodeAndStack() {
         executionService.resetCodeAndStack();
@@ -40,7 +37,9 @@ public abstract class AbstractInterpreterService {
 
     @PostConstruct
     private void init() {
-        postParseHandlers.forEach(postParseHandler -> postParseHandler.setCode(executionService.getExecutionContext().getCode()));
+        for (PostParseHandler postParseHandler : postParseHandlers) {
+            postParseHandler.setCode(executionService.getExecutionContext().getCode());
+        }
     }
 
     @Autowired
@@ -74,8 +73,7 @@ public abstract class AbstractInterpreterService {
     }
 
     @Autowired
-    protected void setIfPostHandler(IfInstructionPostParseHandler ifPostHandler) {
-        this.ifPostHandler = ifPostHandler;
-        postParseHandlers.add(ifPostHandler);
+    public void setPostParseHandlers(List<PostParseHandler> postParseHandlers) {
+        this.postParseHandlers = postParseHandlers;
     }
 }

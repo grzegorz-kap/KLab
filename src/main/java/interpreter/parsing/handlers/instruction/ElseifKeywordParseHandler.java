@@ -25,10 +25,7 @@ public class ElseifKeywordParseHandler extends AbstractParseHandler {
     public void handle() {
         checkCorrectExpression();
         checkKeywordBalance();
-        ParseToken parseToken = new ParseToken();
-        parseToken.setParseClass(ParseClass.ELSEIF_KEYWORD);
-        parseToken.setToken(parseContextManager.tokenAt(0));
-        parseContextManager.addExpressionValue(parseToken);
+        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.ELSEIF_KEYWORD));
         parseContextManager.incrementTokenPosition(1);
     }
 
@@ -43,5 +40,4 @@ public class ElseifKeywordParseHandler extends AbstractParseHandler {
             throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
     }
-
 }

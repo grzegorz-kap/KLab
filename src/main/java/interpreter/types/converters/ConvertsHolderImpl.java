@@ -11,7 +11,7 @@ public class ConvertsHolderImpl implements ConvertersHolder {
     private Converter[] converters = new Converter[NumericType.values().length];
 
     @Override
-    public Converter getConverter(NumericType sourceType, NumericType destType) {
+    public Converter<?> getConverter(NumericType sourceType, NumericType destType) {
         return converters[destType.getIndex()];
     }
 

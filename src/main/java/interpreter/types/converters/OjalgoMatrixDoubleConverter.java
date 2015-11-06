@@ -16,9 +16,7 @@ public class OjalgoMatrixDoubleConverter extends AbstractConverter<OjalgoMatrix<
 
     @Override
     protected OjalgoMatrix<Double> convert(Scalar scalar) {
-        PhysicalStore<Double> array = factory.makeZero(1, 1);
-        array.set(0, scalar.getValue());
-        return new OjalgoMatrix<>(array);
+        return convert(scalar.getValue());
     }
 
     @Override
@@ -31,6 +29,13 @@ public class OjalgoMatrixDoubleConverter extends AbstractConverter<OjalgoMatrix<
             LongStream.range(0, result.count()).parallel().forEach(index -> result.set(index, source.get(index)));
             return new OjalgoMatrix<>(result);
         }
+    }
+
+    @Override
+    public OjalgoMatrix<Double> convert(Number number) {
+        PhysicalStore<Double> array = factory.makeZero(1, 1);
+        array.set(0, number);
+        return new OjalgoMatrix<>(array);
     }
 
     @Override

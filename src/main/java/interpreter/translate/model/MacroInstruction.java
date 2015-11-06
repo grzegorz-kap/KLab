@@ -12,6 +12,10 @@ public class MacroInstruction {
         return instructions.get(index);
     }
 
+    public void set(int index, Instruction instruction) {
+        instructions.set(index, instruction);
+    }
+
     public MacroInstruction add(Instruction instruction) {
         instructions.add(instruction);
         return this;
@@ -28,5 +32,9 @@ public class MacroInstruction {
 
     public Collection<? extends Instruction> getInstructions() {
         return instructions;
+    }
+
+    public int size() {
+        return instructions.size();
     }
 }

@@ -1,27 +1,33 @@
 package interpreter.execution.handlers;
 
+import interpreter.commons.MemorySpace;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
-import interpreter.types.ObjectData;
+import interpreter.types.IdentifierObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class PushInstructionHandler extends AbstractInstructionHandler {
+public class CLEARInstructionHandler extends AbstractInstructionHandler {
+    private MemorySpace memorySpace;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        Instruction instruction = instructionPointer.current();
-        ObjectData objectData = instruction.getObjectData(0);
-        executionContext.executionStackPush(objectData);
+        IdentifierObject id = instructionPointer.current().getObjectData(0, IdentifierObject.class);
+        memorySpace.set(id.getAddress(), null);
         instructionPointer.increment();
     }
 
     @Override
     public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.PUSH;
+        return InstructionCode.CLEAR;
+    }
+
+    @Autowired
+    public void setMemorySpace(MemorySpace memorySpace) {
+        this.memorySpace = memorySpace;
     }
 }
