@@ -5,7 +5,6 @@ import interpreter.types.IdentifierObject;
 import static interpreter.translate.model.InstructionCode.FLNEXT;
 
 public class FLNextInstruction extends JumperInstruction {
-    private IdentifierObject dataId;
     private IdentifierObject iteratorId;
 
     public FLNextInstruction() {
@@ -16,7 +15,6 @@ public class FLNextInstruction extends JumperInstruction {
     public String toString() {
         return new StringBuilder()
                 .append(FLNEXT).append("\t")
-                .append(dataId).append("\t")
                 .append(iteratorId).append("\t")
                 .append(getJumpIndex()).toString();
     }
@@ -27,13 +25,5 @@ public class FLNextInstruction extends JumperInstruction {
 
     public void setIteratorId(IdentifierObject iteratorId) {
         this.iteratorId = iteratorId;
-    }
-
-    public IdentifierObject getDataId() {
-        return dataId;
-    }
-
-    public void setDataId(IdentifierObject dataId) {
-        this.dataId = dataId;
     }
 }

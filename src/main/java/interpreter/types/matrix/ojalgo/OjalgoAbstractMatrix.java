@@ -4,6 +4,7 @@ import interpreter.types.AbstractNumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.Sizeable;
+import interpreter.types.foriterator.ForIterator;
 import interpreter.types.matrix.Matrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
@@ -20,7 +21,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     @Override
     public ObjectData copyObjectData() {
-        return new OjalgoMatrix(getMatrixStore().copy());
+        return new OjalgoMatrix<>(getMatrixStore().copy());
     }
 
     @Override
@@ -75,5 +76,10 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public void setLazyStore(MatrixStore<T> lazyStore) {
         this.lazyStore = lazyStore;
+    }
+
+    @Override
+    public ForIterator getForIterator() {
+        return null;
     }
 }

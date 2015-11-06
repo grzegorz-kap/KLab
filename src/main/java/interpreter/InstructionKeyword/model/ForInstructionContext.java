@@ -12,7 +12,15 @@ public class ForInstructionContext {
         iterators.addFirst(new ForIterator(flhnextAddress, falseJumper));
     }
 
-    public int getflhNextAddress() {
+    public void setName(String name) {
+        iterators.peekFirst().name = name;
+    }
+
+    public String getName() {
+        return iterators.peekFirst().name;
+    }
+
+    public int getFlhNextAddress() {
         return iterators.peekFirst().flhnextAddress;
     }
 
@@ -31,6 +39,7 @@ public class ForInstructionContext {
     private static class ForIterator {
         public int flhnextAddress;
         public JumperInstruction falseJumper;
+        public String name;
 
         public ForIterator(int flhnextAddress, JumperInstruction falseJumper) {
             this.flhnextAddress = flhnextAddress;

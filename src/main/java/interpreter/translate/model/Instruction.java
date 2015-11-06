@@ -40,11 +40,7 @@ public class Instruction {
         objectDataList.add(objectData);
     }
 
-    public void forEachObjectData(Consumer<? super ObjectData> consumer) {
-        objectDataList.forEach(consumer);
-    }
-
-    public ObjectData getObjectDate(int index) {
+    public ObjectData getObjectData(int index) {
         return objectDataList.get(index);
     }
 

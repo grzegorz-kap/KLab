@@ -8,10 +8,7 @@ import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
-import interpreter.translate.model.FLNextInstruction;
-import interpreter.translate.model.Instruction;
-import interpreter.translate.model.JumperInstruction;
-import interpreter.translate.model.MacroInstruction;
+import interpreter.translate.model.*;
 import interpreter.translate.service.InstructionTranslator;
 import interpreter.types.IdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +42,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
             return handleForStart(expressions, instructionTranslator);
         }
         if (isForEnd(expressions)) {
-            return handleForEnd(expressions, instructionTranslator);
+            return handleForEnd();
         }
         return new MacroInstruction();
     }
@@ -55,21 +52,33 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         checkIfAssignOperator(expressions);
         FLNextInstruction flnextInstruction = new FLNextInstruction();
         MacroInstruction macroInstruction = translator.translate(expressions.get(1));
-        modifyAssignmentTarget(macroInstruction, flnextInstruction);
-        int flhnextAddress = code.size() + macroInstruction.size(); //points to FLHNEXT
-        forInstructionContext.push(flhnextAddress, flnextInstruction);
-        return macroInstruction.add(flnextInstruction);
+        forInstructionContext.push(code.size() + macroInstruction.size() + 1, flnextInstruction);
+        findIteratorTarget(macroInstruction, flnextInstruction);
+        return macroInstruction
+                .add(createFlInit())
+                .add(flnextInstruction);
     }
 
-    private void modifyAssignmentTarget(MacroInstruction macroInstruction, FLNextInstruction flnextInstruction) {
+    private Instruction createFlInit() {
+        Instruction instruction = new Instruction(InstructionCode.FLINIT, 0);
+        String name = forInstructionContext.getName();
+        instruction.add(new IdentifierObject(name, identifierMapper.getMainAddress(name)));
+        return instruction;
+    }
+
+    private MacroInstruction handleForEnd() {
+        JumperInstruction flhnextJump = createJmpInstruction();
+        flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
+        forInstructionContext.getJumpOnFalse().setJumpIndex(code.size() + 1); // jump to FLEND
+        forInstructionContext.pop();
+        return new MacroInstruction().add(flhnextJump);
+    }
+
+    private void findIteratorTarget(MacroInstruction macroInstruction, FLNextInstruction flnextInstruction) {
         Instruction instruction = macroInstruction.get(0);
-        IdentifierObject id = (IdentifierObject) instruction.getObjectDate(0);
-        String dataName = new StringBuilder("$").append(id.getId()).append("_data").toString();
-        Integer dataAddress = identifierMapper.registerMainIdentifier(dataName);
-        flnextInstruction.setDataId(new IdentifierObject(dataName, dataAddress));
+        IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
+        forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new IdentifierObject(id.getId(), id.getAddress()));
-        id.getIdentifierToken().setAddress(dataAddress);
-        id.getIdentifierToken().setId(dataName);
     }
 
     private void checkIfAssignOperator(List<Expression<ParseToken>> expressions) {
@@ -80,15 +89,6 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         if (!((OperatorToken) root.getValue()).getOperatorCode().equals(OperatorCode.ASSIGN)) {
             throw new KeywordParseException(FOR_KEYWORD_ASSIGNMENT_EXPECTED);
         }
-    }
-
-    private MacroInstruction handleForEnd(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator) {
-        JumperInstruction flhnextJump = createJmpInstruction();
-        flhnextJump.setJumpIndex(forInstructionContext.getflhNextAddress());
-        forInstructionContext.getJumpOnFalse().setJumpIndex(code.size() + 1); // jump to FLEND
-        forInstructionContext.pop();
-        return new MacroInstruction().add(flhnextJump);
-
     }
 
     private boolean isForEnd(List<Expression<ParseToken>> expressions) {
