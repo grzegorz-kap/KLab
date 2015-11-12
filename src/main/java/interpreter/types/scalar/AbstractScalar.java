@@ -1,10 +1,8 @@
 package interpreter.types.scalar;
 
-import interpreter.types.AbstractNumericObject;
-import interpreter.types.NumericType;
-import interpreter.types.Sizeable;
+import interpreter.types.*;
 
-public abstract class AbstractScalar extends AbstractNumericObject implements Sizeable, Scalar {
+public abstract class AbstractScalar extends AbstractNumericObject implements Sizeable, Scalar, Indexable {
 
     public AbstractScalar(NumericType numericType) {
         super(numericType);
@@ -18,5 +16,15 @@ public abstract class AbstractScalar extends AbstractNumericObject implements Si
     @Override
     public long getColumns() {
         return 1;
+    }
+
+    @Override
+    public ObjectData get(int row, int column) {
+        return this;
+    }
+
+    @Override
+    public ObjectData get(int cell) {
+        return this;
     }
 }

@@ -18,6 +18,11 @@ public class DoubleScalar extends AbstractScalar {
         this.value = value;
     }
 
+    public DoubleScalar(Number number) {
+        this();
+        this.value = number.doubleValue();
+    }
+
     @Override
     public Double getValue() {
         return value;

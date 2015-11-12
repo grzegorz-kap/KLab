@@ -7,15 +7,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Instruction {
-
     private InstructionCode instructionCode;
-    private Integer argumentsNumber;
+    private int argumentsNumber = 0;
     private List<ObjectData> objectDataList = new ArrayList<>();
 
     public Instruction() {
     }
 
-    public Instruction(InstructionCode instructionCode, Integer argumentsNumber) {
+    public Instruction(InstructionCode instructionCode, int argumentsNumber) {
         this.instructionCode = instructionCode;
         this.argumentsNumber = argumentsNumber;
     }
@@ -28,11 +27,11 @@ public class Instruction {
         this.instructionCode = instructionCode;
     }
 
-    public Integer getArgumentsNumber() {
+    public int getArgumentsNumber() {
         return argumentsNumber;
     }
 
-    public void setArgumentsNumber(Integer argumentsNumber) {
+    public void setArgumentsNumber(int argumentsNumber) {
         this.argumentsNumber = argumentsNumber;
     }
 

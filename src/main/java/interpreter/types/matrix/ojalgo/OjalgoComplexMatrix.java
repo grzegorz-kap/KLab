@@ -2,6 +2,8 @@ package interpreter.types.matrix.ojalgo;
 
 import interpreter.commons.exception.InterpreterCastException;
 import interpreter.types.NumericType;
+import interpreter.types.ObjectData;
+import interpreter.types.scalar.ComplexScalar;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
 
@@ -25,5 +27,20 @@ public class OjalgoComplexMatrix extends OjalgoMatrix<ComplexNumber> {
             }
         }
         return true;
+    }
+
+    @Override
+    public ObjectData copyObjectData() {
+        return new OjalgoComplexMatrix(getLazyStore().copy());
+    }
+
+    @Override
+    public ObjectData get(int row, int column) {
+        return new ComplexScalar(getLazyStore().get(row - 1, column - 1));
+    }
+
+    @Override
+    public ObjectData get(int m) {
+        return new ComplexScalar(getLazyStore().get(m - 1));
     }
 }

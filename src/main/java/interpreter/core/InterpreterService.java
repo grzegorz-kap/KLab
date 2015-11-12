@@ -21,6 +21,9 @@ class InterpreterService extends AbstractInterpreterService {
         while (parser.hasNext()) {
             executionLoop();
         }
+    }
+
+    public void printCode() {
         LOGGER.info("{}", executionService.getExecutionContext().getCode());
     }
 
@@ -49,13 +52,11 @@ class InterpreterService extends AbstractInterpreterService {
     }
 
     private void process(Expression<ParseToken> expression) {
-        LOGGER.info("\n{}", expressionPrinter.expressionToString(expression));
         MacroInstruction macroInstruction = instructionTranslator.translate(expression);
         addMacroInstruction(macroInstruction);
     }
 
     private void addMacroInstruction(MacroInstruction macroInstruction) {
-        LOGGER.info("\n{}", macroInstructionPrinter.print(macroInstruction));
         executionService.addInstructions(macroInstruction.getInstructions());
     }
 }
