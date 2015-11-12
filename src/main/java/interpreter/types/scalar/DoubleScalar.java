@@ -1,5 +1,6 @@
 package interpreter.types.scalar;
 
+import interpreter.commons.exception.InterpreterCastException;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 
@@ -33,6 +34,15 @@ public class DoubleScalar extends AbstractScalar {
     }
 
     @Override
+    public int getIntOrThrow() {
+        if (isMathematicalInteger()) {
+            return value.intValue();
+        } else {
+            throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
+        }
+    }
+
+    @Override
     public String toString() {
         return value.toString();
     }
@@ -47,7 +57,6 @@ public class DoubleScalar extends AbstractScalar {
         return Objects.nonNull(value) && !value.equals(0.0D);
     }
 
-    @Override
     public boolean isMathematicalInteger() {
         return Math.rint(value) == value;
     }

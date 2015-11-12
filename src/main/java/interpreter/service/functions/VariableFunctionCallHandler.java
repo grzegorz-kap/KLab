@@ -29,8 +29,8 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
     }
 
     private void handleTwo(Indexable indexable) {
-        int column = ((Scalar) executionContext.executionStackPop()).getValue().intValue();
-        int row = ((Scalar) executionContext.executionStackPop()).getValue().intValue();
+        int column = ((Scalar) executionContext.executionStackPop()).getIntOrThrow();
+        int row = ((Scalar) executionContext.executionStackPop()).getIntOrThrow();
         ObjectData objectData = indexable.get(row, column);
         executionContext.executionStackPush(objectData);
     }

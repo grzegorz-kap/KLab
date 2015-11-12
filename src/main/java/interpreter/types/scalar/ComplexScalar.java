@@ -40,7 +40,15 @@ public class ComplexScalar extends AbstractScalar {
     }
 
     @Override
-    public boolean isMathematicalInteger() {
+    public int getIntOrThrow() {
+        if (isMathematicalInteger()) {
+            return value.intValue();
+        } else {
+            throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
+        }
+    }
+
+    private boolean isMathematicalInteger() {
         return value.getImaginary() == 0.0D && Math.rint(value.getReal()) == value.getReal();
     }
 
