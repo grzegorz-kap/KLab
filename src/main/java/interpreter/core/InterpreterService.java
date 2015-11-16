@@ -12,14 +12,17 @@ import java.util.List;
 
 @Service
 class InterpreterService extends AbstractInterpreterService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
 
     public void startExecution(String input) {
-        TokenList tokenList = tokenizer.readTokens(input);
-        parser.setTokenList(tokenList);
-        while (parser.hasNext()) {
-            executionLoop();
+        try {
+            TokenList tokenList = tokenizer.readTokens(input);
+            parser.setTokenList(tokenList);
+            while (parser.hasNext()) {
+                executionLoop();
+            }
+        } finally {
+            printCode();
         }
     }
 

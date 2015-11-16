@@ -1,6 +1,7 @@
 package interpreter.service.functions;
 
 import interpreter.commons.MemorySpace;
+import interpreter.commons.exception.InterpreterException;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.service.functions.model.CallInstruction;
@@ -24,8 +25,17 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
         Indexable indexable = (Indexable) memorySpace.get(callInstruction.getVariableAddress());
         if (callInstruction.getArgumentsNumber() == 2) {
             handleTwo(indexable);
+        } else if (callInstruction.getArgumentsNumber() == 1) {
+            handleOne(indexable);
+        } else {
+            throw new InterpreterException();
         }
         instructionPointer.increment();
+    }
+
+    private void handleOne(Indexable indexable) {
+        int cell = ((Scalar) executionContext.executionStackPop()).getIntOrThrow();
+        executionContext.executionStackPush(indexable.get(cell));
     }
 
     private void handleTwo(Indexable indexable) {
