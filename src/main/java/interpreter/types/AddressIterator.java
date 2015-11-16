@@ -6,4 +6,6 @@ public interface AddressIterator {
     long getNext();
 
     long length();
+
+    void reset();
 }

@@ -25,4 +25,9 @@ public class AddressScalarIterator implements AddressIterator {
     public long length() {
         return 1;
     }
+
+    @Override
+    public void reset() {
+        nextFlag = true;
+    }
 }

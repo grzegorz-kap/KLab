@@ -40,8 +40,8 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
     }
 
     private void handleTwo(Indexable indexable) {
-        AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         AddressIterator column = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
+        AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         ObjectData objectData = indexable.get(row, column);
         executionContext.executionStackPush(objectData);
     }

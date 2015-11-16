@@ -1,6 +1,8 @@
 package interpreter.types.matrix.ojalgo;
 
 import interpreter.commons.exception.InterpreterCastException;
+import interpreter.types.AddressIterator;
+import interpreter.types.Addressable;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.scalar.ComplexScalar;
@@ -11,12 +13,16 @@ import org.ojalgo.scalar.ComplexNumber;
 
 import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
-public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> {
-
+public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> implements Addressable {
     public OjalgoComplexMatrix(MatrixStore<ComplexNumber> store) {
         super(NumericType.COMPLEX_MATRIX);
         setLazyStore(store);
         setFactory(ComplexDenseStore.FACTORY);
+    }
+
+    @Override
+    protected OjalgoAbstractMatrix<ComplexNumber> create(MatrixStore<ComplexNumber> matrixStore) {
+        return new OjalgoComplexMatrix(matrixStore);
     }
 
     @Override
@@ -41,5 +47,10 @@ public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> {
     @Override
     protected Scalar createScalar(Number number) {
         return new ComplexScalar(number);
+    }
+
+    @Override
+    public AddressIterator getAddressIterator() {
+        return new OjalgoAddressIterator<>(getLazyStore());
     }
 }

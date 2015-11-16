@@ -17,6 +17,8 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
         super(numericType);
     }
 
+    protected abstract OjalgoAbstractMatrix<T> create(MatrixStore<T> matrixStore);
+
     @Override
     public boolean isTrue() {
         for (T value : getMatrixStore()) {
@@ -29,12 +31,35 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     @Override
     public ObjectData get(AddressIterator cell) {
-        return createScalar(getLazyStore().get(cell.getNext() - 1));
+        if (cell.length() == 1) {
+            return createScalar(getLazyStore().get(cell.getNext() - 1));
+        }
+        PhysicalStore<T> matrix = createMatrixStore(cell.length(), 1);
+        int address = 0;
+        while (cell.hasNext()) {
+            matrix.set(address++, lazyStore.get(cell.getNext() - 1));
+        }
+        return create(matrix);
     }
 
     @Override
     public ObjectData get(AddressIterator row, AddressIterator column) {
-        return createScalar(getLazyStore().get(row.getNext() - 1, column.getNext() - 1));
+        if (row.length() == 1 && column.length() == 1) {
+            return createScalar(getLazyStore().get(row.getNext() - 1, column.getNext() - 1));
+        }
+        PhysicalStore<T> matrix = createMatrixStore(row.length(), column.length());
+        long rowIndex = 0l;
+        long colIndex = 0l;
+        while (row.hasNext()) {
+            long rowAddress = row.getNext() - 1;
+            while (column.hasNext()) {
+                matrix.set(rowIndex, colIndex++, lazyStore.get(rowAddress, column.getNext() - 1));
+            }
+            column.reset();
+            colIndex = 0;
+            rowIndex++;
+        }
+        return create(matrix);
     }
 
     protected abstract Scalar createScalar(Number number);
@@ -86,5 +111,9 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public void setFactory(PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory) {
         this.factory = factory;
+    }
+
+    private PhysicalStore<T> createMatrixStore(long rows, long columns) {
+        return factory.makeZero(rows, columns);
     }
 }
