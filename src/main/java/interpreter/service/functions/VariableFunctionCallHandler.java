@@ -6,9 +6,10 @@ import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.service.functions.model.CallInstruction;
 import interpreter.translate.model.InstructionCode;
+import interpreter.types.AddressIterator;
+import interpreter.types.Addressable;
 import interpreter.types.Indexable;
 import interpreter.types.ObjectData;
-import interpreter.types.scalar.Scalar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -34,13 +35,13 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
     }
 
     private void handleOne(Indexable indexable) {
-        int cell = ((Scalar) executionContext.executionStackPop()).getIntOrThrow();
+        AddressIterator cell = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         executionContext.executionStackPush(indexable.get(cell));
     }
 
     private void handleTwo(Indexable indexable) {
-        int column = ((Scalar) executionContext.executionStackPop()).getIntOrThrow();
-        int row = ((Scalar) executionContext.executionStackPop()).getIntOrThrow();
+        AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
+        AddressIterator column = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         ObjectData objectData = indexable.get(row, column);
         executionContext.executionStackPush(objectData);
     }

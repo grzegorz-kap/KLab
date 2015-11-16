@@ -1,11 +1,20 @@
 package interpreter.types.scalar;
 
+import interpreter.commons.exception.InterpreterCastException;
 import interpreter.types.*;
 
 public abstract class AbstractScalar extends AbstractNumericObject implements Sizeable, Scalar, Indexable {
 
     public AbstractScalar(NumericType numericType) {
         super(numericType);
+    }
+
+    public static int getIntOrThrow(double value) {
+        if (Math.rint(value) == value) {
+            return (int) value;
+        } else {
+            throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
+        }
     }
 
     @Override
@@ -19,12 +28,12 @@ public abstract class AbstractScalar extends AbstractNumericObject implements Si
     }
 
     @Override
-    public ObjectData get(int row, int column) {
+    public ObjectData get(AddressIterator row, AddressIterator column) {
         return this;
     }
 
     @Override
-    public ObjectData get(int cell) {
+    public ObjectData get(AddressIterator cell) {
         return this;
     }
 }

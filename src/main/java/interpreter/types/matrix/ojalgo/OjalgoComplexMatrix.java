@@ -4,16 +4,19 @@ import interpreter.commons.exception.InterpreterCastException;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.scalar.ComplexScalar;
+import interpreter.types.scalar.Scalar;
+import org.ojalgo.matrix.store.ComplexDenseStore;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
 
 import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
-public class OjalgoComplexMatrix extends OjalgoMatrix<ComplexNumber> {
+public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> {
 
     public OjalgoComplexMatrix(MatrixStore<ComplexNumber> store) {
-        super(store);
-        setNumericType(NumericType.COMPLEX_MATRIX);
+        super(NumericType.COMPLEX_MATRIX);
+        setLazyStore(store);
+        setFactory(ComplexDenseStore.FACTORY);
     }
 
     @Override
@@ -34,13 +37,9 @@ public class OjalgoComplexMatrix extends OjalgoMatrix<ComplexNumber> {
         return new OjalgoComplexMatrix(getLazyStore().copy());
     }
 
-    @Override
-    public ObjectData get(int row, int column) {
-        return new ComplexScalar(getLazyStore().get(row - 1, column - 1));
-    }
 
     @Override
-    public ObjectData get(int m) {
-        return new ComplexScalar(getLazyStore().get(m - 1));
+    protected Scalar createScalar(Number number) {
+        return new ComplexScalar(number);
     }
 }
