@@ -1,12 +1,13 @@
 package interpreter.types.scalar;
 
+import interpreter.types.AddressIterator;
+import interpreter.types.Addressable;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 
 import java.util.Objects;
 
-public class DoubleScalar extends AbstractScalar {
-
+public class DoubleScalar extends AbstractScalar implements Addressable {
     private Double value;
 
     public DoubleScalar() {
@@ -18,6 +19,11 @@ public class DoubleScalar extends AbstractScalar {
         this.value = value;
     }
 
+    public DoubleScalar(Number number) {
+        this();
+        this.value = number.doubleValue();
+    }
+
     @Override
     public Double getValue() {
         return value;
@@ -25,6 +31,11 @@ public class DoubleScalar extends AbstractScalar {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    @Override
+    public int getIntOrThrow() {
+        return AbstractScalar.getIntOrThrow(value);
     }
 
     @Override
@@ -43,7 +54,7 @@ public class DoubleScalar extends AbstractScalar {
     }
 
     @Override
-    public boolean isMathematicalInteger() {
-        return Math.rint(value) == value;
+    public AddressIterator getAddressIterator() {
+        return new AddressScalarIterator(getIntOrThrow());
     }
 }

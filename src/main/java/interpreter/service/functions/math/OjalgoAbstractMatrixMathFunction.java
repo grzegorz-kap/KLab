@@ -2,7 +2,7 @@ package interpreter.service.functions.math;
 
 import interpreter.types.NumericObject;
 import interpreter.types.matrix.Matrix;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import org.ojalgo.function.FunctionSet;
 import org.ojalgo.function.UnaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -54,7 +54,7 @@ public abstract class OjalgoAbstractMatrixMathFunction<T extends Number> impleme
     }
 
     private MatrixStore<T> process(NumericObject numericObject) {
-        return ((OjalgoMatrix<T>) numericObject).getLazyStore();
+        return ((OjalgoAbstractMatrix<T>) numericObject).getLazyStore();
     }
 
     protected NumericObject create(NumericObject value, UnaryFunction<T> function) {

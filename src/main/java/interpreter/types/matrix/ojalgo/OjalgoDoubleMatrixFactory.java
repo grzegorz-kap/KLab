@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class OjalgoDoubleMatrixFactory extends OjalgoAbstractMatrixFactory<Double> {
-
     @PostConstruct
     public void init() {
         setFactory(PrimitiveDenseStore.FACTORY);
@@ -31,7 +30,7 @@ public class OjalgoDoubleMatrixFactory extends OjalgoAbstractMatrixFactory<Doubl
 
     @Override
     protected Matrix<Double> create(MatrixStore<Double> store) {
-        return new OjalgoMatrix<>(store);
+        return new OjalgoDoubleMatrix(store);
     }
 
     @Override

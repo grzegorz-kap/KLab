@@ -3,7 +3,7 @@ package interpreter.service.functions.math;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 import interpreter.types.scalar.DoubleScalar;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PrimitiveDenseStore;
@@ -25,7 +25,7 @@ public class OjalgoDoubleMathFunction extends OjalgoAbstractMatrixMathFunction<D
 
     @Override
     protected Matrix<Double> create(MatrixStore<Double> store) {
-        return new OjalgoMatrix<>(store);
+        return new OjalgoDoubleMatrix(store);
     }
 
     @Override

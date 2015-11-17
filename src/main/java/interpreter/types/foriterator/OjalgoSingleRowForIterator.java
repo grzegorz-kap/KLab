@@ -1,10 +1,10 @@
 package interpreter.types.foriterator;
 
 import interpreter.types.ObjectData;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 
 public class OjalgoSingleRowForIterator<N extends Number> extends OjalgoAbstractForIterator<N> {
-    public OjalgoSingleRowForIterator(OjalgoMatrix<N> data) {
+    public OjalgoSingleRowForIterator(OjalgoAbstractMatrix<N> data) {
         super(data);
     }
 

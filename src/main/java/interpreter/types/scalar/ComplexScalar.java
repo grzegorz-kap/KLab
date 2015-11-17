@@ -1,13 +1,15 @@
 package interpreter.types.scalar;
 
 import interpreter.commons.exception.InterpreterCastException;
+import interpreter.types.AddressIterator;
+import interpreter.types.Addressable;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import org.ojalgo.scalar.ComplexNumber;
 
 import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
-public class ComplexScalar extends AbstractScalar {
+public class ComplexScalar extends AbstractScalar implements Addressable {
     private ComplexNumber value;
 
     public ComplexScalar(ComplexScalar c) {
@@ -40,7 +42,15 @@ public class ComplexScalar extends AbstractScalar {
     }
 
     @Override
-    public boolean isMathematicalInteger() {
+    public int getIntOrThrow() {
+        if (isMathematicalInteger()) {
+            return value.intValue();
+        } else {
+            throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
+        }
+    }
+
+    private boolean isMathematicalInteger() {
         return value.getImaginary() == 0.0D && Math.rint(value.getReal()) == value.getReal();
     }
 
@@ -60,5 +70,10 @@ public class ComplexScalar extends AbstractScalar {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    @Override
+    public AddressIterator getAddressIterator() {
+        return new AddressScalarIterator(getIntOrThrow());
     }
 }

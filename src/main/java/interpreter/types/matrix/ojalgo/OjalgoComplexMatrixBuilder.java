@@ -18,12 +18,12 @@ public class OjalgoComplexMatrixBuilder extends OjalgoAbstractMatrixBuilder<Comp
     }
 
     @Override
-    protected OjalgoMatrix<ComplexNumber> convert(Matrix<? extends Number> matrix) {
+    protected OjalgoAbstractMatrix<ComplexNumber> convert(Matrix<? extends Number> matrix) {
         return ojalgoMatrixComplexConverter.convert(matrix);
     }
 
     @Override
-    public OjalgoMatrix<ComplexNumber> build() {
+    public OjalgoAbstractMatrix<ComplexNumber> build() {
         return new OjalgoComplexMatrix(builder.build());
     }
 }

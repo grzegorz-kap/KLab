@@ -17,12 +17,12 @@ public class OjalgoDoubleMatrixBuilder extends OjalgoAbstractMatrixBuilder<Doubl
     }
 
     @Override
-    protected OjalgoMatrix<Double> convert(Matrix<? extends Number> matrix) {
+    protected OjalgoDoubleMatrix convert(Matrix<? extends Number> matrix) {
         return ojalgoMatrixDoubleConverter.convert(matrix);
     }
 
     @Override
     public Matrix<Double> build() {
-        return new OjalgoMatrix<>(builder.build());
+        return new OjalgoDoubleMatrix(builder.build());
     }
 }

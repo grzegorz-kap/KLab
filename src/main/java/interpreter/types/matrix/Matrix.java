@@ -1,12 +1,13 @@
 package interpreter.types.matrix;
 
+import interpreter.types.Indexable;
 import interpreter.types.NumericObject;
 import interpreter.types.Sizeable;
 import interpreter.types.foriterator.ForIterable;
 
 import java.util.function.Consumer;
 
-public interface Matrix<T extends Number> extends NumericObject, Sizeable, ForIterable {
+public interface Matrix<T extends Number> extends NumericObject, Sizeable, ForIterable,  Indexable {
 
     T get(long m, long n);
 
@@ -16,4 +17,5 @@ public interface Matrix<T extends Number> extends NumericObject, Sizeable, ForIt
 
     void forEach(Consumer<? super T> action);
 
+    T getNumber(int i);
 }

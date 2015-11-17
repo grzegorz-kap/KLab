@@ -28,7 +28,7 @@ public abstract class AbstractConverter<N extends NumericObject> implements Conv
 
     protected Number evaluateToScalar(Matrix<? extends Number> matrix) {
         if (SizeUtils.isScalar(matrix)) {
-            return matrix.get(0);
+            return matrix.getNumber(0);
         }
         throw new InterpreterCastException(CANNOT_CAST_MATRIX_TO_SCALAR);
     }

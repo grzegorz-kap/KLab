@@ -14,14 +14,17 @@ import java.util.Objects;
 
 @Service
 class InterpreterService extends AbstractInterpreterService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
 
     public void startExecution(String input) {
-        TokenList tokenList = tokenizer.readTokens(input);
-        parser.setTokenList(tokenList);
-        while (parser.hasNext()) {
-            executionLoop();
+        try {
+            TokenList tokenList = tokenizer.readTokens(input);
+            parser.setTokenList(tokenList);
+            while (parser.hasNext()) {
+                executionLoop();
+            }
+        } finally {
+            printCode();
         }
         printCode();
     }
@@ -58,13 +61,11 @@ class InterpreterService extends AbstractInterpreterService {
     }
 
     private void process(Expression<ParseToken> expression) {
-        LOGGER.info("\n{}", expressionPrinter.expressionToString(expression));
         MacroInstruction macroInstruction = instructionTranslator.translate(expression);
         addMacroInstruction(macroInstruction);
     }
 
     private void addMacroInstruction(MacroInstruction macroInstruction) {
-        LOGGER.info("\n{}", macroInstructionPrinter.print(macroInstruction));
         executionService.addInstructions(macroInstruction.getInstructions());
     }
 }

@@ -7,6 +7,6 @@ public interface Scalar extends Sizeable, NumericObject {
 
     Number getValue();
 
-    boolean isMathematicalInteger();
+    int getIntOrThrow();
 
 }

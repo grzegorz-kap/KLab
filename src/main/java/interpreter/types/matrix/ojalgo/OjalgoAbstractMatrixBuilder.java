@@ -17,7 +17,7 @@ public abstract class OjalgoAbstractMatrixBuilder<T extends Number> implements M
 
     protected abstract T convert(Number number);
 
-    protected abstract OjalgoMatrix<T> convert(Matrix<? extends Number> matrix);
+    protected abstract OjalgoAbstractMatrix<T> convert(Matrix<? extends Number> matrix);
 
     @Override
     public OjalgoAbstractMatrixBuilder<T> appendRight(Matrix<Number> matrix) {

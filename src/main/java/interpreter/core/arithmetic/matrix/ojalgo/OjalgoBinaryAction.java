@@ -1,8 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 
 interface OjalgoBinaryAction<T extends Number> {
-    MatrixStore<T> operate(OjalgoMatrix<T> a, OjalgoMatrix<T> b);
+    MatrixStore<T> operate(OjalgoAbstractMatrix<T> a, OjalgoAbstractMatrix<T> b);
 }
