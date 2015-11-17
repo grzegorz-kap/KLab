@@ -9,6 +9,8 @@ import interpreter.translate.model.InstructionCode;
 import java.util.Collection;
 import java.util.Set;
 
+import static java.util.Objects.nonNull;
+
 public abstract class AbstractExecutionService {
 
     protected InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
@@ -17,7 +19,8 @@ public abstract class AbstractExecutionService {
 
     public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
         setupExecutionContext(new ExecutionContext());
-        instructionHandlers.forEach(this::registerInstructionHandler);
+        instructionHandlers.stream().filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
+                .forEach(this::registerInstructionHandler);
     }
 
     public ExecutionContext getExecutionContext() {

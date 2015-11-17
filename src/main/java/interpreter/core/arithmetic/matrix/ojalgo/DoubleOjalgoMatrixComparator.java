@@ -3,7 +3,8 @@ package interpreter.core.arithmetic.matrix.ojalgo;
 import interpreter.core.arithmetic.NumericObjectsComparator;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 import org.ojalgo.function.PrimitiveFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,12 @@ public class DoubleOjalgoMatrixComparator
     }
 
     @Override
-    protected MatrixStore<Double> operate(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    protected OjalgoAbstractMatrix<Double> create(MatrixStore<Double> matrixStore) {
+        return new OjalgoDoubleMatrix(matrixStore);
+    }
+
+    @Override
+    protected MatrixStore<Double> operate(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return null;
     }
 
@@ -52,27 +58,27 @@ public class DoubleOjalgoMatrixComparator
         return operate(a, b, this::lt);
     }
 
-    private MatrixStore<Double> eq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    private MatrixStore<Double> eq(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::eq, second.getLazyStore());
     }
 
-    private MatrixStore<Double> neq(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    private MatrixStore<Double> neq(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::neq, second.getLazyStore());
     }
 
-    private MatrixStore<Double> gt(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    private MatrixStore<Double> gt(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::gt, second.getLazyStore());
     }
 
-    private MatrixStore<Double> ge(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    private MatrixStore<Double> ge(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::ge, second.getLazyStore());
     }
 
-    private MatrixStore<Double> le(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    private MatrixStore<Double> le(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::le, second.getLazyStore());
     }
 
-    private MatrixStore<Double> lt(OjalgoMatrix<Double> first, OjalgoMatrix<Double> second) {
+    private MatrixStore<Double> lt(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
         return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::lt, second.getLazyStore());
     }
 

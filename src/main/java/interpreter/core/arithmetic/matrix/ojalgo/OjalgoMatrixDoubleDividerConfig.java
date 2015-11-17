@@ -3,7 +3,9 @@ package interpreter.core.arithmetic.matrix.ojalgo;
 import interpreter.core.arithmetic.NumericObjectsDivder;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.task.SolverTask;
 import org.ojalgo.matrix.task.SolverTask.Factory;
@@ -17,15 +19,25 @@ public class OjalgoMatrixDoubleDividerConfig {
 
     @Bean
     public OjalgoMatrixDivder<Double> ojalgoMatrixDoubleDivider() {
-        return new OjalgoMatrixDivder<Double>(SolverTask.PRIMITIVE, NumericType.MATRIX_DOUBLE);
+        return new OjalgoMatrixDivder<Double>(SolverTask.PRIMITIVE, NumericType.MATRIX_DOUBLE) {
+            @Override
+            protected OjalgoAbstractMatrix<Double> create(MatrixStore<Double> matrixStore) {
+                return new OjalgoDoubleMatrix(matrixStore);
+            }
+        };
     }
 
     @Bean
     public OjalgoMatrixDivder<ComplexNumber> ojalgoMatrixComplexDivider() {
-        return new OjalgoMatrixDivder<ComplexNumber>(SolverTask.COMPLEX, NumericType.COMPLEX_MATRIX);
+        return new OjalgoMatrixDivder<ComplexNumber>(SolverTask.COMPLEX, NumericType.COMPLEX_MATRIX) {
+            @Override
+            protected OjalgoAbstractMatrix<ComplexNumber> create(MatrixStore<ComplexNumber> matrixStore) {
+                return new OjalgoComplexMatrix(matrixStore);
+            }
+        };
     }
 
-    private static class OjalgoMatrixDivder<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsDivder {
+    private static abstract class OjalgoMatrixDivder<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsDivder {
 
         private SolverTask.Factory<T> factory;
         private NumericType supported;
@@ -36,7 +48,7 @@ public class OjalgoMatrixDoubleDividerConfig {
         }
 
         @Override
-        protected MatrixStore<T> operate(OjalgoMatrix<T> first, OjalgoMatrix<T> second) {
+        protected MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second) {
             try {
                 MatrixStore<T> aT = first.getLazyStore().transpose();
                 MatrixStore<T> bT = second.getLazyStore().transpose();

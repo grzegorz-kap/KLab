@@ -5,8 +5,8 @@ import interpreter.types.IdentifierObject;
 import static interpreter.translate.model.InstructionCode.FLNEXT;
 
 public class FLNextInstruction extends JumperInstruction {
-    private IdentifierObject dataId;
     private IdentifierObject iteratorId;
+    private IdentifierObject iteratorData;
 
     public FLNextInstruction() {
         super(FLNEXT, 0);
@@ -15,10 +15,11 @@ public class FLNextInstruction extends JumperInstruction {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(FLNEXT).append("\t")
-                .append(dataId).append("\t")
+                .append(String.valueOf(FLNEXT)).append("\t")
                 .append(iteratorId).append("\t")
-                .append(getJumpIndex()).toString();
+                .append(iteratorData).append("\t")
+                .append(getJumpIndex())
+                .toString();
     }
 
     public IdentifierObject getIteratorId() {
@@ -29,11 +30,11 @@ public class FLNextInstruction extends JumperInstruction {
         this.iteratorId = iteratorId;
     }
 
-    public IdentifierObject getDataId() {
-        return dataId;
+    public IdentifierObject getIteratorData() {
+        return iteratorData;
     }
 
-    public void setDataId(IdentifierObject dataId) {
-        this.dataId = dataId;
+    public void setIteratorData(IdentifierObject iteratorData) {
+        this.iteratorData = iteratorData;
     }
 }

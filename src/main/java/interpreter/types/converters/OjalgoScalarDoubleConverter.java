@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class OjalgoScalarDoubleConverter extends AbstractConverter<DoubleScalar> {
     @Override
+    public DoubleScalar convert(Number number) {
+        return new DoubleScalar(number.doubleValue());
+    }
+
+    @Override
     public NumericType supportFrom() {
         return null;
     }
@@ -25,6 +30,6 @@ public class OjalgoScalarDoubleConverter extends AbstractConverter<DoubleScalar>
 
     @Override
     public DoubleScalar convert(Matrix<? extends Number> matrix) {
-        return new DoubleScalar(evaluteToScalar(matrix).doubleValue());
+        return new DoubleScalar(evaluateToScalar(matrix).doubleValue());
     }
 }

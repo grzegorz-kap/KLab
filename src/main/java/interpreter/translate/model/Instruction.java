@@ -4,18 +4,16 @@ import interpreter.types.ObjectData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Instruction {
-
     private InstructionCode instructionCode;
-    private Integer argumentsNumber = 0;
+    private int argumentsNumber = 0;
     private List<ObjectData> objectDataList = new ArrayList<>();
 
     public Instruction() {
     }
 
-    public Instruction(InstructionCode instructionCode, Integer argumentsNumber) {
+    public Instruction(InstructionCode instructionCode, int argumentsNumber) {
         this.instructionCode = instructionCode;
         this.argumentsNumber = argumentsNumber;
     }
@@ -28,11 +26,11 @@ public class Instruction {
         this.instructionCode = instructionCode;
     }
 
-    public Integer getArgumentsNumber() {
+    public int getArgumentsNumber() {
         return argumentsNumber;
     }
 
-    public void setArgumentsNumber(Integer argumentsNumber) {
+    public void setArgumentsNumber(int argumentsNumber) {
         this.argumentsNumber = argumentsNumber;
     }
 
@@ -40,12 +38,12 @@ public class Instruction {
         objectDataList.add(objectData);
     }
 
-    public void forEachObjectData(Consumer<? super ObjectData> consumer) {
-        objectDataList.forEach(consumer);
+    public ObjectData getObjectData(int index) {
+        return objectDataList.get(index);
     }
 
-    public ObjectData getObjectDate(int index) {
-        return objectDataList.get(index);
+    public <T> T getObjectData(int index, Class<T> clazz) {
+        return clazz.cast(objectDataList.get(index));
     }
 
     @Override

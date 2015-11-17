@@ -3,7 +3,6 @@ package interpreter.execution.exception;
 import interpreter.types.IdentifierObject;
 
 public class UndefinedVariableException extends RuntimeException {
-
     private static final long serialVersionUID = 1L;
     private IdentifierObject identifierObject;
 

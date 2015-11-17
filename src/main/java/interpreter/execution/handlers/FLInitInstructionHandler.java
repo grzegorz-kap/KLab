@@ -1,43 +1,41 @@
 package interpreter.execution.handlers;
 
 import interpreter.commons.MemorySpace;
-import interpreter.execution.exception.UndefinedVariableException;
+import interpreter.commons.exception.InterpreterCastException;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
 import interpreter.types.IdentifierObject;
 import interpreter.types.ObjectData;
+import interpreter.types.foriterator.ForIterable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class LoadInstructionHandler extends AbstractInstructionHandler {
-
-    public static final String VARIABLE_IS_NOT_DEFINED_MESSAGE = "Variable is not defined";
+public class FLInitInstructionHandler extends AbstractInstructionHandler {
     private MemorySpace memorySpace;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
+        ForIterable forIterable = getForIterable(executionContext.executionStackPop());
         IdentifierObject identifierObject = (IdentifierObject) instructionPointer.current().getObjectData(0);
-        ObjectData objectData = memorySpace.get(identifierObject.getAddress());
-        checkObjectData(objectData, identifierObject);
-        executionContext.executionStackPush(objectData);
+        memorySpace.set(identifierObject.getAddress(), forIterable.getForIterator());
         instructionPointer.increment();
-    }
-
-    private void checkObjectData(ObjectData objectData, IdentifierObject identifierObject) {
-        if (Objects.isNull(objectData)) {
-            throw new UndefinedVariableException(VARIABLE_IS_NOT_DEFINED_MESSAGE, identifierObject);
-        }
     }
 
     @Override
     public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.LOAD;
+        return InstructionCode.FLINIT;
+    }
+
+    private ForIterable getForIterable(ObjectData objectData) {
+        if (objectData instanceof ForIterable) {
+            return ((ForIterable) objectData);
+        } else {
+            throw new InterpreterCastException("Cannot cast to for-iterable");
+        }
     }
 
     @Autowired

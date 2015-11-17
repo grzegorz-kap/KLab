@@ -15,7 +15,7 @@ public class PushInstructionHandler extends AbstractInstructionHandler {
     @Override
     public void handle(InstructionPointer instructionPointer) {
         Instruction instruction = instructionPointer.current();
-        ObjectData objectData = instruction.getObjectDate(0);
+        ObjectData objectData = instruction.getObjectData(0);
         executionContext.executionStackPush(objectData);
         instructionPointer.increment();
     }
