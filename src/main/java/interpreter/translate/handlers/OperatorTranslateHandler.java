@@ -13,6 +13,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OperatorTranslateHandler extends AbstractTranslateHandler {
@@ -26,6 +28,9 @@ public class OperatorTranslateHandler extends AbstractTranslateHandler {
             expression.setProperty(Expression.ANS_PROPERTY_KEY, false);
         }
         InstructionCode instructionCode = operatorInstructionCodesFactory.get(operatorToken.getOperatorCode());
+        if (Objects.isNull(instructionCode)) {
+            throw new RuntimeException();
+        }
         Instruction instruction = new Instruction();
         instruction.setInstructionCode(instructionCode);
         translateContextManager.addInstruction(instruction);

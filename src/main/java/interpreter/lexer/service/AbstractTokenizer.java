@@ -10,8 +10,8 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     public static final String UNRECOGNIZED_TOKEN_MESSAGE = "Unrecognized token.";
 
-    protected TokenizerContext tokenizerContext;
-    protected TokenizerContextManager tokenizerContextManager;
+    protected TokenizerContext tC;
+    protected TokenizerContextManager tCM;
     protected TokenRegexReader tokenRegexReader;
     protected TokenMatcher tokenMatcher;
     protected SymbolsMapper symbolsMapper;
@@ -23,7 +23,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
         setContext(inputText);
         setState();
         process();
-        return tokenizerContext.getTokenList();
+        return tC.getTokenList();
     }
 
     public abstract void onNumber();
@@ -39,13 +39,13 @@ public abstract class AbstractTokenizer implements Tokenizer {
     public abstract boolean tryReadOtherSymbol();
 
     private void setState() {
-        tokenStartMatcher.setTokenizerContext(tokenizerContext);
-        tokenizerContextManager.setTokenizerContext(tokenizerContext);
-        tokenRegexReader.setTokenizerContext(tokenizerContext);
+        tokenStartMatcher.setTokenizerContext(tC);
+        tCM.setTokenizerContext(tC);
+        tokenRegexReader.setTokenizerContext(tC);
     }
 
     private void process() {
-        while (!tokenizerContext.isInputEnd()) {
+        while (!tC.isInputEnd()) {
             takeAction();
         }
     }
@@ -73,16 +73,16 @@ public abstract class AbstractTokenizer implements Tokenizer {
         if (tryReadOtherSymbol()) {
             return;
         }
-        throw new UnrecognizedTokenException(UNRECOGNIZED_TOKEN_MESSAGE, tokenizerContext);
+        throw new UnrecognizedTokenException(UNRECOGNIZED_TOKEN_MESSAGE, tC);
     }
 
     protected void setContext(String inputText) {
-        tokenizerContext = new TokenizerContext(inputText);
+        tC = new TokenizerContext(inputText);
     }
 
     @Autowired
-    public void setTokenizerContextManager(TokenizerContextManager tokenizerContextManager) {
-        this.tokenizerContextManager = tokenizerContextManager;
+    public void settCM(TokenizerContextManager tCM) {
+        this.tCM = tCM;
     }
 
     @Autowired

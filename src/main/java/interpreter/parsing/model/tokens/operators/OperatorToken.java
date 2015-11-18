@@ -1,19 +1,20 @@
 package interpreter.parsing.model.tokens.operators;
 
+import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 
 public class OperatorToken extends ParseToken {
-
     private int argumentsNumber;
     private OperatorPriority operatorPriority;
     private OperatorAssociativity operatorAssociativity;
     private OperatorCode operatorCode;
 
     public OperatorToken() {
+        setParseClass(ParseClass.OPERATOR);
     }
 
-    public OperatorToken(int argumentsNumber, OperatorAssociativity operatorAssociativity,
-                         OperatorPriority operatorPriority, OperatorCode operatorCode) {
+    public OperatorToken(int argumentsNumber, OperatorAssociativity operatorAssociativity, OperatorPriority operatorPriority, OperatorCode operatorCode) {
+        this();
         this.argumentsNumber = argumentsNumber;
         this.operatorAssociativity = operatorAssociativity;
         this.operatorPriority = operatorPriority;
