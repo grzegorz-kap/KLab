@@ -5,8 +5,8 @@ import org.springframework.context.ApplicationEvent;
 
 public class PrintEvent extends ApplicationEvent {
 
-	private static final long serialVersionUID = 1L;
-	private ObjectData objectData;
+    private static final long serialVersionUID = 1L;
+    private ObjectData objectData;
 
     public PrintEvent(Object source) {
         super(source);

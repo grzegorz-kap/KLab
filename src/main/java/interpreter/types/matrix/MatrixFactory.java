@@ -1,16 +1,20 @@
 package interpreter.types.matrix;
 
-public interface MatrixFactory {
+import interpreter.types.NumericType;
 
-	MatrixBuilder<Double> createDoubleBuilder();
+public interface MatrixFactory<N extends Number> {
 
-	Matrix<Double> createDouble(int rows, int columns);
+    MatrixBuilder<N> builder();
 
-	Matrix<Double> createRandDouble(int rows, int columns);
+    Matrix<N> create(int rows, int columns);
 
-	Matrix<Double> createEyeDouble(int rows, int cols);
-	
-	Matrix<Double> createOnesDouble(int rows, int cols);
-	
-	Matrix<Double> createZerosDouble(int rows, int columns);
+    Matrix<N> rand(int rows, int columns);
+
+    Matrix<N> eye(int rows, int cols);
+
+    Matrix<N> ones(int rows, int cols);
+
+    Matrix<N> zeros(int rows, int columns);
+
+    NumericType supports();
 }

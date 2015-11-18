@@ -9,11 +9,19 @@ import interpreter.translate.model.InstructionCode;
 import java.util.Collection;
 import java.util.Set;
 
+import static java.util.Objects.nonNull;
+
 public abstract class AbstractExecutionService {
 
     protected InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
     protected ExecutionContext executionContext;
     protected InstructionPointer instructionPointer;
+
+    public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
+        setupExecutionContext(new ExecutionContext());
+        instructionHandlers.stream().filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
+                .forEach(this::registerInstructionHandler);
+    }
 
     public ExecutionContext getExecutionContext() {
         return executionContext;
@@ -27,11 +35,6 @@ public abstract class AbstractExecutionService {
         executionContext.clearExecutionStack();
         executionContext.clearCode();
         instructionPointer = executionContext.newInstructionPointer();
-    }
-
-    public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
-        setupExecutionContext(new ExecutionContext());
-        instructionHandlers.forEach(this::registerInstructionHandler);
     }
 
     private void setupExecutionContext(ExecutionContext executionContext) {

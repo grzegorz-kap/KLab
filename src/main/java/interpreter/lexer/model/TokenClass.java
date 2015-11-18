@@ -15,8 +15,12 @@ public enum TokenClass {
     NEW_LINE(11),
     IF_KEYWORD(12),
     ENDIF_KEYWORD(13),
-    ELSE_KEYWORD(14), 
-    ELSEIF_KEYWORD(15);
+    ELSE_KEYWORD(14),
+    ELSEIF_KEYWORD(15),
+    FOR_KEYWORD(16),
+    ENDFOR_KEYWORD(17),
+    BREAK_KEYWORD(18),
+    CONTINUE_KEYWORD(19);
 
     private int index;
 

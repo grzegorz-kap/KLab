@@ -10,7 +10,6 @@ import java.util.Objects;
 
 @Service
 public class KeywordMatcher {
-
     private Map<String, TokenClass> keywordMap = new HashMap<>();
 
     public KeywordMatcher() {
@@ -18,6 +17,10 @@ public class KeywordMatcher {
         keywordMap.put("endif", TokenClass.ENDIF_KEYWORD);
         keywordMap.put("else", TokenClass.ELSE_KEYWORD);
         keywordMap.put("elseif", TokenClass.ELSEIF_KEYWORD);
+        keywordMap.put("for", TokenClass.FOR_KEYWORD);
+        keywordMap.put("endfor", TokenClass.ENDFOR_KEYWORD);
+        keywordMap.put("break", TokenClass.BREAK_KEYWORD);
+        keywordMap.put("continue", TokenClass.CONTINUE_KEYWORD);
     }
 
     public void changeIfKeyword(Token token) {

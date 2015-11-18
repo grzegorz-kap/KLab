@@ -15,7 +15,11 @@ public enum ParseClass {
     ELSE_KEYWORD(10),
     ELSEIF_KEYWORD(11),
     CALL(12),
-    CALL_START(13);
+    CALL_START(13),
+    FOR_KEYWORD(14),
+    ENDFOR_KEYWORD(15),
+    CONTINUE_FOR(16),
+    BREAK_FOR(17);
 
     private int index;
 

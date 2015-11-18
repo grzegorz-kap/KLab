@@ -2,13 +2,13 @@ package interpreter.types.matrix;
 
 public interface MatrixBuilder<T extends Number> {
 
-    MatrixBuilder<T> appendRight(Matrix<T> matrix);
+    MatrixBuilder<T> appendRight(Matrix<Number> matrix);
 
-    MatrixBuilder<T> appendRight(T scalar);
+    MatrixBuilder<T> appendRight(Number scalar);
 
-    MatrixBuilder<T> appendBelow(Matrix<T> matrix);
+    MatrixBuilder<T> appendBelow(Matrix<Number> matrix);
 
-    MatrixBuilder<T> appendBelow(T scalar);
+    MatrixBuilder<T> appendBelow(Number scalar);
 
     Matrix<T> build();
 

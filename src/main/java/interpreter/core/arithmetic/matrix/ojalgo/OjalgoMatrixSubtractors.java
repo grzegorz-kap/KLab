@@ -1,31 +1,50 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
 import interpreter.core.arithmetic.NumericObjectsSubtractor;
-import interpreter.parsing.model.NumericType;
-import interpreter.types.ObjectData;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.NumericObject;
+import interpreter.types.NumericType;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
+import org.ojalgo.scalar.ComplexNumber;
 import org.springframework.stereotype.Component;
 
 @Component
 class OjalgoMatrixDoubleSubtractor extends AbstractOjalgoMatrixSubtractor<Double> {
-
     @Override
     public NumericType getSupportedType() {
         return NumericType.MATRIX_DOUBLE;
     }
-}
-
-abstract class AbstractOjalgoMatrixSubtractor<T extends Number>
-        extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsSubtractor {
 
     @Override
-    protected MatrixStore<T> operate(OjalgoMatrix<T> first, OjalgoMatrix<T> second) {
-        return first.getMatrixStore().subtract(second.getMatrixStore());
+    protected OjalgoAbstractMatrix<Double> create(MatrixStore<Double> matrixStore) {
+        return new OjalgoDoubleMatrix(matrixStore);
+    }
+}
+
+@Component
+class OjalgoMatrixComplexSubtractor extends AbstractOjalgoMatrixSubtractor<ComplexNumber> {
+    @Override
+    public NumericType getSupportedType() {
+        return NumericType.COMPLEX_MATRIX;
     }
 
     @Override
-    public ObjectData sub(ObjectData a, ObjectData b) {
+    protected OjalgoAbstractMatrix<ComplexNumber> create(MatrixStore<ComplexNumber> matrixStore) {
+        return new OjalgoComplexMatrix(matrixStore);
+    }
+}
+
+abstract class AbstractOjalgoMatrixSubtractor<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T>
+        implements NumericObjectsSubtractor {
+    @Override
+    protected MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second) {
+        return first.getLazyStore().subtract(second.getLazyStore());
+    }
+
+    @Override
+    public NumericObject sub(NumericObject a, NumericObject b) {
         return operate(a, b);
     }
 }

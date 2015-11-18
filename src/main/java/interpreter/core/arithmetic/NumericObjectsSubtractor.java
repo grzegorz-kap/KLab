@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic;
 
-import interpreter.types.ObjectData;
+import interpreter.types.NumericObject;
 
 public interface NumericObjectsSubtractor extends NumericObjectsOperator {
-    ObjectData sub(ObjectData a, ObjectData b);
+    NumericObject sub(NumericObject a, NumericObject b);
 }

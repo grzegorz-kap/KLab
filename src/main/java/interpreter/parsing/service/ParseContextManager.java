@@ -25,18 +25,15 @@ public class ParseContextManager {
 
     private ParseContext parseContext;
 
-    public void setParseContext(ParseContext parseContext) {
-        this.parseContext = parseContext;
-    }
-
     public Token tokenAt(int offset) {
         return parseContext.tokenAt(offset);
     }
 
-    public void addExpressionValue(ParseToken parseToken) {
+    public ExpressionValue<ParseToken> addExpressionValue(ParseToken parseToken) {
         ExpressionValue<ParseToken> expressionValue = new ExpressionValue<>();
         expressionValue.setValue(parseToken);
         parseContext.addExpression(expressionValue);
+        return expressionValue;
     }
 
     public void addExpressionNode(ParseToken parseToken) {
@@ -138,5 +135,9 @@ public class ParseContextManager {
 
     public ParseContext getParseContext() {
         return parseContext;
+    }
+
+    public void setParseContext(ParseContext parseContext) {
+        this.parseContext = parseContext;
     }
 }

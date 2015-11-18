@@ -7,7 +7,7 @@ public class InstructionPointer {
     private Code code;
     private int current = 0;
 
-    public  InstructionPointer(Code code) {
+    public InstructionPointer(Code code) {
         this.code = code;
     }
 

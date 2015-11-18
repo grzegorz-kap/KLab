@@ -1,27 +1,25 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.types.ObjectData;
-import interpreter.types.matrix.ojalgo.OjalgoMatrix;
+import interpreter.types.NumericObject;
+import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import org.ojalgo.matrix.store.MatrixStore;
 
 public abstract class AbstractOjalgoMatrixBinaryOperator<T extends Number> {
+    protected abstract OjalgoAbstractMatrix<T> create(MatrixStore<T> matrixStore);
 
     @SuppressWarnings("unchecked")
-	protected ObjectData operate(ObjectData a, ObjectData b) {
-        OjalgoMatrix<T> first = (OjalgoMatrix<T>) a;
-        OjalgoMatrix<T> second = (OjalgoMatrix<T>) b;
-        MatrixStore<T> result = operate(first, second);
-        return new OjalgoMatrix<>(result.copy());
+    protected NumericObject operate(NumericObject a, NumericObject b) {
+        OjalgoAbstractMatrix<T> first = (OjalgoAbstractMatrix<T>) a;
+        OjalgoAbstractMatrix<T> second = (OjalgoAbstractMatrix<T>) b;
+        return create(operate(first, second));
     }
 
     @SuppressWarnings("unchecked")
-	protected ObjectData operate(ObjectData a, ObjectData b, OjalgoBinaryAction<T> action) {
-        OjalgoMatrix<T> first = (OjalgoMatrix<T>) a;
-        OjalgoMatrix<T> second = (OjalgoMatrix<T>) b;
-        MatrixStore<T> result = action.operate(first, second);
-        return new OjalgoMatrix<>(result.copy());
+    protected NumericObject operate(NumericObject a, NumericObject b, OjalgoBinaryAction<T> action) {
+        OjalgoAbstractMatrix<T> first = (OjalgoAbstractMatrix<T>) a;
+        OjalgoAbstractMatrix<T> second = (OjalgoAbstractMatrix<T>) b;
+        return create(action.operate(first, second));
     }
 
-
-    protected abstract MatrixStore<T> operate(OjalgoMatrix<T> first, OjalgoMatrix<T> second);
+    protected abstract MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second);
 }

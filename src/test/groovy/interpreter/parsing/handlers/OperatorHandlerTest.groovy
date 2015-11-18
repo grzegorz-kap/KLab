@@ -14,7 +14,7 @@ import static interpreter.parsing.makers.OperatorTokenMaker.saveOperatorToken
 
 class OperatorHandlerTest extends Specification {
 
-    def operatorHandler = new OperatorHandler();
+    def operatorHandler = new OperatorParseHandler();
     def tokens;
     def index = 0;
     Deque<ParseToken> stack;

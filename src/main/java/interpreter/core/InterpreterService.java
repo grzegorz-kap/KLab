@@ -3,24 +3,33 @@ package interpreter.core;
 import interpreter.lexer.model.TokenList;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
+import interpreter.translate.keyword.PostParseHandler;
 import interpreter.translate.model.MacroInstruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 class InterpreterService extends AbstractInterpreterService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
 
     public void startExecution(String input) {
-        TokenList tokenList = tokenizer.readTokens(input);
-        parser.setTokenList(tokenList);
-        while (parser.hasNext()) {
-            executionLoop();
+        try {
+            TokenList tokenList = tokenizer.readTokens(input);
+            parser.setTokenList(tokenList);
+            while (parser.hasNext()) {
+                executionLoop();
+            }
+        } finally {
+            printCode();
         }
+        printCode();
+    }
+
+    public void printCode() {
         LOGGER.info("{}", executionService.getExecutionContext().getCode());
     }
 
@@ -31,31 +40,32 @@ class InterpreterService extends AbstractInterpreterService {
     }
 
     private void execute() {
-        if(executionCanStart()) {
+        if (executionCanStart()) {
             executionService.start();
         }
     }
 
     private void translate(List<Expression<ParseToken>> expression) {
-        if (ifPostHandler.canBeHandled(expression)) {
-            handleIf(expression);
+        PostParseHandler postParseHandler = findPostParseHandler(expression);
+        if (Objects.nonNull(postParseHandler)) {
+            addMacroInstruction(postParseHandler.handle(expression, instructionTranslator));
         } else {
             expression.forEach(this::process);
         }
     }
 
-    private void handleIf(List<Expression<ParseToken>> expression) {
-        addMacroInstruction(ifPostHandler.handle(expression, instructionTranslator));
+    private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expression) {
+        return postParseHandlers.stream()
+                .filter(handler -> handler.canBeHandled(expression))
+                .findFirst().orElse(null);
     }
 
     private void process(Expression<ParseToken> expression) {
-        LOGGER.info("\n{}", expressionPrinter.expressionToString(expression));
         MacroInstruction macroInstruction = instructionTranslator.translate(expression);
         addMacroInstruction(macroInstruction);
     }
 
     private void addMacroInstruction(MacroInstruction macroInstruction) {
-        LOGGER.info("\n{}", macroInstructionPrinter.print(macroInstruction));
         executionService.addInstructions(macroInstruction.getInstructions());
     }
 }

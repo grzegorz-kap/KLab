@@ -1,7 +1,7 @@
 package interpreter.core.arithmetic.factory;
 
 import interpreter.core.arithmetic.*;
-import interpreter.parsing.model.NumericType;
+import interpreter.types.NumericType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +23,7 @@ public class StandardOperatorExecutionFactory extends AbstractStandardOperatorEx
     }
 
     @Override
-    public NumericObjectsDivider getDivider(NumericType numericType) {
+    public NumericObjectsDivder getDivider(NumericType numericType) {
         return numberDividers[numericType.getIndex()];
     }
 

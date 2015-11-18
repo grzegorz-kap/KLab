@@ -2,27 +2,22 @@ package interpreter.parsing.model;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Objects;
 
 public class BalanceContext {
 
     Deque<BalanceType> balanceTypes = new ArrayDeque<>();
     Deque<KeywordBalance> keywordBalance = new ArrayDeque<>();
-    
+
     public void put(KeywordBalance balance) {
-    	keywordBalance.addFirst(balance);
+        keywordBalance.addFirst(balance);
     }
-    
+
     public KeywordBalance popKeyword() {
-    	return keywordBalance.removeFirst();
+        return keywordBalance.removeFirst();
     }
-    
-    public KeywordBalance peekKeyword() {
-    	return keywordBalance.peekFirst();
-    }
-    
+
     public boolean isKeywordBalance(KeywordBalance balance) {
-    	return Objects.nonNull(keywordBalance.peekFirst()) && keywordBalance.peekFirst().equals(balance);
+        return keywordBalance.stream().filter(value -> value.equals(balance)).findFirst().orElse(null) != null;
     }
 
     public void put(BalanceType balanceType) {

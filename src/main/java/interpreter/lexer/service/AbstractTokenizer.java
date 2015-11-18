@@ -27,10 +27,15 @@ public abstract class AbstractTokenizer implements Tokenizer {
     }
 
     public abstract void onNumber();
+
     public abstract void onWord();
+
     public abstract void onSpaceOrTabulator();
+
     public abstract void onNewLine();
+
     public abstract boolean tryReadOperator();
+
     public abstract boolean tryReadOtherSymbol();
 
     private void setState() {

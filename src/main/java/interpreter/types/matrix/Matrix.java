@@ -1,23 +1,21 @@
 package interpreter.types.matrix;
 
-import java.util.function.Consumer;
-
+import interpreter.types.Indexable;
 import interpreter.types.NumericObject;
 import interpreter.types.Sizeable;
+import interpreter.types.foriterator.ForIterable;
 
-public interface Matrix<T extends Number> extends NumericObject, Sizeable {
+import java.util.function.Consumer;
 
-    T get(int m, int n);
-    
+public interface Matrix<T extends Number> extends NumericObject, Sizeable, ForIterable,  Indexable {
+
+    T get(long m, long n);
+
     T get(int m);
 
     void set(int m, int n, T value);
 
-    long getRowsCount();
+    void forEach(Consumer<? super T> action);
 
-    long getColumnsCount();
-    
-    public void forEach(Consumer<? super T> action);
-    
-    
+    T getNumber(int i);
 }

@@ -1,49 +1,60 @@
 package interpreter.types.scalar;
 
-import java.util.Objects;
-
-import interpreter.parsing.model.NumericType;
+import interpreter.types.AddressIterator;
+import interpreter.types.Addressable;
+import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 
-public class DoubleScalar extends AbstractScalar {
+import java.util.Objects;
 
-	private Double value;
+public class DoubleScalar extends AbstractScalar implements Addressable {
+    private Double value;
 
-	public DoubleScalar() {
-		super(NumericType.DOUBLE);
-	}
+    public DoubleScalar() {
+        super(NumericType.DOUBLE);
+    }
 
-	public DoubleScalar(Double value) {
-		this();
-		this.value = value;
-	}
+    public DoubleScalar(Double value) {
+        this();
+        this.value = value;
+    }
 
-	@Override
-	public Double getValue() {
-		return value;
-	}
+    public DoubleScalar(Number number) {
+        this();
+        this.value = number.doubleValue();
+    }
 
-	public void setValue(Double value) {
-		this.value = value;
-	}
+    @Override
+    public Double getValue() {
+        return value;
+    }
 
-	@Override
-	public String toString() {
-		return value.toString();
-	}
+    public void setValue(Double value) {
+        this.value = value;
+    }
 
-	@Override
-	public ObjectData copyObjectData() {
-		return new DoubleScalar(value);
-	}
+    @Override
+    public int getIntOrThrow() {
+        return AbstractScalar.getIntOrThrow(value);
+    }
 
-	@Override
-	public boolean isTrue() {
-		return Objects.nonNull(value) && !value.equals(0.0D);
-	}
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 
-	@Override
-	public boolean isMathematicalInteger() {
-		return Math.rint(value) == value;
-	}
+    @Override
+    public ObjectData copyObjectData() {
+        return new DoubleScalar(value);
+    }
+
+    @Override
+    public boolean isTrue() {
+        return Objects.nonNull(value) && !value.equals(0.0D);
+    }
+
+    @Override
+    public AddressIterator getAddressIterator() {
+        return new AddressScalarIterator(getIntOrThrow());
+    }
 }

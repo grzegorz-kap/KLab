@@ -22,7 +22,7 @@ public class LoadInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        IdentifierObject identifierObject = (IdentifierObject) instructionPointer.current().getObjectDate(0);
+        IdentifierObject identifierObject = (IdentifierObject) instructionPointer.current().getObjectData(0);
         ObjectData objectData = memorySpace.get(identifierObject.getAddress());
         checkObjectData(objectData, identifierObject);
         executionContext.executionStackPush(objectData);

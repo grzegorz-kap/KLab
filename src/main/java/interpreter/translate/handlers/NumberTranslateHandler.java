@@ -24,17 +24,13 @@ public class NumberTranslateHandler extends AbstractTranslateHandler {
         Instruction instruction = new Instruction();
         instruction.setInstructionCode(InstructionCode.PUSH);
         instruction.setArgumentsNumber(1);
-        instruction.add(numberScalarFactory.getDouble(format(numberToken)));
+        instruction.add(numberScalarFactory.getDouble(numberToken.getToken().getLexeme()));
         translateContextManager.addInstruction(instruction);
     }
 
     @Override
     public ParseClass getSupportedParseClass() {
         return ParseClass.NUMBER;
-    }
-
-    private Double format(NumberToken numberToken) {
-        return Double.valueOf(numberToken.getToken().getLexeme());
     }
 
     @Autowired

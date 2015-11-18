@@ -4,9 +4,16 @@ import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
 
 public class ParseToken {
-
     private Token token;
     private ParseClass parseClass;
+
+    public ParseToken() {
+    }
+
+    public ParseToken(Token token, ParseClass parseClass) {
+        this.token = token;
+        this.parseClass = parseClass;
+    }
 
     public Token getToken() {
         return token;

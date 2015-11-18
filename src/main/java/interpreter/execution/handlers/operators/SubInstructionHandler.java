@@ -2,7 +2,8 @@ package interpreter.execution.handlers.operators;
 
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
-import interpreter.types.ObjectData;
+import interpreter.types.NumericObject;
+import interpreter.types.NumericType;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class SubInstructionHandler extends AbstractOperatorInstructionHandler {
     }
 
     @Override
-    public ObjectData calculate(ObjectData a, ObjectData b) {
-        return operatorExecutionFactory.getSubtractor(numberType(a, b)).sub(a, b);
+    protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
+        return operatorExecutionFactory.getSubtractor(type).sub(convert(a, type), convert(b, type));
     }
 }
