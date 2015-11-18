@@ -1,11 +1,11 @@
 package interpreter.core;
 
-import interpreter.InstructionKeyword.PostParseHandler;
 import interpreter.commons.utils.ExpressionPrinter;
 import interpreter.commons.utils.MacroInstructionPrinter;
 import interpreter.execution.service.ExecutionService;
 import interpreter.lexer.service.Tokenizer;
 import interpreter.parsing.service.Parser;
+import interpreter.translate.keyword.PostParseHandler;
 import interpreter.translate.service.InstructionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 

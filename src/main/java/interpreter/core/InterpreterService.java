@@ -1,9 +1,9 @@
 package interpreter.core;
 
-import interpreter.InstructionKeyword.PostParseHandler;
 import interpreter.lexer.model.TokenList;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
+import interpreter.translate.keyword.PostParseHandler;
 import interpreter.translate.model.MacroInstruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

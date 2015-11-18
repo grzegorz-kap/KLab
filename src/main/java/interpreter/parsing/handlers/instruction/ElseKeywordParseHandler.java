@@ -40,15 +40,13 @@ public class ElseKeywordParseHandler extends AbstractParseHandler {
 
     private void checkCorrectExpression() {
         if (parseContextManager.expressionSize() != 0) {
-            throw new WrongIfInstructionException(KEYWORD_ELSE_NOT_EXPECTED_HERE,
-                    parseContextManager.getParseContext());
+            throw new WrongIfInstructionException(KEYWORD_ELSE_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
     }
 
     private void checkKeywordBalance() {
         if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
-            throw new WrongIfInstructionException(ELSE_KEYWORD_CAN_T_BE_USED_WITHOUT_IF,
-                    parseContextManager.getParseContext());
+            throw new WrongIfInstructionException(ELSE_KEYWORD_CAN_T_BE_USED_WITHOUT_IF, parseContextManager.getParseContext());
         }
     }
 }
