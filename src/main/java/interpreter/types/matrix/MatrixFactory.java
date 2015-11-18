@@ -16,5 +16,7 @@ public interface MatrixFactory<N extends Number> {
 
     Matrix<N> zeros(int rows, int columns);
 
+    Matrix<N> createRange(Number start, Number step, Number stop);
+
     NumericType supports();
 }

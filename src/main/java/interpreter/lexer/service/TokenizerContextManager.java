@@ -22,7 +22,8 @@ public class TokenizerContextManager {
 
     public TokenClass tokenClassAt(int offset) {
         int index = tokenizerContext.getIndex() + offset - 1;
-        return index < 0 || index >= tokenizerContext.getLength() ? null : tokenizerContext.getTokenList().get(index).getTokenClass();
+        return index < 0 || index >= tokenizerContext.getTokenList().size()
+                ? null : tokenizerContext.getTokenList().get(index).getTokenClass();
     }
 
     private void process(final Token token) {

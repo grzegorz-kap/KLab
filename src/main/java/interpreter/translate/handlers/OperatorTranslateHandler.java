@@ -18,7 +18,6 @@ import java.util.Objects;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OperatorTranslateHandler extends AbstractTranslateHandler {
-
     private OperatorInstructionCodesFactory operatorInstructionCodesFactory;
 
     @Override

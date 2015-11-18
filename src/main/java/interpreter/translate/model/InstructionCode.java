@@ -24,7 +24,8 @@ public enum InstructionCode {
     FLNEXT(20),
     FLINIT(21),
     CLEAR(22),
-    RANGE(23);
+    RANGE(23),
+    RANGE3(24);
 
     private int index;
 
@@ -35,5 +36,4 @@ public enum InstructionCode {
     public int getIndex() {
         return index;
     }
-
 }
