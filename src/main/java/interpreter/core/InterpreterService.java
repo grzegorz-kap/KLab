@@ -17,16 +17,11 @@ class InterpreterService extends AbstractInterpreterService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
 
     public void startExecution(String input) {
-        try {
-            TokenList tokenList = tokenizer.readTokens(input);
-            parser.setTokenList(tokenList);
-            while (parser.hasNext()) {
-                executionLoop();
-            }
-        } finally {
-            printCode();
+        TokenList tokenList = tokenizer.readTokens(input);
+        parser.setTokenList(tokenList);
+        while (parser.hasNext()) {
+            executionLoop();
         }
-        printCode();
     }
 
     public void printCode() {
@@ -35,6 +30,7 @@ class InterpreterService extends AbstractInterpreterService {
 
     public void executionLoop() {
         List<Expression<ParseToken>> expression = parser.process();
+        expression.forEach(ex -> LOGGER.info("\n{}", expressionPrinter.expressionToString(ex)));
         translate(expression);
         execute();
     }

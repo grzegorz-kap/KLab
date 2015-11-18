@@ -8,7 +8,6 @@ import org.ojalgo.matrix.store.PhysicalStore;
 import org.ojalgo.random.Uniform;
 
 public abstract class OjalgoAbstractMatrixFactory<N extends Number> implements MatrixFactory<N> {
-
     private PhysicalStore.Factory<N, ? extends PhysicalStore<N>> factory;
     private NullaryFunction<N> onesGenerator;
     private Uniform randGenerator = new Uniform();
@@ -38,6 +37,23 @@ public abstract class OjalgoAbstractMatrixFactory<N extends Number> implements M
     @Override
     public Matrix<N> zeros(int rows, int columns) {
         return create(factory.makeZero(rows, columns));
+    }
+
+    @Override
+    public Matrix<N> createRange(Number start, Number step, Number stop) {
+        double j = start.doubleValue();
+        double i = step.doubleValue();
+        double k = stop.doubleValue();
+        double temp = (k-j)/i;
+        long m = (long) (temp >= 0.0 ? Math.floor(temp) : Math.ceil(temp));
+        if(i==0 || m==0 || i>0 && j>k || i<0 && j<k) {
+            return create(factory.makeZero(0,0));
+        }
+        PhysicalStore<N> store = factory.makeZero(1, (m + 1));
+        for(long mult = 0; mult<=m ; mult++) {
+            store.set(mult, j+i*mult);
+        }
+        return create(store);
     }
 
     public void setFactory(PhysicalStore.Factory<N, ? extends PhysicalStore<N>> factory) {

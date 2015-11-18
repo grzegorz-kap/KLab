@@ -9,7 +9,6 @@ import java.util.Map;
 
 @Service
 public class OperatorInstructionCodesFactory {
-
     private Map<OperatorCode, InstructionCode> instructionCodeMap = new EnumMap<>(OperatorCode.class);
 
     public OperatorInstructionCodesFactory() {
@@ -24,6 +23,8 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.GE, InstructionCode.GE);
         instructionCodeMap.put(OperatorCode.LE, InstructionCode.LE);
         instructionCodeMap.put(OperatorCode.LT, InstructionCode.LT);
+        instructionCodeMap.put(OperatorCode.RANGE, InstructionCode.RANGE);
+        instructionCodeMap.put(OperatorCode.RANGE3, InstructionCode.RANGE3);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {

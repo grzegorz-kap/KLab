@@ -2,7 +2,6 @@ package interpreter.parsing.handlers;
 
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.factory.operator.OperatorFactory;
-import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
@@ -10,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
@@ -22,8 +23,31 @@ public class OperatorParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         OperatorToken o1 = operatorFactory.getOperator(getContextManager().tokenAt(0));
-        o1.setParseClass(ParseClass.OPERATOR);
-        while (operateOnStack(o1)) {
+        if (Objects.isNull(o1)) {
+            throw new RuntimeException();
+        }
+        while (!parseContextManager.isStackEmpty()) {
+            ParseToken parseToken = parseContextManager.stackPeek();
+            if (!(parseToken instanceof OperatorToken)) {
+                break;
+            }
+
+            OperatorToken o2 = (OperatorToken) parseToken;
+            int compereResult = o1.getPriority().compareTo(o2.getPriority());
+            boolean operate = o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 ||
+                    o1.getAssociativity() == RIGHT_TO_LEFT && compereResult == -1;
+
+            if (!operate) {
+                break;
+            }
+
+            if (":".equals(o1.getToken().getLexeme()) && ":".equals(o2.getToken().getLexeme())) {
+                parseContextManager.stackPop();
+                o1 = operatorFactory.getOperator("$::");
+                o1.setToken(o2.getToken());
+                break;
+            }
+
             stackToExpression();
         }
         parseContextManager.stackPush(o1);
@@ -45,22 +69,6 @@ public class OperatorParseHandler extends AbstractParseHandler {
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(operatorToken);
         expressionNode.addChildren(parseContextManager.expressionPopArguments(operatorToken.getArgumentsNumber()));
         parseContextManager.addExpression(expressionNode);
-    }
-
-    private boolean operateOnStack(final OperatorToken o1) {
-        if (parseContextManager.isStackEmpty()) {
-            return false;
-        }
-
-        ParseToken parseToken = parseContextManager.stackPeek();
-        if (!(parseToken instanceof OperatorToken)) {
-            return false;
-        }
-
-        OperatorToken o2 = (OperatorToken) parseToken;
-        int compereResult = o1.getPriority().compareTo(o2.getPriority());
-        return o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 ||
-                o1.getAssociativity() == RIGHT_TO_LEFT && compereResult == -1;
     }
 
     @Autowired

@@ -1,6 +1,7 @@
 package interpreter.lexer.service;
 
 import interpreter.lexer.model.Token;
+import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenizerContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TokenizerContextManager {
-
     private TokenizerContext tokenizerContext;
 
     public void addToken(Token token) {
@@ -18,6 +18,12 @@ public class TokenizerContextManager {
         tokenizerContext.addToken(token);
         incrementTextPosition(token.getLexeme().length());
         process(token);
+    }
+
+    public TokenClass tokenClassAt(int offset) {
+        int index = tokenizerContext.getIndex() + offset - 1;
+        return index < 0 || index >= tokenizerContext.getTokenList().size()
+                ? null : tokenizerContext.getTokenList().get(index).getTokenClass();
     }
 
     private void process(final Token token) {

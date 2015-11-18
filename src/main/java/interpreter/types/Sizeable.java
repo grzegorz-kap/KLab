@@ -6,4 +6,8 @@ public interface Sizeable {
 
     long getColumns();
 
+    default boolean isScalar() {
+        return getRows() == 1 && getColumns() == 1;
+    }
+
 }

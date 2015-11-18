@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 @Component
 public class TokenMatcher {
-
     private Pattern operatorRegex;
     private Pattern symbolsRegex;
     private List<String> operatorsPatterns = Arrays.asList(
@@ -22,16 +21,16 @@ public class TokenMatcher {
             "^>=",
             "^<=",
             "^<",
-            "^>"
+            "^>",
+            "^:"
     );
     private List<String> symbolsPatterns = Arrays.asList(
-            "^,",
-            "^:",
+            "^[ \\t]*,[ \\t]*",
             "^;",
             "^\\[",
             "^\\]",
-            "^\\(",
-            "^\\)"
+            "^[ \\t]*\\([ \\t]*",
+            "^[ \\t]*\\)[ \\t]*"
     );
 
     public TokenMatcher() {

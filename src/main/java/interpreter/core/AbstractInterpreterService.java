@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 public abstract class AbstractInterpreterService {
-
     protected ExecutionService executionService;
     protected Parser parser;
     protected Tokenizer tokenizer;
