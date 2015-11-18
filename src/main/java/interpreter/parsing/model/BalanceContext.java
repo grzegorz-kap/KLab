@@ -2,7 +2,6 @@ package interpreter.parsing.model;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Objects;
 
 public class BalanceContext {
 
@@ -17,12 +16,8 @@ public class BalanceContext {
         return keywordBalance.removeFirst();
     }
 
-    public KeywordBalance peekKeyword() {
-        return keywordBalance.peekFirst();
-    }
-
     public boolean isKeywordBalance(KeywordBalance balance) {
-        return Objects.nonNull(keywordBalance.peekFirst()) && keywordBalance.peekFirst().equals(balance);
+        return keywordBalance.stream().filter(value -> value.equals(balance)).findFirst().orElse(null) != null;
     }
 
     public void put(BalanceType balanceType) {

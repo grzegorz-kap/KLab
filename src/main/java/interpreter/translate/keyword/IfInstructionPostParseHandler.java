@@ -1,10 +1,10 @@
-package interpreter.InstructionKeyword;
+package interpreter.translate.keyword;
 
-import interpreter.InstructionKeyword.exception.KeywordParseException;
-import interpreter.InstructionKeyword.model.IfInstructionContext;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
+import interpreter.translate.keyword.exception.KeywordParseException;
+import interpreter.translate.keyword.model.IfInstructionContext;
 import interpreter.translate.model.JumperInstruction;
 import interpreter.translate.model.MacroInstruction;
 import interpreter.translate.service.InstructionTranslator;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
-import static interpreter.InstructionKeyword.exception.KeywordParseException.UNEXPECTED_ELSE_OR_ELSEIF;
 import static interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY;
 
 @Component
@@ -120,7 +119,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
     private void setupOnFalseOrThrow(int offset) {
         JumperInstruction jumperInstruction = ifInstructionContext.getJumpOnFalse();
         if (Objects.isNull(jumperInstruction)) {
-            throw new KeywordParseException(UNEXPECTED_ELSE_OR_ELSEIF);
+            throw new KeywordParseException(KeywordParseException.UNEXPECTED_ELSE_OR_ELSEIF);
         }
         jumperInstruction.setJumpIndex(code.size() + offset);
         ifInstructionContext.setJumpOnFalse(null);

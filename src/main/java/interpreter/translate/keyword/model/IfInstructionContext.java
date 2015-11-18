@@ -1,4 +1,4 @@
-package interpreter.InstructionKeyword.model;
+package interpreter.translate.keyword.model;
 
 import interpreter.translate.model.JumperInstruction;
 

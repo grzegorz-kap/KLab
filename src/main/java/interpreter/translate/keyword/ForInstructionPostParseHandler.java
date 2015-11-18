@@ -1,13 +1,13 @@
-package interpreter.InstructionKeyword;
+package interpreter.translate.keyword;
 
-import interpreter.InstructionKeyword.exception.KeywordParseException;
-import interpreter.InstructionKeyword.model.ForInstructionContext;
 import interpreter.commons.IdentifierMapper;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
+import interpreter.translate.keyword.exception.KeywordParseException;
+import interpreter.translate.keyword.model.ForInstructionContext;
 import interpreter.translate.model.*;
 import interpreter.translate.service.InstructionTranslator;
 import interpreter.types.IdentifierObject;
@@ -18,8 +18,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static interpreter.InstructionKeyword.exception.KeywordParseException.FOR_KEYWORD_ASSIGNMENT_EXPECTED;
-
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
@@ -29,7 +27,11 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
 
     @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
-        return isForStart(expressions) || isForEnd(expressions);
+        return isForStart(expressions) || isForEnd(expressions) || isBreak(expressions) || isContinue(expressions);
+    }
+
+    private boolean isContinue(List<Expression<ParseToken>> expressions) {
+        return expressions.size() == 1 && isParseClass(expressions, ParseClass.CONTINUE_FOR, 0);
     }
 
     @Override
@@ -45,7 +47,27 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         if (isForEnd(expressions)) {
             return handleForEnd();
         }
+        if (isBreak(expressions)) {
+            return handleBreak(expressions);
+        }
+        if (isContinue(expressions)) {
+            return handleContinue(expressions);
+        }
         return new MacroInstruction();
+    }
+
+    private MacroInstruction handleContinue(List<Expression<ParseToken>> expressions) {
+        setupNoPrintNoAns(expressions, 0);
+        JumperInstruction jmp = createJmpInstruction();
+        jmp.setJumpIndex(forInstructionContext.getFlhNextAddress());
+        return new MacroInstruction().add(jmp);
+    }
+
+    private MacroInstruction handleBreak(List<Expression<ParseToken>> expressions) {
+        setupNoPrintNoAns(expressions, 0);
+        JumperInstruction jmp = createJmpInstruction();
+        forInstructionContext.addFalseJumper(jmp);
+        return new MacroInstruction().add(jmp);
     }
 
     private MacroInstruction handleForStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
@@ -70,7 +92,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private MacroInstruction handleForEnd() {
         JumperInstruction flhnextJump = createJmpInstruction();
         flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
-        forInstructionContext.getJumpOnFalse().setJumpIndex(code.size() + 1);
+        forInstructionContext.setJumpsOnFalse(code.size() + 1);
         String iteratorName = String.format(DATA_FORMAT, forInstructionContext.getName());
         Integer iteratorAddress = identifierMapper.getMainAddress(iteratorName);
         Instruction clearInstruction = new Instruction(InstructionCode.CLEAR, 0);
@@ -96,10 +118,10 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private void checkIfAssignOperator(List<Expression<ParseToken>> expressions) {
         Expression<ParseToken> root = expressions.get(1);
         if (!ParseClass.OPERATOR.equals(root.getValue().getParseClass())) {
-            throw new KeywordParseException(FOR_KEYWORD_ASSIGNMENT_EXPECTED);
+            throw new KeywordParseException(KeywordParseException.FOR_KEYWORD_ASSIGNMENT_EXPECTED);
         }
         if (!((OperatorToken) root.getValue()).getOperatorCode().equals(OperatorCode.ASSIGN)) {
-            throw new KeywordParseException(FOR_KEYWORD_ASSIGNMENT_EXPECTED);
+            throw new KeywordParseException(KeywordParseException.FOR_KEYWORD_ASSIGNMENT_EXPECTED);
         }
     }
 
@@ -109,6 +131,10 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
 
     private boolean isForStart(List<Expression<ParseToken>> expressions) {
         return expressions.size() == 2 && isParseClass(expressions, ParseClass.FOR_KEYWORD, 0);
+    }
+
+    private boolean isBreak(List<Expression<ParseToken>> expressions) {
+        return expressions.size() == 1 && isParseClass(expressions, ParseClass.BREAK_FOR, 0);
     }
 
     @Autowired

@@ -1,4 +1,4 @@
-package interpreter.InstructionKeyword;
+package interpreter.translate.keyword;
 
 import interpreter.execution.model.Code;
 import interpreter.parsing.model.ParseClass;

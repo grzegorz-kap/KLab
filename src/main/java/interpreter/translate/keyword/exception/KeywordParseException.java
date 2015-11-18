@@ -1,4 +1,4 @@
-package interpreter.InstructionKeyword.exception;
+package interpreter.translate.keyword.exception;
 
 public class KeywordParseException extends RuntimeException {
 
