@@ -5,6 +5,7 @@ import interpreter.types.foriterator.ForIterator;
 import interpreter.types.foriterator.OjalgoForIteratorFactory;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.scalar.Scalar;
+import org.ojalgo.function.BinaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 
@@ -135,5 +136,9 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public long length() {
         return lazyStore.count();
+    }
+
+    public BinaryFunction<T> getDivideFunction() {
+        return matrixStore.factory().function().divide();
     }
 }
