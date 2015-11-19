@@ -139,6 +139,6 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     public BinaryFunction<T> getDivideFunction() {
-        return matrixStore.factory().function().divide();
+        return lazyStore.factory().function().divide();
     }
 }
