@@ -1,7 +1,5 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.core.arithmetic.NumericObjectsComparator;
-import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
@@ -11,8 +9,8 @@ import org.ojalgo.scalar.ComplexNumber;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixBinaryOperator<ComplexNumber> implements NumericObjectsComparator {
-    @Override
+public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<ComplexNumber> {
+
     public NumericType getSupportedType() {
         return NumericType.COMPLEX_MATRIX;
     }
@@ -23,62 +21,33 @@ public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixBinaryOper
     }
 
     @Override
-    protected MatrixStore<ComplexNumber> operate(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return null;
+    protected MatrixStore<ComplexNumber> eq(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
+        return first.operateOnMatching((ComplexFunction.Binary) this::eq, second);
     }
 
     @Override
-    public NumericObject eq(NumericObject a, NumericObject b) {
-        return operate(a, b, this::eq);
+    protected MatrixStore<ComplexNumber> neq(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
+        return first.operateOnMatching((ComplexFunction.Binary) this::neq, second);
     }
 
     @Override
-    public NumericObject neq(NumericObject a, NumericObject b) {
-        return operate(a, b, this::neq);
+    protected MatrixStore<ComplexNumber> gt(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
+        return first.operateOnMatching((ComplexFunction.Binary) this::gt, second);
     }
 
     @Override
-    public NumericObject gt(NumericObject a, NumericObject b) {
-        return operate(a, b, this::gt);
+    protected MatrixStore<ComplexNumber> ge(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
+        return first.operateOnMatching((ComplexFunction.Binary) this::ge, second);
     }
 
     @Override
-    public NumericObject ge(NumericObject a, NumericObject b) {
-        return operate(a, b, this::ge);
+    protected MatrixStore<ComplexNumber> le(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
+        return first.operateOnMatching((ComplexFunction.Binary) this::le, second);
     }
 
     @Override
-    public NumericObject le(NumericObject a, NumericObject b) {
-        return operate(a, b, this::le);
-    }
-
-    @Override
-    public NumericObject lt(NumericObject a, NumericObject b) {
-        return operate(a, b, this::lt);
-    }
-
-    private MatrixStore<ComplexNumber> eq(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return first.getLazyStore().operateOnMatching((ComplexFunction.Binary) this::eq, second.getLazyStore());
-    }
-
-    private MatrixStore<ComplexNumber> neq(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return first.getLazyStore().operateOnMatching((ComplexFunction.Binary) this::neq, second.getLazyStore());
-    }
-
-    private MatrixStore<ComplexNumber> gt(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return first.getLazyStore().operateOnMatching((ComplexFunction.Binary) this::gt, second.getLazyStore());
-    }
-
-    private MatrixStore<ComplexNumber> ge(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return first.getLazyStore().operateOnMatching((ComplexFunction.Binary) this::ge, second.getLazyStore());
-    }
-
-    private MatrixStore<ComplexNumber> le(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return first.getLazyStore().operateOnMatching((ComplexFunction.Binary) this::le, second.getLazyStore());
-    }
-
-    private MatrixStore<ComplexNumber> lt(OjalgoAbstractMatrix<ComplexNumber> first, OjalgoAbstractMatrix<ComplexNumber> second) {
-        return first.getLazyStore().operateOnMatching((ComplexFunction.Binary) this::lt, second.getLazyStore());
+    protected MatrixStore<ComplexNumber> lt(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
+        return first.operateOnMatching((ComplexFunction.Binary) this::lt, second);
     }
 
     private ComplexNumber eq(ComplexNumber value, ComplexNumber second) {
