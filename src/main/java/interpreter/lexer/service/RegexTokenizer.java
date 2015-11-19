@@ -51,7 +51,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     @Override
     public boolean tryReadOperator() {
         if (tC.isCharAt(0, ':')) {
-            TokenClass prev = tCM.tokenClassAt(-1);
+            TokenClass prev = tCM.tokenClassAt(0);
             if (TokenClass.COMMA.equals(prev) || TokenClass.OPEN_PARENTHESIS.equals(prev)) {
                 return false;
             }

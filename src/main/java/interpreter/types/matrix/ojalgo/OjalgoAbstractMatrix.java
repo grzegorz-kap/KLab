@@ -50,8 +50,8 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
             return createScalar(getLazyStore().get(row.getNext() - 1, column.getNext() - 1));
         }
         PhysicalStore<T> matrix = createMatrixStore(row.length(), column.length());
-        long rowIndex = 0l;
-        long colIndex = 0l;
+        long rowIndex = 0L;
+        long colIndex = 0L;
         while (row.hasNext()) {
             long rowAddress = row.getNext() - 1;
             while (column.hasNext()) {
