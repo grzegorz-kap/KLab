@@ -3,6 +3,7 @@ package interpreter.core.arithmetic.matrix.ojalgo;
 import interpreter.core.arithmetic.NumericObjectsDivder;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
+import interpreter.types.Sizeable;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
@@ -38,7 +39,6 @@ public class OjalgoMatrixDoubleDividerConfig {
     }
 
     private static abstract class OjalgoMatrixDivder<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsDivder {
-
         private SolverTask.Factory<T> factory;
         private NumericType supported;
 
@@ -56,6 +56,11 @@ public class OjalgoMatrixDoubleDividerConfig {
             } catch (TaskException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        protected void checkSize(Sizeable a, Sizeable b) {
+
         }
 
         @Override

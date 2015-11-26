@@ -3,6 +3,7 @@ package interpreter.core.arithmetic.matrix.ojalgo;
 import interpreter.core.arithmetic.NumericObjectsMultiplicator;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
+import interpreter.types.Sizeable;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
@@ -57,7 +58,9 @@ class OjalgoMatrixComplexMultiplicator extends AbstractOjalgoMatrixMultiplicator
     }
 }
 
-abstract class AbstractOjalgoMatrixMultiplicator<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T> implements NumericObjectsMultiplicator {
+abstract class AbstractOjalgoMatrixMultiplicator<T extends Number> extends AbstractOjalgoMatrixBinaryOperator<T>
+        implements NumericObjectsMultiplicator {
+
     protected abstract MultScalar<T> getMultScalar(T scalar);
 
     @Override
@@ -74,6 +77,13 @@ abstract class AbstractOjalgoMatrixMultiplicator<T extends Number> extends Abstr
             return first.getLazyStore().operateOnAll(getMultScalar(second.get(0)));
         }
         return first.getLazyStore().multiply(second.getLazyStore());
+    }
+
+    @Override
+    protected void checkSize(Sizeable a, Sizeable b) {
+        if (!a.isScalar() && !b.isScalar() && a.getColumns() != b.getRows()) {
+            throw new RuntimeException("Sizes does not match!");
+        }
     }
 }
 
