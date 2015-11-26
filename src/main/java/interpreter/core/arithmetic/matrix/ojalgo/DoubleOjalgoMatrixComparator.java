@@ -1,7 +1,5 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import interpreter.core.arithmetic.NumericObjectsComparator;
-import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
@@ -10,8 +8,7 @@ import org.ojalgo.matrix.store.MatrixStore;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DoubleOjalgoMatrixComparator
-        extends AbstractOjalgoMatrixBinaryOperator<Double> implements NumericObjectsComparator {
+public class DoubleOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<Double> {
 
     @Override
     public NumericType getSupportedType() {
@@ -24,62 +21,33 @@ public class DoubleOjalgoMatrixComparator
     }
 
     @Override
-    protected MatrixStore<Double> operate(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return null;
+    protected MatrixStore<Double> eq(MatrixStore<Double> first, MatrixStore<Double> second) {
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::eq, second);
     }
 
     @Override
-    public NumericObject eq(NumericObject a, NumericObject b) {
-        return operate(a, b, this::eq);
+    protected MatrixStore<Double> neq(MatrixStore<Double> first, MatrixStore<Double> second) {
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::neq, second);
     }
 
     @Override
-    public NumericObject neq(NumericObject a, NumericObject b) {
-        return operate(a, b, this::neq);
+    protected MatrixStore<Double> gt(MatrixStore<Double> first, MatrixStore<Double> second) {
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::gt, second);
     }
 
     @Override
-    public NumericObject gt(NumericObject a, NumericObject b) {
-        return operate(a, b, this::gt);
+    protected MatrixStore<Double> ge(MatrixStore<Double> first, MatrixStore<Double> second) {
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::ge, second);
     }
 
     @Override
-    public NumericObject ge(NumericObject a, NumericObject b) {
-        return operate(a, b, this::ge);
+    protected MatrixStore<Double> le(MatrixStore<Double> first, MatrixStore<Double> second) {
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::le, second);
     }
 
     @Override
-    public NumericObject le(NumericObject a, NumericObject b) {
-        return operate(a, b, this::le);
-    }
-
-    @Override
-    public NumericObject lt(NumericObject a, NumericObject b) {
-        return operate(a, b, this::lt);
-    }
-
-    private MatrixStore<Double> eq(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::eq, second.getLazyStore());
-    }
-
-    private MatrixStore<Double> neq(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::neq, second.getLazyStore());
-    }
-
-    private MatrixStore<Double> gt(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::gt, second.getLazyStore());
-    }
-
-    private MatrixStore<Double> ge(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::ge, second.getLazyStore());
-    }
-
-    private MatrixStore<Double> le(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::le, second.getLazyStore());
-    }
-
-    private MatrixStore<Double> lt(OjalgoAbstractMatrix<Double> first, OjalgoAbstractMatrix<Double> second) {
-        return first.getLazyStore().operateOnMatching((PrimitiveFunction.Binary) this::lt, second.getLazyStore());
+    protected MatrixStore<Double> lt(MatrixStore<Double> first, MatrixStore<Double> second) {
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::lt, second);
     }
 
     private Double eq(Double value, Double second) {

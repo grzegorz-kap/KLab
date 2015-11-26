@@ -49,6 +49,13 @@ public class OjalgoMatrixDoubleDividerConfig {
 
         @Override
         protected MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second) {
+            if (second.isScalar()) {
+                return first.getLazyStore().operateOnMatching(first.getDivideFunction(), new OjalgoMatrixScalarWrapper<>(second));
+            }
+            if (first.isScalar()) {
+                return new OjalgoMatrixScalarWrapper<>(first, second).operateOnMatching(second.getDivideFunction(), second.getLazyStore());
+            }
+
             try {
                 MatrixStore<T> aT = first.getLazyStore().transpose();
                 MatrixStore<T> bT = second.getLazyStore().transpose();

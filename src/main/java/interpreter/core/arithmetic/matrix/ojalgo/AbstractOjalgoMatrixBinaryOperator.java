@@ -24,6 +24,20 @@ public abstract class AbstractOjalgoMatrixBinaryOperator<T extends Number> {
         return create(action.operate(first, second));
     }
 
+    protected NumericObject operate(NumericObject a, NumericObject b, MatrixStoreAction<T> action) {
+        OjalgoAbstractMatrix<T> first = ((OjalgoAbstractMatrix<T>) a);
+        OjalgoAbstractMatrix<T> second = ((OjalgoAbstractMatrix<T>) b);
+
+        if(first.isScalar()) {
+            return create(action.operate(new OjalgoMatrixScalarWrapper<>(first, second), second.getLazyStore()));
+        }
+        if(second.isScalar()) {
+            return create(action.operate(first.getLazyStore(), new OjalgoMatrixScalarWrapper<T>(second)));
+        }
+
+        return create(action.operate(first.getLazyStore(), second.getLazyStore()));
+    }
+
     protected abstract MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second);
 
     protected void checkSize(Sizeable a, Sizeable b) {
