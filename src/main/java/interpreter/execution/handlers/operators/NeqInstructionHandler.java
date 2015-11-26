@@ -19,7 +19,7 @@ public class NeqInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getComporator(type).neq(convert(a, type), convert(b, type));
+        return numericObjectsOperatorFactory.getOperator(type).neq(convert(a, type), convert(b, type));
     }
 
     @Override

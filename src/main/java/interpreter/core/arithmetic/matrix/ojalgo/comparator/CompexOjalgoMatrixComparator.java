@@ -1,23 +1,13 @@
-package interpreter.core.arithmetic.matrix.ojalgo;
+package interpreter.core.arithmetic.matrix.ojalgo.comparator;
 
-import interpreter.types.NumericType;
-import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
-import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoMatrixCreator;
 import org.ojalgo.function.ComplexFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
-import org.springframework.stereotype.Component;
 
-@Component
-public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<ComplexNumber> {
-
-    public NumericType getSupportedType() {
-        return NumericType.COMPLEX_MATRIX;
-    }
-
-    @Override
-    protected OjalgoAbstractMatrix<ComplexNumber> create(MatrixStore<ComplexNumber> matrixStore) {
-        return new OjalgoComplexMatrix(matrixStore);
+public abstract class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<ComplexNumber> {
+    public CompexOjalgoMatrixComparator(OjalgoMatrixCreator<ComplexNumber> creator) {
+        super(creator);
     }
 
     @Override

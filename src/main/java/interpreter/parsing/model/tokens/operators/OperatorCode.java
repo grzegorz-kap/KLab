@@ -13,5 +13,5 @@ public enum OperatorCode {
     LT,
     RANGE,
     RANGE3,
-    MULT
+    AMULT, ADIV, MULT
 }

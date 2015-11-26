@@ -19,7 +19,7 @@ public class EqInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getComporator(type).eq(convert(a, type), convert(b, type));
+        return numericObjectsOperatorFactory.getOperator(type).eq(convert(a, type), convert(b, type));
     }
 
     @Override

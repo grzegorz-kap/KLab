@@ -25,7 +25,9 @@ public enum InstructionCode {
     FLINIT(21),
     CLEAR(22),
     RANGE(23),
-    RANGE3(24);
+    RANGE3(24),
+    AMULT(25),
+    ADIV(26);
 
     private int index;
 

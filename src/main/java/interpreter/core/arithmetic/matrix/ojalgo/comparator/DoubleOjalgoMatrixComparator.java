@@ -1,23 +1,12 @@
-package interpreter.core.arithmetic.matrix.ojalgo;
+package interpreter.core.arithmetic.matrix.ojalgo.comparator;
 
-import interpreter.types.NumericType;
-import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
-import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoMatrixCreator;
 import org.ojalgo.function.PrimitiveFunction;
 import org.ojalgo.matrix.store.MatrixStore;
-import org.springframework.stereotype.Component;
 
-@Component
 public class DoubleOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<Double> {
-
-    @Override
-    public NumericType getSupportedType() {
-        return NumericType.MATRIX_DOUBLE;
-    }
-
-    @Override
-    protected OjalgoAbstractMatrix<Double> create(MatrixStore<Double> matrixStore) {
-        return new OjalgoDoubleMatrix(matrixStore);
+    public DoubleOjalgoMatrixComparator(OjalgoMatrixCreator<Double> creator) {
+        super(creator);
     }
 
     @Override

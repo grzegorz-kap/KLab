@@ -24,6 +24,6 @@ public class MultInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getMultiplicator(type).mult(convert(a, type), convert(b, type));
+        return numericObjectsOperatorFactory.getOperator(type).mult(convert(a, type), convert(b, type));
     }
 }

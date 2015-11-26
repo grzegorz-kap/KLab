@@ -1,11 +1,17 @@
-package interpreter.core.arithmetic.matrix.ojalgo;
+package interpreter.core.arithmetic.matrix.ojalgo.comparator;
 
-import interpreter.core.arithmetic.NumericObjectsComparator;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixStoreAction;
+import interpreter.core.arithmetic.matrix.ojalgo.OjalgoOperator;
 import interpreter.types.NumericObject;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoMatrixCreator;
 import org.ojalgo.matrix.store.MatrixStore;
 
-public abstract class AbstractOjalgoMatrixComparator<N extends Number> extends AbstractOjalgoMatrixBinaryOperator<N> implements NumericObjectsComparator {
+public abstract class AbstractOjalgoMatrixComparator<N extends Number> extends OjalgoOperator<N> {
+    public AbstractOjalgoMatrixComparator(OjalgoMatrixCreator<N> creator) {
+        super(creator);
+    }
+
     @Override
     protected MatrixStore<N> operate(OjalgoAbstractMatrix<N> first, OjalgoAbstractMatrix<N> second) {
         return null;

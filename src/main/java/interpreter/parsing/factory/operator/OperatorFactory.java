@@ -28,7 +28,9 @@ public class OperatorFactory {
         operatorsProducer.put("+", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_30, ADD));
         operatorsProducer.put("-", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_30, SUB));
         operatorsProducer.put("*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, MULT));
+        operatorsProducer.put(".*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, AMULT));
         operatorsProducer.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, DIV));
+        operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
         operatorsProducer.put(":", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_25, RANGE));
         operatorsProducer.put("$::", () -> new OperatorToken(3, LEFT_TO_RIGHT, LEVEL_25, RANGE3));
     }

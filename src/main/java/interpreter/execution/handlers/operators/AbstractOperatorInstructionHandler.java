@@ -1,6 +1,6 @@
 package interpreter.execution.handlers.operators;
 
-import interpreter.core.arithmetic.factory.OperatorExecutionFactory;
+import interpreter.core.arithmetic.factory.NumericObjectsOperatorFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.helper.NumericUtils;
 import interpreter.execution.model.InstructionPointer;
@@ -11,8 +11,7 @@ import interpreter.types.converters.ConvertersHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractOperatorInstructionHandler extends AbstractInstructionHandler {
-
-    protected OperatorExecutionFactory operatorExecutionFactory;
+    protected NumericObjectsOperatorFactory numericObjectsOperatorFactory;
     private NumericUtils numericUtils;
     private ConvertersHolder convertersHolder;
 
@@ -33,9 +32,7 @@ public abstract class AbstractOperatorInstructionHandler extends AbstractInstruc
         instructionPointer.increment();
     }
 
-    protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract NumericObject calculate(NumericObject a, NumericObject b, NumericType type);
 
     private NumericType numberType(ObjectData a, ObjectData b) {
         return numericUtils.resolveType(((NumericObject) a), ((NumericObject) b));
@@ -43,8 +40,8 @@ public abstract class AbstractOperatorInstructionHandler extends AbstractInstruc
 
 
     @Autowired
-    public void setOperatorExecutionFactory(OperatorExecutionFactory operatorExecutionFactory) {
-        this.operatorExecutionFactory = operatorExecutionFactory;
+    public void setNumericObjectsOperatorFactory(NumericObjectsOperatorFactory numericObjectsOperatorFactory) {
+        this.numericObjectsOperatorFactory = numericObjectsOperatorFactory;
     }
 
     @Autowired

@@ -19,7 +19,7 @@ public class GeInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getComporator(type).ge(convert(a, type), convert(b, type));
+        return numericObjectsOperatorFactory.getOperator(type).ge(convert(a, type), convert(b, type));
     }
 
     @Override

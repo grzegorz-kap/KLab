@@ -24,6 +24,6 @@ public class AddInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     public NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getAdder(type).add(convert(a, type), convert(b, type));
+        return numericObjectsOperatorFactory.getOperator(type).add(convert(a, type), convert(b, type));
     }
 }

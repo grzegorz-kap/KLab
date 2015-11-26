@@ -3,39 +3,40 @@ package interpreter.core.arithmetic.matrix.ojalgo;
 import interpreter.types.NumericObject;
 import interpreter.types.Sizeable;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoMatrixCreator;
 import org.ojalgo.matrix.store.MatrixStore;
 
-public abstract class AbstractOjalgoMatrixBinaryOperator<T extends Number> {
-    protected abstract OjalgoAbstractMatrix<T> create(MatrixStore<T> matrixStore);
+public abstract class OjalgoOperator<T extends Number> {
+    private OjalgoMatrixCreator<T> creator;
 
-    @SuppressWarnings("unchecked")
-    protected NumericObject operate(NumericObject a, NumericObject b) {
+    public OjalgoOperator(OjalgoMatrixCreator<T> creator) {
+        this.creator = creator;
+    }
+
+    public NumericObject operate(NumericObject a, NumericObject b) {
         OjalgoAbstractMatrix<T> first = (OjalgoAbstractMatrix<T>) a;
         OjalgoAbstractMatrix<T> second = (OjalgoAbstractMatrix<T>) b;
         checkSize(first, second);
-        return create(operate(first, second));
+        return creator.create(operate(first, second));
     }
 
-    @SuppressWarnings("unchecked")
     protected NumericObject operate(NumericObject a, NumericObject b, OjalgoBinaryAction<T> action) {
         OjalgoAbstractMatrix<T> first = (OjalgoAbstractMatrix<T>) a;
         OjalgoAbstractMatrix<T> second = (OjalgoAbstractMatrix<T>) b;
         checkSize(first, second);
-        return create(action.operate(first, second));
+        return creator.create(action.operate(first, second));
     }
 
     protected NumericObject operate(NumericObject a, NumericObject b, MatrixStoreAction<T> action) {
         OjalgoAbstractMatrix<T> first = ((OjalgoAbstractMatrix<T>) a);
         OjalgoAbstractMatrix<T> second = ((OjalgoAbstractMatrix<T>) b);
-
-        if(first.isScalar()) {
-            return create(action.operate(new OjalgoMatrixScalarWrapper<>(first, second), second.getLazyStore()));
+        if (first.isScalar()) {
+            return creator.create(action.operate(new OjalgoMatrixScalarWrapper<>(first, second), second.getLazyStore()));
         }
-        if(second.isScalar()) {
-            return create(action.operate(first.getLazyStore(), new OjalgoMatrixScalarWrapper<T>(second)));
+        if (second.isScalar()) {
+            return creator.create(action.operate(first.getLazyStore(), new OjalgoMatrixScalarWrapper<T>(second)));
         }
-
-        return create(action.operate(first.getLazyStore(), second.getLazyStore()));
+        return creator.create(action.operate(first.getLazyStore(), second.getLazyStore()));
     }
 
     protected abstract MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second);

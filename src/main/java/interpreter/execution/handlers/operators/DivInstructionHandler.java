@@ -24,6 +24,6 @@ public class DivInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getDivider(type).div(convert(a, type), convert(b, type));
+        return numericObjectsOperatorFactory.getOperator(type).div(convert(a, type), convert(b, type));
     }
 }

@@ -25,6 +25,8 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.LT, InstructionCode.LT);
         instructionCodeMap.put(OperatorCode.RANGE, InstructionCode.RANGE);
         instructionCodeMap.put(OperatorCode.RANGE3, InstructionCode.RANGE3);
+        instructionCodeMap.put(OperatorCode.ADIV, InstructionCode.ADIV);
+        instructionCodeMap.put(OperatorCode.AMULT, InstructionCode.AMULT);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {
