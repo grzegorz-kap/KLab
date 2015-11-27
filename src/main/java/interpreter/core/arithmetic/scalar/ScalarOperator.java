@@ -63,29 +63,29 @@ public abstract class ScalarOperator<N extends Number> {
         }
     };
 
-    private Class<N> clazz;
+    private Class<? extends Scalar<N>> clazz;
     private ScalarCreator<N> creator;
 
-    public ScalarOperator(ScalarCreator<N> creator, Class<N> clazz) {
+    public ScalarOperator(ScalarCreator<N> creator, Class<? extends Scalar<N>> clazz) {
         this.creator = creator;
         this.clazz = clazz;
     }
 
     protected abstract N operate(N a, N b);
 
-    public Scalar operate(NumericObject a, NumericObject b) {
-        return creator.create(operate(clazz.cast(a), clazz.cast(b)));
+    public Scalar<N> operate(NumericObject a, NumericObject b) {
+        return creator.create(operate(clazz.cast(a).getValue(), clazz.cast(b).getValue()));
     }
 
     private static abstract class AbstractComplexOperator extends ScalarOperator<ComplexNumber> {
         public AbstractComplexOperator() {
-            super(ComplexScalar::new, ComplexNumber.class);
+            super(ComplexScalar::new, ComplexScalar.class);
         }
     }
 
     private static abstract class AbstractDoubleOperator extends ScalarOperator<Double> {
         public AbstractDoubleOperator() {
-            super(DoubleScalar::new, Double.class);
+            super(DoubleScalar::new, DoubleScalar.class);
         }
     }
 }

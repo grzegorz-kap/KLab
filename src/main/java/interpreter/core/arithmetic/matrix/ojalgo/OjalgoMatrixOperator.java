@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOperator {
     private AbstractOjalgoMatrixComparator<T> comparator;
-    private OjalgoMatrixCreator<T> matrixCreator;
     private MatrixAdder<T> adder;
     private MatrixDivider<T> divider;
     private MatrixMultiplicator<T> multiplicator;
@@ -19,11 +18,6 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     @Override
     public NumericType getSupportedType() {
         return supportedType;
-    }
-
-    @Required
-    public void setSupportedType(NumericType supportedType) {
-        this.supportedType = supportedType;
     }
 
     @Override
@@ -88,7 +82,6 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
 
     @Required
     public void setMatrixCreator(OjalgoMatrixCreator<T> matrixCreator) {
-        this.matrixCreator = matrixCreator;
     }
 
     @Required
@@ -109,5 +102,10 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     @Required
     public void setMatrixSubtractor(MatrixSubtractor<T> matrixSubtractor) {
         this.matrixSubtractor = matrixSubtractor;
+    }
+    
+    @Required
+    public void setSupportedType(NumericType supportedType) {
+        this.supportedType = supportedType;
     }
 }

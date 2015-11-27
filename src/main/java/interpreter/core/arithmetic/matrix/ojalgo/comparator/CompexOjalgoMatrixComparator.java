@@ -5,7 +5,7 @@ import org.ojalgo.function.ComplexFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
 
-public abstract class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<ComplexNumber> {
+public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator<ComplexNumber> {
     public CompexOjalgoMatrixComparator(OjalgoMatrixCreator<ComplexNumber> creator) {
         super(creator);
     }
