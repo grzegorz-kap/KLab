@@ -19,7 +19,7 @@ public class LeInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return numericObjectsOperatorFactory.getOperator(type).le(convert(a, type), convert(b, type));
+        return operatorFactory.getOperator(type).le(convert(a, type), convert(b, type));
     }
 
     @Override

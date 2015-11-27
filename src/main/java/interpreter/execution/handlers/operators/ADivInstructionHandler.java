@@ -18,7 +18,7 @@ public class ADivInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return numericObjectsOperatorFactory.getOperator(type).mult(convert(a, type), convert(b, type));
+        return operatorFactory.getOperator(type).mult(convert(a, type), convert(b, type));
     }
 
     @Override

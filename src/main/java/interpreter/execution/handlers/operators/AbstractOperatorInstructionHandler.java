@@ -1,5 +1,7 @@
 package interpreter.execution.handlers.operators;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import interpreter.core.arithmetic.factory.NumericObjectsOperatorFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.helper.NumericUtils;
@@ -8,49 +10,52 @@ import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.converters.ConvertersHolder;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractOperatorInstructionHandler extends AbstractInstructionHandler {
-    protected NumericObjectsOperatorFactory numericObjectsOperatorFactory;
-    private NumericUtils numericUtils;
-    private ConvertersHolder convertersHolder;
+	protected NumericObjectsOperatorFactory operatorFactory;
+	private NumericUtils numericUtils;
+	private ConvertersHolder convertersHolder;
 
-    public NumericObject convert(NumericObject data, NumericType destType) {
-        if (destType.equals(data.getNumericType())) {
-            return data;
-        }
-        return convertersHolder.getConverter(data.getNumericType(), destType).convert(data);
-    }
+	@Override
+	public void handle(InstructionPointer instructionPointer) {
+		handleTwoArguments(instructionPointer);
+	}
 
-    protected void handleTwoArguments(InstructionPointer instructionPointer) {
-        NumericObject b = (NumericObject) executionContext.executionStackPop();
-        NumericObject a = ((NumericObject) executionContext.executionStackPop());
-        NumericType numericType = numberType(a, b);
-        NumericObject result = calculate(a, b, numericType);
-        result.setNumericType(numericType);
-        executionContext.executionStackPush(result);
-        instructionPointer.increment();
-    }
+	public NumericObject convert(NumericObject data, NumericType destType) {
+		if (destType.equals(data.getNumericType())) {
+			return data;
+		}
+		return convertersHolder.getConverter(data.getNumericType(), destType).convert(data);
+	}
 
-    protected abstract NumericObject calculate(NumericObject a, NumericObject b, NumericType type);
+	protected void handleTwoArguments(InstructionPointer instructionPointer) {
+		NumericObject b = (NumericObject) executionContext.executionStackPop();
+		NumericObject a = ((NumericObject) executionContext.executionStackPop());
+		NumericType numericType = numberType(a, b);
+		NumericObject result = calculate(a, b, numericType);
+		result.setNumericType(numericType);
+		executionContext.executionStackPush(result);
+		instructionPointer.increment();
+	}
 
-    private NumericType numberType(ObjectData a, ObjectData b) {
-        return numericUtils.resolveType(((NumericObject) a), ((NumericObject) b));
-    }
+	protected abstract NumericObject calculate(NumericObject a, NumericObject b, NumericType type);
 
+	private NumericType numberType(ObjectData a, ObjectData b) {
+		return numericUtils.resolveType(((NumericObject) a), ((NumericObject) b));
+	}
 
-    @Autowired
-    public void setNumericObjectsOperatorFactory(NumericObjectsOperatorFactory numericObjectsOperatorFactory) {
-        this.numericObjectsOperatorFactory = numericObjectsOperatorFactory;
-    }
+	@Autowired
+	public void setNumericObjectsOperatorFactory(NumericObjectsOperatorFactory numericObjectsOperatorFactory) {
+		this.operatorFactory = numericObjectsOperatorFactory;
+	}
 
-    @Autowired
-    public void setNumericUtils(NumericUtils numericUtils) {
-        this.numericUtils = numericUtils;
-    }
+	@Autowired
+	public void setNumericUtils(NumericUtils numericUtils) {
+		this.numericUtils = numericUtils;
+	}
 
-    @Autowired
-    public void setConvertersHolder(ConvertersHolder convertersHolder) {
-        this.convertersHolder = convertersHolder;
-    }
+	@Autowired
+	public void setConvertersHolder(ConvertersHolder convertersHolder) {
+		this.convertersHolder = convertersHolder;
+	}
 }

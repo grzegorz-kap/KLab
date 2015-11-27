@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class DivInstructionHandler extends AbstractOperatorInstructionHandler {
-
     @Override
     public void handle(InstructionPointer instructionPointer) {
         handleTwoArguments(instructionPointer);
@@ -24,6 +23,6 @@ public class DivInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return numericObjectsOperatorFactory.getOperator(type).div(convert(a, type), convert(b, type));
+        return operatorFactory.getOperator(type).div(convert(a, type), convert(b, type));
     }
 }
