@@ -12,6 +12,7 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     private ScalarOperator<N> div;
     private ScalarOperator<N> mult;
     private ScalarOperator<N> sub;
+    private ScalarOperator<N> pow;
 
     @Override
     public NumericType getSupportedType() {
@@ -35,7 +36,7 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     
     @Override
 	public NumericObject pow(NumericObject a, NumericObject b) {
-		return mult(a,b);
+		return pow.operate(a, b);
 	}
 
     @Override
@@ -107,4 +108,9 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     public void setSub(ScalarOperator<N> sub) {
         this.sub = sub;
     }
+    
+    @Required
+    public void setPow(ScalarOperator<N> pow) {
+		this.pow = pow;
+	}
 }

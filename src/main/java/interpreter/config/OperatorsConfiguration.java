@@ -59,6 +59,7 @@ public class OperatorsConfiguration {
 		op.setSub(ScalarOperator.DOUBLE_SUB);
 		op.setDiv(ScalarOperator.DOUBLE_DIV);
 		op.setMult(ScalarOperator.DOUBLE_MULT);
+		op.setPow(ScalarOperator.DOUBLE_POW);
 		op.setComparator(new DoubleComparator());
 		op.setSupportedType(NumericType.DOUBLE);
 		return op;
@@ -72,6 +73,7 @@ public class OperatorsConfiguration {
 		op.setDiv(ScalarOperator.COMPLEX_DIVIDER);
 		op.setMult(ScalarOperator.COMPLEX_MULT);
 		op.setComparator(new ComplexComparator());
+		op.setPow(ScalarOperator.COMPLEX_POW);
 		op.setSupportedType(NumericType.COMPLEX_DOUBLE);
 		return op;
 	}
