@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixAdder;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayConjuctionOperator;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayDisjuctionOperator;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayMult;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayPower;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixDivider;
@@ -38,6 +40,8 @@ public class OperatorsConfiguration {
 		op.setMatrixPower(new MatrixPower<>(OjalgoDoubleMatrix::new));
 		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoDoubleMatrix::new));
 		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoDoubleMatrix::new));
+		op.setArrayAnd(new MatrixArrayConjuctionOperator<>(OjalgoDoubleMatrix::new, Double::new));
+		op.setArrayOr(new MatrixArrayDisjuctionOperator<>(OjalgoDoubleMatrix::new, Double::new));
 		op.setSupportedType(NumericType.MATRIX_DOUBLE);
 		return op;
 	}
@@ -54,6 +58,8 @@ public class OperatorsConfiguration {
 		op.setMatrixPower(new MatrixPower<>(OjalgoComplexMatrix::new));
 		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoComplexMatrix::new));
 		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoComplexMatrix::new));
+		op.setArrayOr(new MatrixArrayDisjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::new));
+		op.setArrayAnd(new MatrixArrayConjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::new));
 		op.setSupportedType(NumericType.COMPLEX_MATRIX);
 		return op;
 	}
@@ -66,6 +72,8 @@ public class OperatorsConfiguration {
 		op.setDiv(ScalarOperator.DOUBLE_DIV);
 		op.setMult(ScalarOperator.DOUBLE_MULT);
 		op.setPow(ScalarOperator.DOUBLE_POW);
+		op.setAnd(ScalarOperator.DOUBLE_AND);
+		op.setOr(ScalarOperator.DOUBLE_OR);
 		op.setComparator(new DoubleComparator());
 		op.setSupportedType(NumericType.DOUBLE);
 		return op;
@@ -78,6 +86,8 @@ public class OperatorsConfiguration {
 		op.setSub(ScalarOperator.COMPLEX_SUB);
 		op.setDiv(ScalarOperator.COMPLEX_DIVIDER);
 		op.setMult(ScalarOperator.COMPLEX_MULT);
+		op.setAnd(ScalarOperator.COMPLEX_AND);
+		op.setOr(ScalarOperator.COMPLEX_OR);
 		op.setComparator(new ComplexComparator());
 		op.setPow(ScalarOperator.COMPLEX_POW);
 		op.setSupportedType(NumericType.COMPLEX_DOUBLE);

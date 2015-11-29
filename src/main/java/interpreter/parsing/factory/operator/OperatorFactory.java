@@ -2,9 +2,11 @@ package interpreter.parsing.factory.operator;
 
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
 import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AAND;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ADD;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ADIV;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.AMULT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AOR;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.APOW;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ASSIGN;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.DIV;
@@ -19,7 +21,9 @@ import static interpreter.parsing.model.tokens.operators.OperatorCode.POW;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE3;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.SUB;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.TRANSPOSE;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_10;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_15;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_20;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_25;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_30;
@@ -33,7 +37,6 @@ import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 
 import interpreter.lexer.model.Token;
-import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
 
 @Service
@@ -42,6 +45,8 @@ public class OperatorFactory {
 
 	public OperatorFactory() {
 		operatorsProducer.put("=", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_10, ASSIGN));
+		operatorsProducer.put("|", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_15, AOR));
+		operatorsProducer.put("&", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_15, AAND));
 		operatorsProducer.put("==", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, EQ));
 		operatorsProducer.put("~=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, NEQ));
 		operatorsProducer.put(">", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, GT));
@@ -58,7 +63,7 @@ public class OperatorFactory {
 		operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
 		operatorsProducer.put("^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, POW));
 		operatorsProducer.put(".^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, APOW));
-		operatorsProducer.put("'", () -> new OperatorToken(1, LEFT_TO_RIGHT, LEVEL_50, OperatorCode.TRANSPOSE));
+		operatorsProducer.put("'", () -> new OperatorToken(1, LEFT_TO_RIGHT, LEVEL_50, TRANSPOSE));
 	}
 
 	public OperatorToken getOperator(final Token token) {

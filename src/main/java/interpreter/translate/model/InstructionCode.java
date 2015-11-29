@@ -30,7 +30,9 @@ public enum InstructionCode {
     ADIV(26),
     POW(27),
     APOW(28),
-    TRANSPOSE(29);
+    TRANSPOSE(29),
+    AAND(30),
+    AOR(31);
 
     private int index;
 

@@ -30,6 +30,8 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.POW, InstructionCode.POW);
         instructionCodeMap.put(OperatorCode.APOW, InstructionCode.APOW);
         instructionCodeMap.put(OperatorCode.TRANSPOSE, InstructionCode.TRANSPOSE);
+        instructionCodeMap.put(OperatorCode.AAND, InstructionCode.AAND);
+        instructionCodeMap.put(OperatorCode.AOR, InstructionCode.AOR);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {

@@ -15,6 +15,20 @@ public abstract class ScalarOperator<N extends Number> {
 			return a.add(b);
 		}
 	};
+	
+	public static final ScalarOperator<ComplexNumber> COMPLEX_AND = new AbstractComplexOperator() {
+		@Override
+		protected ComplexNumber operate(ComplexNumber a, ComplexNumber b) {
+			return new ComplexNumber(a.doubleValue()==0 || b.doubleValue()==0 ? 0 : 1);
+		}
+	};
+	
+	public static final ScalarOperator<ComplexNumber> COMPLEX_OR = new AbstractComplexOperator() {
+		@Override
+		protected ComplexNumber operate(ComplexNumber a, ComplexNumber b) {
+			return new ComplexNumber(a.doubleValue()!=0 || b.doubleValue()!=0 ? 1 : 0);
+		}
+	};
 
 	public static final ScalarOperator<ComplexNumber> COMPLEX_DIVIDER = new AbstractComplexOperator() {
 		@Override
@@ -76,6 +90,20 @@ public abstract class ScalarOperator<N extends Number> {
 		@Override
 		protected Double operate(Double a, Double b) {
 			return a / b;
+		}
+	};
+	
+	public static final ScalarOperator<Double> DOUBLE_AND = new AbstractDoubleOperator() {
+		@Override
+		protected Double operate(Double a, Double b) {
+			return a == 0 || b==0 ? 0D : 1D;
+		}
+	};
+	
+	public static final ScalarOperator<Double> DOUBLE_OR = new AbstractDoubleOperator() {
+		@Override
+		protected Double operate(Double a, Double b) {
+			return a != 0 || b!=0 ? 1D : 0D;
 		}
 	};
 

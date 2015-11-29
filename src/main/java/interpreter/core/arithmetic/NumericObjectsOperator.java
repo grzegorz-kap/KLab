@@ -7,6 +7,10 @@ public interface NumericObjectsOperator {
     NumericType getSupportedType();
     
     NumericObject transpose(NumericObject a);
+    
+    NumericObject aand(NumericObject a, NumericObject b);
+    
+    NumericObject aor(NumericObject a, NumericObject b);
 
     NumericObject add(final NumericObject a, final NumericObject b);
 

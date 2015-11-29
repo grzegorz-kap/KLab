@@ -11,6 +11,8 @@ public class TokenMatcher {
     private Pattern operatorRegex;
     private Pattern symbolsRegex;
     private List<String> operatorsPatterns = Arrays.asList(
+    		"^\\|",
+    		"^&",
             "^\\+",
             "^\\.\\*",
             "^\\*",

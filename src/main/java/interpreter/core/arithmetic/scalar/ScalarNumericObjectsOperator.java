@@ -13,6 +13,8 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     private ScalarOperator<N> mult;
     private ScalarOperator<N> sub;
     private ScalarOperator<N> pow;
+    private ScalarOperator<N> and;
+    private ScalarOperator<N> or;
   
     @Override
     public NumericType getSupportedType() {
@@ -22,6 +24,16 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     @Override
     public NumericObject transpose(NumericObject a) {
     	return a;
+    }
+    
+    @Override
+    public NumericObject aand(NumericObject a, NumericObject b) {
+    	return and.operate(a, b);
+    }
+    
+    @Override
+    public NumericObject aor(NumericObject a, NumericObject b) {
+    	return or.operate(a, b);
     }
 
     @Required
@@ -122,5 +134,15 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     @Required
     public void setPow(ScalarOperator<N> pow) {
 		this.pow = pow;
+	}
+    
+    @Required
+    public void setAnd(ScalarOperator<N> and) {
+		this.and = and;
+	}
+    
+    @Required
+    public void setOr(ScalarOperator<N> or) {
+		this.or = or;
 	}
 }
