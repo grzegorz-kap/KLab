@@ -10,7 +10,7 @@ import static interpreter.commons.exception.InterpreterCastException.CANNOT_CAST
 
 public abstract class AbstractConverter<N extends NumericObject> implements Converter<N> {
 
-    protected abstract N convert(Scalar scalar);
+    protected abstract N convert(Scalar<?> scalar);
 
     public abstract N convert(Matrix<? extends Number> matrix);
 
@@ -20,7 +20,7 @@ public abstract class AbstractConverter<N extends NumericObject> implements Conv
             return (N) numericObject;
         }
         if (numericObject instanceof Scalar) {
-            return convert(((Scalar) numericObject));
+            return convert(((Scalar<?>) numericObject));
         } else {
             return convert(((Matrix<?>) numericObject));
         }

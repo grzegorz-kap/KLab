@@ -15,6 +15,8 @@ public interface NumericObjectsOperator {
     NumericObject sub(NumericObject a, NumericObject b);
 
     NumericObject div(NumericObject a, NumericObject b);
+    
+    NumericObject pow(NumericObject a, NumericObject b);
 
     NumericObject eq(NumericObject a, NumericObject b);
 

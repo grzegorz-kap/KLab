@@ -12,7 +12,9 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     private MatrixAdder<T> adder;
     private MatrixDivider<T> divider;
     private MatrixMultiplicator<T> multiplicator;
+    private MatrixArrayMult<T> arrayMult;
     private MatrixSubtractor<T> matrixSubtractor;
+    private MatrixPower<T> matrixPower;
     private NumericType supportedType;
 
     @Override
@@ -32,8 +34,13 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
 
     @Override
     public NumericObject amult(NumericObject a, NumericObject b) {
-        return null;
+       return arrayMult.operate(a, b);
     }
+    
+    @Override
+	public NumericObject pow(NumericObject a, NumericObject b) {
+		return matrixPower.operate(a, b);
+	}
 
     @Override
     public NumericObject sub(NumericObject a, NumericObject b) {
@@ -108,4 +115,14 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     public void setSupportedType(NumericType supportedType) {
         this.supportedType = supportedType;
     }
+    
+    @Required
+    public void setMatrixPower(MatrixPower<T> matrixPower) {
+		this.matrixPower = matrixPower;
+	}
+    
+    @Required
+    public void setArrayMult(MatrixArrayMult<T> arrayMult) {
+		this.arrayMult = arrayMult;
+	}
 }

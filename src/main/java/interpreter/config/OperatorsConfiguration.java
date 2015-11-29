@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixAdder;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayMult;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixDivider;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixMultiplicator;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixPower;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixSubtractor;
 import interpreter.core.arithmetic.matrix.ojalgo.OjalgoMatrixOperator;
 import interpreter.core.arithmetic.matrix.ojalgo.comparator.CompexOjalgoMatrixComparator;
@@ -30,6 +32,8 @@ public class OperatorsConfiguration {
 		op.setDivider(new MatrixDivider<>(SolverTask.PRIMITIVE, OjalgoDoubleMatrix::new));
 		op.setMatrixSubtractor(new MatrixSubtractor<>(OjalgoDoubleMatrix::new));
 		op.setMultiplicator(new MatrixMultiplicator<>(OjalgoDoubleMatrix::new));
+		op.setArrayMult(new MatrixArrayMult<>(OjalgoDoubleMatrix::new));
+		op.setMatrixPower(new MatrixPower<>(OjalgoDoubleMatrix::new));
 		op.setSupportedType(NumericType.MATRIX_DOUBLE);
 		return op;
 	}
@@ -42,6 +46,8 @@ public class OperatorsConfiguration {
 		op.setDivider(new MatrixDivider<>(SolverTask.COMPLEX, OjalgoComplexMatrix::new));
 		op.setMatrixSubtractor(new MatrixSubtractor<>(OjalgoComplexMatrix::new));
 		op.setMultiplicator(new MatrixMultiplicator<>(OjalgoComplexMatrix::new));
+		op.setArrayMult(new MatrixArrayMult<>(OjalgoComplexMatrix::new));
+		op.setMatrixPower(new MatrixPower<>(OjalgoComplexMatrix::new));
 		op.setSupportedType(NumericType.COMPLEX_MATRIX);
 		return op;
 	}

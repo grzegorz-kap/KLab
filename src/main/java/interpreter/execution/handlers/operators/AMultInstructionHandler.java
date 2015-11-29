@@ -18,6 +18,6 @@ public class AMultInstructionHandler extends AbstractOperatorInstructionHandler 
 
 	@Override
 	protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-		return operatorFactory.getOperator(type).add(convert(a, type), convert(b, type));
+		return operatorFactory.getOperator(type).amult(convert(a, type), convert(b, type));
 	}
 }

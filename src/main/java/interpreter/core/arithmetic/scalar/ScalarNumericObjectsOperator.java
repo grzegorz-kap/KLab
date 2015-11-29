@@ -32,6 +32,11 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     public NumericObject mult(NumericObject a, NumericObject b) {
         return mult.operate(a, b);
     }
+    
+    @Override
+	public NumericObject pow(NumericObject a, NumericObject b) {
+		return mult(a,b);
+	}
 
     @Override
     public NumericObject amult(NumericObject a, NumericObject b) {

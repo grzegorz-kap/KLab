@@ -5,5 +5,5 @@ public enum OperatorPriority {
     LEVEL_20,
     LEVEL_25,
     LEVEL_30,
-    LEVEL_40
+    LEVEL_40, LEVEL_50
 }
