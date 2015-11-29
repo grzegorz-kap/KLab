@@ -28,7 +28,8 @@ public enum InstructionCode {
     RANGE3(24),
     AMULT(25),
     ADIV(26),
-    POW(27);
+    POW(27),
+    APOW(28);
 
     private int index;
 

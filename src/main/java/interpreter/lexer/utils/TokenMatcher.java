@@ -25,6 +25,7 @@ public class TokenMatcher {
             "^<",
             "^>",
             "^:",
+            "^\\.\\^",
             "^\\^"
     );
     private List<String> symbolsPatterns = Arrays.asList(

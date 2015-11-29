@@ -5,6 +5,7 @@ import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.R
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ADD;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ADIV;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.AMULT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.APOW;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ASSIGN;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.DIV;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.EQ;
@@ -55,6 +56,7 @@ public class OperatorFactory {
 		operatorsProducer.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, DIV));
 		operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
 		operatorsProducer.put("^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, POW));
+		operatorsProducer.put(".^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, APOW));
 	}
 
 	public OperatorToken getOperator(final Token token) {

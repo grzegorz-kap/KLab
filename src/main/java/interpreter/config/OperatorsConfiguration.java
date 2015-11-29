@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixAdder;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayMult;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayPower;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixDivider;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixMultiplicator;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixPower;
@@ -34,6 +35,7 @@ public class OperatorsConfiguration {
 		op.setMultiplicator(new MatrixMultiplicator<>(OjalgoDoubleMatrix::new));
 		op.setArrayMult(new MatrixArrayMult<>(OjalgoDoubleMatrix::new));
 		op.setMatrixPower(new MatrixPower<>(OjalgoDoubleMatrix::new));
+		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoDoubleMatrix::new));
 		op.setSupportedType(NumericType.MATRIX_DOUBLE);
 		return op;
 	}
@@ -48,6 +50,7 @@ public class OperatorsConfiguration {
 		op.setMultiplicator(new MatrixMultiplicator<>(OjalgoComplexMatrix::new));
 		op.setArrayMult(new MatrixArrayMult<>(OjalgoComplexMatrix::new));
 		op.setMatrixPower(new MatrixPower<>(OjalgoComplexMatrix::new));
+		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoComplexMatrix::new));
 		op.setSupportedType(NumericType.COMPLEX_MATRIX);
 		return op;
 	}
