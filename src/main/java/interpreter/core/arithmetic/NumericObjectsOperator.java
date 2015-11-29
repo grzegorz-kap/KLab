@@ -5,6 +5,8 @@ import interpreter.types.NumericType;
 
 public interface NumericObjectsOperator {
     NumericType getSupportedType();
+    
+    NumericObject transpose(NumericObject a);
 
     NumericObject add(final NumericObject a, final NumericObject b);
 

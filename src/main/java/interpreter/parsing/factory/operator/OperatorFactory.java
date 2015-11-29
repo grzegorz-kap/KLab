@@ -33,6 +33,7 @@ import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 
 import interpreter.lexer.model.Token;
+import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
 
 @Service
@@ -57,6 +58,7 @@ public class OperatorFactory {
 		operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
 		operatorsProducer.put("^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, POW));
 		operatorsProducer.put(".^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, APOW));
+		operatorsProducer.put("'", () -> new OperatorToken(1, LEFT_TO_RIGHT, LEVEL_50, OperatorCode.TRANSPOSE));
 	}
 
 	public OperatorToken getOperator(final Token token) {

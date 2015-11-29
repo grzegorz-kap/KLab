@@ -29,7 +29,8 @@ public enum InstructionCode {
     AMULT(25),
     ADIV(26),
     POW(27),
-    APOW(28);
+    APOW(28),
+    TRANSPOSE(29);
 
     private int index;
 

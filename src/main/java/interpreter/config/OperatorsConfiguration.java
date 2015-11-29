@@ -12,6 +12,7 @@ import interpreter.core.arithmetic.matrix.ojalgo.MatrixDivider;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixMultiplicator;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixPower;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixSubtractor;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixTranspose;
 import interpreter.core.arithmetic.matrix.ojalgo.OjalgoMatrixOperator;
 import interpreter.core.arithmetic.matrix.ojalgo.comparator.CompexOjalgoMatrixComparator;
 import interpreter.core.arithmetic.matrix.ojalgo.comparator.DoubleOjalgoMatrixComparator;
@@ -36,6 +37,7 @@ public class OperatorsConfiguration {
 		op.setArrayMult(new MatrixArrayMult<>(OjalgoDoubleMatrix::new));
 		op.setMatrixPower(new MatrixPower<>(OjalgoDoubleMatrix::new));
 		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoDoubleMatrix::new));
+		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoDoubleMatrix::new));
 		op.setSupportedType(NumericType.MATRIX_DOUBLE);
 		return op;
 	}
@@ -51,6 +53,7 @@ public class OperatorsConfiguration {
 		op.setArrayMult(new MatrixArrayMult<>(OjalgoComplexMatrix::new));
 		op.setMatrixPower(new MatrixPower<>(OjalgoComplexMatrix::new));
 		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoComplexMatrix::new));
+		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoComplexMatrix::new));
 		op.setSupportedType(NumericType.COMPLEX_MATRIX);
 		return op;
 	}

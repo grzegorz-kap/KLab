@@ -13,10 +13,15 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     private ScalarOperator<N> mult;
     private ScalarOperator<N> sub;
     private ScalarOperator<N> pow;
-
+  
     @Override
     public NumericType getSupportedType() {
         return supportedType;
+    }
+    
+    @Override
+    public NumericObject transpose(NumericObject a) {
+    	return a;
     }
 
     @Required
