@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OjalgoScalarComplexConverter extends AbstractConverter<ComplexScalar> {
-    @Override
-    protected ComplexScalar convert(Scalar scalar) {
+    public OjalgoScalarComplexConverter() {
+		super(ComplexScalar.class);
+	}
+
+	@Override
+    protected ComplexScalar convert(Scalar<?> scalar) {
         return convert(scalar.getValue());
     }
 

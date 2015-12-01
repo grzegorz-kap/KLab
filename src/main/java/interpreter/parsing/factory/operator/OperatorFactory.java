@@ -6,6 +6,7 @@ import static interpreter.parsing.model.tokens.operators.OperatorCode.AAND;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ADD;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ADIV;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.AMULT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AND;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.AOR;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.APOW;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.ASSIGN;
@@ -17,12 +18,14 @@ import static interpreter.parsing.model.tokens.operators.OperatorCode.LE;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.LT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.MULT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.NEQ;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.OR;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.POW;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE3;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.SUB;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.TRANSPOSE;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_10;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_14;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_15;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_20;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_25;
@@ -45,6 +48,8 @@ public class OperatorFactory {
 
 	public OperatorFactory() {
 		operatorsProducer.put("=", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_10, ASSIGN));
+		operatorsProducer.put("&&", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_14, AND));
+		operatorsProducer.put("||", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_14, OR));
 		operatorsProducer.put("|", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_15, AOR));
 		operatorsProducer.put("&", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_15, AAND));
 		operatorsProducer.put("==", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, EQ));

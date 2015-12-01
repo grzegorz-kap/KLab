@@ -12,9 +12,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OjalgoMatrixComplexConverter extends AbstractConverter<OjalgoComplexMatrix> {
-
+	public OjalgoMatrixComplexConverter() {
+		super(OjalgoComplexMatrix.class);
+	}
+	
     @Override
-    protected OjalgoComplexMatrix convert(Scalar scalar) {
+    protected OjalgoComplexMatrix convert(Scalar<?> scalar) {
         return convert(scalar.getValue());
     }
 
@@ -23,7 +26,7 @@ public class OjalgoMatrixComplexConverter extends AbstractConverter<OjalgoComple
         if (NumericType.COMPLEX_MATRIX.equals(matrix.getNumericType())) {
             return ((OjalgoComplexMatrix) matrix);
         }
-        PhysicalStore<Number> source = ((OjalgoAbstractMatrix<Number>) matrix).getMatrixStore();
+        PhysicalStore<?> source = ((OjalgoAbstractMatrix<?>) matrix).getMatrixStore();
         PhysicalStore<ComplexNumber> destination = ComplexDenseStore.FACTORY.makeZero(source.countRows(), source.countColumns());
         final long length = destination.count();
         for (long index = 0; index < length; index++) {

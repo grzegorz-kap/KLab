@@ -32,7 +32,11 @@ public enum InstructionCode {
     APOW(28),
     TRANSPOSE(29),
     AAND(30),
-    AOR(31);
+    AOR(31),
+    JMPFNP(32),
+    JMPTNP(33),
+    LOGICAL(34)
+    ;
 
     private int index;
 

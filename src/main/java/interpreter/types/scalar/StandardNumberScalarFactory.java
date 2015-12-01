@@ -13,4 +13,9 @@ public class StandardNumberScalarFactory implements NumberScalarFactory {
         }
         return new DoubleScalar(Double.valueOf(value));
     }
+    
+    @Override
+    public Scalar<Double> getDouble(boolean value) {
+    	return new DoubleScalar(value ? 1D : 0D);
+    }
 }
