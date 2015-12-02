@@ -1,5 +1,14 @@
 package gui.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import org.fxmisc.richtext.CodeArea;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import gui.helpers.KeyboardHelper;
 import gui.model.CommandHistory;
 import gui.view.CommandHistoryViewService;
@@ -7,23 +16,10 @@ import gui.view.ConsoleViewService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
-import org.fxmisc.richtext.CodeArea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ConsoleController implements Initializable {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleController.class);
-
     private ConsoleViewService consoleViewService;
     private CommandHistoryViewService commandHistoryViewService;
 
@@ -50,19 +46,16 @@ public class ConsoleController implements Initializable {
     }
 
     private void onArrowDown(KeyEvent keyEvent) {
-        LOGGER.info("Key down pressed");
         commandHistoryViewService.onArrowDown();
         keyEvent.consume();
     }
 
     private void onArrowUp(KeyEvent keyEvent) {
-        LOGGER.info("Key up pressed");
         commandHistoryViewService.onArrowUp();
         keyEvent.consume();
     }
 
     private void onEnter(KeyEvent keyEvent) {
-        LOGGER.info("Enter pressed");
         commandHistoryViewService.onCommandSubmit();
         consoleViewService.onCommandSubmit();
         keyEvent.consume();
