@@ -34,6 +34,7 @@ public class OperatorInstructionCodesFactory {
         instructionCodeMap.put(OperatorCode.AOR, InstructionCode.AOR);
         instructionCodeMap.put(OperatorCode.AND, InstructionCode.AAND);
         instructionCodeMap.put(OperatorCode.OR, InstructionCode.AOR);
+        instructionCodeMap.put(OperatorCode.NEG, InstructionCode.NEG);
     }
 
     public InstructionCode get(OperatorCode operatorCode) {

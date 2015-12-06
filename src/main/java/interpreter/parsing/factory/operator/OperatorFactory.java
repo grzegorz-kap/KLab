@@ -17,6 +17,7 @@ import static interpreter.parsing.model.tokens.operators.OperatorCode.GT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.LE;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.LT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.MULT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.NEG;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.NEQ;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.OR;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.POW;
@@ -31,6 +32,7 @@ import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_25;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_30;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_40;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_45;
 import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_50;
 
 import java.util.HashMap;
@@ -66,6 +68,7 @@ public class OperatorFactory {
 		operatorsProducer.put(".*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, AMULT));
 		operatorsProducer.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, DIV));
 		operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
+		operatorsProducer.put("~", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, NEG));
 		operatorsProducer.put("^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, POW));
 		operatorsProducer.put(".^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, APOW));
 		operatorsProducer.put("'", () -> new OperatorToken(1, LEFT_TO_RIGHT, LEVEL_50, TRANSPOSE));
