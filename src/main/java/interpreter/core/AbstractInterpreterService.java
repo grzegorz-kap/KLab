@@ -39,6 +39,7 @@ public abstract class AbstractInterpreterService {
         for (PostParseHandler postParseHandler : postParseHandlers) {
             postParseHandler.setCode(executionService.getExecutionContext().getCode());
         }
+        instructionTranslator.setCode(executionService.getExecutionContext().getCode());
     }
 
     @Autowired

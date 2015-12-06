@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service("numberScalarFactory")
 public class StandardNumberScalarFactory implements NumberScalarFactory {
-
     @Override
     public NumericObject getDouble(String value) {
         if (value.endsWith("i")) {
@@ -13,5 +12,10 @@ public class StandardNumberScalarFactory implements NumberScalarFactory {
             return new ComplexScalar(0D, Double.valueOf(value));
         }
         return new DoubleScalar(Double.valueOf(value));
+    }
+    
+    @Override
+    public Scalar<Double> getDouble(boolean value) {
+    	return new DoubleScalar(value ? 1D : 0D);
     }
 }

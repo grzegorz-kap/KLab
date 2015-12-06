@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Component
 public class ConvertsHolderImpl implements ConvertersHolder {
-    private Converter[] converters = new Converter[NumericType.values().length];
+    private Converter<?>[] converters = new Converter[NumericType.values().length];
 
     @Override
     public Converter<?> getConverter(NumericType sourceType, NumericType destType) {
@@ -16,11 +16,11 @@ public class ConvertsHolderImpl implements ConvertersHolder {
     }
 
     @Autowired
-    public void setConverters(Set<Converter> converters) {
+    public void setConverters(Set<Converter<?>> converters) {
         converters.forEach(this::registerConverter);
     }
 
-    private void registerConverter(Converter converter) {
+    private void registerConverter(Converter<?> converter) {
         converters[converter.supportTo().getIndex()] = converter;
     }
 }

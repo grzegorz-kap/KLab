@@ -41,7 +41,7 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
 
     private void process(MatrixBuilder<?> builder, NumericObject numericObject) {
         if (numericObject instanceof Scalar) {
-            builder.appendRight(((Scalar) numericObject).getValue());
+            builder.appendRight(((Scalar<?>) numericObject).getValue());
         } else if (numericObject instanceof Matrix) {
             builder.appendRight((Matrix) numericObject);
         } else {

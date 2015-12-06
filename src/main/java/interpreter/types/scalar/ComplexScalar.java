@@ -3,13 +3,14 @@ package interpreter.types.scalar;
 import interpreter.commons.exception.InterpreterCastException;
 import interpreter.types.AddressIterator;
 import interpreter.types.Addressable;
+import interpreter.types.Negable;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import org.ojalgo.scalar.ComplexNumber;
 
 import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
-public class ComplexScalar extends AbstractScalar implements Addressable {
+public class ComplexScalar extends AbstractScalar<ComplexNumber> implements Addressable {
     private ComplexNumber value;
 
     public ComplexScalar(ComplexScalar c) {
@@ -37,7 +38,7 @@ public class ComplexScalar extends AbstractScalar implements Addressable {
     }
 
     @Override
-    public Number getValue() {
+    public ComplexNumber getValue() {
         return value;
     }
 
@@ -75,5 +76,10 @@ public class ComplexScalar extends AbstractScalar implements Addressable {
     @Override
     public AddressIterator getAddressIterator() {
         return new AddressScalarIterator(getIntOrThrow());
+    }
+    
+    @Override
+    public Negable<Scalar<ComplexNumber>> negate() {
+    	return new ComplexScalar(value.getReal() != 0.0D || value.getImaginary() != 0.0D ? 0.0D : 1.0D);
     }
 }

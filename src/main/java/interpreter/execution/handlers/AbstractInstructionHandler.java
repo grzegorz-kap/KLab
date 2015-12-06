@@ -19,10 +19,10 @@ public abstract class AbstractInstructionHandler implements InstructionHandler {
 
     protected Number getNumber(ObjectData objectData) {
         if (objectData instanceof Scalar) {
-            return ((Scalar) objectData).getValue();
+            return ((Scalar<?>) objectData).getValue();
         }
         if (objectData instanceof Matrix) {
-            Matrix matrix = (Matrix) objectData;
+            Matrix<?> matrix = (Matrix<?>) objectData;
             if (!matrix.isScalar()) {
                 throw new RuntimeException();
             }

@@ -45,6 +45,10 @@ public class ExecutionContext {
     public void executionStackPush(ObjectData objectData) {
         executionStack.push(objectData);
     }
+    
+    public ObjectData executionStackPeek() {
+    	return executionStack.peek();
+    }
 
     public int executionStackSize() {
         return executionStack.size();

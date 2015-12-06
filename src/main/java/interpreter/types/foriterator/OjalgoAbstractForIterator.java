@@ -8,7 +8,7 @@ import interpreter.types.converters.OjalgoScalarDoubleConverter;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 
 public abstract class OjalgoAbstractForIterator<N extends Number> extends AbstractForIterator {
-    protected Converter converter;
+    protected Converter<?> converter;
     protected OjalgoAbstractMatrix<N> data;
     protected long columns = 0;
     protected long rows = 0;
@@ -29,7 +29,7 @@ public abstract class OjalgoAbstractForIterator<N extends Number> extends Abstra
     @Override
     public abstract ObjectData getNext();
 
-    protected Converter getConverter(OjalgoAbstractMatrix<N> data) {
+    protected Converter<?> getConverter(OjalgoAbstractMatrix<N> data) {
         return NumericType.COMPLEX_MATRIX.equals(data.getNumericType()) ? new OjalgoScalarComplexConverter() : new OjalgoScalarDoubleConverter();
     }
 }

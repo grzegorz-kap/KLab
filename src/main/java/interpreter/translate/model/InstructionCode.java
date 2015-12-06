@@ -25,7 +25,20 @@ public enum InstructionCode {
     FLINIT(21),
     CLEAR(22),
     RANGE(23),
-    RANGE3(24);
+    RANGE3(24),
+    AMULT(25),
+    ADIV(26),
+    POW(27),
+    APOW(28),
+    TRANSPOSE(29),
+    AAND(30),
+    AOR(31),
+    JMPFNP(32),
+    JMPTNP(33),
+    LOGICAL(34),
+    NOT(35),
+    NEG(36)
+    ;
 
     private int index;
 

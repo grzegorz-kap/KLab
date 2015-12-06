@@ -5,6 +5,7 @@ import interpreter.types.foriterator.ForIterator;
 import interpreter.types.foriterator.OjalgoForIteratorFactory;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.scalar.Scalar;
+import org.ojalgo.function.BinaryFunction;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 
@@ -50,8 +51,8 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
             return createScalar(getLazyStore().get(row.getNext() - 1, column.getNext() - 1));
         }
         PhysicalStore<T> matrix = createMatrixStore(row.length(), column.length());
-        long rowIndex = 0l;
-        long colIndex = 0l;
+        long rowIndex = 0L;
+        long colIndex = 0L;
         while (row.hasNext()) {
             long rowAddress = row.getNext() - 1;
             while (column.hasNext()) {
@@ -135,5 +136,9 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public long length() {
         return lazyStore.count();
+    }
+
+    public BinaryFunction<T> getDivideFunction() {
+        return lazyStore.factory().function().divide();
     }
 }
