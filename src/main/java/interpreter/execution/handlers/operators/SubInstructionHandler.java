@@ -24,6 +24,6 @@ public class SubInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getSubtractor(type).sub(convert(a, type), convert(b, type));
+        return operatorFactory.getOperator(type).sub(convert(a, type), convert(b, type));
     }
 }

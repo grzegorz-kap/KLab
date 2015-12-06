@@ -9,14 +9,14 @@ import java.util.Set;
 @Service
 public class MatrixFactoryHolder {
 
-    private MatrixFactory[] matrixFactories = new MatrixFactory[NumericType.values().length];
+    private MatrixFactory<?>[] matrixFactories = new MatrixFactory[NumericType.values().length];
 
-    public MatrixFactory get(NumericType numericType) {
+    public MatrixFactory<?> get(NumericType numericType) {
         return matrixFactories[numericType.getIndex()];
     }
 
     @Autowired
-    private void setMatrixFactories(Set<MatrixFactory> matrixFactories) {
+    private void setMatrixFactories(Set<MatrixFactory<?>> matrixFactories) {
         matrixFactories.forEach(matrixFactory -> this.matrixFactories[matrixFactory.supports().getIndex()] = matrixFactory);
     }
 }

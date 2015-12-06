@@ -1,40 +1,90 @@
 package interpreter.parsing.factory.operator;
 
-import interpreter.lexer.model.Token;
-import interpreter.parsing.model.tokens.operators.OperatorToken;
-import org.springframework.stereotype.Service;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AAND;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.ADD;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.ADIV;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AMULT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AND;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.AOR;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.APOW;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.ASSIGN;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.DIV;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.EQ;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.GE;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.GT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.LE;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.LT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.MULT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.NEG;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.NEQ;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.NOT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.OR;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.POW;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE3;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.SUB;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.TRANSPOSE;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_10;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_14;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_15;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_20;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_25;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_30;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_40;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_45;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_50;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.*;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.*;
+import org.springframework.stereotype.Service;
+
+import interpreter.lexer.model.Token;
+import interpreter.parsing.model.tokens.operators.OperatorCode;
+import interpreter.parsing.model.tokens.operators.OperatorToken;
 
 @Service
 public class OperatorFactory {
+	private Map<String, Supplier<OperatorToken>> operatorsProducer = new HashMap<>();
 
-    private Map<String, OperatorProducer> operatorsProducer = new HashMap<>();
+	public OperatorFactory() {
+		operatorsProducer.put("=", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_10, ASSIGN));
+		operatorsProducer.put("&&", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_14, AND));
+		operatorsProducer.put("||", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_14, OR));
+		operatorsProducer.put("|", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_15, AOR));
+		operatorsProducer.put("&", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_15, AAND));
+		operatorsProducer.put("==", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, EQ));
+		operatorsProducer.put("~=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, NEQ));
+		operatorsProducer.put(">", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, GT));
+		operatorsProducer.put(">=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, GE));
+		operatorsProducer.put("<", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, LT));
+		operatorsProducer.put("<=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, LE));
+		operatorsProducer.put(":", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_25, RANGE));
+		operatorsProducer.put("$::", () -> new OperatorToken(3, LEFT_TO_RIGHT, LEVEL_25, RANGE3));
+		operatorsProducer.put("+", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_30, ADD));
+		operatorsProducer.put("-", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_30, SUB));
+		operatorsProducer.put("*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, MULT));
+		operatorsProducer.put(".*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, AMULT));
+		operatorsProducer.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, DIV));
+		operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
+		operatorsProducer.put("~", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, NOT));
+		operatorsProducer.put("$-", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, NEG));
+		operatorsProducer.put("$+", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, OperatorCode.PLUS));
+		operatorsProducer.put("^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, POW));
+		operatorsProducer.put(".^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, APOW));
+		operatorsProducer.put("'", () -> new OperatorToken(1, LEFT_TO_RIGHT, LEVEL_50, TRANSPOSE));
+	}
 
-    public OperatorFactory() {
-        operatorsProducer.put("=", () -> new OperatorToken(2, RIGHT_TO_LEFT, LEVEL_10, ASSIGN));
-        operatorsProducer.put("==", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, EQ));
-        operatorsProducer.put("~=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, NEQ));
-        operatorsProducer.put(">", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, GT));
-        operatorsProducer.put(">=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, GE));
-        operatorsProducer.put("<", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, LT));
-        operatorsProducer.put("<=", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_20, LE));
-        operatorsProducer.put("+", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_30, ADD));
-        operatorsProducer.put("-", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_30, SUB));
-        operatorsProducer.put("*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, MULT));
-        operatorsProducer.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, DIV));
-    }
+	public OperatorToken getOperator(final Token token) {
+		OperatorToken operatorToken = operatorsProducer.get(token.getLexeme()).get();
+		operatorToken.setToken(token);
+		return operatorToken;
+	}
 
-    public OperatorToken getOperator(final Token token) {
-        OperatorProducer operatorProducer = operatorsProducer.get(token.getLexeme());
-        OperatorToken operatorToken = operatorProducer.getOperator();
-        operatorToken.setToken(token);
-        return operatorToken;
-    }
+	public OperatorToken getOperator(final String token) {
+		return operatorsProducer.get(token).get();
+	}
 }

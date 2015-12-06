@@ -19,7 +19,7 @@ public class LtInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getComporator(type).lt(convert(a, type), convert(b, type));
+        return operatorFactory.getOperator(type).lt(convert(a, type), convert(b, type));
     }
 
     @Override

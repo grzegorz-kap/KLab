@@ -1,13 +1,18 @@
 package interpreter.types.converters;
 
+import org.springframework.stereotype.Component;
+
 import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.scalar.DoubleScalar;
 import interpreter.types.scalar.Scalar;
-import org.springframework.stereotype.Component;
 
 @Component
 public class OjalgoScalarDoubleConverter extends AbstractConverter<DoubleScalar> {
+	public OjalgoScalarDoubleConverter() {
+		super(DoubleScalar.class);
+	}
+	
     @Override
     public DoubleScalar convert(Number number) {
         return new DoubleScalar(number.doubleValue());
@@ -24,7 +29,7 @@ public class OjalgoScalarDoubleConverter extends AbstractConverter<DoubleScalar>
     }
 
     @Override
-    protected DoubleScalar convert(Scalar scalar) {
+    protected DoubleScalar convert(Scalar<?> scalar) {
         return new DoubleScalar(scalar.getValue().doubleValue());
     }
 

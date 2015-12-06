@@ -12,7 +12,7 @@ class RegexTokenizerTest extends Specification {
         RegexTokenizer regexTokenizer = new RegexTokenizer()
         regexTokenizer.setKeywordMatcher(new KeywordMatcher())
         regexTokenizer.setSymbolsMapper(new SymbolsMapper())
-        regexTokenizer.setTokenizerContextManager(new TokenizerContextManager())
+        regexTokenizer.settCM(new TokenizerContextManager())
         regexTokenizer.setTokenRegexReader(new TokenRegexReader())
         regexTokenizer.setTokenMatcher(new TokenMatcher())
         regexTokenizer.setTokenStartMatcher(new TokenStartMatcher())

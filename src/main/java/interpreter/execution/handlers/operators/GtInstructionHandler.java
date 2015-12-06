@@ -19,7 +19,7 @@ public class GtInstructionHandler extends AbstractOperatorInstructionHandler {
 
     @Override
     protected NumericObject calculate(NumericObject a, NumericObject b, NumericType type) {
-        return operatorExecutionFactory.getComporator(type).gt(convert(a, type), convert(b, type));
+        return operatorFactory.getOperator(type).gt(convert(a, type), convert(b, type));
     }
 
     @Override

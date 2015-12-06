@@ -40,7 +40,7 @@ public class IntegerArgumentsMapper {
     }
 
     private void processScalar(InternalFunction function, List<Integer> arguments, ObjectData data) {
-        Scalar scalar = (Scalar) data;
+        Scalar<?> scalar = (Scalar<?>) data;
         checkCorrectArgumentsNumber(arguments.size(), function, scalar);
         arguments.add(convertToInteger(scalar.getValue()));
     }

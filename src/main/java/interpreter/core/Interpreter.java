@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Interpreter {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Interpreter.class);
 
     private InterpreterService interpreterService;

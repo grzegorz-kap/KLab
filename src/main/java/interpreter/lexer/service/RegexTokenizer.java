@@ -6,6 +6,7 @@ import interpreter.lexer.model.TokenClass;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -34,7 +35,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     public void onWord() {
         Token token = tokenRegexReader.readToken(WORD_REGEX, TokenClass.WORD);
         keywordMatcher.changeIfKeyword(token);
-        tokenizerContextManager.addToken(token);
+        tCM.addToken(token);
     }
 
     @Override
@@ -49,6 +50,13 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public boolean tryReadOperator() {
+        if (tC.isCharAt(0, ':')) {
+            TokenClass prev = tCM.tokenClassAt(0);
+            if (TokenClass.COMMA.equals(prev) || TokenClass.OPEN_PARENTHESIS.equals(prev)) {
+                return false;
+            }
+        }
+
         String result = tryRead(tokenMatcher.getOperatorRegex());
         if (Objects.nonNull(result)) {
             addToken(result, TokenClass.OPERATOR);
@@ -59,30 +67,37 @@ public class RegexTokenizer extends AbstractTokenizer {
     @Override
     public boolean tryReadOtherSymbol() {
         String result = tryRead(tokenMatcher.getSymbolsRegex());
-        if (Objects.nonNull(result)) {
-            addToken(result, symbolsMapper.getTokenClass(result));
+        if (Objects.isNull(result)) {
+            return false;
         }
-        return Objects.nonNull(result);
+        result = result.replaceAll("[ \\t]", "");
+
+        if (!StringUtils.isEmpty(result)) {
+            addToken(result, symbolsMapper.getTokenClass(result));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected void setContext(String inputText) {
-        tokenizerContext = new RegexTokenizerContext(inputText);
+        tC = new RegexTokenizerContext(inputText);
     }
 
     private String tryRead(Pattern pattern) {
-        Matcher matcher = pattern.matcher(tokenizerContext.getInputText());
+        Matcher matcher = pattern.matcher(tC.getInputText());
         return matcher.find() ? matcher.group() : null;
     }
 
     private void addToken(final Pattern pattern, TokenClass tokenClass) {
-        tokenizerContextManager.addToken(tokenRegexReader.readToken(pattern, tokenClass));
+        tCM.addToken(tokenRegexReader.readToken(pattern, tokenClass));
     }
 
     private void addToken(final String lexame, TokenClass tokenClass) {
         Token token = new Token();
         token.setLexeme(lexame);
         token.setTokenClass(tokenClass);
-        tokenizerContextManager.addToken(token);
+        tCM.addToken(token);
     }
 }

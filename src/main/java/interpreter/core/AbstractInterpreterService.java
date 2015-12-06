@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 public abstract class AbstractInterpreterService {
-
     protected ExecutionService executionService;
     protected Parser parser;
     protected Tokenizer tokenizer;
@@ -40,6 +39,7 @@ public abstract class AbstractInterpreterService {
         for (PostParseHandler postParseHandler : postParseHandlers) {
             postParseHandler.setCode(executionService.getExecutionContext().getCode());
         }
+        instructionTranslator.setCode(executionService.getExecutionContext().getCode());
     }
 
     @Autowired
