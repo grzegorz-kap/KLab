@@ -6,6 +6,8 @@ import interpreter.types.NumericType;
 public interface NumericObjectsOperator {
     NumericType getSupportedType();
     
+    NumericObject negate(NumericObject a);
+    
     NumericObject transpose(NumericObject a);
     
     NumericObject aand(NumericObject a, NumericObject b);

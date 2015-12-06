@@ -9,6 +9,7 @@ import interpreter.core.arithmetic.matrix.ojalgo.MatrixAdder;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayConjuctionOperator;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayDisjuctionOperator;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayMult;
+import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayNegate;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayPower;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixDivider;
 import interpreter.core.arithmetic.matrix.ojalgo.MatrixMultiplicator;
@@ -20,6 +21,7 @@ import interpreter.core.arithmetic.matrix.ojalgo.comparator.CompexOjalgoMatrixCo
 import interpreter.core.arithmetic.matrix.ojalgo.comparator.DoubleOjalgoMatrixComparator;
 import interpreter.core.arithmetic.scalar.ComplexComparator;
 import interpreter.core.arithmetic.scalar.DoubleComparator;
+import interpreter.core.arithmetic.scalar.ScalarNegator;
 import interpreter.core.arithmetic.scalar.ScalarNumericObjectsOperator;
 import interpreter.core.arithmetic.scalar.ScalarOperator;
 import interpreter.types.NumericType;
@@ -42,6 +44,7 @@ public class OperatorsConfiguration {
 		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoDoubleMatrix::new));
 		op.setArrayAnd(new MatrixArrayConjuctionOperator<>(OjalgoDoubleMatrix::new, Double::new));
 		op.setArrayOr(new MatrixArrayDisjuctionOperator<>(OjalgoDoubleMatrix::new, Double::new));
+		op.setNegator(new MatrixArrayNegate<>(OjalgoDoubleMatrix::new, OjalgoDoubleMatrix.class));
 		op.setSupportedType(NumericType.MATRIX_DOUBLE);
 		return op;
 	}
@@ -60,6 +63,7 @@ public class OperatorsConfiguration {
 		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoComplexMatrix::new));
 		op.setArrayOr(new MatrixArrayDisjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::new));
 		op.setArrayAnd(new MatrixArrayConjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::new));
+		op.setNegator(new MatrixArrayNegate<>(OjalgoComplexMatrix::new, OjalgoComplexMatrix.class));
 		op.setSupportedType(NumericType.COMPLEX_MATRIX);
 		return op;
 	}
@@ -74,6 +78,7 @@ public class OperatorsConfiguration {
 		op.setPow(ScalarOperator.DOUBLE_POW);
 		op.setAnd(ScalarOperator.DOUBLE_AND);
 		op.setOr(ScalarOperator.DOUBLE_OR);
+		op.setNegator(ScalarNegator.DOUBLE_NEGATOR);
 		op.setComparator(new DoubleComparator());
 		op.setSupportedType(NumericType.DOUBLE);
 		return op;
@@ -90,6 +95,7 @@ public class OperatorsConfiguration {
 		op.setOr(ScalarOperator.COMPLEX_OR);
 		op.setComparator(new ComplexComparator());
 		op.setPow(ScalarOperator.COMPLEX_POW);
+		op.setNegator(ScalarNegator.COMPLEX_NEGATOR);
 		op.setSupportedType(NumericType.COMPLEX_DOUBLE);
 		return op;
 	}

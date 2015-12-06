@@ -23,6 +23,9 @@ public class OperatorTranslateHandler extends AbstractTranslateHandler {
     @Override
     public void handle(Expression<ParseToken> expression) {
         OperatorToken operatorToken = (OperatorToken) expression.getValue();
+        if(OperatorCode.PLUS.equals(operatorToken.getOperatorCode())) {
+        	return;
+        }
         if (OperatorCode.ASSIGN.equals(operatorToken.getOperatorCode())) {
             expression.setProperty(Expression.ANS_PROPERTY_KEY, false);
         }

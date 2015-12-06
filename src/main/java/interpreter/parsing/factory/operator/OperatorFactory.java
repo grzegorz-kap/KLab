@@ -19,6 +19,7 @@ import static interpreter.parsing.model.tokens.operators.OperatorCode.LT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.MULT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.NEG;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.NEQ;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.NOT;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.OR;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.POW;
 import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE;
@@ -42,6 +43,7 @@ import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 
 import interpreter.lexer.model.Token;
+import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
 
 @Service
@@ -68,7 +70,9 @@ public class OperatorFactory {
 		operatorsProducer.put(".*", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, AMULT));
 		operatorsProducer.put("/", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, DIV));
 		operatorsProducer.put("./", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_40, ADIV));
-		operatorsProducer.put("~", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, NEG));
+		operatorsProducer.put("~", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, NOT));
+		operatorsProducer.put("$-", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, NEG));
+		operatorsProducer.put("$+", () -> new OperatorToken(1, RIGHT_TO_LEFT, LEVEL_45, OperatorCode.PLUS));
 		operatorsProducer.put("^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, POW));
 		operatorsProducer.put(".^", () -> new OperatorToken(2, LEFT_TO_RIGHT, LEVEL_50, APOW));
 		operatorsProducer.put("'", () -> new OperatorToken(1, LEFT_TO_RIGHT, LEVEL_50, TRANSPOSE));

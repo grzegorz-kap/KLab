@@ -20,11 +20,17 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
 	private MatrixTranspose<T> matrixTranspose;
 	private MatrixArrayConjuctionOperator<T> arrayAnd;
 	private MatrixArrayDisjuctionOperator<T> arrayOr;
+	private MatrixArrayNegate<T> negator;
 	private NumericType supportedType;
 
 	@Override
 	public NumericType getSupportedType() {
 		return supportedType;
+	}
+	
+	@Override
+	public NumericObject negate(NumericObject a) {
+		return negator.operatate(a);
 	}
 
 	@Override
@@ -169,5 +175,10 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
 	@Required
 	public void setArrayOr(MatrixArrayDisjuctionOperator<T> arrayOr) {
 		this.arrayOr = arrayOr;
+	}
+	
+	@Required
+	public void setNegator(MatrixArrayNegate<T> negator) {
+		this.negator = negator;
 	}
 }

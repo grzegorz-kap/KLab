@@ -1,9 +1,10 @@
 package interpreter.core.arithmetic.scalar;
 
+import org.springframework.beans.factory.annotation.Required;
+
 import interpreter.core.arithmetic.NumericObjectsOperator;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
-import org.springframework.beans.factory.annotation.Required;
 
 public class ScalarNumericObjectsOperator<N extends Number> implements NumericObjectsOperator {
     private NumericType supportedType;
@@ -15,6 +16,7 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     private ScalarOperator<N> pow;
     private ScalarOperator<N> and;
     private ScalarOperator<N> or;
+    private ScalarNegator<N> negator;
   
     @Override
     public NumericType getSupportedType() {
@@ -24,6 +26,11 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     @Override
     public NumericObject transpose(NumericObject a) {
     	return a;
+    }
+    
+    @Override
+    public NumericObject negate(NumericObject a) {
+    	return negator.operate(a);
     }
     
     @Override
@@ -144,5 +151,10 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     @Required
     public void setOr(ScalarOperator<N> or) {
 		this.or = or;
+	}
+    
+    @Required
+    public void setNegator(ScalarNegator<N> negator) {
+		this.negator = negator;
 	}
 }

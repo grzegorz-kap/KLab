@@ -1,19 +1,23 @@
 package interpreter.parsing.handlers;
 
-import interpreter.lexer.model.TokenClass;
-import interpreter.parsing.factory.operator.OperatorFactory;
-import interpreter.parsing.model.ParseToken;
-import interpreter.parsing.model.expression.ExpressionNode;
-import interpreter.parsing.model.tokens.operators.OperatorToken;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import static java.util.Objects.nonNull;
+
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import interpreter.lexer.model.Token;
+import interpreter.lexer.model.TokenClass;
+import interpreter.parsing.factory.operator.OperatorFactory;
+import interpreter.parsing.model.ParseToken;
+import interpreter.parsing.model.expression.ExpressionNode;
+import interpreter.parsing.model.tokens.operators.OperatorAssociativity;
+import interpreter.parsing.model.tokens.operators.OperatorToken;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -22,6 +26,7 @@ public class OperatorParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
+    	preProcessUnaryPlusAndMinusOperators();
         OperatorToken o1 = operatorFactory.getOperator(getContextManager().tokenAt(0));
         if (Objects.isNull(o1)) {
             throw new RuntimeException();
@@ -52,6 +57,27 @@ public class OperatorParseHandler extends AbstractParseHandler {
         }
         parseContextManager.stackPush(o1);
         parseContextManager.incrementTokenPosition(1);
+    }
+    
+    private void preProcessUnaryPlusAndMinusOperators() {
+    	String token = parseContextManager.tokenAt(0).getLexeme();
+    	boolean isUnary = false;
+    	if("+".equals(token) || "-".equals(token)) {
+    		TokenClass previousClass = previousTokenClass();
+    		isUnary = previousClass == null || previousClass.isUnaryOpPrecursor();
+    		if(!isUnary && TokenClass.OPERATOR.equals(previousClass)) {
+    			OperatorToken previous = operatorFactory.getOperator(parseContextManager.tokenAt(-1).getLexeme());
+    			isUnary = previous.getArgumentsNumber() > 1 || previous.getAssociativity().equals(OperatorAssociativity.RIGHT_TO_LEFT);
+    		}  		
+    	}
+    	if(isUnary) {
+    		parseContextManager.tokenAt(0).setLexeme("$"+token);
+    	}
+    }
+     
+    private TokenClass previousTokenClass() {
+    	Token token = parseContextManager.tokenAt(-1);
+    	return nonNull(token) ? token.getTokenClass() : null;
     }
 
     @Override

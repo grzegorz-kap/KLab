@@ -36,7 +36,8 @@ public enum InstructionCode {
     JMPFNP(32),
     JMPTNP(33),
     LOGICAL(34),
-    NEG(35)
+    NOT(35),
+    NEG(36)
     ;
 
     private int index;
