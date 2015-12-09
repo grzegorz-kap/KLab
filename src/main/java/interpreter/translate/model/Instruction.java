@@ -8,7 +8,7 @@ import java.util.List;
 public class Instruction {
     private InstructionCode instructionCode;
     private int argumentsNumber = 0;
-    private List<ObjectData> objectDataList = new ArrayList<>();
+    private List<ObjectData> data = new ArrayList<>();
 
     public Instruction() {
     }
@@ -35,15 +35,15 @@ public class Instruction {
     }
 
     public void add(ObjectData objectData) {
-        objectDataList.add(objectData);
+        data.add(objectData);
     }
 
     public ObjectData getObjectData(int index) {
-        return objectDataList.get(index);
+        return data.get(index);
     }
 
     public <T> T getObjectData(int index, Class<T> clazz) {
-        return clazz.cast(objectDataList.get(index));
+        return clazz.cast(data.get(index));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Instruction {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(instructionCode);
         stringBuilder.append('\t');
-        objectDataList.forEach(objectData -> stringBuilder.append(objectData).append("\t"));
+        data.forEach(objectData -> stringBuilder.append(objectData).append("\t"));
         return stringBuilder.toString();
     }
 }

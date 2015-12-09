@@ -2,8 +2,8 @@ package interpreter.translate.handlers
 
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
-import interpreter.translate.model.instruction.Instruction
-import interpreter.translate.model.instruction.InstructionCode
+import interpreter.translate.model.Instruction
+import interpreter.translate.model.InstructionCode
 import interpreter.translate.service.TranslateContextManager
 import interpreter.types.NumericObject
 import interpreter.types.scalar.NumberScalarFactory

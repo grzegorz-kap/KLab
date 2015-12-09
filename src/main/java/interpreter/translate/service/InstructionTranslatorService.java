@@ -1,12 +1,5 @@
 package interpreter.translate.service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionValue;
@@ -17,8 +10,17 @@ import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
 import interpreter.translate.model.JumperInstruction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class InstructionTranslatorService extends AbstractInstructionTranslator {
     public static final String UNEXPECTED_TOKEN_MESSAGE = "Unexpected token";
 
