@@ -21,7 +21,7 @@ public class JMPFInstructionHandler extends AbstractInstructionHandler {
     public void handle(InstructionPointer instructionPointer) {
         ObjectData objectData = executionContext.executionStackPop();
         if (!objectData.isTrue()) {
-            JumperInstruction jumperInstruction = (JumperInstruction) instructionPointer.current();
+            JumperInstruction jumperInstruction = (JumperInstruction) instructionPointer.currentInstruction();
             instructionPointer.jumpTo(jumperInstruction.getJumpIndex());
         } else {
             instructionPointer.increment();

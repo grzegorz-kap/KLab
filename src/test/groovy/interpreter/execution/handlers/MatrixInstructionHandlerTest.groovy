@@ -44,7 +44,7 @@ class MatrixInstructionHandlerTest extends Specification {
         handler.handle(instructionPointer)
 
         then:
-        1 * instructionPointer.current() >> instruction
+        1 * instructionPointer.currentInstruction() >> instruction
         1 * executionContextManager.executionStackPop(executionContext, instruction.argumentsNumber) >> [objectData]
         1 * matrixFactory.createDoubleBuilder() >> builder
         1 * builder.appendBelow(objectData)

@@ -16,7 +16,7 @@ public class CLEARInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        IdentifierObject id = instructionPointer.current().getObjectData(0, IdentifierObject.class);
+        IdentifierObject id = instructionPointer.currentInstruction().getObjectData(0, IdentifierObject.class);
         memorySpace.set(id.getAddress(), null);
         instructionPointer.increment();
     }

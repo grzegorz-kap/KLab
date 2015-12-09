@@ -27,7 +27,8 @@ public class TokenStartMatcher {
     }
 
     public boolean isNewLineStart() {
-        return tokenizerContext.isCharAt(0, '\n');
+        char first = tokenizerContext.charAt(0);
+        return first == '\n' || first == '\r' && tokenizerContext.isCharAt(1, '\n');
     }
 
     public void setTokenizerContext(TokenizerContext tokenizerContext) {

@@ -21,7 +21,7 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        CallInstruction instruction = (CallInstruction) instructionPointer.current();
+        CallInstruction instruction = (CallInstruction) instructionPointer.currentInstruction();
         if (nonNull(instruction.getVariableAddress())) {
             variableFunctionCallHandler.handle(instructionPointer);
         } else if (nonNull(instruction.getInternalFunctionAddress())) {

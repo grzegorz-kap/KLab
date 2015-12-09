@@ -18,7 +18,7 @@ public class JMPInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        JumperInstruction jumperInstruction = (JumperInstruction) instructionPointer.current();
+        JumperInstruction jumperInstruction = (JumperInstruction) instructionPointer.currentInstruction();
         instructionPointer.jumpTo(jumperInstruction.getJumpIndex());
     }
 }

@@ -40,7 +40,7 @@ class MatrixVerseInstructionHandlerTest extends Specification {
         def matrixBuilder = Mock(MatrixBuilder)
         def objectData = new DoubleScalar(2.25D)
         def matrix = Stub(Matrix)
-        ip.current() >> instruction
+        ip.currentInstruction() >> instruction
 
         when:
         handler.handle(ip)
