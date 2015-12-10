@@ -12,9 +12,9 @@ public class MatrixAdder<T extends Number> extends OjalgoOperator<T> {
     @Override
     protected MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second) {
         if (first.isScalar())
-            return second.getLazyStore().add(new OjalgoMatrixScalarWrapper<>(first));
+            return second.getLazyStore().add(new OjalgoMatrixScalarWrapper<>(first, second));
         else if (second.isScalar())
-            return first.getLazyStore().add(new OjalgoMatrixScalarWrapper<>(second));
+            return first.getLazyStore().add(new OjalgoMatrixScalarWrapper<>(second, first));
         return first.getLazyStore().add(second.getLazyStore());
     }
 }

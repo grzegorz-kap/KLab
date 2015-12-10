@@ -12,7 +12,7 @@ public class MatrixSubtractor<N extends Number> extends OjalgoOperator<N> {
     @Override
     protected MatrixStore<N> operate(OjalgoAbstractMatrix<N> first, OjalgoAbstractMatrix<N> second) {
         if (second.isScalar()) {
-            return first.getLazyStore().subtract(new OjalgoMatrixScalarWrapper<>(second));
+            return first.getLazyStore().subtract(new OjalgoMatrixScalarWrapper<>(second, first));
         }
         if (first.isScalar()) {
             return new OjalgoMatrixScalarWrapper<>(first, second).subtract(second.getLazyStore());

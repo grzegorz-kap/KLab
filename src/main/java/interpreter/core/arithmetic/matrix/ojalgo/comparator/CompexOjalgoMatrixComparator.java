@@ -12,55 +12,55 @@ public class CompexOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator
 
     @Override
     protected MatrixStore<ComplexNumber> eq(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
-        return first.operateOnMatching((ComplexFunction.Binary) this::eq, second);
+        return first.operateOnMatching((ComplexFunction.Binary) this::eq, second).get();
     }
 
     @Override
     protected MatrixStore<ComplexNumber> neq(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
-        return first.operateOnMatching((ComplexFunction.Binary) this::neq, second);
+        return first.operateOnMatching((ComplexFunction.Binary) this::neq, second).get();
     }
 
     @Override
     protected MatrixStore<ComplexNumber> gt(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
-        return first.operateOnMatching((ComplexFunction.Binary) this::gt, second);
+        return first.operateOnMatching((ComplexFunction.Binary) this::gt, second).get();
     }
 
     @Override
     protected MatrixStore<ComplexNumber> ge(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
-        return first.operateOnMatching((ComplexFunction.Binary) this::ge, second);
+        return first.operateOnMatching((ComplexFunction.Binary) this::ge, second).get();
     }
 
     @Override
     protected MatrixStore<ComplexNumber> le(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
-        return first.operateOnMatching((ComplexFunction.Binary) this::le, second);
+        return first.operateOnMatching((ComplexFunction.Binary) this::le, second).get();
     }
 
     @Override
     protected MatrixStore<ComplexNumber> lt(MatrixStore<ComplexNumber> first, MatrixStore<ComplexNumber> second) {
-        return first.operateOnMatching((ComplexFunction.Binary) this::lt, second);
+        return first.operateOnMatching((ComplexFunction.Binary) this::lt, second).get();
     }
 
     private ComplexNumber eq(ComplexNumber value, ComplexNumber second) {
-        return new ComplexNumber(value.equals(second) ? 1.0D : 0.0D);
+        return ComplexNumber.valueOf(value.equals(second) ? 1.0D : 0.0D);
     }
 
     private ComplexNumber neq(ComplexNumber value, ComplexNumber second) {
-        return new ComplexNumber(value.equals(second) ? 0.0D : 1.0D);
+        return ComplexNumber.valueOf(value.equals(second) ? 0.0D : 1.0D);
     }
 
     private ComplexNumber gt(ComplexNumber value, ComplexNumber second) {
-        return new ComplexNumber(value.compareTo(second) == 1 ? 1D : 0D);
+        return ComplexNumber.valueOf(value.compareTo(second) == 1 ? 1D : 0D);
     }
 
     private ComplexNumber ge(ComplexNumber value, ComplexNumber second) {
-        return new ComplexNumber(value.compareTo(second) >= 0 ? 1D : 0D);
+        return ComplexNumber.valueOf(value.compareTo(second) >= 0 ? 1D : 0D);
     }
 
     private ComplexNumber le(ComplexNumber value, ComplexNumber second) {
-        return new ComplexNumber(value.compareTo(second) <= 0 ? 1D : 0D);
+        return ComplexNumber.valueOf(value.compareTo(second) <= 0 ? 1D : 0D);
     }
 
     private ComplexNumber lt(ComplexNumber value, ComplexNumber second) {
-        return new ComplexNumber(value.compareTo(second) == -1 ? 1D : 0D);
+        return ComplexNumber.valueOf(value.compareTo(second) == -1 ? 1D : 0D);
     }
 }

@@ -20,7 +20,7 @@
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <richtextfx.version>0.6.9</richtextfx.version>
-        <ojalgo.version>38.2</ojalgo.version>
+        <ojalgo.version>39.0</ojalgo.version>
         <junit.version>4.12</junit.version>
     </properties>
 

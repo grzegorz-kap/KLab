@@ -25,7 +25,7 @@ public class OjalgoComplexMatrixFactory extends OjalgoAbstractMatrixFactory<Comp
 
             @Override
             public ComplexNumber invoke() {
-                return new ComplexNumber(1L);
+                return ComplexNumber.ONE;
             }
         });
     }

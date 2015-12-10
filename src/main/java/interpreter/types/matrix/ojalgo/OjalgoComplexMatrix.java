@@ -1,28 +1,19 @@
 package interpreter.types.matrix.ojalgo;
 
-import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
-
+import interpreter.commons.exception.InterpreterCastException;
+import interpreter.types.*;
+import interpreter.types.matrix.Matrix;
+import interpreter.types.scalar.ComplexScalar;
+import interpreter.types.scalar.Scalar;
 import org.ojalgo.matrix.store.ComplexDenseStore;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.scalar.ComplexNumber;
 
-import interpreter.commons.exception.InterpreterCastException;
-import interpreter.types.AddressIterator;
-import interpreter.types.Addressable;
-import interpreter.types.Negable;
-import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
-import interpreter.types.matrix.Matrix;
-import interpreter.types.scalar.ComplexScalar;
-import interpreter.types.scalar.Scalar;
+import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
 public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> implements Addressable {
-	private static final Negable.UnaryNagate<ComplexNumber> NEGATE_FUN = new Negable.UnaryNagate<ComplexNumber>() {
-		@Override
-		public ComplexNumber invoke(ComplexNumber arg) {
-			return new ComplexNumber(arg.getReal() != 0 || arg.getImaginary() != 0 ? 0.0D : 1.D);
-		}
-	};
+    private static final Negable.UnaryNagate<ComplexNumber> NEGATE_FUN =
+            arg -> ComplexNumber.valueOf(arg.getReal() != 0 || arg.getImaginary() != 0 ? 0.0D : 1.D);
 
 	public OjalgoComplexMatrix(MatrixStore<ComplexNumber> store) {
 		super(NumericType.COMPLEX_MATRIX);
@@ -32,8 +23,8 @@ public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> imp
 
 	@Override
 	public Negable<Matrix<ComplexNumber>> negate() {
-		return new OjalgoComplexMatrix(getLazyStore().operateOnAll(NEGATE_FUN));
-	}
+        return new OjalgoComplexMatrix(getLazyStore().operateOnAll(NEGATE_FUN).get());
+    }
 
 	@Override
 	public OjalgoAbstractMatrix<ComplexNumber> create(MatrixStore<ComplexNumber> matrixStore) {

@@ -4,6 +4,7 @@ import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import org.ojalgo.access.Access1D;
 import org.ojalgo.function.VoidFunction;
 import org.ojalgo.function.aggregator.Aggregator;
+import org.ojalgo.matrix.store.ElementsConsumer;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 import org.ojalgo.scalar.Scalar;
@@ -20,10 +21,6 @@ public class OjalgoMatrixScalarWrapper<N extends Number> implements MatrixStore<
         this.factory = wrap.factory();
     }
 
-    public OjalgoMatrixScalarWrapper(OjalgoAbstractMatrix<N> wrap) {
-        this(wrap.getLazyStore());
-    }
-
     public OjalgoMatrixScalarWrapper(OjalgoAbstractMatrix<N> wrap, OjalgoAbstractMatrix<N> second) {
         this(wrap.getLazyStore());
         rows = second.getRows();
@@ -33,6 +30,11 @@ public class OjalgoMatrixScalarWrapper<N extends Number> implements MatrixStore<
     @Override
     public PhysicalStore.Factory<N, ?> factory() {
         return factory;
+    }
+
+    @Override
+    public void supplyTo(ElementsConsumer<N> elementsConsumer) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -76,12 +78,7 @@ public class OjalgoMatrixScalarWrapper<N extends Number> implements MatrixStore<
     }
 
     @Override
-    public boolean isLowerLeftShaded() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean isUpperRightShaded() {
+    public N multiplyBoth(Access1D<N> access1D) {
         throw new UnsupportedOperationException();
     }
 
