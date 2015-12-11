@@ -8,7 +8,6 @@ import gui.model.CommandHistory;
 import interpreter.core.Interpreter;
 import interpreter.core.events.PrintEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,11 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ConsoleController implements Initializable {
+public class ConsoleController {
     private CommandHistory commandHistory = new CommandHistory();
     private Interpreter interpreter;
     private EventService eventService;
@@ -32,10 +29,6 @@ public class ConsoleController implements Initializable {
 
     @FXML
     private CodeArea consoleOutput;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
 
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {

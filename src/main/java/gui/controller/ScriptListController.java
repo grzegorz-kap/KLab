@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +45,7 @@ public class ScriptListController implements Initializable {
 
     @FXML
     public void onRunScriptMenuAction(ActionEvent actionEvent) {
-        emitCommandSubmitEvent();
-    }
-
-    public void emitCommandSubmitEvent() {
-        String command = scriptView.getSelectionModel().getSelectedItem().getValue();
-        int dotIndex = command.lastIndexOf('.');
-        command = dotIndex != -1 ? command.substring(0, dotIndex) : command;
+        String command = FilenameUtils.removeExtension(scriptView.getSelectionModel().getSelectedItem().getValue());
         LOGGER.info("Script double clicked. Submiting command: {}", command);
         eventService.publish(new CommandSubmittedEvent(command, this));
     }

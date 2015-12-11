@@ -23,9 +23,15 @@
         <ojalgo.version>39.0</ojalgo.version>
         <junit.version>4.12</junit.version>
         <guava.version>19.0</guava.version>
+        <commons.version>2.4</commons.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
