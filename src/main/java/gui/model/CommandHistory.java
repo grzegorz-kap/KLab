@@ -1,38 +1,50 @@
 package gui.model;
 
+import gui.helpers.TimeHelper;
+import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandHistory {
-
     private List<Command> commands = new ArrayList<>();
-    private int currentPosition = -1;
+    private int index = -1;
 
-    public void add(Command command) {
-        commands.add(command);
+    public void add(String commandContent) {
+        if (StringUtils.isNotBlank(commandContent) && isNewCommand(commandContent)) {
+            commands.add(new Command(commandContent));
+            index = commands.size();
+        }
     }
 
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public String next() {
+        if (index > 0) {
+            index--;
+        }
+        return current();
     }
 
-    public int getCurrentPosition() {
-        return currentPosition;
+    public String prev() {
+        if (index < commands.size() - 1) {
+            index++;
+        }
+        return current();
     }
 
-    public void setCurrentPosition(int currentPosition) {
-        this.currentPosition = currentPosition;
+    public String current() {
+        return index >= 0 && size() > 0 ? commands.get(index).getContent() : "";
     }
 
-    public Command getCurrent() {
-        return currentPosition >= 0 ? commands.get(currentPosition) : null;
-    }
-
-    public Command getAt(int index) {
-        return commands.get(index);
-    }
-
-    public int getSize() {
+    public int size() {
         return commands.size();
+    }
+
+    private boolean isNewCommand(String commandContent) {
+        Command lastCommand = commands.size() == 0 ? null : commands.get(commands.size() - 1);
+        return Objects.isNull(lastCommand) ||
+                !lastCommand.getContent().equals(commandContent)
+                || !TimeHelper.isTheSameDay(lastCommand.getCreatedAt(), LocalDateTime.now());
     }
 }

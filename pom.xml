@@ -22,9 +22,15 @@
         <richtextfx.version>0.6.10</richtextfx.version>
         <ojalgo.version>39.0</ojalgo.version>
         <junit.version>4.12</junit.version>
+        <guava.version>19.0</guava.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>

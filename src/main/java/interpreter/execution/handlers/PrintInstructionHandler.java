@@ -1,23 +1,22 @@
 package interpreter.execution.handlers;
 
+import com.google.common.eventbus.EventBus;
 import interpreter.core.events.PrintEvent;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class PrintInstructionHandler extends AbstractInstructionHandler implements InstructionHandler {
-
-    private ApplicationEventPublisher applicationEventPublisher;
+    private EventBus eventBus;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        publishPrintEvent();
+        eventBus.post(new PrintEvent(executionContext.executionStackPop(), this));
         instructionPointer.increment();
     }
 
@@ -26,14 +25,8 @@ public class PrintInstructionHandler extends AbstractInstructionHandler implemen
         return InstructionCode.PRINT;
     }
 
-    private void publishPrintEvent() {
-        PrintEvent printEvent = new PrintEvent(this);
-        printEvent.setObjectData(executionContext.executionStackPop());
-        applicationEventPublisher.publishEvent(printEvent);
-    }
-
     @Autowired
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
+    public void setEventBus(EventBus eventBus) {
+        this.eventBus = eventBus;
     }
 }

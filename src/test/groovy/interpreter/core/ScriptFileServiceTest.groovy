@@ -10,7 +10,6 @@ class ScriptFileServiceTest extends Specification {
 
     def setup() {
         def resourcesPath = Paths.get(getClass().getResource("ScriptFileServiceTest").toURI());
-        service.setScriptExtension(".m")
         service.setWorkingDirectory(resourcesPath.toAbsolutePath().toString())
         service.setApplicationName("KLab")
         service.afterPropertiesSet();

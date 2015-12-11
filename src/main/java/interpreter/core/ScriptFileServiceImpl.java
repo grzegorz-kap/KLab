@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class ScriptFileServiceImpl implements ScriptFileService, InitializingBean {
 
-    private String scriptExtension;
+    private String scriptRegex = "[A-Za-z][A-Za-z0-9_]*[.]m$";
     private String workingDirectory;
     private String applicationName;
 
@@ -28,13 +28,13 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     @Override
     public List<Path> listScripts() throws IOException {
         return Files.list(Paths.get(workingDirectory))
-                .filter(path -> path.toString().endsWith(scriptExtension))
+                .filter(path -> path.getFileName().toString().matches(scriptRegex))
                 .collect(Collectors.toList());
     }
 
     @Override
     public String readScript(String scriptName) throws IOException {
-        Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, scriptExtension));
+        Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, ".m"));
         return new String(Files.readAllBytes(path));
     }
 
@@ -51,11 +51,6 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     @Value("${app.name}")
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
-    }
-
-    @Value("${app.script.extension}")
-    public void setScriptExtension(String scriptExtension) {
-        this.scriptExtension = scriptExtension;
     }
 
     public void setWorkingDirectory(String workingDirectory) {
