@@ -1,6 +1,8 @@
 package config;
 
 import com.google.common.eventbus.EventBus;
+import common.EventBusSubscriberProcessor;
+import common.GuavaEventService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,13 @@ public class ApplicationConfiguration {
     @Bean
     public EventBus eventBus() {
         return new EventBus();
+    }
+
+    @Bean
+    GuavaEventService guavaEventService() {
+        GuavaEventService guavaEventService = new GuavaEventService();
+        guavaEventService.setEventBus(eventBus());
+        return guavaEventService;
     }
 
     @Bean
