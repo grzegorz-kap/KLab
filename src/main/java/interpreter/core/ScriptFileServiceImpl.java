@@ -1,7 +1,10 @@
 package interpreter.core;
 
+import common.EventService;
+import interpreter.core.events.ScriptChangeEvent;
 import interpreter.utils.FileUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +12,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
 public class ScriptFileServiceImpl implements ScriptFileService, InitializingBean {
+    private EventService eventService;
 
     private String scriptRegex = "[A-Za-z][A-Za-z0-9_]*[.]m$";
     private String workingDirectory;
@@ -23,6 +29,7 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
+        watchForFilesChange();
     }
 
     @Override
@@ -48,6 +55,17 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
         }
     }
 
+    private void watchForFilesChange() {
+        Consumer<WatchEvent<?>> consumer = (WatchEvent<?> ev) -> {
+            if (ev.context().toString().matches(scriptRegex)) {
+                eventService.publish(new ScriptChangeEvent(ev.context().toString(), this, ev.kind()));
+            }
+        };
+        Thread thread = new Thread(new FileWatcher(workingDirectory, consumer));
+        thread.setDaemon(true);
+        thread.start();
+    }
+
     @Value("${app.name}")
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
@@ -55,5 +73,10 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
 
     public void setWorkingDirectory(String workingDirectory) {
         this.workingDirectory = workingDirectory;
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }

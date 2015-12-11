@@ -1,8 +1,11 @@
 package gui.controller;
 
+import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import gui.events.CommandSubmittedEvent;
 import gui.service.ScriptViewService;
+import interpreter.core.events.ScriptChangeEvent;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,6 +51,11 @@ public class ScriptListController implements Initializable {
         String command = FilenameUtils.removeExtension(scriptView.getSelectionModel().getSelectedItem().getValue());
         LOGGER.info("Script double clicked. Submiting command: {}", command);
         eventService.publish(new CommandSubmittedEvent(command, this));
+    }
+
+    @Subscribe
+    public void onSciptFileChange(ScriptChangeEvent event) {
+        Platform.runLater(() -> scriptView.setRoot(scriptViewService.listScripts()));
     }
 
     @Autowired
