@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TreeView?>
-<TreeView xmlns:fx="http://javafx.com/fxml/1"
-          xmlns="http://javafx.com/javafx/8.0.40" fx:controller="gui.controller.ScriptListController" editable="true"
-          prefHeight="200.0" prefWidth="200.0" fx:id="scriptView" onMouseClicked="#onScriptViewMouseClick">
 
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TreeView?>
+<TreeView xmlns:fx="http://javafx.com/fxml/1" fx:id="scriptView" editable="true"
+          onMouseClicked="#onScriptViewMouseClick" prefHeight="200.0" prefWidth="200.0"
+          xmlns="http://javafx.com/javafx/8.0.40" fx:controller="gui.controller.ScriptListController">
+    <contextMenu>
+        <ContextMenu>
+            <items>
+                <MenuItem mnemonicParsing="false" text="Run script" onAction="#onRunScriptMenuAction"/>
+            </items>
+        </ContextMenu>
+    </contextMenu>
 </TreeView>

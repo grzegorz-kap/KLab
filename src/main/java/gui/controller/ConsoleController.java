@@ -1,6 +1,8 @@
 package gui.controller;
 
 import com.google.common.eventbus.Subscribe;
+import common.EventService;
+import gui.events.CommandSubmittedEvent;
 import gui.helpers.KeyboardHelper;
 import gui.model.CommandHistory;
 import interpreter.core.Interpreter;
@@ -22,9 +24,8 @@ import java.util.ResourceBundle;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ConsoleController implements Initializable {
     private CommandHistory commandHistory = new CommandHistory();
-
-    @Autowired
     private Interpreter interpreter;
+    private EventService eventService;
 
     @FXML
     private CodeArea commandInput;
@@ -58,6 +59,13 @@ public class ConsoleController implements Initializable {
         consoleOutput.appendText(String.format("%s\n\n", printEvent.getData().toString()));
     }
 
+    @Subscribe
+    public void onCommandSubmittedEvent(CommandSubmittedEvent command) {
+        consoleOutput.appendText(String.format(">> %s \n", command.getData()));
+        commandHistory.add(command.getData());
+        interpreter.start(command.getData());
+    }
+
     private void onArrowDown(KeyEvent keyEvent) {
         commandInput.clear();
         commandInput.appendText(commandHistory.prev());
@@ -71,12 +79,18 @@ public class ConsoleController implements Initializable {
     }
 
     private void onEnter(KeyEvent keyEvent) {
-        String command = commandInput.getText();
+        eventService.publish(new CommandSubmittedEvent(commandInput.getText(), this));
         commandInput.clear();
-        consoleOutput.appendText(String.format(">> %s \n", command));
-        commandHistory.add(command);
         keyEvent.consume();
+    }
 
-        interpreter.start(command);
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    @Autowired
+    public void setInterpreter(Interpreter interpreter) {
+        this.interpreter = interpreter;
     }
 }

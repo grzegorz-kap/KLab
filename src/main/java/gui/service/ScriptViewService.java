@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScriptViewService {
@@ -22,16 +25,23 @@ public class ScriptViewService {
     public TreeItem<String> listScripts() {
         TreeItem<String> root = new TreeItem<>("Working directory");
         ObservableList<TreeItem<String>> children = root.getChildren();
+        getScriptNames().stream()
+                .map(TreeItem::new)
+                .forEach(children::add);
+        children.sort(Collections.reverseOrder(Comparator.comparing(TreeItem::getValue)));
+        root.setExpanded(true);
+        return root;
+    }
+
+    private List<String> getScriptNames() {
         try {
-            scriptFileService.listScripts().stream()
-                    .map(path -> new TreeItem<>(path.getFileName().toString()))
-                    .forEach(children::add);
-            children.sort(Collections.reverseOrder(Comparator.comparing(TreeItem::getValue)));
+            return scriptFileService.listScripts().stream()
+                    .map(path -> path.getFileName().toString())
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             LOGGER.error("Error loading script list", e);
         }
-        root.setExpanded(true);
-        return root;
+        return new ArrayList<>();
     }
 
     @Autowired
