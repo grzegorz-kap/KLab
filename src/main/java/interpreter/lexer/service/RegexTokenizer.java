@@ -19,7 +19,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     public static final String NUMBER_PATTERN = "^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?";
     public static final String WORD_PATTERN = "^[A-Za-z_\\$][A-Za-z_\\$0-9]*";
     public static final String SPACE_PATTERN = "^[ \\t]+";
-    public static final String NEWLINE_PATTERN = "^[\\n\\t ]+";
+    public static final String NEWLINE_PATTERN = "^[\\n\\t\\r ]+";
 
     public static final Pattern NUMBER_REGEX = Pattern.compile(NUMBER_PATTERN);
     public static final Pattern WORD_REGEX = Pattern.compile(WORD_PATTERN);

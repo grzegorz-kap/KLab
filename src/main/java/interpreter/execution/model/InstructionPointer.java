@@ -2,29 +2,46 @@ package interpreter.execution.model;
 
 import interpreter.translate.model.Instruction;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class InstructionPointer {
 
+    private Deque<Code> codeDeque = new ArrayDeque<>();
+    private Deque<Integer> addressDeque = new ArrayDeque<>();
     private Code code;
-    private int current = 0;
+    private int address = 0;
 
     public InstructionPointer(Code code) {
         this.code = code;
     }
 
-    public boolean isCodeEnd() {
-        return code.size() <= current;
+    public void moveToCode(Code newCode) {
+        codeDeque.addFirst(code);
+        addressDeque.addFirst(address);
+        code = newCode;
+        address = 0;
     }
 
-    public Instruction current() {
-        return code.getAtAddress(current);
+    public void restorePreviousCode() {
+        code = codeDeque.removeFirst();
+        address = addressDeque.removeFirst();
+    }
+
+    public boolean isCodeEnd() {
+        return code.size() <= address;
+    }
+
+    public Instruction currentInstruction() {
+        return code.getAtAddress(address);
     }
 
     public void increment() {
-        current++;
+        address++;
     }
 
     public void jumpTo(int address) {
-        current = address;
+        this.address = address;
     }
 
 }

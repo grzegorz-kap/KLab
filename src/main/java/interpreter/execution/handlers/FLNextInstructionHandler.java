@@ -17,7 +17,7 @@ public class FLNextInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        FLNextInstruction flInstruction = (FLNextInstruction) instructionPointer.current();
+        FLNextInstruction flInstruction = (FLNextInstruction) instructionPointer.currentInstruction();
         ForIterator forIterator = (ForIterator) memorySpace.get(flInstruction.getIteratorData().getAddress());
         if (forIterator.hasNext()) {
             memorySpace.set(flInstruction.getIteratorId().getAddress(), forIterator.getNext());

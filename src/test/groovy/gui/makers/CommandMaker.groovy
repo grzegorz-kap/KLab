@@ -18,8 +18,7 @@ class CommandMaker {
 
         @Override
         Command instantiate(PropertyLookup<Command> propertyLookup) {
-            Command command = new Command();
-            command.content = propertyLookup.valueOf(content, "1+3")
+            Command command = new Command(propertyLookup.valueOf(content, "1+3"));
             command.createdAt = propertyLookup.valueOf(createdAt, LocalDateTime.now())
             return command;
         }

@@ -3,7 +3,7 @@ package interpreter.execution.handlers
 import interpreter.execution.model.ExecutionContext
 import interpreter.execution.model.InstructionPointer
 import interpreter.execution.service.ExecutionContextManager
-import interpreter.translate.model.instruction.InstructionCode
+import interpreter.translate.model.InstructionCode
 import interpreter.types.matrix.Matrix
 import interpreter.types.matrix.MatrixBuilder
 import interpreter.types.matrix.MatrixFactory
@@ -44,7 +44,7 @@ class MatrixInstructionHandlerTest extends Specification {
         handler.handle(instructionPointer)
 
         then:
-        1 * instructionPointer.current() >> instruction
+        1 * instructionPointer.currentInstruction() >> instruction
         1 * executionContextManager.executionStackPop(executionContext, instruction.argumentsNumber) >> [objectData]
         1 * matrixFactory.createDoubleBuilder() >> builder
         1 * builder.appendBelow(objectData)

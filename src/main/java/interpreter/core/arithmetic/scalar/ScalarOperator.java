@@ -1,12 +1,11 @@
 package interpreter.core.arithmetic.scalar;
 
-import org.ojalgo.function.ComplexFunction;
-import org.ojalgo.scalar.ComplexNumber;
-
 import interpreter.types.NumericObject;
 import interpreter.types.scalar.ComplexScalar;
 import interpreter.types.scalar.DoubleScalar;
 import interpreter.types.scalar.Scalar;
+import org.ojalgo.function.ComplexFunction;
+import org.ojalgo.scalar.ComplexNumber;
 
 public abstract class ScalarOperator<N extends Number> {
 	public static final ScalarOperator<ComplexNumber> COMPLEX_ADDER = new AbstractComplexOperator() {
@@ -19,14 +18,14 @@ public abstract class ScalarOperator<N extends Number> {
 	public static final ScalarOperator<ComplexNumber> COMPLEX_AND = new AbstractComplexOperator() {
 		@Override
 		protected ComplexNumber operate(ComplexNumber a, ComplexNumber b) {
-			return new ComplexNumber(a.doubleValue()==0 || b.doubleValue()==0 ? 0 : 1);
+			return ComplexNumber.valueOf(a.doubleValue() == 0 || b.doubleValue() == 0 ? 0 : 1);
 		}
 	};
 	
 	public static final ScalarOperator<ComplexNumber> COMPLEX_OR = new AbstractComplexOperator() {
 		@Override
 		protected ComplexNumber operate(ComplexNumber a, ComplexNumber b) {
-			return new ComplexNumber(a.doubleValue()!=0 || b.doubleValue()!=0 ? 1 : 0);
+			return ComplexNumber.valueOf(a.doubleValue() != 0 || b.doubleValue() != 0 ? 1 : 0);
 		}
 	};
 

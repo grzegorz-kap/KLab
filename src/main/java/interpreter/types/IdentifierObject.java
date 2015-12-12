@@ -3,8 +3,8 @@ package interpreter.types;
 import interpreter.parsing.model.tokens.IdentifierToken;
 
 public class IdentifierObject extends AbstractObjectData {
-
     private IdentifierToken identifierToken;
+    private boolean canBeScript = false;
 
     public IdentifierObject(IdentifierToken identifierToken) {
         this.identifierToken = identifierToken;
@@ -14,6 +14,14 @@ public class IdentifierObject extends AbstractObjectData {
         identifierToken = new IdentifierToken();
         identifierToken.setId(name);
         identifierToken.setAddress(address);
+    }
+
+    public boolean isCanBeScript() {
+        return canBeScript;
+    }
+
+    public void setCanBeScript(boolean canBeScript) {
+        this.canBeScript = canBeScript;
     }
 
     public IdentifierToken getIdentifierToken() {

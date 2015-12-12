@@ -3,12 +3,12 @@ package gui.model;
 import java.time.LocalDateTime;
 
 public class Command {
-
     private String content;
     private LocalDateTime createdAt;
 
-    public Command() {
-        createdAt = LocalDateTime.now();
+    public Command(String content) {
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
     }
 
     public String getContent() {

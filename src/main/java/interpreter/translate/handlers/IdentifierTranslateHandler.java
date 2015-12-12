@@ -25,7 +25,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
         if (isAssignmentTarget(expression)) {
             addAddressPointer(identifierToken);
         } else {
-            addLoadInstruction(identifierToken);
+            addLoadInstruction(identifierToken, expression);
         }
     }
 
@@ -35,9 +35,11 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
         translateContextManager.addInstruction(instruction);
     }
 
-    private void addLoadInstruction(IdentifierToken identifierToken) {
+    private void addLoadInstruction(IdentifierToken identifierToken, Expression<ParseToken> expression) {
         Instruction instruction = new Instruction(InstructionCode.LOAD, 0);
-        instruction.add(new IdentifierObject(identifierToken));
+        IdentifierObject identifierObject = new IdentifierObject(identifierToken);
+        identifierObject.setCanBeScript(Objects.isNull(expression.getParent()) && expression.getChildrenCount() == 0);
+        instruction.add(identifierObject);
         translateContextManager.addInstruction(instruction);
     }
 

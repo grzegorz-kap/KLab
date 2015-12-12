@@ -22,7 +22,7 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        CallInstruction callInstruction = (CallInstruction) instructionPointer.current();
+        CallInstruction callInstruction = (CallInstruction) instructionPointer.currentInstruction();
         Indexable indexable = (Indexable) memorySpace.get(callInstruction.getVariableAddress());
         if (callInstruction.getArgumentsNumber() == 2) {
             handleTwo(indexable);

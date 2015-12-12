@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="505.0" prefWidth="583.0"
             xmlns="http://javafx.com/javafx/8.0.40" fx:controller="gui.controller.MainController">
     <top>
@@ -25,7 +25,12 @@
             </menus>
         </MenuBar>
     </top>
-    <center>
-        <fx:include source="console.fxml" BorderPane.alignment="CENTER"/>
-    </center>
+    <left>
+        <SplitPane dividerPositions="0.12960760998810938" BorderPane.alignment="CENTER">
+            <items>
+                <fx:include source="script_list.fxml" BorderPane.alignment="CENTER_RIGHT"/>
+                <fx:include source="console.fxml" BorderPane.alignment="CENTER"/>
+            </items>
+        </SplitPane>
+    </left>
 </BorderPane>

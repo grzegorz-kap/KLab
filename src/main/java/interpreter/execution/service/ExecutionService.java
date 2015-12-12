@@ -24,7 +24,7 @@ public class ExecutionService extends AbstractExecutionService {
 
     public void start() {
         while (!instructionPointer.isCodeEnd()) {
-            Instruction instruction = instructionPointer.current();
+            Instruction instruction = instructionPointer.currentInstruction();
             InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
             checkChandler(instruction, instructionHandler);
             instructionHandler.handle(instructionPointer);
