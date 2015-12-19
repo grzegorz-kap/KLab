@@ -1,7 +1,5 @@
 package interpreter.translate.service;
 
-import java.util.Set;
-
 import interpreter.execution.model.Code;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
@@ -9,6 +7,8 @@ import interpreter.parsing.model.expression.Expression;
 import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.MacroInstruction;
 import interpreter.translate.model.TranslateContext;
+
+import java.util.Set;
 
 public abstract class AbstractInstructionTranslator implements InstructionTranslator {
     protected TranslateContext translateContext;

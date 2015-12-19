@@ -20,6 +20,10 @@ public class CallInstruction extends Instruction {
         return callToken.getInternalFunctionAddress();
     }
 
+    public Integer getExternalFunctionAddress() {
+        return callToken.getExternalAddress();
+    }
+
     public String getName() {
         return callToken.getCallName();
     }

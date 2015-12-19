@@ -11,14 +11,32 @@ import java.util.Objects;
 public class IdentifierMapperImpl implements IdentifierMapper {
 
     private MemorySpace memorySpace;
+
     private Integer mainIdentifierFreeAddress = 0;
     private Integer internalFunctionFreeAddress = 0;
+    private Integer externalFunctionFreeAddress = 0;
     private Map<String, Integer> mainIdentifierAddressMap = new HashMap<>();
     private Map<String, Integer> internalFunctionAddressMap = new HashMap<>();
+    private Map<String, Integer> externalFunctionAddressMap = new HashMap<>();
 
     @Override
     public Integer getMainAddress(String id) {
         return mainIdentifierAddressMap.get(id);
+    }
+
+    @Override
+    public Integer registerExternalFunction(String id) {
+        Integer address = externalFunctionAddressMap.get(id);
+        if (address == null) {
+            address = externalFunctionFreeAddress++;
+            externalFunctionAddressMap.put(id, address);
+        }
+        return address;
+    }
+
+    @Override
+    public Integer getExternalAddress(String id) {
+        return externalFunctionAddressMap.get(id);
     }
 
     @Override

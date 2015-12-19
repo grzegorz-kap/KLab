@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+
+// TODO remove bean, add static
 @Component
 public class ExpressionHelper {
 

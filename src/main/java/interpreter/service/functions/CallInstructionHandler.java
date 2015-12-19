@@ -3,7 +3,7 @@ package interpreter.service.functions;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.service.functions.exception.UndefinedFunctionException;
+import interpreter.service.functions.external.ExternalFunctionCallHandler;
 import interpreter.service.functions.model.CallInstruction;
 import interpreter.translate.model.InstructionCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import static java.util.Objects.nonNull;
 public class CallInstructionHandler extends AbstractInstructionHandler {
     private InternalFunctionCallHandler internalFunctionCallHandler;
     private VariableFunctionCallHandler variableFunctionCallHandler;
+    private ExternalFunctionCallHandler externalFunctionCallHandler;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
@@ -27,7 +28,7 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
         } else if (nonNull(instruction.getInternalFunctionAddress())) {
             internalFunctionCallHandler.handle(instructionPointer);
         } else {
-            throw new UndefinedFunctionException(instruction);
+            externalFunctionCallHandler.handle(instructionPointer);
         }
     }
 
@@ -41,6 +42,7 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
         super.setExecutionContext(executionContext);
         internalFunctionCallHandler.setExecutionContext(executionContext);
         variableFunctionCallHandler.setExecutionContext(executionContext);
+        externalFunctionCallHandler.setExecutionContext(executionContext);
     }
 
     @Autowired
@@ -51,5 +53,10 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
     @Autowired
     public void setVariableFunctionCallHandler(VariableFunctionCallHandler variableFunctionCallHandler) {
         this.variableFunctionCallHandler = variableFunctionCallHandler;
+    }
+
+    @Autowired
+    public void setExternalFunctionCallHandler(ExternalFunctionCallHandler externalFunctionCallHandler) {
+        this.externalFunctionCallHandler = externalFunctionCallHandler;
     }
 }

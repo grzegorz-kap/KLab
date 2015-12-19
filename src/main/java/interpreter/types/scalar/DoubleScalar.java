@@ -1,12 +1,8 @@
 package interpreter.types.scalar;
 
-import java.util.Objects;
+import interpreter.types.*;
 
-import interpreter.types.AddressIterator;
-import interpreter.types.Addressable;
-import interpreter.types.Negable;
-import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
+import java.util.Objects;
 
 public class DoubleScalar extends AbstractScalar<Double> implements Addressable {
 	private Double value;

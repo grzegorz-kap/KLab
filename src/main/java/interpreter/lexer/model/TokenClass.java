@@ -20,7 +20,8 @@ public enum TokenClass {
     FOR_KEYWORD(16, true, true),
     ENDFOR_KEYWORD(17, true, true),
     BREAK_KEYWORD(18, true,true),
-    CONTINUE_KEYWORD(19, true, true);
+    CONTINUE_KEYWORD(19, true, true),
+    FUNCTION_KEYWROD(20, true, true);
 
     private int index;
     private boolean keyword;

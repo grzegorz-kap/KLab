@@ -1,9 +1,8 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import org.ojalgo.matrix.store.MatrixStore;
-
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoMatrixCreator;
+import org.ojalgo.matrix.store.MatrixStore;
 
 public class MatrixPower<N extends Number> extends OjalgoOperator<N> {
 	public MatrixPower(OjalgoMatrixCreator<N> creator) {

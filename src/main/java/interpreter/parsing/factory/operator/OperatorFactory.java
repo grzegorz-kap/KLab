@@ -1,50 +1,18 @@
 package interpreter.parsing.factory.operator;
 
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.AAND;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.ADD;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.ADIV;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.AMULT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.AND;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.AOR;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.APOW;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.ASSIGN;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.DIV;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.EQ;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.GE;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.GT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.LE;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.LT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.MULT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.NEG;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.NEQ;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.NOT;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.OR;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.POW;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.RANGE3;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.SUB;
-import static interpreter.parsing.model.tokens.operators.OperatorCode.TRANSPOSE;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_10;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_14;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_15;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_20;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_25;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_30;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_40;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_45;
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_50;
+import interpreter.lexer.model.Token;
+import interpreter.parsing.model.tokens.operators.OperatorCode;
+import interpreter.parsing.model.tokens.operators.OperatorToken;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.springframework.stereotype.Service;
-
-import interpreter.lexer.model.Token;
-import interpreter.parsing.model.tokens.operators.OperatorCode;
-import interpreter.parsing.model.tokens.operators.OperatorToken;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import static interpreter.parsing.model.tokens.operators.OperatorCode.*;
+import static interpreter.parsing.model.tokens.operators.OperatorPriority.*;
 
 @Service
 public class OperatorFactory {

@@ -1,12 +1,11 @@
 package interpreter.core.arithmetic.matrix.ojalgo;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import interpreter.core.arithmetic.NumericObjectsOperator;
 import interpreter.core.arithmetic.matrix.ojalgo.comparator.AbstractOjalgoMatrixComparator;
 import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.matrix.ojalgo.OjalgoMatrixCreator;
+import org.springframework.beans.factory.annotation.Required;
 
 public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOperator {
 	private AbstractOjalgoMatrixComparator<T> comparator;
@@ -27,7 +26,12 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
 	public NumericType getSupportedType() {
 		return supportedType;
 	}
-	
+
+	@Required
+	public void setSupportedType(NumericType supportedType) {
+		this.supportedType = supportedType;
+	}
+
 	@Override
 	public NumericObject negate(NumericObject a) {
 		return negator.operatate(a);
@@ -140,11 +144,6 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
 	@Required
 	public void setMatrixSubtractor(MatrixSubtractor<T> matrixSubtractor) {
 		this.matrixSubtractor = matrixSubtractor;
-	}
-
-	@Required
-	public void setSupportedType(NumericType supportedType) {
-		this.supportedType = supportedType;
 	}
 
 	@Required

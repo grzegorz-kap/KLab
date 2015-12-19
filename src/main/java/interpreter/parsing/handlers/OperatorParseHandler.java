@@ -1,16 +1,5 @@
 package interpreter.parsing.handlers;
 
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
-import static java.util.Objects.nonNull;
-
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.factory.operator.OperatorFactory;
@@ -18,6 +7,16 @@ import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.ExpressionNode;
 import interpreter.parsing.model.tokens.operators.OperatorAssociativity;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
+import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import static java.util.Objects.nonNull;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
