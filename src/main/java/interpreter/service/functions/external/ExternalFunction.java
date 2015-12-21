@@ -9,6 +9,7 @@ public class ExternalFunction {
     private String name;
     private Integer id;
     private Code code;
+    private int memoryLength;
     private List<ExternalArgument> arguments = new ArrayList<>();
     private List<ExternalReturn> returns = new ArrayList<>();
 
@@ -55,5 +56,25 @@ public class ExternalFunction {
     public ExternalFunction addReturn(ExternalReturn externalReturn) {
         returns.add(externalReturn);
         return this;
+    }
+
+    public int getMemoryLength() {
+        return memoryLength;
+    }
+
+    public void setMemoryLength(int memoryLength) {
+        this.memoryLength = memoryLength;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Name: \t").append(name).append("\n");
+        b.append("Output: ");
+        returns.forEach(r -> b.append(r.getName()).append(" "));
+        b.append("\nInput: ");
+        arguments.forEach(i -> b.append(i.getName()).append(" "));
+        b.append("\nBody: ").append(code);
+        return b.toString();
     }
 }

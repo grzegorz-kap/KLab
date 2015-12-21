@@ -1,23 +1,40 @@
 package interpreter.commons;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class IdentifierMapperImpl implements IdentifierMapper {
-
-    private MemorySpace memorySpace;
-
     private Integer mainIdentifierFreeAddress = 0;
     private Integer internalFunctionFreeAddress = 0;
     private Integer externalFunctionFreeAddress = 0;
     private Map<String, Integer> mainIdentifierAddressMap = new HashMap<>();
     private Map<String, Integer> internalFunctionAddressMap = new HashMap<>();
     private Map<String, Integer> externalFunctionAddressMap = new HashMap<>();
+
+    private Deque<Map<String, Integer>> scopes = new ArrayDeque<>();
+    private Deque<Integer> scopesAddress = new ArrayDeque<>();
+
+    @Override
+    public void putNewScope() {
+        scopes.addFirst(mainIdentifierAddressMap);
+        scopesAddress.addFirst(mainIdentifierFreeAddress);
+        mainIdentifierAddressMap = Maps.newHashMap();
+        mainIdentifierFreeAddress = 0;
+    }
+
+    @Override
+    public void restorePreviousScope() {
+        mainIdentifierAddressMap = scopes.removeFirst();
+        mainIdentifierFreeAddress = scopesAddress.removeFirst();
+    }
+
+    @Override
+    public int mainMappingsSize() {
+        return mainIdentifierAddressMap.size();
+    }
 
     @Override
     public Integer getMainAddress(String id) {
@@ -45,7 +62,6 @@ public class IdentifierMapperImpl implements IdentifierMapper {
         if (Objects.isNull(address)) {
             address = getNextFreeMainAddressAndIncrement();
             mainIdentifierAddressMap.put(id, address);
-            memorySpace.reserveNull();
         }
         return address;
     }
@@ -66,10 +82,5 @@ public class IdentifierMapperImpl implements IdentifierMapper {
 
     private Integer getNextFreeInternalFunctionFreeAddressAndIncrement() {
         return internalFunctionFreeAddress++;
-    }
-
-    @Autowired
-    private void setMemorySpace(MemorySpace memorySpace) {
-        this.memorySpace = memorySpace;
     }
 }

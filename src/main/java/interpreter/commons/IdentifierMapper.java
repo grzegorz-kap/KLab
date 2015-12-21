@@ -10,4 +10,10 @@ public interface IdentifierMapper {
     Integer registerExternalFunction(String id);
 
     Integer getExternalAddress(String id);
+
+    void putNewScope();
+
+    void restorePreviousScope();
+
+    int mainMappingsSize();
 }

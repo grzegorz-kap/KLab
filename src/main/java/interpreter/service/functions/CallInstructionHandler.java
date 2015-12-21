@@ -1,5 +1,6 @@
 package interpreter.service.functions;
 
+import interpreter.commons.MemorySpace;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.ExecutionContext;
 import interpreter.execution.model.InstructionPointer;
@@ -11,21 +12,21 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static java.util.Objects.nonNull;
-
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CallInstructionHandler extends AbstractInstructionHandler {
     private InternalFunctionCallHandler internalFunctionCallHandler;
     private VariableFunctionCallHandler variableFunctionCallHandler;
     private ExternalFunctionCallHandler externalFunctionCallHandler;
+    private MemorySpace memorySpace;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
         CallInstruction instruction = (CallInstruction) instructionPointer.currentInstruction();
-        if (nonNull(instruction.getVariableAddress())) {
+        Integer varPtr = instruction.getVariableAddress();
+        if (varPtr != null && memorySpace.get(varPtr) != null) {
             variableFunctionCallHandler.handle(instructionPointer);
-        } else if (nonNull(instruction.getInternalFunctionAddress())) {
+        } else if (instruction.getInternalFunctionAddress() != null) {
             internalFunctionCallHandler.handle(instructionPointer);
         } else {
             externalFunctionCallHandler.handle(instructionPointer);
@@ -58,5 +59,10 @@ public class CallInstructionHandler extends AbstractInstructionHandler {
     @Autowired
     public void setExternalFunctionCallHandler(ExternalFunctionCallHandler externalFunctionCallHandler) {
         this.externalFunctionCallHandler = externalFunctionCallHandler;
+    }
+
+    @Autowired
+    public void setMemorySpace(MemorySpace memorySpace) {
+        this.memorySpace = memorySpace;
     }
 }

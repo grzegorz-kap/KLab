@@ -1,6 +1,7 @@
 package interpreter.service.functions.external;
 
-public interface ExternalFunctionService {
-    ExternalFunction loadFunction(Integer functionId, String functionName);
+import interpreter.service.functions.model.CallInstruction;
 
+public interface ExternalFunctionService {
+    ExternalFunction loadFunction(CallInstruction cI);
 }

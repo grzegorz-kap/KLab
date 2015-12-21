@@ -1,10 +1,11 @@
 package interpreter.service.functions.external
 
-import spock.lang.Specification
+import interpreter.AbstractServiceTest
+import org.springframework.beans.factory.annotation.Autowired
 
-
-class ExternalFunctionParserTest extends Specification {
-    def parser = new ExternalFunctionParser();
+class ExternalFunctionParserTest extends AbstractServiceTest {
+    @Autowired
+    private ExternalFunctionParser parser;
 
     def "Test parse method"() {
         when:

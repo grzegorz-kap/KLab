@@ -38,7 +38,9 @@ public enum InstructionCode {
     LOGICAL(34),
     NOT(35),
     NEG(36),
-    SCRIPT_EXIT(37);
+    SCRIPT_EXIT(37),
+    FUNCTION_START(38),
+    FUNCTION_END(39);
 
     private int index;
 

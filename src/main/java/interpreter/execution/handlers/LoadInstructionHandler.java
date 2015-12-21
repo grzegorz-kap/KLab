@@ -13,14 +13,10 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static java.util.Objects.isNull;
-
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class LoadInstructionHandler extends AbstractInstructionHandler {
-
     public static final String VARIABLE_IS_NOT_DEFINED_MESSAGE = "Variable is not defined";
-
     private MemorySpace memorySpace;
     private ScriptService scriptService;
 
@@ -33,7 +29,7 @@ public class LoadInstructionHandler extends AbstractInstructionHandler {
     private void handle(IdentifierObject identifierObject, InstructionPointer instructionPointer) {
         ObjectData objectData = memorySpace.get(identifierObject.getAddress());
         instructionPointer.increment();
-        if (isNull(objectData)) {
+        if (objectData == null) {
             Code code;
             if (identifierObject.isCanBeScript() && (code = scriptService.getCode(identifierObject.getId())) != null) {
                 instructionPointer.moveToCode(code);
