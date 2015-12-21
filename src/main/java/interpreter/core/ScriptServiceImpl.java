@@ -29,11 +29,9 @@ public class ScriptServiceImpl implements ScriptService {
 
     @Subscribe
     public void onScriptChange(ScriptChangeEvent event) {
-        if (event.getType() != ScriptChangeEvent.Type.CREATED) {
-            boolean removed = cachedCode.remove(FilenameUtils.removeExtension(event.getData())) != null;
-            if (removed) {
-                LOGGER.info("Script '{}' removed from cache, cause: '{}'", event.getData(), event.getType());
-            }
+        boolean removed = cachedCode.remove(FilenameUtils.removeExtension(event.getData())) != null;
+        if (removed) {
+            LOGGER.info("Script '{}' removed from cache, cause: '{}'", event.getData(), event.getType());
         }
     }
 

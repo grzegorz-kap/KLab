@@ -46,12 +46,10 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
 
     @Subscribe
     public void onScriptChangedEvent(ScriptChangeEvent event) {
-        if (event.getType() == ScriptChangeEvent.Type.DELETED || event.getType() == ScriptChangeEvent.Type.UPDATED) {
-            String name = FilenameUtils.removeExtension(event.getData());
-            boolean result = functionsCache.entrySet().removeIf(entry -> entry.getKey().name.equals(name));
-            if (result) {
-                LOGGER.info("Function '{}' removed from cache, cause: {}", name, event.getType());
-            }
+        String name = FilenameUtils.removeExtension(event.getData());
+        boolean result = functionsCache.entrySet().removeIf(entry -> entry.getKey().name.equals(name));
+        if (result) {
+            LOGGER.info("Function '{}' removed from cache, cause: {}", name, event.getType());
         }
     }
 
