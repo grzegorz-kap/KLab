@@ -3,12 +3,28 @@ package interpreter.execution.model;
 import interpreter.translate.model.Instruction;
 import interpreter.types.ObjectData;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 
 public class ExecutionContext {
-
     private Code code = new Code();
     private ExecutionStack executionStack = new ExecutionStack();
+    private Deque<Integer> deque = new ArrayDeque<>();
+
+    public void storeExecutionStackSize() {
+        deque.addFirst(executionStackSize());
+    }
+
+    public void restoreExecutionStackSize() {
+        int elementsToPop = executionStack.size() - deque.removeFirst();
+        if(elementsToPop < 0) {
+            throw new RuntimeException("Error in external function"); // TODO better
+        }
+        while (elementsToPop-- > 0) {
+            executionStackPop();
+        }
+    }
 
     public InstructionPointer newInstructionPointer() {
         return new InstructionPointer(code);

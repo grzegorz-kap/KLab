@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 public class ScriptFileServiceImpl implements ScriptFileService, InitializingBean {
     private EventService eventService;
-
     private String scriptRegex = "[A-Za-z][A-Za-z0-9_]*[.]m$";
     private String workingDirectory;
     private String applicationName;

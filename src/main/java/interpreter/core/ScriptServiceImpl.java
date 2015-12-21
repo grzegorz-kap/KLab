@@ -19,11 +19,8 @@ import java.util.Objects;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptServiceImpl.class);
-
     private Map<String, Code> cachedCode = Collections.synchronizedMap(new HashMap<>());
-
     private CodeGenerator codeGenerator;
     private ScriptFileService scriptFileService;
 

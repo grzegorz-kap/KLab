@@ -18,6 +18,7 @@ public class FunctionEndInstructionHandler extends AbstractInstructionHandler {
     @Override
     public void handle(InstructionPointer instructionPointer) {
         memorySpace.previousScope();
+        executionContext.restoreExecutionStackSize();
         instructionPointer.restorePreviousCode();
     }
 

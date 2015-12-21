@@ -27,6 +27,7 @@ public class ExternalFunctionCallHandler extends AbstractInstructionHandler {
             for (int i = nargin - 1; i >= 0; i--) {
                 data[i] = executionContext.executionStackPop();
             }
+            executionContext.storeExecutionStackSize();
             memorySpace.newScope(data);
             instructionPointer.increment();
             instructionPointer.moveToCode(extFunction.getCode());
