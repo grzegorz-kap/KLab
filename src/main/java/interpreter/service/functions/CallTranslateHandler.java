@@ -14,12 +14,18 @@ import org.springframework.stereotype.Component;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CallTranslateHandler extends AbstractTranslateHandler {
 
+    // TODO check if assignment target and check how many output arguments
     @Override
     public void handle(Expression<ParseToken> expression) {
         CallToken callToken = (CallToken) expression.getValue();
         CallInstruction callInstruction = new CallInstruction(callToken);
         callInstruction.setArgumentsNumber(expression.getChildrenCount());
+        resolveOutputSize(callInstruction, expression);
         translateContextManager.addInstruction(callInstruction);
+    }
+
+    private void resolveOutputSize(CallInstruction instruction, Expression<ParseToken> expression) {
+        instruction.setExpectedOutputSize(1); // TODO support more than one argument;
     }
 
     @Override

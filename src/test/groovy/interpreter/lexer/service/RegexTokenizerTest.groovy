@@ -10,8 +10,6 @@ class RegexTokenizerTest extends Specification {
 
     def setup() {
         RegexTokenizer regexTokenizer = new RegexTokenizer()
-        regexTokenizer.setKeywordMatcher(new KeywordMatcher())
-        regexTokenizer.setSymbolsMapper(new SymbolsMapper())
         regexTokenizer.settCM(new TokenizerContextManager())
         regexTokenizer.setTokenRegexReader(new TokenRegexReader())
         regexTokenizer.setTokenMatcher(new TokenMatcher())

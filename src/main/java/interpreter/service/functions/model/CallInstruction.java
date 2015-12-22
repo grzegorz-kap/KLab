@@ -4,8 +4,8 @@ import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
 
 public class CallInstruction extends Instruction {
-
     private CallToken callToken;
+    private int expectedOutputSize;
 
     public CallInstruction(CallToken identifierToken) {
         this.callToken = identifierToken;
@@ -20,23 +20,25 @@ public class CallInstruction extends Instruction {
         return callToken.getInternalFunctionAddress();
     }
 
-    public Integer getExternalFunctionAddress() {
-        return callToken.getExternalAddress();
-    }
-
     public String getName() {
         return callToken.getCallName();
     }
 
+    public int getExpectedOutputSize() {
+        return expectedOutputSize;
+    }
+
+    public void setExpectedOutputSize(int expectedOutputSize) {
+        this.expectedOutputSize = expectedOutputSize;
+    }
+
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(super.toString());
-        builder.append(callToken.getCallName()).append("@");
-        builder.append(callToken.getVariableAddress()).append("$");
-        builder.append(callToken.getInternalFunctionAddress()).append("#");
-        builder.append(getArgumentsNumber());
-        return builder.toString();
+        return super.toString() +
+                callToken.getCallName() + "@" +
+                callToken.getVariableAddress() + "$" +
+                callToken.getInternalFunctionAddress() + "#" +
+                getArgumentsNumber();
     }
 
 }
