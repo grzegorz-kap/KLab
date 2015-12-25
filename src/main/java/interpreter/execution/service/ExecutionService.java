@@ -17,7 +17,6 @@ import java.util.Set;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ExecutionService extends AbstractExecutionService {
     public static final String UNEXPECTED_INSTRUCTION_MESSAGE = "Unexpected instruction";
-
     private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
 

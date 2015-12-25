@@ -4,8 +4,6 @@ import com.google.common.eventbus.Subscribe;
 import interpreter.core.ScriptFileService;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.service.functions.model.CallInstruction;
-import interpreter.translate.model.Instruction;
-import interpreter.translate.model.InstructionCode;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,7 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
         try {
             String fileContent = scriptFileService.readScript(key.name);
             ExternalFunction e = externalFunctionParser.parse(fileContent);
-            e.getCode().add(new Instruction(InstructionCode.FUNCTION_END, 0));
+            e.getCode().add(new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size()));
             functionsCache.put(key, e);
             return e;
         } catch (IOException e) {

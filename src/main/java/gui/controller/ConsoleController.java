@@ -7,6 +7,7 @@ import gui.helpers.KeyboardHelper;
 import gui.model.CommandHistory;
 import interpreter.core.Interpreter;
 import interpreter.core.events.PrintEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
 import org.fxmisc.richtext.CodeArea;
@@ -45,11 +46,13 @@ public class ConsoleController {
 
     @Subscribe
     public void onPrintEvent(PrintEvent printEvent) {
-        String objectName = printEvent.getData().getName();
-        if (Objects.nonNull(objectName)) {
-            consoleOutput.appendText(String.format("%s = ", objectName));
-        }
-        consoleOutput.appendText(String.format("%s\n\n", printEvent.getData().toString()));
+        Platform.runLater(() -> {
+            String objectName = printEvent.getData().getName();
+            if (Objects.nonNull(objectName)) {
+                consoleOutput.appendText(String.format("%s = ", objectName));
+            }
+            consoleOutput.appendText(String.format("%s\n\n", printEvent.getData().toString()));
+        });
     }
 
     @Subscribe
