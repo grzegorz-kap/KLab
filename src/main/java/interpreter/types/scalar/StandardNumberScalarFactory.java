@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 @Service("numberScalarFactory")
 public class StandardNumberScalarFactory implements NumberScalarFactory {
     @Override
+    public NumericObject getDouble(double value) {
+        return new DoubleScalar(value);
+    }
+
+    @Override
     public NumericObject getDouble(String value) {
         if (value.endsWith("i")) {
             value = value.replace("i", "");

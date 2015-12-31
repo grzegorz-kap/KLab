@@ -47,7 +47,7 @@ public class ConsoleController {
     @Subscribe
     public void onPrintEvent(PrintEvent printEvent) {
         Platform.runLater(() -> {
-            String objectName = printEvent.getData().getName();
+            String objectName = printEvent.getName();
             if (Objects.nonNull(objectName)) {
                 consoleOutput.appendText(String.format("%s = ", objectName));
             }

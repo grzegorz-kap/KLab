@@ -12,6 +12,8 @@ public class ExternalFunction {
     private int memoryLength;
     private List<ExternalArgument> arguments = new ArrayList<>();
     private List<ExternalReturn> returns = new ArrayList<>();
+    private int narginAddress;
+    private int nargoutAddress;
 
     public Code getCode() {
         return code;
@@ -64,6 +66,22 @@ public class ExternalFunction {
 
     public void setMemoryLength(int memoryLength) {
         this.memoryLength = memoryLength;
+    }
+
+    public int getNarginAddress() {
+        return narginAddress;
+    }
+
+    public void setNarginAddress(int narginAddress) {
+        this.narginAddress = narginAddress;
+    }
+
+    public int getNargoutAddress() {
+        return nargoutAddress;
+    }
+
+    public void setNargoutAddress(int nargoutAddress) {
+        this.nargoutAddress = nargoutAddress;
     }
 
     @Override

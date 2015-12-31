@@ -37,6 +37,7 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
             ret.setExpectedOutput(cl.getExpectedOutputSize());
             e.getCode().add(ret);
             functionsCache.put(key, e);
+            LOGGER.info("Function \n{}", e);
             return e;
         } catch (IOException e) {
             LOGGER.error("Error reading function '{}'. {}", key.name, e);

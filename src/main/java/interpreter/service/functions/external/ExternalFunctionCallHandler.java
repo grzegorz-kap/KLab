@@ -6,6 +6,7 @@ import interpreter.execution.model.InstructionPointer;
 import interpreter.service.functions.model.CallInstruction;
 import interpreter.translate.model.InstructionCode;
 import interpreter.types.ObjectData;
+import interpreter.types.scalar.NumberScalarFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class ExternalFunctionCallHandler extends AbstractInstructionHandler {
     private ExternalFunctionService externalFunctionService;
     private MemorySpace memorySpace;
+    private NumberScalarFactory numberScalarFactory;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
@@ -27,6 +29,8 @@ public class ExternalFunctionCallHandler extends AbstractInstructionHandler {
             for (int i = nargin - 1; i >= 0; i--) {
                 data[i] = executionContext.executionStackPop();
             }
+            data[extFunction.getNarginAddress()] = numberScalarFactory.getDouble(instr.getArgumentsNumber());
+            data[extFunction.getNargoutAddress()] = numberScalarFactory.getDouble(instr.getExpectedOutputSize());
             executionContext.storeExecutionStackSize();
             memorySpace.newScope(data);
             instructionPointer.increment();
@@ -49,5 +53,10 @@ public class ExternalFunctionCallHandler extends AbstractInstructionHandler {
     @Autowired
     public void setExternalFunctionService(ExternalFunctionService externalFunctionService) {
         this.externalFunctionService = externalFunctionService;
+    }
+
+    @Autowired
+    public void setNumberScalarFactory(NumberScalarFactory numberScalarFactory) {
+        this.numberScalarFactory = numberScalarFactory;
     }
 }
