@@ -24,16 +24,18 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
 
     @Override
     public ExternalFunction loadFunction(CallInstruction cl) {
-        FunctionKey key = new FunctionKey(cl.getName(), cl.getArgumentsNumber());
+        FunctionKey key = new FunctionKey(cl.getName(), cl.getArgumentsNumber(), cl.getExpectedOutputSize());
         ExternalFunction externalFunction = functionsCache.get(key);
-        return externalFunction != null ? externalFunction : read(key);
+        return externalFunction != null ? externalFunction : read(key, cl);
     }
 
-    private ExternalFunction read(FunctionKey key) {
+    private ExternalFunction read(FunctionKey key, CallInstruction cl) {
         try {
             String fileContent = scriptFileService.readScript(key.name);
             ExternalFunction e = externalFunctionParser.parse(fileContent);
-            e.getCode().add(new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size()));
+            EndFunctionInstruction ret = new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size());
+            ret.setExpectedOutput(cl.getExpectedOutputSize());
+            e.getCode().add(ret);
             functionsCache.put(key, e);
             return e;
         } catch (IOException e) {
@@ -64,16 +66,20 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
     private static class FunctionKey {
         public String name;
         public int arguments;
+        public int expected;
 
-        public FunctionKey(String name, int arguments) {
+        public FunctionKey(String name, int arguments, int expected) {
             this.name = name;
             this.arguments = arguments;
+            this.expected = expected;
         }
 
         @Override
         public boolean equals(Object obj) {
             FunctionKey key = (FunctionKey) obj;
-            return key.arguments == this.arguments && key.name.equals(this.name);
+            return this.expected == key.expected &&
+                    key.arguments == this.arguments &&
+                    key.name.equals(this.name);
         }
 
         @Override

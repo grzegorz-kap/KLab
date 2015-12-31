@@ -25,12 +25,18 @@ public class CallTranslateHandler extends AbstractTranslateHandler {
     }
 
     private void resolveOutputSize(CallInstruction instruction, Expression<ParseToken> expression) {
-        instruction.setExpectedOutputSize(1); // TODO support more than one argument;
+        instruction.setExpectedOutputSize(1);
+        Expression<ParseToken> parent = expression.getParent();
+        if(parent!=null && parent.getValue() != null && parent.getValue().getToken().getLexeme().equals("=")) {
+            Expression<ParseToken> left = parent.getChildren().get(0);
+            if (ParseClass.MATRIX.equals(left.getValue().getParseClass())) {
+                instruction.setExpectedOutputSize(left.getChildren().get(0).getChildren().size());
+            }
+        }
     }
 
     @Override
     public ParseClass getSupportedParseClass() {
         return ParseClass.CALL;
     }
-
 }

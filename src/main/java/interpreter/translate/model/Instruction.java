@@ -3,6 +3,7 @@ package interpreter.translate.model;
 import interpreter.types.ObjectData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Instruction {
@@ -16,6 +17,11 @@ public class Instruction {
     public Instruction(InstructionCode instructionCode, int argumentsNumber) {
         this.instructionCode = instructionCode;
         this.argumentsNumber = argumentsNumber;
+    }
+
+    public Instruction(InstructionCode instructionCode, int argumentsNumber, ObjectData... data) {
+        this(instructionCode, argumentsNumber);
+        Collections.addAll(this.data, data);
     }
 
     public InstructionCode getInstructionCode() {

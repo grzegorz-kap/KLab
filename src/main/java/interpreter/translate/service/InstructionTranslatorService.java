@@ -4,6 +4,7 @@ import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.model.expression.ExpressionValue;
+import interpreter.parsing.model.tokens.IdentifierToken;
 import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
 import interpreter.translate.exception.UnsupportedParseToken;
@@ -11,11 +12,14 @@ import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
 import interpreter.translate.model.JumperInstruction;
+import interpreter.translate.model.MacroInstruction;
+import interpreter.types.IdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -34,15 +38,12 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     protected void translate() {
         Expression<ParseToken> parseTokenExpression = translateContext.getExpression();
         process(parseTokenExpression);
-        addAns();
-        addPrint();
-    }
-
-    private void addAns() {
         if (getAnsProperty()) {
             translateContextManager.addInstruction(new Instruction(InstructionCode.ANS, 1));
         }
-
+        if (getPrintProperty()) {
+            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0));
+        }
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
@@ -67,15 +68,24 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     private void handleAssignOperator(Expression<ParseToken> expression) {
         Expression<ParseToken> left = expression.getChildren().get(0);
         if (left.getValue().getParseClass().equals(ParseClass.MATRIX)) {
-            if (left.getChildren().size() != 1) {
+            if (left.getChildren().size() != 1) {  // only verse vector allowed // TODO column vector to
                 throw new RuntimeException("Wrong assignment target");
             }
             Expression<ParseToken> vector = left.getChildren().get(0);
-            for (Expression<ParseToken> target : vector.getChildren()) {
+            MacroInstruction macroInstruction = new MacroInstruction();
+            List<Expression<ParseToken>> children = vector.getChildren();
+            for (Expression<ParseToken> target : children) {
                 if (!target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
                     throw new UnsupportedOperationException();
                 }
+                macroInstruction.add(new Instruction(InstructionCode.PUSH, 0, new IdentifierObject((IdentifierToken) target.getValue())));
+                macroInstruction.add(new Instruction(InstructionCode.RSTORE, 0));
             }
+            process(expression.getChildren().get(1));
+            translateContextManager.addInstruction(macroInstruction);
+        } else {
+            expression.getChildren().forEach(this::process);
+            translateExpressionValue(expression);
         }
     }
 
@@ -103,12 +113,6 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
             translateExpressionValue(parseTokenExpression);
         } else {
             translateExpressionNode(parseTokenExpression);
-        }
-    }
-
-    private void addPrint() {
-        if (getPrintProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0));
         }
     }
 

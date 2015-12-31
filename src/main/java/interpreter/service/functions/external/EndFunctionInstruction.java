@@ -6,6 +6,7 @@ import interpreter.translate.model.InstructionCode;
 public class EndFunctionInstruction extends Instruction {
     private int outputStart;
     private int outputSize;
+    private int expectedOutput;
 
     public EndFunctionInstruction(int outputStart, int outputSize) {
         setInstructionCode(InstructionCode.FUNCTION_END);
@@ -18,15 +19,15 @@ public class EndFunctionInstruction extends Instruction {
         return outputStart;
     }
 
-    public void setOutputStart(int outputStart) {
-        this.outputStart = outputStart;
-    }
-
     public int getOutputSize() {
         return outputSize;
     }
 
-    public void setOutputSize(int outputSize) {
-        this.outputSize = outputSize;
+    public int getExpectedOutput() {
+        return expectedOutput;
+    }
+
+    public void setExpectedOutput(int expectedOutput) {
+        this.expectedOutput = expectedOutput;
     }
 }

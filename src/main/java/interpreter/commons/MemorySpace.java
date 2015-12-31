@@ -12,11 +12,6 @@ public class MemorySpace {
     private ObjectData[] mainIdentifiers = new ObjectData[0];
     private Deque<ObjectData[]> stack = new ArrayDeque<>();
 
-    public void newScope() {
-        stack.addFirst(mainIdentifiers);
-        mainIdentifiers = new ObjectData[0];
-    }
-
     public void newScope(ObjectData[] data) {
         stack.addFirst(mainIdentifiers);
         mainIdentifiers = data;

@@ -3,7 +3,6 @@ package interpreter.translate.handlers;
 import interpreter.translate.service.TranslateContextManager;
 
 public abstract class AbstractTranslateHandler implements TranslateHandler {
-
     protected TranslateContextManager translateContextManager;
 
     @Override
