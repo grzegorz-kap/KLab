@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public interface Expression<T> {
-
     String PRINT_PROPERTY_KEY = "print";
     String ANS_PROPERTY_KEY = "ans";
 

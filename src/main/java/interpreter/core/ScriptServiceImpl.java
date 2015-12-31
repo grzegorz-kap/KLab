@@ -19,21 +19,16 @@ import java.util.Objects;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptServiceImpl.class);
-
     private Map<String, Code> cachedCode = Collections.synchronizedMap(new HashMap<>());
-
     private CodeGenerator codeGenerator;
     private ScriptFileService scriptFileService;
 
     @Subscribe
     public void onScriptChange(ScriptChangeEvent event) {
-        if (event.getType() != ScriptChangeEvent.Type.CREATED) {
-            boolean removed = cachedCode.remove(FilenameUtils.removeExtension(event.getData())) != null;
-            if (removed) {
-                LOGGER.info("Script '{}' removed from cache, cause: '{}'", event.getData(), event.getType());
-            }
+        boolean removed = cachedCode.remove(FilenameUtils.removeExtension(event.getData())) != null;
+        if (removed) {
+            LOGGER.info("Script '{}' removed from cache, cause: '{}'", event.getData(), event.getType());
         }
     }
 

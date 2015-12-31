@@ -1,12 +1,12 @@
 package gui;
 
-import java.io.IOException;
-
 import gui.config.GuiContext;
 import gui.config.ScreensConfiguration;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class App extends Application {
 	private ScreensConfiguration screensConfiguration = GuiContext.getScreensConfiguration();

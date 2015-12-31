@@ -23,16 +23,10 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
     public void handle(Expression<ParseToken> expression) {
         IdentifierToken identifierToken = (IdentifierToken) expression.getValue();
         if (isAssignmentTarget(expression)) {
-            addAddressPointer(identifierToken);
+            translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new IdentifierObject(identifierToken)));
         } else {
             addLoadInstruction(identifierToken, expression);
         }
-    }
-
-    private void addAddressPointer(IdentifierToken identifierToken) {
-        Instruction instruction = new Instruction(InstructionCode.PUSH, 0);
-        instruction.add(new IdentifierObject(identifierToken));
-        translateContextManager.addInstruction(instruction);
     }
 
     private void addLoadInstruction(IdentifierToken identifierToken, Expression<ParseToken> expression) {

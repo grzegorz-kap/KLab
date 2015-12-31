@@ -1,6 +1,7 @@
 package interpreter.core;
 
 import interpreter.execution.model.Code;
+import interpreter.lexer.model.TokenList;
 import interpreter.lexer.service.Tokenizer;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -30,11 +31,29 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public Code translate(String input) {
+        Code code = initCode();
+        parser.setTokenList(tokenizer.readTokens(input));
+        process(code);
+        LOGGER.debug("{}", code);
+        return code;
+    }
+
+    @Override
+    public Code translate(TokenList input) {
+        Code code = initCode();
+        parser.setTokenList(input);
+        process(code);
+        return code;
+    }
+
+    private Code initCode() {
         Code code = new Code();
         postParseHandlers.forEach(handler -> handler.setCode(code));
         instructionTranslator.setCode(code);
+        return code;
+    }
 
-        parser.setTokenList(tokenizer.readTokens(input));
+    private void process(Code code) {
         while (parser.hasNext()) {
             List<Expression<ParseToken>> expressionList = parser.process();
             PostParseHandler postParseHandler = findPostParseHandler(expressionList);
@@ -44,8 +63,6 @@ public class CodeGeneratorImpl implements CodeGenerator {
                 code.add(postParseHandler.handle(expressionList, instructionTranslator).getInstructions());
             }
         }
-        LOGGER.debug("{}", code);
-        return code;
     }
 
     public PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {

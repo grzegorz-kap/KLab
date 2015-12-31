@@ -1,7 +1,5 @@
 package interpreter.execution.handlers.operators;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import interpreter.core.arithmetic.factory.NumericObjectsOperatorFactory;
 import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.helper.NumericUtils;
@@ -10,6 +8,7 @@ import interpreter.types.NumericObject;
 import interpreter.types.NumericType;
 import interpreter.types.ObjectData;
 import interpreter.types.converters.ConvertersHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractOperatorInstructionHandler extends AbstractInstructionHandler {
 	protected NumericObjectsOperatorFactory operatorFactory;

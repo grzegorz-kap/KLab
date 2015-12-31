@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 public class ScriptFileServiceImpl implements ScriptFileService, InitializingBean {
     private EventService eventService;
-
     private String scriptRegex = "[A-Za-z][A-Za-z0-9_]*[.]m$";
     private String workingDirectory;
     private String applicationName;
@@ -42,7 +41,7 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     @Override
     public String readScript(String scriptName) throws IOException {
         Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, ".m"));
-        return new String(Files.readAllBytes(path));
+        return new String(Files.readAllBytes(path)).replaceAll("\\r\\n", "\n");
     }
 
     private void init() throws IOException {

@@ -7,11 +7,20 @@ import interpreter.parsing.model.ParseToken;
 public class CallToken extends ParseToken {
 
     private Integer variableAddress;
+    private Integer externalAddress;
     private Integer internalFunctionAddress;
 
     public CallToken(Token token) {
         setToken(token);
         setParseClass(ParseClass.CALL);
+    }
+
+    public Integer getExternalAddress() {
+        return externalAddress;
+    }
+
+    public void setExternalAddress(Integer externalAddress) {
+        this.externalAddress = externalAddress;
     }
 
     public String getCallName() {

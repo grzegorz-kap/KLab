@@ -1,12 +1,11 @@
 package interpreter.core.arithmetic.factory;
 
-import java.util.Set;
-
+import interpreter.core.arithmetic.NumericObjectsOperator;
+import interpreter.types.NumericType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import interpreter.core.arithmetic.NumericObjectsOperator;
-import interpreter.types.NumericType;
+import java.util.Set;
 
 @Service
 public class StandardNumericObjectsNumericObjectsOperatorFactory implements NumericObjectsOperatorFactory {

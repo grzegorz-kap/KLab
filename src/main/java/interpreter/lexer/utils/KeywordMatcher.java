@@ -2,35 +2,32 @@ package interpreter.lexer.utils;
 
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Service
-public class KeywordMatcher {
-    private Map<String, TokenClass> keywordMap = new HashMap<>();
+public abstract class KeywordMatcher {
+    private static final Map<String, TokenClass> KEYWORD_MAP = new HashMap<String, TokenClass>() {{
+        put("if", TokenClass.IF_KEYWORD);
+        put("endif", TokenClass.ENDIF_KEYWORD);
+        put("else", TokenClass.ELSE_KEYWORD);
+        put("elseif", TokenClass.ELSEIF_KEYWORD);
+        put("for", TokenClass.FOR_KEYWORD);
+        put("endfor", TokenClass.ENDFOR_KEYWORD);
+        put("break", TokenClass.BREAK_KEYWORD);
+        put("continue", TokenClass.CONTINUE_KEYWORD);
+        put("function", TokenClass.FUNCTION_KEYWROD);
+    }};
 
-    public KeywordMatcher() {
-        keywordMap.put("if", TokenClass.IF_KEYWORD);
-        keywordMap.put("endif", TokenClass.ENDIF_KEYWORD);
-        keywordMap.put("else", TokenClass.ELSE_KEYWORD);
-        keywordMap.put("elseif", TokenClass.ELSEIF_KEYWORD);
-        keywordMap.put("for", TokenClass.FOR_KEYWORD);
-        keywordMap.put("endfor", TokenClass.ENDFOR_KEYWORD);
-        keywordMap.put("break", TokenClass.BREAK_KEYWORD);
-        keywordMap.put("continue", TokenClass.CONTINUE_KEYWORD);
-    }
-
-    public void changeIfKeyword(Token token) {
-        TokenClass tokenClass = keywordMap.get(token.getLexeme());
+    public static void changeIfKeyword(Token token) {
+        TokenClass tokenClass = KEYWORD_MAP.get(token.getLexeme());
         if (Objects.nonNull(tokenClass)) {
             updateToken(token, tokenClass);
         }
     }
 
-    private void updateToken(Token token, TokenClass tokenClass) {
+    private static void updateToken(Token token, TokenClass tokenClass) {
         token.setTokenClass(tokenClass);
         token.setIsKeyword(true);
     }

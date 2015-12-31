@@ -1,5 +1,6 @@
 package common;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ public class EventBusSubscriberProcessor implements BeanPostProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventBusSubscriberProcessor.class);
 
     private EventBus eventBus;
+    private AsyncEventBus asyncEventBus;
 
     @Override
     public Object postProcessBeforeInitialization(Object beanObject, String beanName) throws BeansException {
@@ -30,6 +32,7 @@ public class EventBusSubscriberProcessor implements BeanPostProcessor {
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().equals(Subscribe.class)) {
                     eventBus.register(beanObject);
+                    asyncEventBus.register(beanObject);
                     LOGGER.info("Bean '{}' method '{}' has been subscribed to EventBus.", beanName, method);
                     return beanObject;
                 }
@@ -41,5 +44,10 @@ public class EventBusSubscriberProcessor implements BeanPostProcessor {
     @Required
     public void setEventBus(EventBus eventBus) {
         this.eventBus = eventBus;
+    }
+
+    @Required
+    public void setAsyncEventBus(AsyncEventBus asyncEventBus) {
+        this.asyncEventBus = asyncEventBus;
     }
 }
