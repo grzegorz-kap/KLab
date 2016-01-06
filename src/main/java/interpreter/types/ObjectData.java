@@ -1,9 +1,15 @@
 package interpreter.types;
 
 public interface ObjectData extends Copyable {
-    String getName();
+    default String getName() {
+        throw new UnsupportedOperationException();
+    }
 
-    void setName(String name);
+    default void setName(String name) {
+        throw new UnsupportedOperationException();
+    }
 
-    boolean isTrue();
+    default boolean isTrue() {
+        throw new UnsupportedOperationException();
+    }
 }

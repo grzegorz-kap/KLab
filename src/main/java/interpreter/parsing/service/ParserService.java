@@ -19,7 +19,6 @@ import static interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ParserService extends AbstractParser {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParser.class);
 
     @Autowired
@@ -46,7 +45,9 @@ public class ParserService extends AbstractParser {
     private void parseInstruction() {
         while (!parseContext.isInstructionStop() && !parseContextManager.isEndOfTokens()) {
             ParseHandler parseHandler = getParseHandler(parseContext.getCurrentToken().getTokenClass());
-            isUnsupported(parseHandler);
+            if (Objects.isNull(parseHandler)) {
+                LOGGER.error("'{}'\t'{}'", parseContext.getCurrentToken().getLexeme(), parseContext.getCurrentToken().getTokenClass());
+            }
             parseHandler.handle();
         }
     }
@@ -55,12 +56,6 @@ public class ParserService extends AbstractParser {
         while (parseContextManager.stackSize() > 0) {
             ParseHandler parseHandler = getParseHandler(parseContext.stackPeek().getTokenClass());
             parseHandler.handleStackFinish();
-        }
-    }
-
-    private void isUnsupported(final ParseHandler parseHandler) {
-        if (Objects.isNull(parseHandler)) {
-            LOGGER.error("'{}'\t'{}'", parseContext.getCurrentToken().getLexeme(), parseContext.getCurrentToken().getTokenClass());
         }
     }
 }

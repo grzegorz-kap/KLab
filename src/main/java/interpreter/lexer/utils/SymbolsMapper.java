@@ -15,6 +15,7 @@ public abstract class SymbolsMapper {
         put(")", TokenClass.CLOSE_PARENTHESIS);
         put("[", TokenClass.OPEN_BRACKET);
         put("]", TokenClass.CLOSE_BRACKET);
+        put(":", TokenClass.MATRIX_ALL);
     }};
 
     public static TokenClass getTokenClass(String symbol) {

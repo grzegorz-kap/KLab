@@ -21,7 +21,8 @@ public enum TokenClass {
     ENDFOR_KEYWORD(17, true, true),
     BREAK_KEYWORD(18, true,true),
     CONTINUE_KEYWORD(19, true, true),
-    FUNCTION_KEYWROD(20, true, true);
+    FUNCTION_KEYWROD(20, true, true),
+    MATRIX_ALL(21, true, false );
 
     private int index;
     private boolean keyword;

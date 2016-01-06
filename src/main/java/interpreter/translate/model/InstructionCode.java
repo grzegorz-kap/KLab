@@ -42,7 +42,10 @@ public enum InstructionCode {
     FUNCTION_END(38),
     RSTORE(39),
     MODIFY2(40),
-    MODIFY1(41);
+    MODIFY1(41),
+    MALLCELL(42),
+    MALLROWS(43),
+    MALLCOLS(44);
 
     private int index;
 
