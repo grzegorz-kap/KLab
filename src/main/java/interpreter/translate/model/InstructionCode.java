@@ -45,7 +45,10 @@ public enum InstructionCode {
     MODIFY1(41),
     MALLCELL(42),
     MALLROWS(43),
-    MALLCOLS(44);
+    MALLCOLS(44),
+    MLASTROW(45),
+    MLASTCELL(46),
+    MLASTCOLUMN(47);
 
     private int index;
 

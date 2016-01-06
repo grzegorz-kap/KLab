@@ -19,7 +19,8 @@ public enum ParseClass {
     ENDFOR_KEYWORD(15),
     CONTINUE_FOR(16),
     BREAK_FOR(17),
-    MATRIX_ALL(18);
+    MATRIX_ALL(18),
+    LAST_CELL(19);
 
     private int index;
 

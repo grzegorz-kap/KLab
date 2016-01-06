@@ -23,7 +23,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
     public void handle(Expression<ParseToken> expression) {
         IdentifierToken identifierToken = (IdentifierToken) expression.getValue();
         if (ExpressionUtils.isAssignmentTarget(expression)) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new TokenIdentifierObject(identifierToken)));
+            tCM.addInstruction(new Instruction(InstructionCode.PUSH, 0, new TokenIdentifierObject(identifierToken)));
         } else {
             addLoadInstruction(identifierToken, expression);
         }
@@ -34,7 +34,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
         IdentifierObject identifierObject = new TokenIdentifierObject(identifierToken);
         identifierObject.setCanBeScript(Objects.isNull(expression.getParent()) && expression.getChildrenCount() == 0);
         instruction.add(identifierObject);
-        translateContextManager.addInstruction(instruction);
+        tCM.addInstruction(instruction);
     }
 
     @Override

@@ -13,33 +13,34 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class MatrixAllTranslateHandler extends AbstractTranslateHandler {
+public class LastCellTranslateHandler extends AbstractTranslateHandler {
     @Override
     public void handle(Expression<ParseToken> expression) {
+        Expression<ParseToken> child = expression;
         Expression<ParseToken> parent = expression.getParent();
-        if (parent == null || !parent.getValue().getParseClass().equals(ParseClass.CALL)) {
-            throw new RuntimeException(); // TODO;
+        while (parent != null && !parent.getValue().getParseClass().equals(ParseClass.CALL)) {
+            child = child.getParent();
+            parent = parent.getParent();
         }
-        if (parent.getChildren().size() < 1 || parent.getChildren().size() > 2) {
-            throw new RuntimeException(); // TODO;
+        if (parent == null || parent.getChildren().size() < 1 || parent.getChildren().size() > 2) {
+            throw new RuntimeException();
         }
-
         InstructionCode code;
         if (parent.getChildren().size() == 1) {
-            code = InstructionCode.MALLCELL;
+            code = InstructionCode.MLASTCELL;
         } else {
-            code = parent.getChildren().get(0) == expression ? InstructionCode.MALLROWS : InstructionCode.MALLCOLS;
+            code = parent.getChildren().get(0) == child ? InstructionCode.MLASTROW : InstructionCode.MLASTCOLUMN;
         }
 
-        CallToken address = ((CallToken) parent.getValue());
-        if (address.getVariableAddress() == null) {
+        CallToken cl = (CallToken) parent.getValue();
+        if (cl.getVariableAddress() == null) {
             throw new RuntimeException(); // TODO
         }
-        tCM.addInstruction(new Instruction(code, 0, new TokenIdentifierObject(address.getCallName(), address.getVariableAddress())));
+        tCM.addInstruction(new Instruction(code, 0, new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress())));
     }
 
     @Override
     public ParseClass getSupportedParseClass() {
-        return ParseClass.MATRIX_ALL;
+        return ParseClass.LAST_CELL;
     }
 }

@@ -26,7 +26,7 @@ class MatrixTranslateHandlerTest extends Specification {
         handler.handle(expression)
         then:
         1 * expression.getChildrenCount() >> 10
-        1 * handler.translateContextManager.addInstruction({
+        1 * handler.tCM.addInstruction({
             it.instructionCode == InstructionCode.MATRIX
             it.argumentsNumber == 10
         } as Instruction)

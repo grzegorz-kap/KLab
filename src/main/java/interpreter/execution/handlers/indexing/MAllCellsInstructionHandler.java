@@ -1,6 +1,7 @@
-package interpreter.execution.handlers;
+package interpreter.execution.handlers.indexing;
 
 import interpreter.commons.MemorySpace;
+import interpreter.execution.handlers.AbstractInstructionHandler;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
 import interpreter.types.IdentifierObject;

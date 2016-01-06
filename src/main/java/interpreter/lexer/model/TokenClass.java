@@ -22,7 +22,8 @@ public enum TokenClass {
     BREAK_KEYWORD(18, true,true),
     CONTINUE_KEYWORD(19, true, true),
     FUNCTION_KEYWROD(20, true, true),
-    MATRIX_ALL(21, true, false );
+    MATRIX_ALL(21, true, false ),
+    END_KEYWORD(22, false, true );
 
     private int index;
     private boolean keyword;
@@ -35,7 +36,7 @@ public enum TokenClass {
     }
     
     TokenClass(int index, boolean unaryOpPrecurosr, boolean keyword) {
-    	this.index = index;
+        this(index, unaryOpPrecurosr);
     	this.keyword = keyword;
     }
     

@@ -18,6 +18,7 @@ public abstract class KeywordMatcher {
         put("break", TokenClass.BREAK_KEYWORD);
         put("continue", TokenClass.CONTINUE_KEYWORD);
         put("function", TokenClass.FUNCTION_KEYWROD);
+        put("end", TokenClass.END_KEYWORD);
     }};
 
     public static void changeIfKeyword(Token token) {
