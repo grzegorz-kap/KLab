@@ -8,4 +8,6 @@ public interface AddressIterator {
     long length();
 
     void reset();
+
+    long max();
 }

@@ -23,6 +23,7 @@ public class OjalgoDoubleMatrixBuilder extends OjalgoAbstractMatrixBuilder<Doubl
 
     @Override
     public Matrix<Double> build() {
+        // TODO null pointer when trying to create empty matrix
         return new OjalgoDoubleMatrix(builder.build());
     }
 }

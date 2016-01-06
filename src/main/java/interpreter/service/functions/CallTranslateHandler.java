@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CallTranslateHandler extends AbstractTranslateHandler {
-
     @Override
     public void handle(Expression<ParseToken> expression) {
         CallToken callToken = (CallToken) expression.getValue();

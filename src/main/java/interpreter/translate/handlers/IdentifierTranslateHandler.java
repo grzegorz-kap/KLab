@@ -7,6 +7,7 @@ import interpreter.parsing.model.tokens.IdentifierToken;
 import interpreter.parsing.utils.ExpressionUtils;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
+import interpreter.types.TokenIdentifierObject;
 import interpreter.types.IdentifierObject;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -22,7 +23,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
     public void handle(Expression<ParseToken> expression) {
         IdentifierToken identifierToken = (IdentifierToken) expression.getValue();
         if (ExpressionUtils.isAssignmentTarget(expression)) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new IdentifierObject(identifierToken)));
+            translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new TokenIdentifierObject(identifierToken)));
         } else {
             addLoadInstruction(identifierToken, expression);
         }
@@ -30,7 +31,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
 
     private void addLoadInstruction(IdentifierToken identifierToken, Expression<ParseToken> expression) {
         Instruction instruction = new Instruction(InstructionCode.LOAD, 0);
-        IdentifierObject identifierObject = new IdentifierObject(identifierToken);
+        IdentifierObject identifierObject = new TokenIdentifierObject(identifierToken);
         identifierObject.setCanBeScript(Objects.isNull(expression.getParent()) && expression.getChildrenCount() == 0);
         instruction.add(identifierObject);
         translateContextManager.addInstruction(instruction);

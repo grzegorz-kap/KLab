@@ -17,6 +17,18 @@ public abstract class AbstractScalar<N extends Number> extends AbstractNumericOb
     }
 
     @Override
+    public EditSupplier<N> getEditSupplier() {
+        return new EditSupplier<N>() {
+            public boolean hasNext() {
+                return true;
+            }
+            public N next() {
+                return getValue();
+            }
+        };
+    }
+
+    @Override
     public long getRows() {
         return 1;
     }

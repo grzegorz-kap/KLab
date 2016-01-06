@@ -1,15 +1,12 @@
 package interpreter.parsing.model.tokens;
 
-import interpreter.commons.VariableScope;
 import interpreter.lexer.model.Token;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 
 public class IdentifierToken extends ParseToken {
-
-    private VariableScope variableScope;
     private String id;
-    private Integer address;
+    private int address;
 
     public IdentifierToken() {
         setParseClass(ParseClass.IDENTIFIER);
@@ -21,14 +18,6 @@ public class IdentifierToken extends ParseToken {
         setToken(token);
     }
 
-    public VariableScope getVariableScope() {
-        return variableScope;
-    }
-
-    public void setVariableScope(VariableScope variableScope) {
-        this.variableScope = variableScope;
-    }
-
     public String getId() {
         return id;
     }
@@ -37,11 +26,11 @@ public class IdentifierToken extends ParseToken {
         this.id = id;
     }
 
-    public Integer getAddress() {
+    public int getAddress() {
         return address;
     }
 
-    public void setAddress(Integer address) {
+    public void setAddress(int address) {
         this.address = address;
     }
 }

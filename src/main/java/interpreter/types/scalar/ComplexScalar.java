@@ -29,6 +29,12 @@ public class ComplexScalar extends AbstractScalar<ComplexNumber> implements Addr
         value = ComplexNumber.valueOf(numberValue);
     }
 
+    @Override
+    public Editable<ComplexNumber> edit(AddressIterator row, AddressIterator column, EditSupplier<ComplexNumber> supplier) {
+        value = supplier.next();
+        return this;
+    }
+
     public ComplexNumber getComplex() {
         return value;
     }

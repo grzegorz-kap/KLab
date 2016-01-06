@@ -40,6 +40,7 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
     }
 
     private void handleTwo(Indexable indexable) {
+        // TODO type check
         AddressIterator column = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         ObjectData objectData = indexable.get(row, column);
