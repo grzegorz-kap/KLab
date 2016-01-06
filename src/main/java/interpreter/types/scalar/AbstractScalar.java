@@ -29,6 +29,11 @@ public abstract class AbstractScalar<N extends Number> extends AbstractNumericOb
     }
 
     @Override
+    public long getCells() {
+        return 1;
+    }
+
+    @Override
     public long getRows() {
         return 1;
     }

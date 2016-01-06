@@ -1,6 +1,6 @@
 package interpreter.types;
 
-public interface NumericObject extends ObjectData {
+public interface NumericObject extends ObjectData, Sizeable{
 
     NumericType getNumericType();
 

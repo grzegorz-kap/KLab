@@ -23,6 +23,11 @@ public class DoubleScalar extends AbstractScalar<Double> implements Addressable 
 
     @Override
     public Editable<Double> edit(AddressIterator row, AddressIterator column, EditSupplier<Double> supplier) {
+        return edit(null, supplier);
+    }
+
+    @Override
+    public Editable<Double> edit(AddressIterator cells, EditSupplier<Double> supplier) {
         value = supplier.next();
         return this;
     }

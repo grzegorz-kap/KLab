@@ -49,15 +49,13 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     @Override
     public EditSupplier<T> getEditSupplier() {
         // TODO check if correct iteration order
-        if(isScalar()) {
+        if (isScalar()) {
             return new EditSupplier<T>() {
                 private T value = lazyStore.get(0);
-                @Override
+
                 public boolean hasNext() {
                     return true;
                 }
-
-                @Override
                 public T next() {
                     return value;
                 }
@@ -80,32 +78,40 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     @Override
-    public Editable<T> edit(AddressIterator row, AddressIterator column, EditSupplier<T> supplier) {
-        boolean changed = false;
-        if(row.max() > lazyStore.countRows()) {
-            lazyStore = lazyStore.builder().below(factory.makeZero(row.max() - lazyStore.countRows(), lazyStore.countColumns())).copy();
-            changed = true;
-        }
-        if(column.max() > lazyStore.countColumns()) {
-            lazyStore = lazyStore.builder().right(factory.makeZero(lazyStore.countRows(), column.max() - lazyStore.countColumns())).build();
-            changed = true;
-        }
-
-        if(matrixStore != lazyStore) {
+    public Editable<T> edit(AddressIterator cells, EditSupplier<T> supplier) {
+        if (matrixStore != lazyStore) {
             matrixStore = lazyStore.copy();
         }
 
-        while(row.hasNext()) {
-            long rowAddress = row.getNext() - 1;
-            while(column.hasNext()) {
-                if(!supplier.hasNext()) {
-                    throw new RuntimeException(); // TODO
-                }
-                matrixStore.set(rowAddress, column.getNext()-1, supplier.next());
-            }
+        while (cells.hasNext()) {
+            matrixStore.set(cells.getNext() - 1, supplier.next());
         }
 
-        lazyStore = matrixStore;
+        return this;
+    }
+
+    @Override
+    public Editable<T> edit(AddressIterator row, AddressIterator column, EditSupplier<T> supplier) {
+        if (row.max() > lazyStore.countRows()) {
+            lazyStore = lazyStore.builder().below(factory.makeZero(row.max() - lazyStore.countRows(), lazyStore.countColumns())).copy();
+        }
+        if (column.max() > lazyStore.countColumns()) {
+            lazyStore = lazyStore.builder().right(factory.makeZero(lazyStore.countRows(), column.max() - lazyStore.countColumns())).build();
+        }
+
+        if (matrixStore != lazyStore) {
+            matrixStore = lazyStore.copy();
+        }
+
+        while (row.hasNext()) {
+            long rowAddress = row.getNext() - 1;
+            while (column.hasNext()) {
+                if (!supplier.hasNext()) {
+                    throw new RuntimeException(); // TODO
+                }
+                matrixStore.set(rowAddress, column.getNext() - 1, supplier.next());
+            }
+        }
         return this;
     }
 
@@ -149,6 +155,11 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     @Override
     public String toString() {
         return OjalgoMatrixPrinter.toString(getMatrixStore());
+    }
+
+    @Override
+    public long getCells() {
+        return lazyStore.count();
     }
 
     @Override
