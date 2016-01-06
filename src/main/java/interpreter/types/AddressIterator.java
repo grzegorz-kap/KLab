@@ -1,6 +1,6 @@
 package interpreter.types;
 
-public interface AddressIterator {
+public interface AddressIterator extends ObjectData {
     boolean hasNext();
 
     long getNext();
@@ -8,4 +8,6 @@ public interface AddressIterator {
     long length();
 
     void reset();
+
+    long max();
 }

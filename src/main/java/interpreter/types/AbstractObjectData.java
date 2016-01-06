@@ -1,7 +1,6 @@
 package interpreter.types;
 
 public abstract class AbstractObjectData implements ObjectData {
-
     private String name;
 
     @Override

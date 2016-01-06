@@ -34,7 +34,7 @@ class NumberTranslateHandlerTest extends Specification {
 
         then:
         1 * numberTranslateHandler.numberScalarFactory.getDouble(Double.valueOf(numberToken.token.lexeme)) >> numberScalar
-        1 * numberTranslateHandler.translateContextManager.addInstruction({
+        1 * numberTranslateHandler.tCM.addInstruction({
             it.instructionCode == InstructionCode.PUSH
             it.argumentsNumber == 1
             it.objectDataList.size() == 1

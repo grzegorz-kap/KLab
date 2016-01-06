@@ -1,5 +1,7 @@
 package interpreter.types;
 
 public interface Copyable {
-    ObjectData copyObjectData();
+    default ObjectData copyObjectData() {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -5,7 +5,6 @@ import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 
 public class CallToken extends ParseToken {
-
     private Integer variableAddress;
     private Integer externalAddress;
     private Integer internalFunctionAddress;

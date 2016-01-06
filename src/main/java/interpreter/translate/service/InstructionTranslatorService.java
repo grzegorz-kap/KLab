@@ -7,19 +7,19 @@ import interpreter.parsing.model.expression.ExpressionValue;
 import interpreter.parsing.model.tokens.IdentifierToken;
 import interpreter.parsing.model.tokens.operators.OperatorCode;
 import interpreter.parsing.model.tokens.operators.OperatorToken;
+import interpreter.service.functions.model.CallToken;
 import interpreter.translate.exception.UnsupportedParseToken;
 import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
 import interpreter.translate.model.JumperInstruction;
-import interpreter.translate.model.MacroInstruction;
-import interpreter.types.IdentifierObject;
+import interpreter.types.ModifyingIdentifierObject;
+import interpreter.types.TokenIdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -53,14 +53,14 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
-        if(checkIfOperator(OperatorCode.AND, expression.getValue())) {
+        if (checkIfOperator(OperatorCode.AND, expression.getValue())) {
             handleShortCircuitOperator(expression, InstructionCode.JMPFNP);
-        } else if(checkIfOperator(OperatorCode.OR, expression.getValue())) {
+        } else if (checkIfOperator(OperatorCode.OR, expression.getValue())) {
             handleShortCircuitOperator(expression, InstructionCode.JMPTNP);
-        } else if(checkIfOperator(OperatorCode.ASSIGN, expression.getValue())) {
+        } else if (checkIfOperator(OperatorCode.ASSIGN, expression.getValue())) {
             handleAssignOperator(expression);
         } else {
-        	expression.getChildren().forEach(this::process);
+            expression.getChildren().forEach(this::process);
             translateExpressionValue(expression);
         }
     }
@@ -71,22 +71,36 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
             if (left.getChildren().size() != 1) {  // only verse vector allowed // TODO column vector to
                 throw new RuntimeException("Wrong assignment target");
             }
-            Expression<ParseToken> vector = left.getChildren().get(0);
-            MacroInstruction macroInstruction = new MacroInstruction();
-            List<Expression<ParseToken>> children = vector.getChildren();
-            for (Expression<ParseToken> target : children) {
-                if (!target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
-                    throw new UnsupportedOperationException();
-                }
-                macroInstruction.add(new Instruction(InstructionCode.PUSH, 0, new IdentifierObject((IdentifierToken) target.getValue())));
-                macroInstruction.add(new Instruction(InstructionCode.RSTORE, 0));
-            }
             process(expression.getChildren().get(1));
-            translateContextManager.addInstruction(macroInstruction);
+            for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
+                if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
+                    translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new TokenIdentifierObject((IdentifierToken) target.getValue())));
+                    translateContextManager.addInstruction(new Instruction(InstructionCode.RSTORE, 0));
+                } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
+                    createModifyAssign(target);
+                } else {
+                    throw new RuntimeException(); //TODO runtime exception
+                }
+            }
+        } else if (left.getValue().getParseClass().equals(ParseClass.CALL)) {
+            process(expression.getChildren().get(1));
+            createModifyAssign(left);
         } else {
             expression.getChildren().forEach(this::process);
             translateExpressionValue(expression);
         }
+    }
+
+    private void createModifyAssign(Expression<ParseToken> target) {
+        target.getChildren().forEach(this::process);
+        if (target.getChildren().size() < 1 || target.getChildren().size() > 2) {
+            throw new RuntimeException();
+        }
+        // TODO check if variable is defined
+        CallToken var = (CallToken) target.getValue();
+        translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new ModifyingIdentifierObject(var.getVariableAddress(), var.getCallName())));
+        InstructionCode code = target.getChildren().size() == 2 ? InstructionCode.MODIFY2 : InstructionCode.MODIFY1;
+        translateContextManager.addInstruction(new Instruction(code, 0));
     }
 
     private void handleShortCircuitOperator(Expression<ParseToken> expression, InstructionCode jmptnp) {
@@ -100,12 +114,12 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private boolean checkIfOperator(OperatorCode operatorCode, ParseToken parseToken) {
-    	if(parseToken instanceof OperatorToken) {
-    		OperatorToken operatorToken = (OperatorToken) parseToken;
-    		return operatorCode.equals(operatorToken.getOperatorCode());
-    	} else {
-    		return false;
-    	}
+        if (parseToken instanceof OperatorToken) {
+            OperatorToken operatorToken = (OperatorToken) parseToken;
+            return operatorCode.equals(operatorToken.getOperatorCode());
+        } else {
+            return false;
+        }
     }
 
     private void process(Expression<ParseToken> parseTokenExpression) {

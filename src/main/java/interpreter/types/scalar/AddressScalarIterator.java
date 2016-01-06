@@ -22,6 +22,11 @@ public class AddressScalarIterator implements AddressIterator {
     }
 
     @Override
+    public long max() {
+        return value;
+    }
+
+    @Override
     public long length() {
         return 1;
     }

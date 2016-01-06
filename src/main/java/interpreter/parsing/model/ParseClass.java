@@ -1,7 +1,6 @@
 package interpreter.parsing.model;
 
 public enum ParseClass {
-
     NUMBER(0),
     OPERATOR(1),
     MATRIX_START(2),
@@ -19,7 +18,9 @@ public enum ParseClass {
     FOR_KEYWORD(14),
     ENDFOR_KEYWORD(15),
     CONTINUE_FOR(16),
-    BREAK_FOR(17);
+    BREAK_FOR(17),
+    MATRIX_ALL(18),
+    LAST_CELL(19);
 
     private int index;
 

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CallParseHandler extends AbstractParseHandler {
-
     private IdentifierMapper identifierMapper;
     private BalanceContextService balanceContextService;
 
@@ -44,9 +43,5 @@ public class CallParseHandler extends AbstractParseHandler {
     @Autowired
     public void setBalanceContextService(BalanceContextService balanceContextService) {
         this.balanceContextService = balanceContextService;
-    }
-
-    @Autowired
-    public void setInternalFunctionsHolder(InternalFunctionsHolder internalFunctionsHolder) {
     }
 }

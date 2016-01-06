@@ -14,7 +14,6 @@ import java.util.Objects;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WordParseHandler extends AbstractParseHandler {
-
     private IdentifierParseHandler identifierParseHandler;
     private CallParseHandler callParseHandler;
 
@@ -48,5 +47,4 @@ public class WordParseHandler extends AbstractParseHandler {
     public void setCallParseHandler(CallParseHandler callParseHandler) {
         this.callParseHandler = callParseHandler;
     }
-
 }
