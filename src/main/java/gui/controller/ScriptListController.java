@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptListController implements Initializable {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptListController.class);
 
     private ScriptViewService scriptViewService;

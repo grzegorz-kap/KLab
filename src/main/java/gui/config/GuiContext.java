@@ -2,29 +2,36 @@ package gui.config;
 
 import gui.App;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
 public class GuiContext {
+    private static GuiContext guiContext = new GuiContext();
 
-    private static final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(GuiAppConfiguration.class);
-    private static final GuiContext GUI_CONTEXT = new GuiContext();
+    private ApplicationContext applicationContext = new AnnotationConfigApplicationContext(GuiAppConfiguration.class);
+    private Stage primaryStage;
 
-    public static Object loadScene(final String url) {
-        return GUI_CONTEXT.loadFxml(url);
+    private GuiContext() {}
+
+    public static GuiContext getInstance() {
+        return guiContext;
     }
 
-    public static ScreensConfiguration getScreensConfiguration() {
-        return applicationContext.getBean(ScreensConfiguration.class);
+    public void showScreen(Parent screen) {
+        primaryStage.setScene(new Scene(screen));
+        primaryStage.show();
     }
 
-    private Object loadFxml(final String fileName) {
-        try {
-            return FXMLLoader.load(App.class.getResource(fileName), null, null, applicationContext::getBean);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public Object loadScene(final String url) throws IOException {
+        return FXMLLoader.load(App.class.getResource(url), null, null, applicationContext::getBean);
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 }
