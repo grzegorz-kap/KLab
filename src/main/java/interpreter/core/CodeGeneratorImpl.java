@@ -1,5 +1,7 @@
 package interpreter.core;
 
+import interpreter.commons.IdentifierMapper;
+import interpreter.commons.MemorySpace;
 import interpreter.execution.model.Code;
 import interpreter.lexer.model.TokenList;
 import interpreter.lexer.service.Tokenizer;
@@ -28,6 +30,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private Tokenizer tokenizer;
     private InstructionTranslator instructionTranslator;
     private List<PostParseHandler> postParseHandlers;
+    private MemorySpace memorySpace;
+    private IdentifierMapper identifierMapper;
 
     @Override
     public Code translate(String input) {
@@ -63,6 +67,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
                 code.add(postParseHandler.handle(expressionList, instructionTranslator).getInstructions());
             }
         }
+        memorySpace.reserve(identifierMapper.mainMappingsSize());
     }
 
     public PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
@@ -87,5 +92,15 @@ public class CodeGeneratorImpl implements CodeGenerator {
     @Autowired
     public void setPostParseHandlers(List<PostParseHandler> postParseHandlers) {
         this.postParseHandlers = postParseHandlers;
+    }
+
+    @Autowired
+    public void setMemorySpace(MemorySpace memorySpace) {
+        this.memorySpace = memorySpace;
+    }
+
+    @Autowired
+    public void setIdentifierMapper(IdentifierMapper identifierMapper) {
+        this.identifierMapper = identifierMapper;
     }
 }
