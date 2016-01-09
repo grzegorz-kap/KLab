@@ -3,6 +3,7 @@ package interpreter.core;
 import common.EventService;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.utils.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,7 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
 
     @Override
     public String readScript(String scriptName) throws IOException {
+        scriptName = FilenameUtils.removeExtension(scriptName);
         Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, ".m"));
         return new String(Files.readAllBytes(path)).replaceAll("\\r\\n", "\n");
     }
