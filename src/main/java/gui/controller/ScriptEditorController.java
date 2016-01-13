@@ -11,6 +11,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
 import org.apache.commons.io.FilenameUtils;
 import org.fxmisc.richtext.CodeArea;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ScriptEditorController implements Initializable {
     private ScriptFileService scriptFileService;
     private EventService eventService;
 
-    private Map<String, Tab> tabs = new HashMap<>();
+    private Map<String, CustomTab> tabs = new HashMap<>();
 
     @FXML
     private TabPane scriptPane;
@@ -38,27 +39,33 @@ public class ScriptEditorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scriptPane.setContextMenu(new ContextMenu(new MenuItem("Text")));
+        scriptPane.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
+                CustomTab tab = (CustomTab) scriptPane.getSelectionModel().getSelectedItem();
+                if(tab != null) {
+                    try { scriptFileService.writeScript(tab.getText(), tab.getCodeArea().getText());
+                    } catch (IOException ignored) { }
+                }
+            }
+        });
     }
 
     @Subscribe
     public void openScript(OpenScriptEvent event) throws IOException {
         String script = FilenameUtils.removeExtension(event.getData());
-        Tab tab = tabs.get(script);
+        CustomTab tab = tabs.get(script);
         if (tab == null) {
-            tabs.put(script, tab = new Tab(script));
-            tab.setContent(new CodeArea(scriptFileService.readScript(script)));
+            tabs.put(script, tab = new CustomTab(script));
+            CodeArea codeArea = new CodeArea(scriptFileService.readScript(script));
+            tab.setCodeArea(codeArea);
 
             ContextMenu contextMenu = new ContextMenu();
-
-
             MenuItem run = new MenuItem("Run");
             run.setOnAction(ev -> eventService.publish(new CommandSubmittedEvent(script, this)));
             contextMenu.getItems().add(run);
-
             MenuItem close = new MenuItem("Close");
             close.setOnAction(ev -> scriptPane.getTabs().remove(tabs.remove(script)));
             contextMenu.getItems().add(close);
-
             tab.setContextMenu(contextMenu);
 
             scriptPane.getTabs().addAll(tab);
@@ -74,5 +81,22 @@ public class ScriptEditorController implements Initializable {
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    private static class CustomTab extends Tab {
+        private CodeArea codeArea;
+
+        public CustomTab(String script) {
+            super(script);
+        }
+
+        public CodeArea getCodeArea() {
+            return codeArea;
+        }
+
+        public void setCodeArea(CodeArea codeArea) {
+            this.codeArea = codeArea;
+            setContent(codeArea);
+        }
     }
 }
