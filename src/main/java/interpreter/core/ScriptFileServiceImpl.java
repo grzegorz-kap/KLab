@@ -87,4 +87,8 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
     }
+
+    public void setCharsetName(String charsetName) {
+        this.charsetName = charsetName;
+    }
 }

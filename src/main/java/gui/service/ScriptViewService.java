@@ -17,10 +17,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class ScriptViewService {
-
     private static Logger LOGGER = LoggerFactory.getLogger(ScriptViewService.class);
 
     private ScriptFileService scriptFileService;
+
+    public String readScript(String scriptName) {
+        try {
+            return scriptFileService.readScript(scriptName);
+        } catch (IOException e) {
+
+            return "";
+        }
+    }
 
     public TreeItem<String> listScripts() {
         TreeItem<String> root = new TreeItem<>("Working directory");
