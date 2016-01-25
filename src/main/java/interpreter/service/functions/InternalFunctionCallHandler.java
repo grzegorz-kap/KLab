@@ -17,7 +17,7 @@ public class InternalFunctionCallHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        CallInstruction instruction = (CallInstruction) instructionPointer.current();
+        CallInstruction instruction = (CallInstruction) instructionPointer.currentInstruction();
         InternalFunction internalFunction = internalFunctionsHolder.get(instruction.getInternalFunctionAddress());
         ObjectData[] data = new ObjectData[instruction.getArgumentsNumber()];
         for (int index = instruction.getArgumentsNumber() - 1; index >= 0; index--) {

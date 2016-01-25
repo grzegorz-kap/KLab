@@ -1,11 +1,10 @@
 package interpreter.types.converters;
 
-import org.springframework.stereotype.Component;
-
 import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.scalar.DoubleScalar;
 import interpreter.types.scalar.Scalar;
+import org.springframework.stereotype.Component;
 
 @Component
 public class OjalgoScalarDoubleConverter extends AbstractConverter<DoubleScalar> {

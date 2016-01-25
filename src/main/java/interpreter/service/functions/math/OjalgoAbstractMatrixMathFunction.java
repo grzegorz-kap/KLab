@@ -58,7 +58,7 @@ public abstract class OjalgoAbstractMatrixMathFunction<T extends Number> impleme
     }
 
     protected NumericObject create(NumericObject value, UnaryFunction<T> function) {
-        return create(process(value).operateOnAll(function));
+        return create(process(value).operateOnAll(function).get());
     }
 
     public void setFunctionSet(FunctionSet<T> functions) {

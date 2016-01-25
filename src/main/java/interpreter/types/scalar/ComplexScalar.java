@@ -1,11 +1,7 @@
 package interpreter.types.scalar;
 
 import interpreter.commons.exception.InterpreterCastException;
-import interpreter.types.AddressIterator;
-import interpreter.types.Addressable;
-import interpreter.types.Negable;
-import interpreter.types.NumericType;
-import interpreter.types.ObjectData;
+import interpreter.types.*;
 import org.ojalgo.scalar.ComplexNumber;
 
 import static interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
@@ -15,22 +11,33 @@ public class ComplexScalar extends AbstractScalar<ComplexNumber> implements Addr
 
     public ComplexScalar(ComplexScalar c) {
         super(NumericType.COMPLEX_DOUBLE);
-        value = new ComplexNumber(c.value.getReal(), c.value.getImaginary());
+        value = ComplexNumber.of(c.value.getReal(), c.value.getImaginary());
     }
 
     public ComplexScalar(ComplexNumber c) {
         super(NumericType.COMPLEX_DOUBLE);
-        value = new ComplexNumber(c.getReal(), c.getImaginary());
+        value = ComplexNumber.of(c.getReal(), c.getImaginary());
     }
 
     public ComplexScalar(double re, double im) {
         super(NumericType.COMPLEX_DOUBLE);
-        value = new ComplexNumber(re, im);
+        value = ComplexNumber.of(re, im);
     }
 
     public ComplexScalar(Number numberValue) {
         super(NumericType.COMPLEX_DOUBLE);
         value = ComplexNumber.valueOf(numberValue);
+    }
+
+    @Override
+    public Editable<ComplexNumber> edit(AddressIterator row, AddressIterator column, EditSupplier<ComplexNumber> supplier) {
+        return edit(row, supplier);
+    }
+
+    @Override
+    public Editable<ComplexNumber> edit(AddressIterator cells, EditSupplier<ComplexNumber> supplier) {
+        value = supplier.next();
+        return this;
     }
 
     public ComplexNumber getComplex() {

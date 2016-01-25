@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CallParseHandler extends AbstractParseHandler {
-
     private IdentifierMapper identifierMapper;
     private BalanceContextService balanceContextService;
 
@@ -24,6 +23,7 @@ public class CallParseHandler extends AbstractParseHandler {
         CallToken callToken = new CallToken(parseContextManager.tokenAt(0));
         callToken.setParseClass(ParseClass.CALL_START);
         callToken.setVariableAddress(identifierMapper.getMainAddress(callToken.getCallName()));
+        callToken.setExternalAddress(identifierMapper.registerExternalFunction(callToken.getCallName()));
         parseContextManager.addExpressionNode(callToken);
         parseContextManager.stackPush(callToken);
         parseContextManager.incrementTokenPosition(2);
@@ -43,9 +43,5 @@ public class CallParseHandler extends AbstractParseHandler {
     @Autowired
     public void setBalanceContextService(BalanceContextService balanceContextService) {
         this.balanceContextService = balanceContextService;
-    }
-
-    @Autowired
-    public void setInternalFunctionsHolder(InternalFunctionsHolder internalFunctionsHolder) {
     }
 }

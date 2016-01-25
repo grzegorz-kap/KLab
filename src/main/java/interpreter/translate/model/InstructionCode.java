@@ -37,8 +37,18 @@ public enum InstructionCode {
     JMPTNP(33),
     LOGICAL(34),
     NOT(35),
-    NEG(36)
-    ;
+    NEG(36),
+    SCRIPT_EXIT(37),
+    FUNCTION_END(38),
+    RSTORE(39),
+    MODIFY2(40),
+    MODIFY1(41),
+    MALLCELL(42),
+    MALLROWS(43),
+    MALLCOLS(44),
+    MLASTROW(45),
+    MLASTCELL(46),
+    MLASTCOLUMN(47);
 
     private int index;
 

@@ -1,15 +1,17 @@
 package gui;
 
+import gui.config.GuiAppConfiguration;
+import gui.config.GuiContext;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.io.IOException;
 
-import gui.config.GuiContext;
-import gui.config.ScreensConfiguration;
-import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
-
 public class App extends Application {
-	private ScreensConfiguration screensConfiguration = GuiContext.getScreensConfiguration();
+	private ApplicationContext applicationContext = new AnnotationConfigApplicationContext(GuiAppConfiguration.class);
+	private GuiContext guiContext = applicationContext.getBean(GuiContext.class);
 
 	public static void main(String[] args) {
 		launch(args);
@@ -17,7 +19,7 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		screensConfiguration.setPrimaryStage(primaryStage);
-		screensConfiguration.showScreen((Parent) GuiContext.loadScene("main.fxml"));
+		guiContext.setPrimaryStage(primaryStage);
+		guiContext.showMainScreen();
 	}
 }

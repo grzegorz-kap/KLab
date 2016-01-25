@@ -34,7 +34,7 @@ public abstract class OjalgoOperator<T extends Number> {
             return creator.create(action.operate(new OjalgoMatrixScalarWrapper<>(first, second), second.getLazyStore()));
         }
         if (second.isScalar()) {
-            return creator.create(action.operate(first.getLazyStore(), new OjalgoMatrixScalarWrapper<T>(second)));
+            return creator.create(action.operate(first.getLazyStore(), new OjalgoMatrixScalarWrapper<>(second, first)));
         }
         return creator.create(action.operate(first.getLazyStore(), second.getLazyStore()));
     }

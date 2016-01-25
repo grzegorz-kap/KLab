@@ -1,32 +1,16 @@
 package interpreter.config;
 
+import interpreter.core.arithmetic.matrix.ojalgo.*;
+import interpreter.core.arithmetic.matrix.ojalgo.comparator.CompexOjalgoMatrixComparator;
+import interpreter.core.arithmetic.matrix.ojalgo.comparator.DoubleOjalgoMatrixComparator;
+import interpreter.core.arithmetic.scalar.*;
+import interpreter.types.NumericType;
+import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
+import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 import org.ojalgo.matrix.task.SolverTask;
 import org.ojalgo.scalar.ComplexNumber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixAdder;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayConjuctionOperator;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayDisjuctionOperator;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayMult;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayNegate;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixArrayPower;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixDivider;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixMultiplicator;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixPower;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixSubtractor;
-import interpreter.core.arithmetic.matrix.ojalgo.MatrixTranspose;
-import interpreter.core.arithmetic.matrix.ojalgo.OjalgoMatrixOperator;
-import interpreter.core.arithmetic.matrix.ojalgo.comparator.CompexOjalgoMatrixComparator;
-import interpreter.core.arithmetic.matrix.ojalgo.comparator.DoubleOjalgoMatrixComparator;
-import interpreter.core.arithmetic.scalar.ComplexComparator;
-import interpreter.core.arithmetic.scalar.DoubleComparator;
-import interpreter.core.arithmetic.scalar.ScalarNegator;
-import interpreter.core.arithmetic.scalar.ScalarNumericObjectsOperator;
-import interpreter.core.arithmetic.scalar.ScalarOperator;
-import interpreter.types.NumericType;
-import interpreter.types.matrix.ojalgo.OjalgoComplexMatrix;
-import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 
 @Configuration
 public class OperatorsConfiguration {
@@ -61,8 +45,8 @@ public class OperatorsConfiguration {
 		op.setMatrixPower(new MatrixPower<>(OjalgoComplexMatrix::new));
 		op.setMatrixArrayPower(new MatrixArrayPower<>(OjalgoComplexMatrix::new));
 		op.setMatrixTranspose(new MatrixTranspose<>(OjalgoComplexMatrix::new));
-		op.setArrayOr(new MatrixArrayDisjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::new));
-		op.setArrayAnd(new MatrixArrayConjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::new));
+		op.setArrayOr(new MatrixArrayDisjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::valueOf));
+		op.setArrayAnd(new MatrixArrayConjuctionOperator<>(OjalgoComplexMatrix::new, ComplexNumber::valueOf));
 		op.setNegator(new MatrixArrayNegate<>(OjalgoComplexMatrix::new, OjalgoComplexMatrix.class));
 		op.setSupportedType(NumericType.COMPLEX_MATRIX);
 		return op;

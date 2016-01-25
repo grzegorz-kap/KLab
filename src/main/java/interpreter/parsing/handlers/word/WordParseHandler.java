@@ -14,14 +14,12 @@ import java.util.Objects;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class WordParseHandler extends AbstractParseHandler {
-
     private IdentifierParseHandler identifierParseHandler;
     private CallParseHandler callParseHandler;
 
     @Override
     public void handle() {
-        if (Objects.nonNull(parseContextManager.tokenAt(1))
-                && parseContextManager.tokenAt(1).getTokenClass().equals(TokenClass.OPEN_PARENTHESIS)) {
+        if (Objects.nonNull(parseContextManager.tokenAt(1)) && parseContextManager.tokenAt(1).getTokenClass().equals(TokenClass.OPEN_PARENTHESIS)) {
             callParseHandler.handle();
         } else {
             identifierParseHandler.handle();
@@ -49,5 +47,4 @@ public class WordParseHandler extends AbstractParseHandler {
     public void setCallParseHandler(CallParseHandler callParseHandler) {
         this.callParseHandler = callParseHandler;
     }
-
 }

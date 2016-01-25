@@ -35,7 +35,7 @@ public class OperatorTranslateHandler extends AbstractTranslateHandler {
         }
         Instruction instruction = new Instruction();
         instruction.setInstructionCode(instructionCode);
-        translateContextManager.addInstruction(instruction);
+        tCM.addInstruction(instruction);
     }
 
     @Override

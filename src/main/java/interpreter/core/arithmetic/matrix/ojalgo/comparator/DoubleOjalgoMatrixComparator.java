@@ -11,56 +11,56 @@ public class DoubleOjalgoMatrixComparator extends AbstractOjalgoMatrixComparator
 
     @Override
     protected MatrixStore<Double> eq(MatrixStore<Double> first, MatrixStore<Double> second) {
-        return first.operateOnMatching((PrimitiveFunction.Binary) this::eq, second);
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::eq, second).get();
     }
 
     @Override
     protected MatrixStore<Double> neq(MatrixStore<Double> first, MatrixStore<Double> second) {
-        return first.operateOnMatching((PrimitiveFunction.Binary) this::neq, second);
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::neq, second).get();
     }
 
     @Override
     protected MatrixStore<Double> gt(MatrixStore<Double> first, MatrixStore<Double> second) {
-        return first.operateOnMatching((PrimitiveFunction.Binary) this::gt, second);
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::gt, second).get();
     }
 
     @Override
     protected MatrixStore<Double> ge(MatrixStore<Double> first, MatrixStore<Double> second) {
-        return first.operateOnMatching((PrimitiveFunction.Binary) this::ge, second);
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::ge, second).get();
     }
 
     @Override
     protected MatrixStore<Double> le(MatrixStore<Double> first, MatrixStore<Double> second) {
-        return first.operateOnMatching((PrimitiveFunction.Binary) this::le, second);
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::le, second).get();
     }
 
     @Override
     protected MatrixStore<Double> lt(MatrixStore<Double> first, MatrixStore<Double> second) {
-        return first.operateOnMatching((PrimitiveFunction.Binary) this::lt, second);
+        return first.operateOnMatching((PrimitiveFunction.Binary) this::lt, second).get();
     }
 
-    private Double eq(Double value, Double second) {
-        return value.equals(second) ? 1.0D : 0.0D;
+    private double eq(double value, double second) {
+        return value == second ? 1.0D : 0.0D;
     }
 
-    private Double neq(Double value, Double second) {
-        return value.equals(second) ? 0.0D : 1.0D;
+    private double neq(double value, double second) {
+        return value == second ? 0.0D : 1.0D;
     }
 
-    private Double gt(Double value, Double second) {
-        return value.compareTo(second) == 1 ? 1D : 0D;
+    private double gt(double value, double second) {
+        return value > second ? 1D : 0D;
     }
 
-    private Double ge(Double value, Double second) {
-        return value.compareTo(second) >= 0 ? 1D : 0D;
+    private double ge(double value, double second) {
+        return value >= second ? 1D : 0D;
     }
 
-    private Double le(Double value, Double second) {
-        return value.compareTo(second) <= 0 ? 1D : 0D;
+    private double le(double value, double second) {
+        return value <= second ? 1D : 0D;
     }
 
-    private Double lt(Double value, Double second) {
-        return value.compareTo(second) == -1 ? 1D : 0D;
+    private double lt(double value, double second) {
+        return value < second ? 1D : 0D;
     }
 }
 

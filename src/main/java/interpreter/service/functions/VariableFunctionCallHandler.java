@@ -22,7 +22,7 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        CallInstruction callInstruction = (CallInstruction) instructionPointer.current();
+        CallInstruction callInstruction = (CallInstruction) instructionPointer.currentInstruction();
         Indexable indexable = (Indexable) memorySpace.get(callInstruction.getVariableAddress());
         if (callInstruction.getArgumentsNumber() == 2) {
             handleTwo(indexable);
@@ -40,6 +40,7 @@ public class VariableFunctionCallHandler extends AbstractInstructionHandler {
     }
 
     private void handleTwo(Indexable indexable) {
+        // TODO type check
         AddressIterator column = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         ObjectData objectData = indexable.get(row, column);

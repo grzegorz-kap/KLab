@@ -3,6 +3,9 @@ package interpreter.lexer.service;
 import interpreter.lexer.model.RegexTokenizerContext;
 import interpreter.lexer.model.Token;
 import interpreter.lexer.model.TokenClass;
+import interpreter.lexer.utils.KeywordMatcher;
+import interpreter.lexer.utils.SymbolsMapper;
+import interpreter.lexer.utils.TokenMatcher;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     public static final String NUMBER_PATTERN = "^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?";
     public static final String WORD_PATTERN = "^[A-Za-z_\\$][A-Za-z_\\$0-9]*";
     public static final String SPACE_PATTERN = "^[ \\t]+";
-    public static final String NEWLINE_PATTERN = "^[\\n\\t ]+";
+    public static final String NEWLINE_PATTERN = "^[\\n\\t\\r ]+";
 
     public static final Pattern NUMBER_REGEX = Pattern.compile(NUMBER_PATTERN);
     public static final Pattern WORD_REGEX = Pattern.compile(WORD_PATTERN);
@@ -34,7 +37,7 @@ public class RegexTokenizer extends AbstractTokenizer {
     @Override
     public void onWord() {
         Token token = tokenRegexReader.readToken(WORD_REGEX, TokenClass.WORD);
-        keywordMatcher.changeIfKeyword(token);
+        KeywordMatcher.changeIfKeyword(token);
         tCM.addToken(token);
     }
 
@@ -57,7 +60,7 @@ public class RegexTokenizer extends AbstractTokenizer {
             }
         }
 
-        String result = tryRead(tokenMatcher.getOperatorRegex());
+        String result = tryRead(TokenMatcher.getOperatorRegex());
         if (Objects.nonNull(result)) {
             addToken(result, TokenClass.OPERATOR);
         }
@@ -66,14 +69,14 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public boolean tryReadOtherSymbol() {
-        String result = tryRead(tokenMatcher.getSymbolsRegex());
+        String result = tryRead(TokenMatcher.getSymbolsRegex());
         if (Objects.isNull(result)) {
             return false;
         }
         result = result.replaceAll("[ \\t]", "");
 
         if (!StringUtils.isEmpty(result)) {
-            addToken(result, symbolsMapper.getTokenClass(result));
+            addToken(result, SymbolsMapper.getTokenClass(result));
             return true;
         } else {
             return false;

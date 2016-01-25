@@ -3,8 +3,8 @@ package interpreter.lexer.service;
 import interpreter.lexer.exception.UnrecognizedTokenException;
 import interpreter.lexer.model.TokenList;
 import interpreter.lexer.model.TokenizerContext;
-import interpreter.lexer.utils.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import interpreter.lexer.utils.TokenRegexReader;
+import interpreter.lexer.utils.TokenStartMatcher;
 
 public abstract class AbstractTokenizer implements Tokenizer {
 
@@ -13,13 +13,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
     protected TokenizerContext tC;
     protected TokenizerContextManager tCM;
     protected TokenRegexReader tokenRegexReader;
-    protected TokenMatcher tokenMatcher;
-    protected SymbolsMapper symbolsMapper;
-    protected KeywordMatcher keywordMatcher;
     private TokenStartMatcher tokenStartMatcher;
 
 
-    public TokenList readTokens(String inputText) {
+    public synchronized TokenList readTokens(String inputText) {
         setContext(inputText);
         setState();
         process();
@@ -39,9 +36,9 @@ public abstract class AbstractTokenizer implements Tokenizer {
     public abstract boolean tryReadOtherSymbol();
 
     private void setState() {
-        tokenStartMatcher.setTokenizerContext(tC);
-        tCM.setTokenizerContext(tC);
-        tokenRegexReader.setTokenizerContext(tC);
+        tokenStartMatcher = new TokenStartMatcher(tC);
+        tCM = new TokenizerContextManager(tC);
+        tokenRegexReader = new TokenRegexReader(tC);
     }
 
     private void process() {
@@ -78,35 +75,5 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     protected void setContext(String inputText) {
         tC = new TokenizerContext(inputText);
-    }
-
-    @Autowired
-    public void settCM(TokenizerContextManager tCM) {
-        this.tCM = tCM;
-    }
-
-    @Autowired
-    public void setTokenStartMatcher(TokenStartMatcher tokenStartMatcher) {
-        this.tokenStartMatcher = tokenStartMatcher;
-    }
-
-    @Autowired
-    public void setTokenRegexReader(TokenRegexReader tokenRegexReader) {
-        this.tokenRegexReader = tokenRegexReader;
-    }
-
-    @Autowired
-    public void setTokenMatcher(TokenMatcher tokenMatcher) {
-        this.tokenMatcher = tokenMatcher;
-    }
-
-    @Autowired
-    public void setSymbolsMapper(SymbolsMapper symbolsMapper) {
-        this.symbolsMapper = symbolsMapper;
-    }
-
-    @Autowired
-    public void setKeywordMatcher(KeywordMatcher keywordMatcher) {
-        this.keywordMatcher = keywordMatcher;
     }
 }

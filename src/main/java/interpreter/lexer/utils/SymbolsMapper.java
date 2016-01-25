@@ -1,27 +1,24 @@
 package interpreter.lexer.utils;
 
 import interpreter.lexer.model.TokenClass;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-public class SymbolsMapper {
+public abstract class SymbolsMapper {
 
-    private Map<String, TokenClass> TOKEN_CLASS_MAP = new HashMap<>();
+    private static final Map<String, TokenClass> TOKEN_CLASS_MAP = new HashMap<String, TokenClass>() {{
+        put(",", TokenClass.COMMA);
+        put(":", TokenClass.COLON);
+        put(";", TokenClass.SEMICOLON);
+        put("(", TokenClass.OPEN_PARENTHESIS);
+        put(")", TokenClass.CLOSE_PARENTHESIS);
+        put("[", TokenClass.OPEN_BRACKET);
+        put("]", TokenClass.CLOSE_BRACKET);
+        put(":", TokenClass.MATRIX_ALL);
+    }};
 
-    public SymbolsMapper() {
-        TOKEN_CLASS_MAP.put(",", TokenClass.COMMA);
-        TOKEN_CLASS_MAP.put(":", TokenClass.COLON);
-        TOKEN_CLASS_MAP.put(";", TokenClass.SEMICOLON);
-        TOKEN_CLASS_MAP.put("(", TokenClass.OPEN_PARENTHESIS);
-        TOKEN_CLASS_MAP.put(")", TokenClass.CLOSE_PARENTHESIS);
-        TOKEN_CLASS_MAP.put("[", TokenClass.OPEN_BRACKET);
-        TOKEN_CLASS_MAP.put("]", TokenClass.CLOSE_BRACKET);
-    }
-
-    public TokenClass getTokenClass(String symbol) {
+    public static TokenClass getTokenClass(String symbol) {
         return TOKEN_CLASS_MAP.get(symbol);
     }
 }

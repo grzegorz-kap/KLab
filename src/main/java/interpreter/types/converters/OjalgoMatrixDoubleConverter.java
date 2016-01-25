@@ -1,16 +1,15 @@
 package interpreter.types.converters;
 
-import java.util.stream.LongStream;
-
-import org.ojalgo.matrix.store.PhysicalStore;
-import org.ojalgo.matrix.store.PrimitiveDenseStore;
-import org.springframework.stereotype.Component;
-
 import interpreter.types.NumericType;
 import interpreter.types.matrix.Matrix;
 import interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 import interpreter.types.matrix.ojalgo.OjalgoDoubleMatrix;
 import interpreter.types.scalar.Scalar;
+import org.ojalgo.matrix.store.PhysicalStore;
+import org.ojalgo.matrix.store.PrimitiveDenseStore;
+import org.springframework.stereotype.Component;
+
+import java.util.stream.LongStream;
 
 @Component
 public class OjalgoMatrixDoubleConverter extends AbstractConverter<OjalgoDoubleMatrix> {

@@ -1,45 +1,15 @@
 package interpreter.types;
 
-import interpreter.parsing.model.tokens.IdentifierToken;
+public interface IdentifierObject extends ObjectData {
+    boolean isCanBeScript();
 
-public class IdentifierObject extends AbstractObjectData {
+    void setCanBeScript(boolean canBeScript);
 
-    private IdentifierToken identifierToken;
+    int getAddress();
 
-    public IdentifierObject(IdentifierToken identifierToken) {
-        this.identifierToken = identifierToken;
-    }
+    void setAddress(int address);
 
-    public IdentifierObject(String name, Integer address) {
-        identifierToken = new IdentifierToken();
-        identifierToken.setId(name);
-        identifierToken.setAddress(address);
-    }
+    String getId();
 
-    public IdentifierToken getIdentifierToken() {
-        return identifierToken;
-    }
-
-    @Override
-    public String toString() {
-        return identifierToken.getId() + "@" + identifierToken.getAddress();
-    }
-
-    @Override
-    public ObjectData copyObjectData() {
-        return new IdentifierObject(identifierToken);
-    }
-
-    public Integer getAddress() {
-        return identifierToken.getAddress();
-    }
-
-    public String getId() {
-        return identifierToken.getId();
-    }
-
-    @Override
-    public boolean isTrue() {
-        throw new UnsupportedOperationException();
-    }
+    void setId(String id);
 }

@@ -30,7 +30,7 @@ public class MatrixVerseInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        process(executionContextManager.executionStackPop(executionContext, instructionPointer.current().getArgumentsNumber()));
+        process(executionContextManager.executionStackPop(executionContext, instructionPointer.currentInstruction().getArgumentsNumber()));
         instructionPointer.increment();
     }
 

@@ -6,7 +6,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 class ExecutionStack {
-
     private Deque<ObjectData> stack = new ArrayDeque<>();
 
     public void push(ObjectData objectData) {

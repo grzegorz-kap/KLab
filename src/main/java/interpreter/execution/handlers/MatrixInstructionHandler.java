@@ -23,7 +23,7 @@ public class MatrixInstructionHandler extends AbstractInstructionHandler {
     private NumericUtils numericUtils;
 
     public void handle(InstructionPointer instructionPointer) {
-        process(executionContextManager.executionStackPop(executionContext, instructionPointer.current().getArgumentsNumber()));
+        process(executionContextManager.executionStackPop(executionContext, instructionPointer.currentInstruction().getArgumentsNumber()));
         instructionPointer.increment();
     }
 

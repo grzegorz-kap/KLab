@@ -2,8 +2,8 @@ package interpreter.translate.handlers
 
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
-import interpreter.translate.model.instruction.Instruction
-import interpreter.translate.model.instruction.InstructionCode
+import interpreter.translate.model.Instruction
+import interpreter.translate.model.InstructionCode
 import interpreter.translate.service.TranslateContextManager
 import interpreter.types.NumericObject
 import interpreter.types.scalar.NumberScalarFactory
@@ -34,7 +34,7 @@ class NumberTranslateHandlerTest extends Specification {
 
         then:
         1 * numberTranslateHandler.numberScalarFactory.getDouble(Double.valueOf(numberToken.token.lexeme)) >> numberScalar
-        1 * numberTranslateHandler.translateContextManager.addInstruction({
+        1 * numberTranslateHandler.tCM.addInstruction({
             it.instructionCode == InstructionCode.PUSH
             it.argumentsNumber == 1
             it.objectDataList.size() == 1

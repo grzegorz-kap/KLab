@@ -3,6 +3,7 @@ package interpreter.execution.handlers;
 import interpreter.commons.MemorySpace;
 import interpreter.execution.model.InstructionPointer;
 import interpreter.translate.model.InstructionCode;
+import interpreter.types.TokenIdentifierObject;
 import interpreter.types.IdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -16,7 +17,7 @@ public class CLEARInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        IdentifierObject id = instructionPointer.current().getObjectData(0, IdentifierObject.class);
+        IdentifierObject id = instructionPointer.currentInstruction().getObjectData(0, TokenIdentifierObject.class);
         memorySpace.set(id.getAddress(), null);
         instructionPointer.increment();
     }

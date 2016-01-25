@@ -3,8 +3,8 @@ package interpreter.translate.handlers
 import interpreter.parsing.model.ParseToken
 import interpreter.parsing.model.expression.ExpressionValue
 import interpreter.translate.factory.OperatorInstructionCodesFactory
-import interpreter.translate.model.instruction.Instruction
-import interpreter.translate.model.instruction.InstructionCode
+import interpreter.translate.model.Instruction
+import interpreter.translate.model.InstructionCode
 import interpreter.translate.service.TranslateContextManager
 import spock.lang.Specification
 
@@ -32,7 +32,7 @@ class OperatorTranslateHandlerTest extends Specification {
 
         then:
         1 * operatorTranslateHandler.operatorInstructionCodesFactory.get(operator.operatorCode) >> InstructionCode.ADD
-        1 * operatorTranslateHandler.translateContextManager.addInstruction({
+        1 * operatorTranslateHandler.tCM.addInstruction({
             it.instructionCode == InstructionCode.ADD
             it.argumentsNumber == 0
             it.objectDataList.size() == 0

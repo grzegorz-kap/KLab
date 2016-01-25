@@ -8,6 +8,11 @@ public class Token {
     private TokenClass tokenClass;
     private boolean isKeyword = false;
 
+    @Override
+    public String toString() {
+        return lexeme + "\t" + tokenClass + "\t" + line + "\t" + column;
+    }
+
     public String getLexeme() {
         return lexeme;
     }

@@ -3,8 +3,8 @@ package interpreter.translate.makers
 import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
-import interpreter.translate.model.instruction.Instruction
-import interpreter.translate.model.instruction.InstructionCode
+import interpreter.translate.model.Instruction
+import interpreter.translate.model.InstructionCode
 import interpreter.types.ObjectData
 
 import static com.natpryce.makeiteasy.Property.newProperty
@@ -22,7 +22,7 @@ class InstructionMaker {
             Instruction instruction = new Instruction();
             instruction.instructionCode = propertyLookup.valueOf(code, InstructionCode.PUSH)
             instruction.argumentsNumber = propertyLookup.valueOf(arguments, 2)
-            instruction.objectDataList = propertyLookup.valueOf(data, [])
+            instruction.data = propertyLookup.valueOf(data, [])
             return instruction
         }
     }

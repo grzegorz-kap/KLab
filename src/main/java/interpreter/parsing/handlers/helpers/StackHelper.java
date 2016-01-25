@@ -16,8 +16,7 @@ public class StackHelper {
         return !parseContextManager.isStackEmpty();
     }
 
-    public boolean stackToExpressionUntilParseClass(ParseContextManager parseContextManager,
-                                                    ParseClass[] parseClasses) {
+    public boolean stackToExpressionUntilParseClass(ParseContextManager parseContextManager, ParseClass[] parseClasses) {
         while (!parseContextManager.isStackEmpty() && !contains(parseClasses, parseContextManager.stackPeekClass())) {
             callStackFinishHandler(parseContextManager);
         }

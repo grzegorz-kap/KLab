@@ -20,11 +20,11 @@ public class MatrixDivider<T extends Number> extends OjalgoOperator<T> {
     protected MatrixStore<T> operate(OjalgoAbstractMatrix<T> first, OjalgoAbstractMatrix<T> second) {
         if (second.isScalar()) {
             return first.getLazyStore()
-                    .operateOnMatching(first.getDivideFunction(), new OjalgoMatrixScalarWrapper<>(second));
+                    .operateOnMatching(first.getDivideFunction(), new OjalgoMatrixScalarWrapper<>(second, first)).get();
         }
         if (first.isScalar()) {
             return new OjalgoMatrixScalarWrapper<>(first, second)
-                    .operateOnMatching(second.getDivideFunction(), second.getLazyStore());
+                    .operateOnMatching(second.getDivideFunction(), second.getLazyStore()).get();
         }
         try {
             MatrixStore<T> aT = first.getLazyStore().transpose();

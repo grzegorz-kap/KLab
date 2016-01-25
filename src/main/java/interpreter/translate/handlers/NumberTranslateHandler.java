@@ -25,7 +25,7 @@ public class NumberTranslateHandler extends AbstractTranslateHandler {
         instruction.setInstructionCode(InstructionCode.PUSH);
         instruction.setArgumentsNumber(1);
         instruction.add(numberScalarFactory.getDouble(numberToken.getToken().getLexeme()));
-        translateContextManager.addInstruction(instruction);
+        tCM.addInstruction(instruction);
     }
 
     @Override
