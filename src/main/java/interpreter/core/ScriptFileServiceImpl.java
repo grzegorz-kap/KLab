@@ -3,16 +3,15 @@ package interpreter.core;
 import common.EventService;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.utils.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.WatchEvent;
+import java.nio.charset.Charset;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -24,6 +23,8 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     private String scriptRegex = "[A-Za-z][A-Za-z0-9_]*[.]m$";
     private String workingDirectory;
     private String applicationName;
+    private String extension = ".m";
+    private String charsetName = "UTF-8";
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -39,8 +40,16 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     }
 
     @Override
+    public void writeScript(String scriptName, String content) throws IOException {
+        scriptName = FilenameUtils.removeExtension(scriptName);
+        Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, extension));
+        Files.write(path, content.getBytes(Charset.forName(charsetName)));
+    }
+
+    @Override
     public String readScript(String scriptName) throws IOException {
-        Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, ".m"));
+        scriptName = FilenameUtils.removeExtension(scriptName);
+        Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, extension));
         return new String(Files.readAllBytes(path)).replaceAll("\\r\\n", "\n");
     }
 
@@ -77,5 +86,9 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    public void setCharsetName(String charsetName) {
+        this.charsetName = charsetName;
     }
 }

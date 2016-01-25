@@ -1,30 +1,57 @@
 package gui.config;
 
+import com.google.common.eventbus.Subscribe;
 import gui.App;
+import gui.events.OpenScriptEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
-public class GuiContext {
+@Component
+public class GuiContext implements ApplicationContextAware, InitializingBean {
+    private ApplicationContext applicationContext;
+    private Stage primaryStage;
+    private Stage editorStage;
 
-    private static final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(GuiAppConfiguration.class);
-    private static final GuiContext GUI_CONTEXT = new GuiContext();
-
-    public static Object loadScene(final String url) {
-        return GUI_CONTEXT.loadFxml(url);
+    public void showMainScreen() throws IOException {
+        showScreen((Parent) loadScene("main.fxml"));
     }
 
-    public static ScreensConfiguration getScreensConfiguration() {
-        return applicationContext.getBean(ScreensConfiguration.class);
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        (editorStage = new Stage()).setScene(new Scene((Parent) loadScene("script-editor.fxml")));
     }
 
-    private Object loadFxml(final String fileName) {
-        try {
-            return FXMLLoader.load(App.class.getResource(fileName), null, null, applicationContext::getBean);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    @Subscribe
+    public void showEditorScreen(OpenScriptEvent event) throws IOException {
+        editorStage.show();
+        editorStage.toFront();
+    }
+
+    private void showScreen(Parent screen) {
+        primaryStage.setScene(new Scene(screen));
+        primaryStage.show();
+    }
+
+    private Object loadScene(final String url) throws IOException {
+        return FXMLLoader.load(App.class.getResource(url), null, null, applicationContext::getBean);
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
