@@ -15,5 +15,4 @@ public class OnesFunction extends AbstractMatrixGeneratorFunction {
     public ObjectData call(ObjectData[] data, int output) {
         return createMatrix(data, matrixFactory::ones);
     }
-
 }
