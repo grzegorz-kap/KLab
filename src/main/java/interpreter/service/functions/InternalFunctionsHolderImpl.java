@@ -16,7 +16,6 @@ import java.util.function.Predicate;
 @Component
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 public class InternalFunctionsHolderImpl implements InitializingBean, InternalFunctionsHolder {
-
     private List<InternalFunction> internalFunctions;
     private IdentifierMapper identifierMapper;
 
@@ -30,21 +29,6 @@ public class InternalFunctionsHolderImpl implements InitializingBean, InternalFu
         InternalFunction internalFunction = internalFunctions.stream()
                 .filter(nameAndArgumentsNumberFilter(functionName, argumentsNumber)).findFirst().orElse(null);
         return Objects.isNull(internalFunction) ? null : internalFunction.getAddress();
-    }
-
-    @Override
-    public boolean contains(String functionName, int argumentsNumber) {
-        return internalFunctions.stream().filter(nameAndArgumentsNumberFilter(functionName, argumentsNumber))
-                .findFirst().orElse(null) != null;
-    }
-
-    @Override
-    public boolean contains(String functionName) {
-        return internalFunctions.stream().filter(nameFilter(functionName)).findFirst().orElse(null) != null;
-    }
-
-    private Predicate<? super InternalFunction> nameFilter(String functionName) {
-        return function -> function.getName().equals(functionName);
     }
 
     private Predicate<? super InternalFunction> nameAndArgumentsNumberFilter(String functionName, int argumentsNumber) {
