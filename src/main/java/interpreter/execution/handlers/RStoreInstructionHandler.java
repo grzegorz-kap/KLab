@@ -17,6 +17,7 @@ public class RStoreInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
+        // TODO internal function return
         IdentifierObject target = (IdentifierObject) executionContext.executionStackPop();
         ObjectData source = executionContext.executionStackPop();
         source.setName(target.getId());

@@ -23,7 +23,7 @@ public class InternalFunctionCallHandler extends AbstractInstructionHandler {
         for (int index = instruction.getArgumentsNumber() - 1; index >= 0; index--) {
             data[index] = executionContext.executionStackPop();
         }
-        executionContext.executionStackPush(internalFunction.call(data));
+        executionContext.executionStackPush(internalFunction.call(data, instruction.getExpectedOutputSize()));
         instructionPointer.increment();
     }
 

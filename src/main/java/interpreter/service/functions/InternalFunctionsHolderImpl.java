@@ -31,11 +31,6 @@ public class InternalFunctionsHolderImpl implements InitializingBean, InternalFu
         return Objects.isNull(internalFunction) ? null : internalFunction.getAddress();
     }
 
-    private Predicate<? super InternalFunction> nameAndArgumentsNumberFilter(String functionName, int argumentsNumber) {
-        return function -> function.getName().equals(functionName) && function.getMinArgs() <= argumentsNumber
-                && function.getMaxArgs() >= argumentsNumber;
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
         List<InternalFunction> list = new ArrayList<>(Collections.nCopies(internalFunctions.size(), null));
@@ -45,6 +40,11 @@ public class InternalFunctionsHolderImpl implements InitializingBean, InternalFu
             list.set(address, internalFunction);
         });
         internalFunctions = list;
+    }
+
+    private Predicate<? super InternalFunction> nameAndArgumentsNumberFilter(String functionName, int argumentsNumber) {
+        return function -> function.getName().equals(functionName) && function.getMinArgs() <= argumentsNumber
+                && function.getMaxArgs() >= argumentsNumber;
     }
 
     @Autowired

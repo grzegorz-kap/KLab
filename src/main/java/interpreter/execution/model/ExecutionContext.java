@@ -54,7 +54,9 @@ public class ExecutionContext {
     }
 
     public void executionStackPush(ObjectData objectData) {
-        executionStack.push(objectData);
+        if (objectData != null) {
+            executionStack.push(objectData);
+        }
     }
     
     public ObjectData executionStackPeek() {

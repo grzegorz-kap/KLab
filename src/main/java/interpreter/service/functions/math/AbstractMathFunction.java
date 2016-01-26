@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.stream.Stream;
 
 public abstract class AbstractMathFunction extends AbstractInternalFunction {
-
     @Autowired
     protected MathFunctionsHolder functionsHolder;
 
@@ -20,8 +19,8 @@ public abstract class AbstractMathFunction extends AbstractInternalFunction {
     protected abstract ObjectData process(NumericObject[] datas);
 
     @Override
-    public ObjectData call(ObjectData[] datas) {
-        return process(Stream.of(datas).map(this::mapToNumeric).toArray(NumericObject[]::new));
+    public ObjectData call(ObjectData[] data, int output) {
+        return process(Stream.of(data).map(this::mapToNumeric).toArray(NumericObject[]::new));
     }
 
     protected NumericObject mapToNumeric(ObjectData data) {
@@ -30,5 +29,4 @@ public abstract class AbstractMathFunction extends AbstractInternalFunction {
         }
         return (NumericObject) data;
     }
-
 }

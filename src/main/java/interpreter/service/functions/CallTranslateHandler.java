@@ -23,7 +23,7 @@ public class CallTranslateHandler extends AbstractTranslateHandler {
     }
 
     private void resolveOutputSize(CallInstruction instruction, Expression<ParseToken> expression) {
-        instruction.setExpectedOutputSize(1);
+        instruction.setExpectedOutputSize(-1);
         Expression<ParseToken> parent = expression.getParent();
         if(parent!=null && parent.getValue() != null && parent.getValue().getToken().getLexeme().equals("=")) {
             Expression<ParseToken> left = parent.getChildren().get(0);
