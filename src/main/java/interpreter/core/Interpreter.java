@@ -9,13 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class Interpreter {
     private static final Logger LOGGER = LoggerFactory.getLogger(Interpreter.class);
-
     private InterpreterService interpreterService;
 
     @Async
     public void start(String input) {
         LOGGER.info("\n{}", input);
-        interpreterService.resetCodeAndStack();
         try {
             interpreterService.startExecution(input);
         } catch (RuntimeException ex) {

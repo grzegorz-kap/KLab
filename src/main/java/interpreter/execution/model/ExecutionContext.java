@@ -1,10 +1,9 @@
 package interpreter.execution.model;
 
-import interpreter.translate.model.Instruction;
+import interpreter.translate.model.MacroInstruction;
 import interpreter.types.ObjectData;
 
 import java.util.ArrayDeque;
-import java.util.Collection;
 import java.util.Deque;
 
 public class ExecutionContext {
@@ -30,12 +29,8 @@ public class ExecutionContext {
         return new InstructionPointer(code);
     }
 
-    public void addInstruction(Collection<? extends Instruction> instructions) {
-        code.add(instructions);
-    }
-
-    public void setExecutionStack(ExecutionStack executionStack) {
-        this.executionStack = executionStack;
+    public void addInstruction(MacroInstruction instructions) {
+        code.add(instructions.getInstructions());
     }
 
     public void clearExecutionStack() {
