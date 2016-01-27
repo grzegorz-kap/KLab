@@ -29,7 +29,7 @@ public class SizeFunction extends AbstractInternalFunction {
         Sizeable sizeable = (Sizeable) data[0];
         long rows = sizeable.getRows();
         long columns = sizeable.getColumns();
-        if (output == -1) {
+        if (output <= 1) {
             Matrix<Double> matrix = matrixFactory.create(1, 2);
             matrix.set(0, 0, (double) rows);
             matrix.set(0, 1, (double) columns);
