@@ -1,14 +1,11 @@
 package interpreter.core;
 
 import interpreter.execution.service.ExecutionService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 class InterpreterService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
     private ExecutionService executionService;
     private CodeGenerator codeGenerator;
 
@@ -21,10 +18,6 @@ class InterpreterService {
         if (codeGenerator.executionCanStart()) {
             executionService.start();
         }
-    }
-
-    public void printCode() {
-        LOGGER.info("{}", executionService.getExecutionContext().getCode());
     }
 
     @Autowired

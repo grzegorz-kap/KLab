@@ -19,7 +19,6 @@ public class Interpreter {
         } catch (RuntimeException ex) {
             LOGGER.error("Execution failed", ex);
         }
-        interpreterService.printCode();
     }
 
     @Autowired

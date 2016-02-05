@@ -10,6 +10,8 @@ import interpreter.parsing.model.expression.Expression;
 import interpreter.parsing.service.Parser;
 import interpreter.translate.keyword.PostParseHandler;
 import interpreter.translate.service.InstructionTranslator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +24,7 @@ import java.util.function.Supplier;
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CodeGeneratorImpl implements CodeGenerator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorImpl.class);
     private Supplier<Code> defaultCodeSupplier = Code::new;
     private Callback defaultCallback = null;
     private Parser parser;
@@ -33,14 +36,6 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private Code codeCache;
 
     @Override
-    public Code translate(String input, Supplier<Code> codeSupplier, Callback callback) {
-        Code code = initCode(codeSupplier);
-        parser.setTokenList(tokenizer.readTokens(input));
-        process(code, callback);
-        return code;
-    }
-
-    @Override
     public Code translate(String input) {
         return translate(input, defaultCodeSupplier, defaultCallback);
     }
@@ -50,6 +45,14 @@ public class CodeGeneratorImpl implements CodeGenerator {
         Code code = initCode(defaultCodeSupplier);
         parser.setTokenList(input);
         process(code, defaultCallback);
+        return code;
+    }
+
+    @Override
+    public Code translate(String input, Supplier<Code> codeSupplier, Callback callback) {
+        Code code = initCode(codeSupplier);
+        parser.setTokenList(tokenizer.readTokens(input));
+        process(code, callback);
         return code;
     }
 
@@ -85,11 +88,12 @@ public class CodeGeneratorImpl implements CodeGenerator {
             } else {
                 code.add(postParseHandler.handle(expressionList, instructionTranslator).getInstructions());
             }
+            memorySpace.reserve(identifierMapper.mainMappingsSize());
+            if (callback != null) {
+                callback.invoke();
+            }
         }
-        memorySpace.reserve(identifierMapper.mainMappingsSize());
-        if (callback != null) {
-            callback.invoke();
-        }
+        LOGGER.info("Translated: {}", code);
     }
 
     @Autowired
