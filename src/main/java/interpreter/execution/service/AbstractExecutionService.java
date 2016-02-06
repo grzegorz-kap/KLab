@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static java.util.Objects.nonNull;
 
-public abstract class AbstractExecutionService {
+public abstract class AbstractExecutionService implements ExecutionService {
     protected InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
     protected ExecutionContext executionContext;
     protected InstructionPointer instructionPointer;
@@ -26,10 +26,12 @@ public abstract class AbstractExecutionService {
                 });
     }
 
+    @Override
     public ExecutionContext getExecutionContext() {
         return executionContext;
     }
 
+    @Override
     public void resetCodeAndStack() {
         executionContext.clearExecutionStack();
         executionContext.clearCode();

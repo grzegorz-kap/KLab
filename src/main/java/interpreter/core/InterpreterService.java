@@ -1,5 +1,7 @@
 package interpreter.core;
 
+import com.google.common.eventbus.Subscribe;
+import gui.events.ProfilingModeSwitchEvent;
 import interpreter.execution.service.ExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,15 @@ class InterpreterService {
     private void execute() {
         if (codeGenerator.executionCanStart()) {
             executionService.start();
+        }
+    }
+
+    @Subscribe
+    private void onProfilingModeSwitch(ProfilingModeSwitchEvent event) {
+        if (event.getData()) {
+            executionService.enableProfiling();
+        } else {
+            executionService.disableProfiling();
         }
     }
 
