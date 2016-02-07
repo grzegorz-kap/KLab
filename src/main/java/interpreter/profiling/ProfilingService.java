@@ -14,8 +14,8 @@ import java.util.HashMap;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ProfilingHandleAction implements InstructionAction {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProfilingHandleAction.class);
+public class ProfilingService implements InstructionAction {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfilingService.class);
     private HashMap<Instruction, ProfilingData<Instruction>> data = new HashMap<>();
 
     @Override
@@ -33,6 +33,6 @@ public class ProfilingHandleAction implements InstructionAction {
 
         pd.addTime(end-start);
         pd.addCount(1L);
-        LOGGER.info("{}, took: {}", instruction, end - start);
+        LOGGER.info("{}, took: {}", instruction, pd);
     }
 }

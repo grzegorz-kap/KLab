@@ -15,6 +15,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
 import org.apache.commons.io.FilenameUtils;
 import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -22,14 +25,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptEditorController implements Initializable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptEditorController.class);
     private ScriptFileService scriptFileService;
     private ScriptViewService scriptViewService;
     private EventService eventService;
@@ -66,6 +67,7 @@ public class ScriptEditorController implements Initializable {
         if (tab == null) {
             tabs.put(script, tab = new CustomTab(script));
             CodeArea codeArea = new CodeArea(scriptViewService.readScript(script));
+            codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
             tab.setCodeArea(codeArea);
 
             ContextMenu contextMenu = new ContextMenu();

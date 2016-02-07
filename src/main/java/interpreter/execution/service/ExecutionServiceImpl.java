@@ -6,7 +6,7 @@ import interpreter.execution.InstructionAction;
 import interpreter.execution.exception.UnsupportedInstructionException;
 import interpreter.execution.handlers.InstructionHandler;
 import interpreter.execution.model.InstructionPointer;
-import interpreter.profiling.ProfilingHandleAction;
+import interpreter.profiling.ProfilingService;
 import interpreter.translate.model.Instruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -22,7 +22,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
     private InstructionAction handleAction = this::handle;
-    private ProfilingHandleAction profilingHandleAction;
+    private ProfilingService profilingService;
 
     @Autowired
     public ExecutionServiceImpl(Set<InstructionHandler> instructionHandlers) {
@@ -31,7 +31,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
 
     @Override
     public void enableProfiling() {
-        handleAction = profilingHandleAction;
+        handleAction = profilingService;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     }
 
     @Autowired
-    public void setProfilingHandleAction(ProfilingHandleAction profilingHandleAction) {
-        this.profilingHandleAction = profilingHandleAction;
+    public void setProfilingService(ProfilingService profilingService) {
+        this.profilingService = profilingService;
     }
 }
