@@ -9,7 +9,9 @@ import gui.service.ScriptViewService;
 import interpreter.core.ScriptFileService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.IntFunction;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -67,11 +70,22 @@ public class ScriptEditorController implements Initializable {
         if (tab == null) {
             tabs.put(script, tab = new CustomTab(script));
             CodeArea codeArea = new CodeArea(scriptViewService.readScript(script));
-            codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
             tab.setCodeArea(codeArea);
 
-            ContextMenu contextMenu = new ContextMenu();
+            IntFunction<Node> lineNumberFactory = LineNumberFactory.get(codeArea);
 
+            codeArea.setParagraphGraphicFactory(number -> {
+                Node node = lineNumberFactory.apply(number);
+                node.setOnMouseClicked(ev -> LOGGER.info("{}", ((Label) node).getText()));
+                return node;
+            });
+
+            codeArea.setOnMouseClicked(ev -> {
+                LOGGER.info("{}", ev.getSource());
+            });
+
+
+            ContextMenu contextMenu = new ContextMenu();
             MenuItem run = new MenuItem("Run");
             run.setOnAction(ev -> eventService.publish(new CommandSubmittedEvent(script, this)));
             contextMenu.getItems().add(run);
