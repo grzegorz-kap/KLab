@@ -5,6 +5,7 @@ import common.EventService;
 import gui.events.CommandSubmittedEvent;
 import gui.events.OpenScriptEvent;
 import gui.model.CustomTab;
+import gui.service.CustomLineNumberFactory;
 import gui.service.ScriptViewService;
 import interpreter.core.ScriptFileService;
 import javafx.fxml.FXML;
@@ -72,18 +73,7 @@ public class ScriptEditorController implements Initializable {
             CodeArea codeArea = new CodeArea(scriptViewService.readScript(script));
             tab.setCodeArea(codeArea);
 
-            IntFunction<Node> lineNumberFactory = LineNumberFactory.get(codeArea);
-
-            codeArea.setParagraphGraphicFactory(number -> {
-                Node node = lineNumberFactory.apply(number);
-                node.setOnMouseClicked(ev -> LOGGER.info("{}", ((Label) node).getText()));
-                return node;
-            });
-
-            codeArea.setOnMouseClicked(ev -> {
-                LOGGER.info("{}", ev.getSource());
-            });
-
+            codeArea.setParagraphGraphicFactory(CustomLineNumberFactory.get(codeArea));
 
             ContextMenu contextMenu = new ContextMenu();
             MenuItem run = new MenuItem("Run");
