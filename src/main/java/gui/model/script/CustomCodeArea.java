@@ -1,19 +1,14 @@
 package gui.model.script;
 
+import gui.service.CustomLineNumberFactory;
 import org.fxmisc.richtext.CodeArea;
 
 public class CustomCodeArea extends CodeArea {
     private ScriptTab parentTab;
 
-    public CustomCodeArea(String content) {
+    CustomCodeArea(String content, ScriptTab scriptTab) {
         super(content);
-    }
-
-    public ScriptTab getParentTab() {
-        return parentTab;
-    }
-
-    public void setParentTab(ScriptTab parentTab) {
-        this.parentTab = parentTab;
+        setParagraphGraphicFactory(CustomLineNumberFactory.get(this));
+        parentTab = scriptTab;
     }
 }
