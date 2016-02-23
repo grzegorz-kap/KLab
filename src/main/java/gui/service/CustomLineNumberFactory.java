@@ -1,6 +1,6 @@
 package gui.service;
 
-import gui.model.LineNumberLabel;
+import gui.model.script.LineNumberLabel;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -11,10 +11,13 @@ import javafx.scene.text.FontPosture;
 import org.fxmisc.richtext.StyledTextArea;
 import org.reactfx.collection.LiveList;
 import org.reactfx.value.Val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.IntFunction;
 
 public class CustomLineNumberFactory implements IntFunction<LineNumberLabel> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomLineNumberFactory.class);
     private static final Insets DEFAULT_INSETS = new Insets(0.0, 5.0, 0.0, 5.0);
     private static final Paint DEFAULT_TEXT_FILL = Color.web("#666");
     private static final Font DEFAULT_FONT = Font.font("monospace", FontPosture.ITALIC, 13);
@@ -51,6 +54,10 @@ public class CustomLineNumberFactory implements IntFunction<LineNumberLabel> {
         // bind label's text to a Val that stops observing area's paragraphs
         // when lineNo is removed from scene
         lineNo.textProperty().bind(formatted.conditionOnShowing(lineNo));
+
+        lineNo.setOnMouseClicked(event -> {
+            LOGGER.info("Clicked {}", lineNo);
+        });
 
         return lineNo;
     }

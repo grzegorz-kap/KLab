@@ -1,4 +1,4 @@
-package gui.model;
+package gui.model.script;
 
 import javafx.scene.control.Label;
 

@@ -4,21 +4,19 @@ import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import gui.events.CommandSubmittedEvent;
 import gui.events.OpenScriptEvent;
-import gui.model.CustomTab;
+import gui.model.script.CustomCodeArea;
+import gui.model.script.ScriptEditorPane;
+import gui.model.script.ScriptTab;
 import gui.service.CustomLineNumberFactory;
 import gui.service.ScriptViewService;
 import interpreter.core.ScriptFileService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
 import org.apache.commons.io.FilenameUtils;
-import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.function.IntFunction;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -38,16 +35,16 @@ public class ScriptEditorController implements Initializable {
     private ScriptFileService scriptFileService;
     private ScriptViewService scriptViewService;
     private EventService eventService;
-    private Map<String, CustomTab> tabs = new HashMap<>();
+    private Map<String, ScriptTab> tabs = new HashMap<>();
 
     @FXML
-    private TabPane scriptPane;
+    private ScriptEditorPane scriptPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scriptPane.setContextMenu(new ContextMenu(new MenuItem("Text")));
         scriptPane.setOnKeyPressed(event -> {
-            CustomTab tab = (CustomTab) scriptPane.getSelectionModel().getSelectedItem();
+            ScriptTab tab = (ScriptTab) scriptPane.getSelectionModel().getSelectedItem();
             if (event.getCode().equals(KeyCode.S) && event.isControlDown() && Objects.nonNull(tab)) {
                 saveScript(tab);
             }
@@ -57,7 +54,7 @@ public class ScriptEditorController implements Initializable {
         });
     }
 
-    public void saveScript(CustomTab tab) {
+    public void saveScript(ScriptTab tab) {
         try {
             scriptFileService.writeScript(tab.getText(), tab.getCodeArea().getText());
         } catch (IOException ignored) {
@@ -67,11 +64,12 @@ public class ScriptEditorController implements Initializable {
     @Subscribe
     public void openScript(OpenScriptEvent event) throws IOException {
         String script = FilenameUtils.removeExtension(event.getData());
-        CustomTab tab = tabs.get(script);
+        ScriptTab tab = tabs.get(script);
         if (tab == null) {
-            tabs.put(script, tab = new CustomTab(script));
-            CodeArea codeArea = new CodeArea(scriptViewService.readScript(script));
+            tabs.put(script, tab = new ScriptTab(script));
+            CustomCodeArea codeArea = new CustomCodeArea(scriptViewService.readScript(script));
             tab.setCodeArea(codeArea);
+            codeArea.setParentTab(tab);
 
             codeArea.setParagraphGraphicFactory(CustomLineNumberFactory.get(codeArea));
 
