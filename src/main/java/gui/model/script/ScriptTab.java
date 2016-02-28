@@ -32,7 +32,7 @@ public class ScriptTab extends Tab {
 
         setContextMenu(contextMenu);
     }
-
+    
     public String getScriptContent() {
         return codeArea.getText();
     }
