@@ -2,6 +2,8 @@ package interpreter.core.code;
 
 import com.google.common.eventbus.Subscribe;
 import interpreter.core.events.ScriptChangeEvent;
+import interpreter.debug.BreakPointService;
+import interpreter.debug.BreakPointsUpdatedEvent;
 import interpreter.execution.model.Code;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
@@ -12,14 +14,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static java.util.Objects.nonNull;
 
 @Service
-public class ScriptServiceImpl implements ScriptService {
+class ScriptServiceImpl implements ScriptService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptServiceImpl.class);
     private Map<String, Code> cachedCode = Collections.synchronizedMap(new HashMap<>());
     private CodeGenerator codeGenerator;
     private ScriptFileService scriptFileService;
+    private BreakPointService breakPointService;
+
+    @Override
+    public Code getCode(String scriptName) {
+        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
+    }
 
     @Subscribe
     public void onScriptChange(ScriptChangeEvent event) {
@@ -29,16 +42,21 @@ public class ScriptServiceImpl implements ScriptService {
         }
     }
 
-    @Override
-    public Code getCode(String scriptName) {
-        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
+    @Subscribe
+    public void onBreakpointsUpdated(BreakPointsUpdatedEvent event) {
+        Code code = cachedCode.get(event.getData().getSourceId());
+        if (nonNull(code)) {
+            breakPointService.updateBreakpoints(code);
+        }
     }
 
     private Code read(String scriptName) {
         Code code = null;
         try {
             code = codeGenerator.translate(scriptFileService.readScript(scriptName));
+            code.setSource(scriptName);
             code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0));
+            breakPointService.updateBreakpoints(code);
             cachedCode.put(scriptName, code);
         } catch (IOException e) {
             LOGGER.error("Error reading script: '{}', cause: '{}", scriptName);
@@ -54,5 +72,10 @@ public class ScriptServiceImpl implements ScriptService {
     @Autowired
     public void setScriptFileService(ScriptFileService scriptFileService) {
         this.scriptFileService = scriptFileService;
+    }
+
+    @Autowired
+    public void setBreakPointService(BreakPointService breakPointService) {
+        this.breakPointService = breakPointService;
     }
 }

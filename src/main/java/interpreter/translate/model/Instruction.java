@@ -10,6 +10,7 @@ public class Instruction {
     private InstructionCode instructionCode;
     private List<ObjectData> data = new ArrayList<>();
     private int argumentsNumber = 0;
+    private boolean breakpoint = false;
 
     public Instruction() {
     }
@@ -50,6 +51,14 @@ public class Instruction {
 
     public void setArgumentsNumber(int argumentsNumber) {
         this.argumentsNumber = argumentsNumber;
+    }
+
+    public boolean isBreakpoint() {
+        return breakpoint;
+    }
+
+    public void setBreakpoint(boolean breakpoint) {
+        this.breakpoint = breakpoint;
     }
 
     @Override

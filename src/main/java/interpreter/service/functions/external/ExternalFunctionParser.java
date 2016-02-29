@@ -66,7 +66,7 @@ public class ExternalFunctionParser {
         fun.setNargoutAddress(identifierMapper.registerMainIdentifier(NARGOUT));
         TokenList tokenList = tokenizer.readTokens(StringUtils.removeEnd(input, end));
         int lines = StringUtils.countMatches(signature, '\n');
-        tokenList.removeIf(token -> token.getLine() <= lines);
+        tokenList.removeIf(token -> token.getAddress().getLine() <= lines);
         Code code = codeGenerator.translate(tokenList);
         fun.setCode(code);
         fun.setMemoryLength(identifierMapper.mainMappingsSize());

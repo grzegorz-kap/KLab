@@ -3,9 +3,11 @@ package interpreter.debug;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
+import common.EventService;
 import interpreter.execution.model.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -15,13 +17,14 @@ import static interpreter.debug.BreakpointEvent.Operation.ADD;
 import static interpreter.debug.BreakpointEvent.Operation.REMOVE;
 
 @Service
-public class BreakPointServiceImpl implements BreakPointService {
+class BreakPointServiceImpl implements BreakPointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakPointServiceImpl.class);
+    private EventService eventService;
     Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
 
     @Override
-    public void fillBreakPoints(Code code) {
-//// TODO: 29.02.2016 add implementation
+    public void updateBreakpoints(Code code) {
+        LOGGER.info("{}", code.getSource());
     }
 
     @Subscribe
@@ -34,7 +37,9 @@ public class BreakPointServiceImpl implements BreakPointService {
             onRemove(breakpoint, addresses);
         } else {
             LOGGER.error("Unknown event data: {}", breakpoint);
+            throw new RuntimeException(); // // TODO: 29.02.2016
         }
+        eventService.publish(new BreakPointsUpdatedEvent(breakpoint, this));
     }
 
     private void onAdd(Breakpoint breakpoint, Set<BreakpointAddress> addresses) {
@@ -53,5 +58,10 @@ public class BreakPointServiceImpl implements BreakPointService {
             breakPoints.remove(breakpoint.getSourceId());
             LOGGER.info("CLEARED BREAK POINTS: {}", breakpoint.getSourceId());
         }
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }

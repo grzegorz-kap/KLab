@@ -6,8 +6,8 @@ public class TokenizerContext {
     protected int index = 0;
     protected int length = 0;
     private TokenList tokenList = new TokenList();
-    private Long line = (long) 1;
-    private Long column = (long) 1;
+    private int line = 1;
+    private int column = 1;
 
     public TokenizerContext(String inputText) {
         this.inputText = inputText;
@@ -22,16 +22,16 @@ public class TokenizerContext {
         return index + offset < length && inputText.charAt(index + offset) == character;
     }
 
+    public CodeAddress currentAddress() {
+        return new CodeAddress(line, column);
+    }
+
     public boolean isInputEnd() {
         return index >= length;
     }
 
     public TokenList getTokenList() {
         return tokenList;
-    }
-
-    public void setTokenList(TokenList tokenList) {
-        this.tokenList = tokenList;
     }
 
     public void addToken(Token token) {
@@ -54,19 +54,19 @@ public class TokenizerContext {
         this.length = length;
     }
 
-    public Long getLine() {
+    public int getLine() {
         return line;
     }
 
-    public void setLine(Long line) {
+    public void setLine(int line) {
         this.line = line;
     }
 
-    public Long getColumn() {
+    public int getColumn() {
         return column;
     }
 
-    public void setColumn(Long column) {
+    public void setColumn(int column) {
         this.column = column;
     }
 
