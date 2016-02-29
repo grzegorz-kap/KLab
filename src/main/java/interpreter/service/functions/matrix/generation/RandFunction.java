@@ -11,7 +11,7 @@ public class RandFunction extends AbstractMatrixGeneratorFunction {
     }
 
     @Override
-    public ObjectData call(ObjectData[] datas) {
-        return createMatrix(datas, matrixFactory::rand);
+    public ObjectData call(ObjectData[] data, int output) {
+        return createMatrix(data, matrixFactory::rand);
     }
 }

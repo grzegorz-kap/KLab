@@ -1,6 +1,6 @@
 package gui.service;
 
-import interpreter.core.ScriptFileService;
+import interpreter.core.code.ScriptFileService;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import org.slf4j.Logger;

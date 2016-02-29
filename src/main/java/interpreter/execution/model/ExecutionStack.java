@@ -9,7 +9,9 @@ class ExecutionStack {
     private Deque<ObjectData> stack = new ArrayDeque<>();
 
     public void push(ObjectData objectData) {
-        stack.addFirst(objectData);
+        if (objectData != null) {
+            stack.addFirst(objectData);
+        }
     }
 
     public ObjectData pop() {

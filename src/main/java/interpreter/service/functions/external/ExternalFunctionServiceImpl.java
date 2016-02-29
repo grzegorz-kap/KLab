@@ -1,7 +1,7 @@
 package interpreter.service.functions.external;
 
 import com.google.common.eventbus.Subscribe;
-import interpreter.core.ScriptFileService;
+import interpreter.core.code.ScriptFileService;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.service.functions.model.CallInstruction;
 import org.apache.commons.io.FilenameUtils;
@@ -20,16 +20,16 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalFunctionServiceImpl.class);
     private ScriptFileService scriptFileService;
     private ExternalFunctionParser externalFunctionParser;
-    private Map<FunctionKey, ExternalFunction> functionsCache = Collections.synchronizedMap(new HashMap<>());
+    private Map<FunctionMapKey, ExternalFunction> functionsCache = Collections.synchronizedMap(new HashMap<>());
 
     @Override
     public ExternalFunction loadFunction(CallInstruction cl) {
-        FunctionKey key = new FunctionKey(cl.getName(), cl.getArgumentsNumber(), cl.getExpectedOutputSize());
+        FunctionMapKey key = new FunctionMapKey(cl.getName(), cl.getArgumentsNumber(), cl.getExpectedOutputSize());
         ExternalFunction externalFunction = functionsCache.get(key);
         return externalFunction != null ? externalFunction : read(key, cl);
     }
 
-    private ExternalFunction read(FunctionKey key, CallInstruction cl) {
+    private ExternalFunction read(FunctionMapKey key, CallInstruction cl) {
         try {
             String fileContent = scriptFileService.readScript(key.name);
             ExternalFunction e = externalFunctionParser.parse(fileContent);
@@ -64,28 +64,4 @@ public class ExternalFunctionServiceImpl implements ExternalFunctionService {
         this.externalFunctionParser = externalFunctionParser;
     }
 
-    private static class FunctionKey {
-        public String name;
-        public int arguments;
-        public int expected;
-
-        public FunctionKey(String name, int arguments, int expected) {
-            this.name = name;
-            this.arguments = arguments;
-            this.expected = expected;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            FunctionKey key = (FunctionKey) obj;
-            return this.expected == key.expected &&
-                    key.arguments == this.arguments &&
-                    key.name.equals(this.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return name.hashCode();
-        }
-    }
 }

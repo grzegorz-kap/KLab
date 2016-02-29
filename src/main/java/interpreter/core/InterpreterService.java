@@ -1,67 +1,44 @@
 package interpreter.core;
 
-import interpreter.lexer.model.TokenList;
-import interpreter.parsing.model.ParseToken;
-import interpreter.parsing.model.expression.Expression;
-import interpreter.translate.keyword.PostParseHandler;
-import interpreter.translate.model.MacroInstruction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.eventbus.Subscribe;
+import gui.events.ProfilingModeSwitchEvent;
+import interpreter.core.code.CodeGenerator;
+import interpreter.execution.service.ExecutionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-
 @Service
-class InterpreterService extends AbstractInterpreterService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterService.class);
+class InterpreterService {
+    private ExecutionService executionService;
+    private CodeGenerator codeGenerator;
 
     public void startExecution(String input) {
-        TokenList tokenList = tokenizer.readTokens(input);
-        parser.setTokenList(tokenList);
-        while (parser.hasNext()) {
-            executionLoop();
-        }
-    }
-
-    public void printCode() {
-        LOGGER.info("{}", executionService.getExecutionContext().getCode());
-    }
-
-    public void executionLoop() {
-        List<Expression<ParseToken>> expression = parser.process();
-        expression.forEach(ex -> LOGGER.info("\n{}", expressionPrinter.expressionToString(ex)));
-        translate(expression);
-        execute();
+        executionService.resetCodeAndStack();
+        codeGenerator.translate(input, () -> executionService.getExecutionContext().getCode(), this::execute);
     }
 
     private void execute() {
-        if (executionCanStart()) {
+        if (codeGenerator.executionCanStart()) {
             executionService.start();
         }
     }
 
-    private void translate(List<Expression<ParseToken>> expression) {
-        PostParseHandler postParseHandler = findPostParseHandler(expression);
-        if (Objects.nonNull(postParseHandler)) {
-            addMacroInstruction(postParseHandler.handle(expression, instructionTranslator));
+    @Subscribe
+    private void onProfilingModeSwitch(ProfilingModeSwitchEvent event) {
+        if (event.getData()) {
+            executionService.enableProfiling();
         } else {
-            expression.forEach(this::process);
+            executionService.disableProfiling();
         }
     }
 
-    private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expression) {
-        return postParseHandlers.stream()
-                .filter(handler -> handler.canBeHandled(expression))
-                .findFirst().orElse(null);
+    @Autowired
+    public void setExecutionService(ExecutionService executionService) {
+        this.executionService = executionService;
     }
 
-    private void process(Expression<ParseToken> expression) {
-        MacroInstruction macroInstruction = instructionTranslator.translate(expression);
-        addMacroInstruction(macroInstruction);
-    }
-
-    private void addMacroInstruction(MacroInstruction macroInstruction) {
-        executionService.addInstructions(macroInstruction.getInstructions());
+    @Autowired
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        this.codeGenerator = codeGenerator;
     }
 }

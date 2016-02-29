@@ -4,17 +4,15 @@ import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import gui.events.CommandSubmittedEvent;
 import gui.events.OpenScriptEvent;
-import gui.model.CustomTab;
+import gui.model.script.ScriptEditorPane;
+import gui.model.script.ScriptTab;
 import gui.service.ScriptViewService;
-import interpreter.core.ScriptFileService;
+import interpreter.core.code.ScriptFileService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
-import javafx.scene.input.KeyCode;
 import org.apache.commons.io.FilenameUtils;
-import org.fxmisc.richtext.CodeArea;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -22,65 +20,40 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptEditorController implements Initializable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptEditorController.class);
     private ScriptFileService scriptFileService;
     private ScriptViewService scriptViewService;
     private EventService eventService;
-    private Map<String, CustomTab> tabs = new HashMap<>();
 
     @FXML
-    private TabPane scriptPane;
+    private ScriptEditorPane scriptPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        scriptPane.setContextMenu(new ContextMenu(new MenuItem("Text")));
-        scriptPane.setOnKeyPressed(event -> {
-            CustomTab tab = (CustomTab) scriptPane.getSelectionModel().getSelectedItem();
-            if (event.getCode().equals(KeyCode.S) && event.isControlDown() && Objects.nonNull(tab)) {
-                saveScript(tab);
-            }
-            if (event.getCode().equals(KeyCode.F5) && Objects.nonNull(tab)) {
-                eventService.publish(new CommandSubmittedEvent(tab.getText(), this));
+        scriptPane.setSaveScriptHandler(tab -> {
+            try {
+                scriptFileService.writeScript(tab.getText(), tab.getScriptContent());
+            } catch (IOException e) {
+                LOGGER.error("error", e);
             }
         });
-    }
-
-    public void saveScript(CustomTab tab) {
-        try {
-            scriptFileService.writeScript(tab.getText(), tab.getCodeArea().getText());
-        } catch (IOException ignored) {
-        }
+        scriptPane.setRunScriptHandler(tab -> eventService.publish(new CommandSubmittedEvent(tab.getText(), this)));
     }
 
     @Subscribe
     public void openScript(OpenScriptEvent event) throws IOException {
-        String script = FilenameUtils.removeExtension(event.getData());
-        CustomTab tab = tabs.get(script);
+        String scriptName = FilenameUtils.removeExtension(event.getData());
+        ScriptTab tab = scriptPane.getScript(scriptName);
         if (tab == null) {
-            tabs.put(script, tab = new CustomTab(script));
-            CodeArea codeArea = new CodeArea(scriptViewService.readScript(script));
-            tab.setCodeArea(codeArea);
-
-            ContextMenu contextMenu = new ContextMenu();
-
-            MenuItem run = new MenuItem("Run");
-            run.setOnAction(ev -> eventService.publish(new CommandSubmittedEvent(script, this)));
-            contextMenu.getItems().add(run);
-
-            MenuItem close = new MenuItem("Close");
-            close.setOnAction(ev -> scriptPane.getTabs().remove(tabs.remove(script)));
-            contextMenu.getItems().add(close);
-
-            tab.setContextMenu(contextMenu);
-
-            scriptPane.getTabs().addAll(tab);
+            tab = new ScriptTab(scriptName, scriptViewService.readScript(scriptName));
+            scriptPane.addScript(scriptName, tab);
+            tab.setOnRunHandler(t -> eventService.publish(new CommandSubmittedEvent(t.getScriptName(), this)));
+            tab.setOnCloseHandler(t -> scriptPane.remove(t.getScriptName()));
         }
         scriptPane.getSelectionModel().select(tab);
     }
@@ -99,5 +72,4 @@ public class ScriptEditorController implements Initializable {
     public void setScriptViewService(ScriptViewService scriptViewService) {
         this.scriptViewService = scriptViewService;
     }
-
 }

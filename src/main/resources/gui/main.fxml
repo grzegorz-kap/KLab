@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="505.0" prefWidth="583.0"
-            xmlns="http://javafx.com/javafx/8.0.40" fx:controller="gui.controller.MainController">
+
+<BorderPane prefHeight="505.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/8.0.40"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -15,6 +17,11 @@
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Delete"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Tools">
+                    <items>
+                        <CheckMenuItem mnemonicParsing="false" text="Profiling" onAction="#profilingAction"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

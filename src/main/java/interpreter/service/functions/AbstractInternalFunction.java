@@ -1,8 +1,7 @@
 package interpreter.service.functions;
 
 public abstract class AbstractInternalFunction implements InternalFunction {
-
-    private Integer address;
+    private int address;
     private int argsMin;
     private int argsMax;
     private String name;
@@ -29,12 +28,12 @@ public abstract class AbstractInternalFunction implements InternalFunction {
     }
 
     @Override
-    public Integer getAddress() {
+    public int getAddress() {
         return address;
     }
 
     @Override
-    public void setAddress(Integer address) {
+    public void setAddress(int address) {
         this.address = address;
     }
 }

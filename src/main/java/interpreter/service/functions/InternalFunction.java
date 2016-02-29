@@ -3,7 +3,6 @@ package interpreter.service.functions;
 import interpreter.types.ObjectData;
 
 public interface InternalFunction {
-
     String SIZE_FUNCTION = "size";
     String RAND_FUNCTION = "rand";
     String EYE_FUNCTION = "eye";
@@ -15,6 +14,8 @@ public interface InternalFunction {
     String DETERMINANT = "det";
     String TANGENS = "tan";
     String COSINUS = "cos";
+    String TIC = "tic";
+    String TOC = "toc";
 
     String getName();
 
@@ -22,10 +23,10 @@ public interface InternalFunction {
 
     int getMaxArgs();
 
-    Integer getAddress();
+    int getAddress();
 
-    void setAddress(Integer address);
+    void setAddress(int address);
 
-    ObjectData call(ObjectData[] datas);
+    ObjectData call(ObjectData[] data, int expectedOutput);
 
 }

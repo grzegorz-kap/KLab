@@ -14,9 +14,9 @@ public class InvInternalFunction extends AbstractMathFunction {
     }
 
     @Override
-    public ObjectData process(NumericObject[] datas) {
+    public ObjectData process(NumericObject[] data) {
         try {
-            return functionsHolder.get(datas[0].getNumericType(), this).inv(datas[0]);
+            return functionsHolder.get(data[0].getNumericType(), this).inv(data[0]);
         } catch (Exception e) {
             throw new InternalFunctionCallException(this, e);
         }

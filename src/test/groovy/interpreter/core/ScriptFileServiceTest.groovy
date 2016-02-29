@@ -1,5 +1,6 @@
 package interpreter.core
 
+import interpreter.core.code.ScriptFileServiceImpl
 import spock.lang.Specification
 
 import java.nio.file.Paths

@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Instruction {
     private InstructionCode instructionCode;
-    private int argumentsNumber = 0;
     private List<ObjectData> data = new ArrayList<>();
+    private int argumentsNumber = 0;
 
     public Instruction() {
     }
@@ -22,6 +22,18 @@ public class Instruction {
     public Instruction(InstructionCode instructionCode, int argumentsNumber, ObjectData... data) {
         this(instructionCode, argumentsNumber);
         Collections.addAll(this.data, data);
+    }
+
+    public void add(ObjectData objectData) {
+        data.add(objectData);
+    }
+
+    public ObjectData getObjectData(int index) {
+        return data.get(index);
+    }
+
+    public <T> T getObjectData(int index, Class<T> clazz) {
+        return clazz.cast(data.get(index));
     }
 
     public InstructionCode getInstructionCode() {
@@ -40,24 +52,12 @@ public class Instruction {
         this.argumentsNumber = argumentsNumber;
     }
 
-    public void add(ObjectData objectData) {
-        data.add(objectData);
-    }
-
-    public ObjectData getObjectData(int index) {
-        return data.get(index);
-    }
-
-    public <T> T getObjectData(int index, Class<T> clazz) {
-        return clazz.cast(data.get(index));
-    }
-
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(instructionCode);
-        stringBuilder.append('\t');
-        data.forEach(objectData -> stringBuilder.append(objectData).append("\t"));
-        return stringBuilder.toString();
+        StringBuilder b = new StringBuilder();
+        b.append(instructionCode);
+        b.append('\t');
+        data.forEach(objectData -> b.append(objectData).append("\t"));
+        return b.toString();
     }
 }

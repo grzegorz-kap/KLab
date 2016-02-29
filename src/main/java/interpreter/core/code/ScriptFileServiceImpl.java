@@ -1,6 +1,7 @@
-package interpreter.core;
+package interpreter.core.code;
 
 import common.EventService;
+import interpreter.core.FileWatcher;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.utils.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -79,10 +80,6 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
         this.applicationName = applicationName;
     }
 
-    public void setWorkingDirectory(String workingDirectory) {
-        this.workingDirectory = workingDirectory;
-    }
-
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
@@ -90,5 +87,9 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
 
     public void setCharsetName(String charsetName) {
         this.charsetName = charsetName;
+    }
+
+    public void setWorkingDirectory(String workingDirectory) {
+        this.workingDirectory = workingDirectory;
     }
 }
