@@ -2,7 +2,7 @@ package interpreter.service.functions.external;
 
 
 import interpreter.commons.IdentifierMapper;
-import interpreter.core.CodeGenerator;
+import interpreter.core.code.CodeGenerator;
 import interpreter.execution.model.Code;
 import interpreter.lexer.model.TokenList;
 import interpreter.lexer.service.Tokenizer;

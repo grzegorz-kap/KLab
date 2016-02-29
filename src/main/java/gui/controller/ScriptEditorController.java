@@ -4,16 +4,12 @@ import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import gui.events.CommandSubmittedEvent;
 import gui.events.OpenScriptEvent;
-import gui.model.script.CustomCodeArea;
 import gui.model.script.ScriptEditorPane;
 import gui.model.script.ScriptTab;
-import gui.service.CustomLineNumberFactory;
 import gui.service.ScriptViewService;
-import interpreter.core.ScriptFileService;
+import interpreter.core.code.ScriptFileService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,5 +72,4 @@ public class ScriptEditorController implements Initializable {
     public void setScriptViewService(ScriptViewService scriptViewService) {
         this.scriptViewService = scriptViewService;
     }
-
 }

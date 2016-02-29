@@ -1,4 +1,4 @@
-package interpreter.core;
+package interpreter.core.code;
 
 import com.google.common.eventbus.Subscribe;
 import interpreter.core.events.ScriptChangeEvent;

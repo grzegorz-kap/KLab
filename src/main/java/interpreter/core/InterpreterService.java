@@ -2,6 +2,7 @@ package interpreter.core;
 
 import com.google.common.eventbus.Subscribe;
 import gui.events.ProfilingModeSwitchEvent;
+import interpreter.core.code.CodeGenerator;
 import interpreter.execution.service.ExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package interpreter.core;
+package interpreter.core.code;
 
 import interpreter.commons.IdentifierMapper;
 import interpreter.commons.MemorySpace;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 public class CodeGeneratorImpl implements CodeGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorImpl.class);
     private Supplier<Code> defaultCodeSupplier = Code::new;
-    private Callback defaultCallback = null;
+    private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
     private Parser parser;
     private Tokenizer tokenizer;
     private InstructionTranslator instructionTranslator;
@@ -37,22 +37,22 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public Code translate(String input) {
-        return translate(input, defaultCodeSupplier, defaultCallback);
+        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
     }
 
     @Override
     public Code translate(TokenList input) {
         Code code = initCode(defaultCodeSupplier);
         parser.setTokenList(input);
-        process(code, defaultCallback);
+        process(code, defaultMacroInstructionTranslatedCallback);
         return code;
     }
 
     @Override
-    public Code translate(String input, Supplier<Code> codeSupplier, Callback callback) {
+    public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
         parser.setTokenList(tokenizer.readTokens(input));
-        process(code, callback);
+        process(code, macroInstructionTranslatedCallback);
         return code;
     }
 
@@ -76,7 +76,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
         return code;
     }
 
-    private void process(Code code, Callback callback) {
+    private void process(Code code, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         while (parser.hasNext()) {
             List<Expression<ParseToken>> expressionList = parser.process();
             PostParseHandler postParseHandler = postParseHandlers.stream()
@@ -89,8 +89,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
                 code.add(postParseHandler.handle(expressionList, instructionTranslator).getInstructions());
             }
             memorySpace.reserve(identifierMapper.mainMappingsSize());
-            if (callback != null) {
-                callback.invoke();
+            if (macroInstructionTranslatedCallback != null) {
+                macroInstructionTranslatedCallback.invoke();
             }
         }
         LOGGER.info("Translated: {}", code);

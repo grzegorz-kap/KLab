@@ -1,6 +1,7 @@
 package interpreter.core
 
 import interpreter.AbstractServiceTest
+import interpreter.core.code.CodeGenerator
 import interpreter.translate.model.InstructionCode
 import org.springframework.beans.factory.annotation.Autowired
 

@@ -11,13 +11,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import org.reactfx.collection.LiveList;
 import org.reactfx.value.Val;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.function.IntFunction;
 
 public class CustomLineNumberFactory implements IntFunction<LineNumberLabel> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomLineNumberFactory.class);
     private static final Insets DEFAULT_INSETS = new Insets(0.0, 5.0, 0.0, 5.0);
     private static final Paint DEFAULT_TEXT_FILL = Color.web("#666");
     private static final Font DEFAULT_FONT = Font.font("monospace", FontPosture.ITALIC, 13);
@@ -58,16 +55,16 @@ public class CustomLineNumberFactory implements IntFunction<LineNumberLabel> {
         lineNo.textProperty().bind(formatted.conditionOnShowing(lineNo));
 
         lineNo.setOnMouseClicked(event -> {
-            boolean brkp = customCodeArea.isBreakPointExists(value);
-            if (brkp) {
-                lineNo.setBackground(DEFAULT_BACKGROUND);
-                customCodeArea.removeBreakPoint(value);
-            } else {
-                lineNo.setBackground(BREAK_POINT_BACKGROUND);
-                customCodeArea.addBreakPoint(value);
+            if (event.getClickCount() == 2) {
+                if (customCodeArea.isBreakPointExists(value)) {
+                    lineNo.setBackground(DEFAULT_BACKGROUND);
+                    customCodeArea.removeBreakPoint(value);
+                } else {
+                    lineNo.setBackground(BREAK_POINT_BACKGROUND);
+                    customCodeArea.addBreakPoint(value);
+                }
             }
         });
-
         return lineNo;
     }
 

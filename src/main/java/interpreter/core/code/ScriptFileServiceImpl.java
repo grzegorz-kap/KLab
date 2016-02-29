@@ -1,6 +1,7 @@
-package interpreter.core;
+package interpreter.core.code;
 
 import common.EventService;
+import interpreter.core.FileWatcher;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.utils.FileUtils;
 import org.apache.commons.io.FilenameUtils;

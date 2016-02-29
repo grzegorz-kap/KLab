@@ -18,16 +18,14 @@ import java.util.regex.Pattern;
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RegexTokenizer extends AbstractTokenizer {
-
-    public static final String NUMBER_PATTERN = "^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?";
-    public static final String WORD_PATTERN = "^[A-Za-z_\\$][A-Za-z_\\$0-9]*";
-    public static final String SPACE_PATTERN = "^[ \\t]+";
-    public static final String NEWLINE_PATTERN = "^[\\n\\t\\r ]+";
-
-    public static final Pattern NUMBER_REGEX = Pattern.compile(NUMBER_PATTERN);
-    public static final Pattern WORD_REGEX = Pattern.compile(WORD_PATTERN);
-    public static final Pattern SPACE_REGEX = Pattern.compile(SPACE_PATTERN);
-    public static final Pattern NEWLINE_REGEX = Pattern.compile(NEWLINE_PATTERN);
+    private static final String NUMBER_PATTERN = "^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?";
+    private static final String WORD_PATTERN = "^[A-Za-z_\\$][A-Za-z_\\$0-9]*";
+    private static final String SPACE_PATTERN = "^[ \\t]+";
+    private static final String NEWLINE_PATTERN = "^[\\n\\t\\r ]+";
+    private static final Pattern NUMBER_REGEX = Pattern.compile(NUMBER_PATTERN);
+    private static final Pattern WORD_REGEX = Pattern.compile(WORD_PATTERN);
+    private static final Pattern SPACE_REGEX = Pattern.compile(SPACE_PATTERN);
+    private static final Pattern NEWLINE_REGEX = Pattern.compile(NEWLINE_PATTERN);
 
     @Override
     public void onNumber() {
