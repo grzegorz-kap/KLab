@@ -80,10 +80,6 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
         this.applicationName = applicationName;
     }
 
-    public void setWorkingDirectory(String workingDirectory) {
-        this.workingDirectory = workingDirectory;
-    }
-
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
@@ -91,5 +87,9 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
 
     public void setCharsetName(String charsetName) {
         this.charsetName = charsetName;
+    }
+
+    public void setWorkingDirectory(String workingDirectory) {
+        this.workingDirectory = workingDirectory;
     }
 }

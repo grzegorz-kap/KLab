@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class Code {
-
     private List<Instruction> instructions = new ArrayList<>();
 
     public void add(Instruction instruction) {

@@ -55,14 +55,12 @@ public class CustomLineNumberFactory implements IntFunction<LineNumberLabel> {
         lineNo.textProperty().bind(formatted.conditionOnShowing(lineNo));
 
         lineNo.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                if (customCodeArea.isBreakPointExists(value)) {
-                    lineNo.setBackground(DEFAULT_BACKGROUND);
-                    customCodeArea.removeBreakPoint(value);
-                } else {
-                    lineNo.setBackground(BREAK_POINT_BACKGROUND);
-                    customCodeArea.addBreakPoint(value);
-                }
+            if (customCodeArea.isBreakPointExists(value)) {
+                lineNo.setBackground(DEFAULT_BACKGROUND);
+                customCodeArea.removeBreakPoint(value);
+            } else {
+                lineNo.setBackground(BREAK_POINT_BACKGROUND);
+                customCodeArea.addBreakPoint(value);
             }
         });
         return lineNo;

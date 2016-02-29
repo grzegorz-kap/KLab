@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {
@@ -34,8 +31,7 @@ public class ScriptServiceImpl implements ScriptService {
 
     @Override
     public Code getCode(String scriptName) {
-        Code code = cachedCode.get(scriptName);
-        return Objects.nonNull(code) ? code : read(scriptName);
+        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
     }
 
     private Code read(String scriptName) {
