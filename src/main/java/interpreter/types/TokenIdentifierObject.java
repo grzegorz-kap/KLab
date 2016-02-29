@@ -3,17 +3,18 @@ package interpreter.types;
 import interpreter.parsing.model.tokens.IdentifierToken;
 
 public class TokenIdentifierObject extends AbstractObjectData implements IdentifierObject {
-    private IdentifierToken identifierToken;
+    private String id;
+    private Integer address;
     private boolean canBeScript = false;
 
-    public TokenIdentifierObject(IdentifierToken identifierToken) {
-        this.identifierToken = identifierToken;
+    public TokenIdentifierObject(String name, Integer address) {
+        this.id = name;
+        this.address = address;
     }
 
-    public TokenIdentifierObject(String name, Integer address) {
-        identifierToken = new IdentifierToken();
-        identifierToken.setId(name);
-        identifierToken.setAddress(address);
+    public TokenIdentifierObject(IdentifierToken identifierToken) {
+        this.id = identifierToken.getId();
+        this.address = identifierToken.getAddress();
     }
 
     @Override
@@ -28,27 +29,27 @@ public class TokenIdentifierObject extends AbstractObjectData implements Identif
 
     @Override
     public String toString() {
-        return identifierToken.getId() + "@" + identifierToken.getAddress();
+        return id + "@" + address;
     }
 
     @Override
     public ObjectData copyObjectData() {
-        return new TokenIdentifierObject(identifierToken);
+        return new TokenIdentifierObject(id, address);
     }
 
     @Override
     public int getAddress() {
-        return identifierToken.getAddress();
+        return address;
     }
 
     @Override
     public void setAddress(int address) {
-        this.identifierToken.setAddress(address);
+        this.address = address;
     }
 
     @Override
     public String getId() {
-        return identifierToken.getId();
+        return id;
     }
 
     @Override
@@ -58,6 +59,6 @@ public class TokenIdentifierObject extends AbstractObjectData implements Identif
 
     @Override
     public void setId(String id) {
-        this.identifierToken.setId(id);
+        this.id = id;
     }
 }

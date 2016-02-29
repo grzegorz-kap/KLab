@@ -8,14 +8,9 @@ public class IdentifierToken extends ParseToken {
     private String id;
     private int address;
 
-    public IdentifierToken() {
-        setParseClass(ParseClass.IDENTIFIER);
-    }
-
     public IdentifierToken(Token token) {
-        this();
+        super(token, ParseClass.IDENTIFIER);
         id = token.getLexeme();
-        setToken(token);
     }
 
     public String getId() {

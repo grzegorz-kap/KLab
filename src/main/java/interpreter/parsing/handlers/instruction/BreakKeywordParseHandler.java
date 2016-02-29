@@ -16,19 +16,19 @@ import org.springframework.stereotype.Component;
 public class BreakKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        BalanceContext balanceContext = parseContextManager.getBalanceContext();
+        BalanceContext balanceContext = pCtxMgr.getBalanceContext();
         check(balanceContext);
-        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.BREAK_FOR));
-        parseContextManager.incrementTokenPosition(1);
-        parseContextManager.setInstructionStop(true);
+        pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.BREAK_FOR));
+        pCtxMgr.incrementTokenPosition(1);
+        pCtxMgr.setInstructionStop(true);
     }
 
     public void check(BalanceContext balanceContext) {
         if (!balanceContext.isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
-            throw new UnexpectedKeywordException("break", parseContextManager.getParseContext());
+            throw new UnexpectedKeywordException("break", pCtxMgr.getParseContext());
         }
-        if (parseContextManager.expressionSize() != 0) {
-            throw new UnexpectedKeywordException("break", parseContextManager.getParseContext());
+        if (pCtxMgr.expressionSize() != 0) {
+            throw new UnexpectedKeywordException("break", pCtxMgr.getParseContext());
         }
     }
 

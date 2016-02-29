@@ -3,15 +3,15 @@ package interpreter.parsing.handlers;
 import interpreter.parsing.service.ParseContextManager;
 
 public abstract class AbstractParseHandler implements ParseHandler {
-    protected ParseContextManager parseContextManager;
+    protected ParseContextManager pCtxMgr;
 
     public ParseContextManager getContextManager() {
-        return parseContextManager;
+        return pCtxMgr;
     }
 
     @Override
     public void setContextManager(ParseContextManager parseContextManager) {
-        this.parseContextManager = parseContextManager;
+        this.pCtxMgr = parseContextManager;
     }
 
     @Override

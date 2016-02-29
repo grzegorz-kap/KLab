@@ -3,7 +3,6 @@ package interpreter.parsing.handlers.matrix;
 import interpreter.lexer.model.TokenClass;
 import interpreter.parsing.handlers.AbstractParseHandler;
 import interpreter.parsing.model.BalanceType;
-import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.tokens.MatrixStartToken;
 import interpreter.parsing.service.BalanceContextService;
@@ -20,12 +19,11 @@ public class MatrixStartParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        ParseToken parseToken = new MatrixStartToken(parseContextManager.tokenAt(0));
-        parseToken.setParseClass(ParseClass.MATRIX_START);
-        parseContextManager.addExpressionNode(parseToken);
-        parseContextManager.stackPush(parseToken);
-        balanceContextService.add(parseContextManager, BalanceType.INSIDE_MATRIX);
-        parseContextManager.incrementTokenPosition(1);
+        ParseToken parseToken = new MatrixStartToken(pCtxMgr.tokenAt(0));
+        pCtxMgr.addExpressionNode(parseToken);
+        pCtxMgr.stackPush(parseToken);
+        balanceContextService.add(pCtxMgr, BalanceType.INSIDE_MATRIX);
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     @Override

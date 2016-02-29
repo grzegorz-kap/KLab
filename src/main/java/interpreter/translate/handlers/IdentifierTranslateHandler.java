@@ -7,8 +7,8 @@ import interpreter.parsing.model.tokens.IdentifierToken;
 import interpreter.parsing.utils.ExpressionUtils;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
-import interpreter.types.TokenIdentifierObject;
 import interpreter.types.IdentifierObject;
+import interpreter.types.TokenIdentifierObject;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,6 @@ import java.util.Objects;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IdentifierTranslateHandler extends AbstractTranslateHandler {
-
     @Override
     public void handle(Expression<ParseToken> expression) {
         IdentifierToken identifierToken = (IdentifierToken) expression.getValue();

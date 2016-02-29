@@ -25,19 +25,19 @@ public class ElseifKeywordParseHandler extends AbstractParseHandler {
     public void handle() {
         checkCorrectExpression();
         checkKeywordBalance();
-        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.ELSEIF_KEYWORD));
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.ELSEIF_KEYWORD));
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     private void checkCorrectExpression() {
-        if (parseContextManager.expressionSize() != 0) {
-            throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
+        if (pCtxMgr.expressionSize() != 0) {
+            throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, pCtxMgr.getParseContext());
         }
     }
 
     private void checkKeywordBalance() {
-        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
-            throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
+        if (!pCtxMgr.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
+            throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, pCtxMgr.getParseContext());
         }
     }
 }

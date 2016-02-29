@@ -19,7 +19,7 @@ public class WordParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        if (Objects.nonNull(parseContextManager.tokenAt(1)) && parseContextManager.tokenAt(1).getTokenClass().equals(TokenClass.OPEN_PARENTHESIS)) {
+        if (Objects.nonNull(pCtxMgr.tokenAt(1)) && pCtxMgr.tokenAt(1).getTokenClass().equals(TokenClass.OPEN_PARENTHESIS)) {
             callParseHandler.handle();
         } else {
             identifierParseHandler.handle();
@@ -33,7 +33,7 @@ public class WordParseHandler extends AbstractParseHandler {
 
     @Override
     public void setContextManager(ParseContextManager parseContextManager) {
-        this.parseContextManager = parseContextManager;
+        this.pCtxMgr = parseContextManager;
         identifierParseHandler.setContextManager(parseContextManager);
         callParseHandler.setContextManager(parseContextManager);
     }

@@ -26,27 +26,20 @@ public class ElseKeywordParseHandler extends AbstractParseHandler {
     public void handle() {
         checkKeywordBalance();
         checkCorrectExpression();
-        parseContextManager.addExpressionValue(createElseParseToken());
-        parseContextManager.incrementTokenPosition(1);
-        parseContextManager.setInstructionStop(true);
-    }
-
-    private ParseToken createElseParseToken() {
-        ParseToken parseToken = new ParseToken();
-        parseToken.setParseClass(ParseClass.ELSE_KEYWORD);
-        parseToken.setToken(parseContextManager.tokenAt(0));
-        return parseToken;
+        pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.ELSE_KEYWORD));
+        pCtxMgr.incrementTokenPosition(1);
+        pCtxMgr.setInstructionStop(true);
     }
 
     private void checkCorrectExpression() {
-        if (parseContextManager.expressionSize() != 0) {
-            throw new WrongIfInstructionException(KEYWORD_ELSE_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
+        if (pCtxMgr.expressionSize() != 0) {
+            throw new WrongIfInstructionException(KEYWORD_ELSE_NOT_EXPECTED_HERE, pCtxMgr.getParseContext());
         }
     }
 
     private void checkKeywordBalance() {
-        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
-            throw new WrongIfInstructionException(ELSE_KEYWORD_CAN_T_BE_USED_WITHOUT_IF, parseContextManager.getParseContext());
+        if (!pCtxMgr.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
+            throw new WrongIfInstructionException(ELSE_KEYWORD_CAN_T_BE_USED_WITHOUT_IF, pCtxMgr.getParseContext());
         }
     }
 }
