@@ -1,5 +1,6 @@
 package interpreter.translate.service;
 
+import interpreter.lexer.model.CodeAddress;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -39,10 +40,10 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         Expression<ParseToken> parseTokenExpression = translateContext.getExpression();
         process(parseTokenExpression);
         if (getAnsProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.ANS, 1));
+            translateContextManager.addInstruction(new Instruction(InstructionCode.ANS, 1), null);
         }
         if (getPrintProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0));
+            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0), null);
         }
     }
 
@@ -66,6 +67,7 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void handleAssignOperator(Expression<ParseToken> expression) {
+        CodeAddress address = expression.getValue().getAddress();
         Expression<ParseToken> left = expression.getChildren().get(0);
         if (left.getValue().getParseClass().equals(ParseClass.MATRIX)) {
             if (left.getChildren().size() != 1) {  // only verse vector allowed // TODO column vector to
@@ -74,8 +76,9 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
             process(expression.getChildren().get(1));
             for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
                 if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
-                    translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new TokenIdentifierObject((IdentifierToken) target.getValue())));
-                    translateContextManager.addInstruction(new Instruction(InstructionCode.RSTORE, 0));
+                    TokenIdentifierObject id = new TokenIdentifierObject((IdentifierToken) target.getValue());
+                    translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
+                    translateContextManager.addInstruction(new Instruction(InstructionCode.RSTORE, 0), address);
                 } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
                     createModifyAssign(target);
                 } else {
@@ -98,16 +101,17 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         }
         // TODO check if variable is defined
         CallToken var = (CallToken) target.getValue();
-        translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new ModifyingIdentifierObject(var.getVariableAddress(), var.getCallName())));
+        CodeAddress address = target.getValue().getAddress();
+        translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new ModifyingIdentifierObject(var.getVariableAddress(), var.getCallName())), address);
         InstructionCode code = target.getChildren().size() == 2 ? InstructionCode.MODIFY2 : InstructionCode.MODIFY1;
-        translateContextManager.addInstruction(new Instruction(code, 0));
+        translateContextManager.addInstruction(new Instruction(code, 0), address);
     }
 
     private void handleShortCircuitOperator(Expression<ParseToken> expression, InstructionCode jmptnp) {
         process(expression.getChildren().get(0));
-        translateContextManager.addInstruction(new Instruction(InstructionCode.LOGICAL, 0));
+        translateContextManager.addInstruction(new Instruction(InstructionCode.LOGICAL, 0), expression.getValue().getAddress());
         JumperInstruction jmpt = new JumperInstruction(jmptnp, 0);
-        translateContextManager.addInstruction(jmpt);
+        translateContextManager.addInstruction(jmpt, expression.getValue().getAddress());
         process(expression.getChildren().get(1));
         translateExpressionValue(expression);
         jmpt.setJumpIndex(code.size() + translateContext.getMacroInstruction().size());

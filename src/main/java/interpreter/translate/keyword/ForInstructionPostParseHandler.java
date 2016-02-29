@@ -1,6 +1,7 @@
 package interpreter.translate.keyword;
 
 import interpreter.commons.IdentifierMapper;
+import interpreter.lexer.model.CodeAddress;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -10,8 +11,8 @@ import interpreter.translate.keyword.exception.KeywordParseException;
 import interpreter.translate.keyword.model.ForInstructionContext;
 import interpreter.translate.model.*;
 import interpreter.translate.service.InstructionTranslator;
-import interpreter.types.TokenIdentifierObject;
 import interpreter.types.IdentifierObject;
+import interpreter.types.TokenIdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -46,7 +47,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
             return handleForStart(expressions, instructionTranslator);
         }
         if (isForEnd(expressions)) {
-            return handleForEnd();
+            return handleForEnd(expressions);
         }
         if (isBreak(expressions)) {
             return handleBreak(expressions);
@@ -61,14 +62,14 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         setupNoPrintNoAns(expressions, 0);
         JumperInstruction jmp = createJmpInstruction();
         jmp.setJumpIndex(forInstructionContext.getFlhNextAddress());
-        return new MacroInstruction().add(jmp);
+        return new MacroInstruction().add(jmp, expressions.get(0).getValue().getAddress());
     }
 
     private MacroInstruction handleBreak(List<Expression<ParseToken>> expressions) {
         setupNoPrintNoAns(expressions, 0);
         JumperInstruction jmp = createJmpInstruction();
         forInstructionContext.addFalseJumper(jmp);
-        return new MacroInstruction().add(jmp);
+        return new MacroInstruction().add(jmp, expressions.get(0).getValue().getAddress());
     }
 
     private MacroInstruction handleForStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
@@ -78,9 +79,10 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         MacroInstruction macroInstruction = translator.translate(expressions.get(1));
         forInstructionContext.push(code.size() + macroInstruction.size() + 1, flnextInstruction);
         findIteratorTarget(macroInstruction, flnextInstruction);
+        CodeAddress address = expressions.get(0).getValue().getAddress();
         return macroInstruction
-                .add(createFlInit())
-                .add(flnextInstruction);
+                .add(createFlInit(), address)
+                .add(flnextInstruction, address);
     }
 
     private Instruction createFlInit() {
@@ -90,7 +92,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         return instruction;
     }
 
-    private MacroInstruction handleForEnd() {
+    private MacroInstruction handleForEnd(List<Expression<ParseToken>> expressions) {
         JumperInstruction flhnextJump = createJmpInstruction();
         flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
         forInstructionContext.setJumpsOnFalse(code.size() + 1);
@@ -99,9 +101,8 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         Instruction clearInstruction = new Instruction(InstructionCode.CLEAR, 0);
         clearInstruction.add(new TokenIdentifierObject(iteratorName, iteratorAddress));
         forInstructionContext.pop();
-        return new MacroInstruction()
-                .add(flhnextJump)
-                .add(clearInstruction);
+        CodeAddress address = expressions.get(0).getValue().getAddress();
+        return new MacroInstruction().add(flhnextJump, address).add(clearInstruction, address);
     }
 
     private void findIteratorTarget(MacroInstruction macroInstruction, FLNextInstruction flnextInstruction) {

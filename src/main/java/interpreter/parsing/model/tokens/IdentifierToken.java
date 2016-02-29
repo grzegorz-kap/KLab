@@ -21,7 +21,7 @@ public class IdentifierToken extends ParseToken {
         this.id = id;
     }
 
-    public int getAddress() {
+    public int getMemAddress() {
         return address;
     }
 

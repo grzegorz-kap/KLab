@@ -55,7 +55,7 @@ class ScriptServiceImpl implements ScriptService {
         try {
             code = codeGenerator.translate(scriptFileService.readScript(scriptName));
             code.setSource(scriptName);
-            code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0));
+            code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0), null);
             breakPointService.updateBreakpoints(code);
             cachedCode.put(scriptName, code);
         } catch (IOException e) {

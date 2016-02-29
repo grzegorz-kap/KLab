@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MatrixStartParseHandler extends AbstractParseHandler {
-
     private BalanceContextService balanceContextService;
 
     @Override

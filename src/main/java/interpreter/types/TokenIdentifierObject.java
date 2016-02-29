@@ -14,7 +14,7 @@ public class TokenIdentifierObject extends AbstractObjectData implements Identif
 
     public TokenIdentifierObject(IdentifierToken identifierToken) {
         this.id = identifierToken.getId();
-        this.address = identifierToken.getAddress();
+        this.address = identifierToken.getMemAddress();
     }
 
     @Override

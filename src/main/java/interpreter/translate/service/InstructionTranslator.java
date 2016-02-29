@@ -8,7 +8,6 @@ import interpreter.translate.handlers.TranslateHandler;
 import interpreter.translate.model.MacroInstruction;
 
 public interface InstructionTranslator {
-
     MacroInstruction translate(Expression<ParseToken> expression);
 
     TranslateHandler getTranslateHandler(ParseClass parseClass);

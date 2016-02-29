@@ -21,16 +21,13 @@ public class ProfilingService implements InstructionAction {
     @Override
     public void handle(InstructionHandler handler, InstructionPointer pointer) {
         Instruction instruction = pointer.currentInstruction();
-
         ProfilingData<Instruction> pd = data.get(instruction);
         if (pd == null) {
             data.put(instruction, pd = new ProfilingData<>(instruction));
         }
-
         long start = System.nanoTime();
         handler.handle(pointer);
         long end = System.nanoTime();
-
         pd.addTime(end-start);
         pd.addCount(1L);
         LOGGER.info("{}, took: {}", instruction, pd);

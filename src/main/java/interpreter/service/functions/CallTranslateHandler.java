@@ -19,7 +19,7 @@ public class CallTranslateHandler extends AbstractTranslateHandler {
         CallInstruction callInstruction = new CallInstruction(callToken);
         callInstruction.setArgumentsNumber(expression.getChildrenCount());
         resolveOutputSize(callInstruction, expression);
-        tCM.addInstruction(callInstruction);
+        tCM.addInstruction(callInstruction, address(expression));
     }
 
     private void resolveOutputSize(CallInstruction instruction, Expression<ParseToken> expression) {

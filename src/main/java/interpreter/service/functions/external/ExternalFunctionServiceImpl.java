@@ -38,7 +38,7 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
             ExternalFunction e = externalFunctionParser.parse(fileContent);
             EndFunctionInstruction ret = new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size());
             ret.setExpectedOutput(cl.getExpectedOutputSize());
-            e.getCode().add(ret);
+            e.getCode().add(ret, null);
             e.getCode().setSource(key.name);
             breakPointService.updateBreakpoints(e.getCode());
             functionsCache.put(key, e);

@@ -57,7 +57,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     }
 
     private void reduceExpression() {
-        ExpressionNode<ParseToken> matrixNode = new ExpressionNode<>();
+        ExpressionNode<ParseToken> matrixNode = new ExpressionNode<>(null);
         List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(pCtxMgr, this::popUntilPredicate);
         NumericType numericType = typeResolver.resolveNumeric(expressions);
         matrixNode.visitEach(node -> node.setResolvedNumericType(numericType));

@@ -3,9 +3,7 @@ package interpreter.debug;
 import interpreter.core.events.InterpreterEvent;
 
 public class BreakpointEvent extends InterpreterEvent<Breakpoint> {
-    public enum Operation {
-        ADD, REMOVE
-    }
+    public enum Operation {ADD, REMOVE}
 
     public static BreakpointEvent create(String name, Integer line, Operation operation, Object source) {
         return new BreakpointEvent(new Breakpoint(name, line), source, operation);

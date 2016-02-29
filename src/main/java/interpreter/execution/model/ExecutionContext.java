@@ -30,7 +30,7 @@ public class ExecutionContext {
     }
 
     public void addInstruction(MacroInstruction instructions) {
-        code.add(instructions.getInstructions());
+        instructions.forEach(instruction -> code.add(instruction, null));
     }
 
     public void clearExecutionStack() {

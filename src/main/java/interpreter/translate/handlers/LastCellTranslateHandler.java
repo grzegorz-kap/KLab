@@ -36,7 +36,8 @@ public class LastCellTranslateHandler extends AbstractTranslateHandler {
         if (cl.getVariableAddress() == null) {
             throw new RuntimeException(); // TODO
         }
-        tCM.addInstruction(new Instruction(code, 0, new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress())));
+        Instruction instruction = new Instruction(code, 0, new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress()));
+        tCM.addInstruction(instruction, expression.getValue().getAddress());
     }
 
     @Override

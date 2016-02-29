@@ -16,7 +16,6 @@ import static interpreter.parsing.exception.WrongIfInstructionException.KEYWORD_
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ElseKeywordParseHandler extends AbstractParseHandler {
-
     @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.ELSE_KEYWORD;

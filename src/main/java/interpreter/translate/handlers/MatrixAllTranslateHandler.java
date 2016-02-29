@@ -35,7 +35,7 @@ public class MatrixAllTranslateHandler extends AbstractTranslateHandler {
         if (address.getVariableAddress() == null) {
             throw new RuntimeException(); // TODO
         }
-        tCM.addInstruction(new Instruction(code, 0, new TokenIdentifierObject(address.getCallName(), address.getVariableAddress())));
+        tCM.addInstruction(new Instruction(code, 0, new TokenIdentifierObject(address.getCallName(), address.getVariableAddress())), address(expression));
     }
 
     @Override
