@@ -5,7 +5,6 @@ import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenizerContext;
 
 public class TokenizerContextManager {
-
     private TokenizerContext tokenizerContext;
 
     public TokenizerContextManager(TokenizerContext tokenizerContext) {
