@@ -8,6 +8,7 @@ import gui.model.script.ScriptEditorPane;
 import gui.model.script.ScriptTab;
 import gui.service.ScriptViewService;
 import interpreter.core.code.ScriptFileService;
+import interpreter.debug.BreakpointEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import org.apache.commons.io.FilenameUtils;
@@ -20,7 +21,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
+
+import static interpreter.debug.BreakpointEvent.Operation.ADD;
+import static interpreter.debug.BreakpointEvent.Operation.REMOVE;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -54,6 +58,8 @@ public class ScriptEditorController implements Initializable {
             scriptPane.addScript(scriptName, tab);
             tab.setOnRunHandler(t -> eventService.publish(new CommandSubmittedEvent(t.getScriptName(), this)));
             tab.setOnCloseHandler(t -> scriptPane.remove(t.getScriptName()));
+            tab.getCodeArea().setBreakPointAddedHandler(number -> eventService.publish(BreakpointEvent.create(scriptName, number + 1, ADD, this)));
+            tab.getCodeArea().setBreakPointRemovedHandler(number -> eventService.publish(BreakpointEvent.create(scriptName, number + 1, REMOVE, this)));
         }
         scriptPane.getSelectionModel().select(tab);
     }

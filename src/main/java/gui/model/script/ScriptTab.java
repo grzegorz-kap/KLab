@@ -48,4 +48,8 @@ public class ScriptTab extends Tab {
     public void setOnRunHandler(Consumer<ScriptTab> onRunHandler) {
         this.onRunHandler = onRunHandler;
     }
+
+    public CustomCodeArea getCodeArea() {
+        return codeArea;
+    }
 }
