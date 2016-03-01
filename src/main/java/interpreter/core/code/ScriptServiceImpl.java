@@ -2,7 +2,7 @@ package interpreter.core.code;
 
 import com.google.common.eventbus.Subscribe;
 import interpreter.core.events.ScriptChangeEvent;
-import interpreter.debug.BreakPointService;
+import interpreter.debug.BreakpointService;
 import interpreter.debug.BreakPointsUpdatedEvent;
 import interpreter.execution.model.Code;
 import interpreter.translate.model.Instruction;
@@ -27,7 +27,7 @@ class ScriptServiceImpl implements ScriptService {
     private Map<String, Code> cachedCode = Collections.synchronizedMap(new HashMap<>());
     private CodeGenerator codeGenerator;
     private ScriptFileService scriptFileService;
-    private BreakPointService breakPointService;
+    private BreakpointService breakpointService;
 
     @Override
     public Code getCode(String scriptName) {
@@ -46,7 +46,7 @@ class ScriptServiceImpl implements ScriptService {
     public void onBreakpointsUpdated(BreakPointsUpdatedEvent event) {
         Code code = cachedCode.get(event.getData().getSourceId());
         if (nonNull(code)) {
-            breakPointService.updateBreakpoints(code);
+            breakpointService.updateBreakpoints(code);
         }
     }
 
@@ -54,9 +54,9 @@ class ScriptServiceImpl implements ScriptService {
         Code code = null;
         try {
             code = codeGenerator.translate(scriptFileService.readScript(scriptName));
-            code.setSource(scriptName);
+            code.setSourceId(scriptName);
             code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0), null);
-            breakPointService.updateBreakpoints(code);
+            breakpointService.updateBreakpoints(code);
             cachedCode.put(scriptName, code);
         } catch (IOException e) {
             LOGGER.error("Error reading script: '{}', cause: '{}", scriptName);
@@ -75,7 +75,7 @@ class ScriptServiceImpl implements ScriptService {
     }
 
     @Autowired
-    public void setBreakPointService(BreakPointService breakPointService) {
-        this.breakPointService = breakPointService;
+    public void setBreakpointService(BreakpointService breakpointService) {
+        this.breakpointService = breakpointService;
     }
 }

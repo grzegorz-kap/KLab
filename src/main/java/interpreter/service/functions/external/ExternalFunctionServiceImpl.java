@@ -3,7 +3,7 @@ package interpreter.service.functions.external;
 import com.google.common.eventbus.Subscribe;
 import interpreter.core.code.ScriptFileService;
 import interpreter.core.events.ScriptChangeEvent;
-import interpreter.debug.BreakPointService;
+import interpreter.debug.BreakpointService;
 import interpreter.debug.BreakPointsUpdatedEvent;
 import interpreter.service.functions.model.CallInstruction;
 import org.apache.commons.io.FilenameUtils;
@@ -21,7 +21,7 @@ import java.util.Map;
 class ExternalFunctionServiceImpl implements ExternalFunctionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalFunctionServiceImpl.class);
     private ScriptFileService scriptFileService;
-    private BreakPointService breakPointService;
+    private BreakpointService breakpointService;
     private ExternalFunctionParser externalFunctionParser;
     private Map<FunctionMapKey, ExternalFunction> functionsCache = Collections.synchronizedMap(new HashMap<>());
 
@@ -39,8 +39,8 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
             EndFunctionInstruction ret = new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size());
             ret.setExpectedOutput(cl.getExpectedOutputSize());
             e.getCode().add(ret, null);
-            e.getCode().setSource(key.name);
-            breakPointService.updateBreakpoints(e.getCode());
+            e.getCode().setSourceId(key.name);
+            breakpointService.updateBreakpoints(e.getCode());
             functionsCache.put(key, e);
             LOGGER.info("Function \n{}", e);
             return e;
@@ -63,7 +63,7 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     public void onBreakpointListChanged(BreakPointsUpdatedEvent event) {
         functionsCache.values().stream()
                 .filter(fun -> fun.getName().equals(event.getData().getSourceId()))
-                .forEach(fun -> breakPointService.updateBreakpoints(fun.getCode()));
+                .forEach(fun -> breakpointService.updateBreakpoints(fun.getCode()));
     }
 
     @Autowired
@@ -77,7 +77,7 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     }
 
     @Autowired
-    public void setBreakPointService(BreakPointService breakPointService) {
-        this.breakPointService = breakPointService;
+    public void setBreakpointService(BreakpointService breakpointService) {
+        this.breakpointService = breakpointService;
     }
 }

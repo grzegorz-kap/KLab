@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class Code implements Iterable<Instruction> {
     private List<Instruction> instructions = new ArrayList<>();
-    private String source;
+    private String sourceId;
 
     @Override
     public Iterator<Instruction> iterator() {
@@ -45,12 +45,12 @@ public class Code implements Iterable<Instruction> {
         instructions.clear();
     }
 
-    public String getSource() {
-        return source;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override

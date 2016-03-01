@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import interpreter.execution.model.Code;
+import interpreter.translate.model.Instruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +14,32 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static interpreter.debug.BreakpointEvent.Operation.ADD;
 import static interpreter.debug.BreakpointEvent.Operation.REMOVE;
+import static java.util.Collections.emptySet;
+import static java.util.Objects.nonNull;
 
 @Service
-class BreakPointServiceImpl implements BreakPointService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BreakPointServiceImpl.class);
+class BreakpointServiceImpl implements BreakpointService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
     Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
 
     @Override
     public void updateBreakpoints(Code code) {
-        LOGGER.info("{}", code.getSource());
+        code.instructions().forEach(instruction -> instruction.setBreakpoint(false));
+        Set<BreakpointAddress> addresses = firstNonNull(breakPoints.get(code.getSourceId()), emptySet());
+        for (BreakpointAddress address : addresses) {
+            Instruction instr = code.instructions()
+                    .filter(instruction -> nonNull(instruction.getCodeAddress()))
+                    .filter(instruction -> address.getLine().equals(instruction.getCodeAddress().getLine()))
+                    .findFirst().orElse(null);
+            if (nonNull(instr)) {
+                instr.setBreakpoint(true);
+                LOGGER.info("Added breakpoints {} || {}", code.getSourceId(), instr);
+            }
+        }
     }
 
     @Subscribe
