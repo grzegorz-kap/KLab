@@ -1,7 +1,10 @@
 package interpreter.execution.service;
 
+import common.EventService;
 import interpreter.commons.IdentifierMapper;
 import interpreter.commons.MemorySpace;
+import interpreter.debug.Breakpoint;
+import interpreter.debug.BreakpointReachedEvent;
 import interpreter.execution.InstructionAction;
 import interpreter.execution.exception.UnsupportedInstructionException;
 import interpreter.execution.handlers.InstructionHandler;
@@ -14,6 +17,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -23,6 +29,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private MemorySpace memorySpace;
     private InstructionAction handleAction = this::handle;
     private ProfilingService profilingService;
+    private EventService eventService;
 
     @Autowired
     public ExecutionServiceImpl(Set<InstructionHandler> instructionHandlers) {
@@ -48,6 +55,19 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
             if (instructionHandler == null) {
                 throw new UnsupportedInstructionException(UNEXPECTED_INSTRUCTION_MESSAGE, instruction);
             }
+            if (instruction.isBreakpoint()) {
+                Lock lock = new ReentrantLock();
+                Condition released = lock.newCondition();
+                try {
+                    Breakpoint breakpoint = new Breakpoint(executionContext.getCode().getSourceId(), instruction.getCodeAddress().getLine());
+                    eventService.publish(new BreakpointReachedEvent(breakpoint, this, lock, released));
+                    lock.lock();
+                    while (!breakpoint.isReleased())
+                        released.await();
+                } catch (Exception ex) {
+                    lock.unlock();
+                }
+            }
             handleAction.handle(instructionHandler, instructionPointer);
         }
     }
@@ -69,5 +89,10 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     @Autowired
     public void setProfilingService(ProfilingService profilingService) {
         this.profilingService = profilingService;
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }

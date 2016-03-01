@@ -9,8 +9,10 @@ import gui.model.script.ScriptTab;
 import gui.service.ScriptViewService;
 import interpreter.core.code.ScriptFileService;
 import interpreter.debug.BreakpointEvent;
+import interpreter.debug.BreakpointReachedEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class ScriptEditorController implements Initializable {
     @FXML
     private ScriptEditorPane scriptPane;
 
+    @FXML
+    private Button releaseBreakpointButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scriptPane.setSaveScriptHandler(tab -> {
@@ -62,6 +67,21 @@ public class ScriptEditorController implements Initializable {
             tab.getCodeArea().setBreakPointRemovedHandler(number -> eventService.publish(BreakpointEvent.create(scriptName, number + 1, REMOVE, this)));
         }
         scriptPane.getSelectionModel().select(tab);
+    }
+
+    @Subscribe
+    public void onBreakpointReachedEvent(BreakpointReachedEvent event) {
+        releaseBreakpointButton.setOnMouseClicked(ev -> {
+            try {
+                event.getLock().lock();
+                event.getData().setReleased(true);
+                event.getReleased().signalAll();
+                releaseBreakpointButton.setDisable(true);
+            } finally {
+                event.getLock().unlock();
+            }
+        });
+        releaseBreakpointButton.setDisable(false);
     }
 
     @Autowired

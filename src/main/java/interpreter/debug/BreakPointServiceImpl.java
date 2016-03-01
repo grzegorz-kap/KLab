@@ -24,7 +24,7 @@ import static java.util.Objects.nonNull;
 class BreakpointServiceImpl implements BreakpointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
-    Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
+    private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
 
     @Override
     public void updateBreakpoints(Code code) {
@@ -54,7 +54,7 @@ class BreakpointServiceImpl implements BreakpointService {
             LOGGER.error("Unknown event data: {}", breakpoint);
             throw new RuntimeException(); // // TODO: 29.02.2016
         }
-        eventService.publish(new BreakPointsUpdatedEvent(breakpoint, this));
+        eventService.publish(new BreakpointUpdatedEvent(breakpoint, this));
     }
 
     private void onAdd(Breakpoint breakpoint, Set<BreakpointAddress> addresses) {

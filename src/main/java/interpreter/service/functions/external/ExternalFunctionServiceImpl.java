@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import interpreter.core.code.ScriptFileService;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.debug.BreakpointService;
-import interpreter.debug.BreakPointsUpdatedEvent;
+import interpreter.debug.BreakpointUpdatedEvent;
 import interpreter.service.functions.model.CallInstruction;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     }
 
     @Subscribe
-    public void onBreakpointListChanged(BreakPointsUpdatedEvent event) {
+    public void onBreakpointListChanged(BreakpointUpdatedEvent event) {
         functionsCache.values().stream()
                 .filter(fun -> fun.getName().equals(event.getData().getSourceId()))
                 .forEach(fun -> breakpointService.updateBreakpoints(fun.getCode()));

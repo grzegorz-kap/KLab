@@ -16,7 +16,7 @@ public class BreakpointEvent extends InterpreterEvent<Breakpoint> {
         this.operation = operation;
     }
 
-    public Operation getOperation() {
+    Operation getOperation() {
         return operation;
     }
 }

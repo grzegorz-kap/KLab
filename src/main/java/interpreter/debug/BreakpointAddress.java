@@ -2,10 +2,10 @@ package interpreter.debug;
 
 import java.util.Objects;
 
-public class BreakpointAddress {
+class BreakpointAddress {
     private Integer line;
 
-    public BreakpointAddress(Integer line) {
+    BreakpointAddress(Integer line) {
         this.line = Objects.requireNonNull(line);
     }
 

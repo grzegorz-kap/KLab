@@ -6,7 +6,6 @@ public class LineNumberLabel extends Label {
     private CustomCodeArea customCodeArea;
 
     public LineNumberLabel() {
-
     }
 
     public void setCustomCodeArea(CustomCodeArea customCodeArea) {

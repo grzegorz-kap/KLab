@@ -3,7 +3,7 @@ package interpreter.core.code;
 import com.google.common.eventbus.Subscribe;
 import interpreter.core.events.ScriptChangeEvent;
 import interpreter.debug.BreakpointService;
-import interpreter.debug.BreakPointsUpdatedEvent;
+import interpreter.debug.BreakpointUpdatedEvent;
 import interpreter.execution.model.Code;
 import interpreter.translate.model.Instruction;
 import interpreter.translate.model.InstructionCode;
@@ -43,7 +43,7 @@ class ScriptServiceImpl implements ScriptService {
     }
 
     @Subscribe
-    public void onBreakpointsUpdated(BreakPointsUpdatedEvent event) {
+    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
         Code code = cachedCode.get(event.getData().getSourceId());
         if (nonNull(code)) {
             breakpointService.updateBreakpoints(code);

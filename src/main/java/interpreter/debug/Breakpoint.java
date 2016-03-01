@@ -3,6 +3,7 @@ package interpreter.debug;
 public class Breakpoint {
     private String sourceId;
     private BreakpointAddress address;
+    private boolean released = false;
 
     public Breakpoint(String sourceId, Integer lineNumber) {
         this.sourceId = sourceId;
@@ -20,16 +21,24 @@ public class Breakpoint {
         return address.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return String.format("Breakpoint: '%s', %s", sourceId, address);
+    }
+
+    public boolean isReleased() {
+        return released;
+    }
+
+    public void setReleased(boolean released) {
+        this.released = released;
+    }
+
     public String getSourceId() {
         return sourceId;
     }
 
     public BreakpointAddress getAddress() {
         return address;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Breakpoint: '%s', %s", sourceId, address);
     }
 }
