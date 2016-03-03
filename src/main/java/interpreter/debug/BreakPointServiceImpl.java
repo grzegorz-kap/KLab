@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static interpreter.debug.BreakpointEvent.Operation.ADD;
@@ -40,6 +41,12 @@ class BreakpointServiceImpl implements BreakpointService {
                 LOGGER.info("Added breakpoints {} || {}", code.getSourceId(), instr);
             }
         }
+    }
+
+    @Override
+    public Set<Integer> linesFor(String sourceId) {
+        Set<BreakpointAddress> addresses = firstNonNull(breakPoints.get(sourceId), Sets.newHashSet());
+        return addresses.stream().map(a -> a.getLine() - 1).collect(Collectors.toSet());
     }
 
     @Subscribe
