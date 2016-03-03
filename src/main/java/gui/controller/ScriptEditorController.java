@@ -10,6 +10,7 @@ import gui.service.ScriptViewService;
 import interpreter.core.code.ScriptFileService;
 import interpreter.debug.BreakpointEvent;
 import interpreter.debug.BreakpointReachedEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -57,6 +58,11 @@ public class ScriptEditorController implements Initializable {
     @Subscribe
     public void openScript(OpenScriptEvent event) throws IOException {
         String scriptName = FilenameUtils.removeExtension(event.getData());
+        ScriptTab tab = getScriptTab(scriptName);
+        scriptPane.getSelectionModel().select(tab);
+    }
+
+    private ScriptTab getScriptTab(String scriptName) {
         ScriptTab tab = scriptPane.getScript(scriptName);
         if (tab == null) {
             tab = new ScriptTab(scriptName, scriptViewService.readScript(scriptName));
@@ -66,7 +72,7 @@ public class ScriptEditorController implements Initializable {
             tab.getCodeArea().setBreakPointAddedHandler(number -> eventService.publish(BreakpointEvent.create(scriptName, number + 1, ADD, this)));
             tab.getCodeArea().setBreakPointRemovedHandler(number -> eventService.publish(BreakpointEvent.create(scriptName, number + 1, REMOVE, this)));
         }
-        scriptPane.getSelectionModel().select(tab);
+        return tab;
     }
 
     @Subscribe
@@ -82,6 +88,10 @@ public class ScriptEditorController implements Initializable {
             }
         });
         releaseBreakpointButton.setDisable(false);
+        Platform.runLater(() -> {
+            ScriptTab tab = getScriptTab(event.getData().getSourceId());
+            scriptPane.getSelectionModel().select(tab);
+        });
     }
 
     @Autowired
