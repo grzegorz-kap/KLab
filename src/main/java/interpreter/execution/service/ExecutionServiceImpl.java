@@ -56,19 +56,23 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
                 throw new UnsupportedInstructionException(UNEXPECTED_INSTRUCTION_MESSAGE, instruction);
             }
             if (instruction.isBreakpoint()) {
-                Lock lock = new ReentrantLock();
-                Condition released = lock.newCondition();
-                try {
-                    Breakpoint breakpoint = new Breakpoint(executionContext.getCode().getSourceId(), instruction.getCodeAddress().getLine());
-                    eventService.publish(new BreakpointReachedEvent(breakpoint, this, lock, released));
-                    lock.lock();
-                    while (!breakpoint.isReleased())
-                        released.await();
-                } catch (Exception ex) {
-                    lock.unlock();
-                }
+                hitBreakpoint(instruction);
             }
             handleAction.handle(instructionHandler, instructionPointer);
+        }
+    }
+
+    private void hitBreakpoint(Instruction instruction) {
+        Lock lock = new ReentrantLock();
+        Condition released = lock.newCondition();
+        Breakpoint breakpoint = new Breakpoint(instructionPointer.getSourceId(), instruction.getCodeAddress().getLine());
+        eventService.publish(new BreakpointReachedEvent(breakpoint, this, lock, released));
+        try {
+            lock.lock();
+            while (!breakpoint.isReleased())
+                released.await();
+        } catch (Exception ex) {
+            lock.unlock();
         }
     }
 

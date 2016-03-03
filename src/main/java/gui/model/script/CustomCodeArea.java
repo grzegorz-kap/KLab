@@ -47,4 +47,8 @@ public class CustomCodeArea extends CodeArea {
     public void setBreakPointRemovedHandler(Consumer<Integer> breakPointRemovedHandler) {
         this.breakPointRemovedHandler = breakPointRemovedHandler;
     }
+
+    public void setBreakingPoints(Set<Integer> breakingPoints) {
+        this.breakingPoints = breakingPoints;
+    }
 }
