@@ -1,21 +1,23 @@
 package gui.model.script;
 
 import com.google.common.collect.Sets;
+import gui.model.Style;
 import gui.service.CustomLineNumberFactory;
-import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.InlineStyleTextArea;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class CustomCodeArea extends CodeArea {
+public class CustomCodeArea extends InlineStyleTextArea<Style> {
     private ScriptTab parentTab;
     private Set<Integer> breakingPoints = Sets.newHashSet();
     private Consumer<Integer> breakPointAddedHandler;
     private Consumer<Integer> breakPointRemovedHandler;
 
     CustomCodeArea(String content, ScriptTab scriptTab) {
-        super(content);
+        super(String::new, Style::toCss);
+        appendText(content);
         this.setParagraphGraphicFactory(CustomLineNumberFactory.get(this));
         parentTab = scriptTab;
     }

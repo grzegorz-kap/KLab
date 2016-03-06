@@ -2,7 +2,7 @@ package interpreter.debug;
 
 import java.util.Objects;
 
-class BreakpointAddress {
+public class BreakpointAddress {
     private Integer line;
 
     BreakpointAddress(Integer line) {

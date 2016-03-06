@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import gui.events.CommandSubmittedEvent;
 import gui.events.OpenScriptEvent;
+import gui.model.script.CustomCodeArea;
 import gui.model.script.ScriptEditorPane;
 import gui.model.script.ScriptTab;
 import gui.service.ScriptViewService;
@@ -67,23 +68,26 @@ public class ScriptEditorController implements Initializable {
 
     @Subscribe
     public void onBreakpointReachedEvent(BreakpointReachedEvent event) {
+        ScriptTab tab = getScriptTab(event.getData().getSourceId());
+        int line = event.getData().getAddress().getLine() - 1;
         releaseBreakpointButton.setOnMouseClicked(ev -> {
             try {
                 event.getLock().lock();
                 event.getData().setReleased(true);
                 event.getReleased().signalAll();
                 releaseBreakpointButton.setDisable(true);
+                tab.getCodeArea().setStyle(line, String::new);
             } finally {
                 event.getLock().unlock();
             }
         });
         releaseBreakpointButton.setDisable(false);
         Platform.runLater(() -> {
-            ScriptTab tab = getScriptTab(event.getData().getSourceId());
             scriptPane.getSelectionModel().select(tab);
+            CustomCodeArea area = tab.getCodeArea();
+            area.setStyle(line, () -> "-fx-font-weight: bold");
         });
     }
-
 
     private ScriptTab getScriptTab(String scriptName) {
         ScriptTab tab = scriptPane.getScript(Objects.requireNonNull(scriptName));
