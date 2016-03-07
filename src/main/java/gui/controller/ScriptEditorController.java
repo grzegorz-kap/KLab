@@ -76,7 +76,7 @@ public class ScriptEditorController implements Initializable {
                 event.getData().setReleased(true);
                 event.getReleased().signalAll();
                 releaseBreakpointButton.setDisable(true);
-                tab.getCodeArea().setStyle(line, String::new);
+                tab.getCodeArea().clearStyle(line);
             } finally {
                 event.getLock().unlock();
             }

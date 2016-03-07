@@ -2,7 +2,6 @@ package interpreter.debug;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import common.EventService;
 import interpreter.execution.model.Code;
 import interpreter.translate.model.Instruction;
@@ -16,10 +15,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static interpreter.debug.BreakpointEvent.Operation.ADD;
-import static interpreter.debug.BreakpointEvent.Operation.REMOVE;
 import static java.util.Collections.emptySet;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
 class BreakpointServiceImpl implements BreakpointService {
@@ -49,37 +48,36 @@ class BreakpointServiceImpl implements BreakpointService {
         return addresses.stream().map(a -> a.getLine() - 1).collect(Collectors.toSet());
     }
 
-    @Subscribe
-    private void onBreakPointChanged(BreakpointEvent event) {
-        Breakpoint breakpoint = event.getData();
-        Set<BreakpointAddress> addresses = breakPoints.get(breakpoint.getSourceId());
-        if (ADD.equals(event.getOperation())) {
-            onAdd(breakpoint, addresses);
-        } else if (addresses != null && REMOVE.equals(event.getOperation())) {
-            onRemove(breakpoint, addresses);
-        } else {
-            LOGGER.error("Unknown event data: {}", breakpoint);
-            throw new RuntimeException(); // // TODO: 29.02.2016
-        }
-        eventService.publish(new BreakpointUpdatedEvent(breakpoint, this));
+    @Override
+    public boolean isBreakPointExists(int value, String scriptId) {
+        Set<BreakpointAddress> addresses = breakPoints.get(scriptId);
+        return !isEmpty(addresses) && addresses.stream().anyMatch(address -> address.getLine().equals(value));
     }
 
-    private void onAdd(Breakpoint breakpoint, Set<BreakpointAddress> addresses) {
+    @Override
+    public void add(String scriptId, int line) {
+        Set<BreakpointAddress> addresses = breakPoints.get(scriptId);
         if (addresses == null) {
-            breakPoints.put(breakpoint.getSourceId(), Sets.newHashSet(breakpoint.getAddress()));
+            breakPoints.put(scriptId, Sets.newHashSet(new BreakpointAddress(line)));
         } else {
-            addresses.add(breakpoint.getAddress());
+            addresses.add(new BreakpointAddress(line));
         }
-        LOGGER.info("ADDED: {}", breakpoint);
+        LOGGER.info("ADDED: {} | {}", scriptId, line);
     }
 
-    private void onRemove(Breakpoint breakpoint, Set<BreakpointAddress> addresses) {
-        addresses.remove(breakpoint.getAddress());
-        LOGGER.info("REMOVED: {}", breakpoint);
-        if (addresses.isEmpty()) {
-            breakPoints.remove(breakpoint.getSourceId());
-            LOGGER.info("CLEARED BREAK POINTS: {}", breakpoint.getSourceId());
+    @Override
+    public boolean remove(String scriptId, int line) {
+        Set<BreakpointAddress> addresses = breakPoints.get(scriptId);
+        boolean removed = isNotEmpty(addresses) && addresses.removeIf(address -> address.getLine().equals(line));
+        if (removed) {
+            eventService.publish(new BreakpointUpdatedEvent(new Breakpoint(scriptId, line), this));
+            LOGGER.info("REMOVED: {} | {}", scriptId, line);
+            if (addresses.isEmpty()) {
+                breakPoints.remove(scriptId);
+                LOGGER.info("CLEARED BREAK POINTS: {}", scriptId);
+            }
         }
+        return removed;
     }
 
     @Autowired

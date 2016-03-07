@@ -8,4 +8,10 @@ public interface BreakpointService {
     void updateBreakpoints(Code code);
 
     Set<Integer> linesFor(String sourceId);
+
+    boolean isBreakPointExists(int value, String scriptId);
+
+    void add(String scriptId, int line);
+
+    boolean remove(String scriptId, int line);
 }
