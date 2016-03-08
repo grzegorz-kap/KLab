@@ -25,13 +25,11 @@ public class CustomLineNumberFactory<S> implements IntFunction<Label> {
 
     private final Val<Integer> nParagraphs;
     private final IntFunction<String> format = digits -> "%0" + digits + "d";
-    private final StyledTextArea<S> codeArea;
     private final BreakpointService breakpointService;
     private final String scriptId;
 
     public CustomLineNumberFactory(StyledTextArea<S> area, BreakpointService breakpointService, String scriptId) {
         this.nParagraphs = LiveList.sizeOf(area.getParagraphs());
-        this.codeArea = area;
         this.breakpointService = Objects.requireNonNull(breakpointService);
         this.scriptId = scriptId;
     }
@@ -39,7 +37,7 @@ public class CustomLineNumberFactory<S> implements IntFunction<Label> {
     @Override
     public Label apply(int value) {
         Val<String> formatted = nParagraphs.map(n -> format(value + 1, n));
-        boolean breakPointExists = breakpointService.isBreakPointExists(value, scriptId);
+        boolean breakPointExists = breakpointService.isBreakPointExists(value + 1, scriptId);
         Label lineNo = new Label();
         lineNo.setFont(DEFAULT_FONT);
         lineNo.setBackground(breakPointExists ? BREAK_POINT_BACKGROUND : DEFAULT_BACKGROUND);
@@ -52,12 +50,12 @@ public class CustomLineNumberFactory<S> implements IntFunction<Label> {
         lineNo.textProperty().bind(formatted.conditionOnShowing(lineNo));
 
         lineNo.setOnMouseClicked(event -> {
-            if (breakpointService.isBreakPointExists(value, scriptId)) {
+            if (breakpointService.isBreakPointExists(value + 1, scriptId)) {
                 lineNo.setBackground(DEFAULT_BACKGROUND);
-                breakpointService.remove(scriptId, value);
+                breakpointService.remove(scriptId, value + 1);
             } else {
                 lineNo.setBackground(BREAK_POINT_BACKGROUND);
-                breakpointService.add(scriptId, value);
+                breakpointService.add(scriptId, value + 1);
             }
         });
         return lineNo;
