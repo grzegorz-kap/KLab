@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EyeFunction extends AbstractMatrixGeneratorFunction {
-
     public EyeFunction() {
         super(1, 2, InternalFunction.EYE_FUNCTION);
     }
@@ -15,5 +14,4 @@ public class EyeFunction extends AbstractMatrixGeneratorFunction {
     public ObjectData call(ObjectData[] data, int output) {
         return createMatrix(data, matrixFactory::eye);
     }
-
 }

@@ -17,10 +17,10 @@ public class MatrixNewColumnParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START)) {
+        if (!stackHelper.stackToExpressionUntilParseClass(pCtxMgr, ParseClass.MATRIX_START)) {
             throw new RuntimeException();
         }
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     @Override

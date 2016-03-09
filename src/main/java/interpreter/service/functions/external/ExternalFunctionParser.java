@@ -20,8 +20,8 @@ public class ExternalFunctionParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalFunctionParser.class);
     private static final String WORD = "[A-Za-z]+[A-Za-z\\d_]*";
     private static final String ARGS = String.format("([ \\t]*(%s[ ,\\t]*)*)", WORD);
-    public static final String NARGIN = "nargin";
-    public static final String NARGOUT = "nargout";
+    private static final String NARGIN = "nargin";
+    private static final String NARGOUT = "nargout";
     private Pattern signaturePattern;
     private Pattern endPattern = Pattern.compile("((end)|(endfunction))([\\n \\t])*$", Pattern.MULTILINE);
     private IdentifierMapper identifierMapper;
@@ -66,7 +66,7 @@ public class ExternalFunctionParser {
         fun.setNargoutAddress(identifierMapper.registerMainIdentifier(NARGOUT));
         TokenList tokenList = tokenizer.readTokens(StringUtils.removeEnd(input, end));
         int lines = StringUtils.countMatches(signature, '\n');
-        tokenList.removeIf(token -> token.getLine() <= lines);
+        tokenList.removeIf(token -> token.getAddress().getLine() <= lines);
         Code code = codeGenerator.translate(tokenList);
         fun.setCode(code);
         fun.setMemoryLength(identifierMapper.mainMappingsSize());

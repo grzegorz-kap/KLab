@@ -18,9 +18,9 @@ public class ForKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         checkIfExpected();
-        parseContextManager.getBalanceContext().put(KeywordBalance.FOR_INSTRUCTION);
-        parseContextManager.addExpressionValue(new ForToken(parseContextManager.tokenAt(0)));
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.getBalanceContext().put(KeywordBalance.FOR_INSTRUCTION);
+        pCtxMgr.addExpressionValue(new ForToken(pCtxMgr.tokenAt(0)));
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     @Override
@@ -29,8 +29,8 @@ public class ForKeywordParseHandler extends AbstractParseHandler {
     }
 
     private void checkIfExpected() {
-        if (parseContextManager.expressionSize() != 0) {
-            throw new WrongForInstructionException(FOR_KEYWORD_NOT_ALLOWED_HERE, parseContextManager.getParseContext());
+        if (pCtxMgr.expressionSize() != 0) {
+            throw new WrongForInstructionException(FOR_KEYWORD_NOT_ALLOWED_HERE, pCtxMgr.getParseContext());
         }
     }
 }

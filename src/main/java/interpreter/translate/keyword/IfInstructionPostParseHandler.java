@@ -1,5 +1,6 @@
 package interpreter.translate.keyword;
 
+import interpreter.lexer.model.CodeAddress;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 import interpreter.parsing.model.expression.Expression;
@@ -58,10 +59,11 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
         setupOnFalseOrThrow(1);
         ifInstructionContext.addEndIfJumper(jumpEndInstruction);
         ifInstructionContext.setJumpOnFalse(jumperInstruction);
+        CodeAddress address = expressions.get(0).getValue().getAddress();
         return new MacroInstruction()
-                .add(jumpEndInstruction)
+                .add(jumpEndInstruction, address)
                 .add(translator.translate(expressions.get(1)))
-                .add(jumperInstruction);
+                .add(jumperInstruction, address);
     }
 
     private MacroInstruction handleIFStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
@@ -70,7 +72,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
         JumperInstruction jumperInstruction = createJumpOnFalse();
         ifInstructionContext.setJumpOnFalse(jumperInstruction);
         return translator.translate(expressions.get(1))
-                .add(jumperInstruction);
+                .add(jumperInstruction, expressions.get(0).getValue().getAddress());
     }
 
     private MacroInstruction handleElse(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
@@ -79,7 +81,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
         setupOnFalseOrThrow(1);
         expressions.get(0).setProperty(PRINT_PROPERTY_KEY, false);
         return new MacroInstruction()
-                .add(jumperInstruction);
+                .add(jumperInstruction, expressions.get(0).getValue().getAddress());
     }
 
     private MacroInstruction handleIfEnd(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {

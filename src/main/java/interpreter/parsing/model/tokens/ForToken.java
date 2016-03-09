@@ -6,7 +6,6 @@ import interpreter.parsing.model.ParseToken;
 
 public class ForToken extends ParseToken {
     public ForToken(Token token) {
-        setToken(token);
-        setParseClass(ParseClass.FOR_KEYWORD);
+        super(token, ParseClass.FOR_KEYWORD);
     }
 }

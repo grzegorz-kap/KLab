@@ -18,8 +18,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -79,14 +80,11 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private void process(Code code, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         while (parser.hasNext()) {
             List<Expression<ParseToken>> expressionList = parser.process();
-            PostParseHandler postParseHandler = postParseHandlers.stream()
-                    .filter(handler -> handler.canBeHandled(expressionList))
-                    .findFirst()
-                    .orElse(null);
-            if (Objects.isNull(postParseHandler)) {
-                expressionList.forEach(expression -> code.add(instructionTranslator.translate(expression).getInstructions()));
+            PostParseHandler postParseHandler = findPostParseHandler(expressionList);
+            if (nonNull(postParseHandler)) {
+                code.add(postParseHandler.handle(expressionList, instructionTranslator));
             } else {
-                code.add(postParseHandler.handle(expressionList, instructionTranslator).getInstructions());
+                expressionList.forEach(expression -> code.add(instructionTranslator.translate(expression)));
             }
             memorySpace.reserve(identifierMapper.mainMappingsSize());
             if (macroInstructionTranslatedCallback != null) {
@@ -94,6 +92,13 @@ public class CodeGeneratorImpl implements CodeGenerator {
             }
         }
         LOGGER.info("Translated: {}", code);
+    }
+
+    private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
+        return postParseHandlers.stream()
+                .filter(handler -> handler.canBeHandled(expressionList))
+                .findFirst()
+                .orElse(null);
     }
 
     @Autowired

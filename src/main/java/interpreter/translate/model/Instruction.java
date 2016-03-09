@@ -1,5 +1,6 @@
 package interpreter.translate.model;
 
+import interpreter.lexer.model.CodeAddress;
 import interpreter.types.ObjectData;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ public class Instruction {
     private InstructionCode instructionCode;
     private List<ObjectData> data = new ArrayList<>();
     private int argumentsNumber = 0;
+    private boolean breakpoint = false;
+    private CodeAddress codeAddress;
 
     public Instruction() {
     }
@@ -50,6 +53,22 @@ public class Instruction {
 
     public void setArgumentsNumber(int argumentsNumber) {
         this.argumentsNumber = argumentsNumber;
+    }
+
+    public boolean isBreakpoint() {
+        return breakpoint;
+    }
+
+    public void setBreakpoint(boolean breakpoint) {
+        this.breakpoint = breakpoint;
+    }
+
+    public CodeAddress getCodeAddress() {
+        return codeAddress;
+    }
+
+    public void setCodeAddress(CodeAddress codeAddress) {
+        this.codeAddress = codeAddress;
     }
 
     @Override

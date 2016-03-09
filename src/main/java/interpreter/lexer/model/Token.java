@@ -1,16 +1,14 @@
 package interpreter.lexer.model;
 
 public class Token {
-
     private String lexeme;
-    private Long line;
-    private Long column;
+    private CodeAddress address;
     private TokenClass tokenClass;
     private boolean isKeyword = false;
 
     @Override
     public String toString() {
-        return lexeme + "\t" + tokenClass + "\t" + line + "\t" + column;
+        return lexeme + "\t" + tokenClass + "\t" + address.getLine() + "\t" + address.getColumn();
     }
 
     public String getLexeme() {
@@ -21,20 +19,12 @@ public class Token {
         this.lexeme = lexeme;
     }
 
-    public Long getLine() {
-        return line;
+    public CodeAddress getAddress() {
+        return address;
     }
 
-    public void setLine(Long line) {
-        this.line = line;
-    }
-
-    public Long getColumn() {
-        return column;
-    }
-
-    public void setColumn(Long column) {
-        this.column = column;
+    public void setAddress(CodeAddress address) {
+        this.address = address;
     }
 
     public TokenClass getTokenClass() {

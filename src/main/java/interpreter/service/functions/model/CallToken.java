@@ -10,8 +10,11 @@ public class CallToken extends ParseToken {
     private Integer internalFunctionAddress;
 
     public CallToken(Token token) {
-        setToken(token);
-        setParseClass(ParseClass.CALL);
+        super(token, ParseClass.CALL);
+    }
+
+    public CallToken(Token token, ParseClass parseClass) {
+        super(token, parseClass);
     }
 
     public Integer getExternalAddress() {

@@ -42,4 +42,8 @@ public class InstructionPointer {
     public void jumpTo(int address) {
         this.address = address;
     }
+
+    public String getSourceId() {
+        return code.getSourceId();
+    }
 }

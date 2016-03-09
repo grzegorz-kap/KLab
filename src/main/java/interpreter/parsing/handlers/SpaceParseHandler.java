@@ -11,7 +11,7 @@ public class SpaceParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     @Override

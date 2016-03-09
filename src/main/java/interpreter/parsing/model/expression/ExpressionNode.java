@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ExpressionNode<T> extends AbstractExpression<T> implements Expression<T> {
-
     private List<Expression<T>> children = new ArrayList<>();
-
-    public ExpressionNode() {
-    }
 
     public ExpressionNode(T value) {
         this.value = value;

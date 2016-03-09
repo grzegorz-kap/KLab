@@ -42,11 +42,11 @@ public class CommaParseHandler extends AbstractParseHandler {
     }
 
     private boolean isThisCommaInsideMatrix() {
-        return parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
+        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
     }
 
     private boolean isThisCommaInsideFunctionCall() {
-        return parseContextManager.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS);
+        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS);
     }
 
     @Autowired

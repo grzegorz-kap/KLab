@@ -5,9 +5,7 @@ import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 
 public class IfToken extends ParseToken {
-
     public IfToken(Token token) {
-        setToken(token);
-        setParseClass(ParseClass.IF);
+        super(token, ParseClass.IF);
     }
 }

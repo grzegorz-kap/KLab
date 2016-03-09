@@ -1,18 +1,19 @@
 package gui.controller;
 
 import com.google.common.eventbus.Subscribe;
-import common.EventService;
-import gui.events.CommandSubmittedEvent;
 import gui.events.OpenScriptEvent;
-import gui.model.script.ScriptEditorPane;
-import gui.model.script.ScriptTab;
-import gui.service.ScriptViewService;
-import interpreter.core.code.ScriptFileService;
+import gui.factories.ScriptTabFactory;
+import gui.model.ScriptContext;
+import gui.model.Style;
+import interpreter.debug.BreakpointReachedEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fxmisc.richtext.StyledTextArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -20,56 +21,56 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptEditorController implements Initializable {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptEditorController.class);
-    private ScriptFileService scriptFileService;
-    private ScriptViewService scriptViewService;
-    private EventService eventService;
+    private ScriptTabFactory scriptTabFactory;
 
     @FXML
-    private ScriptEditorPane scriptPane;
+    private TabPane scriptPane;
+
+    @FXML
+    private Button releaseBreakpointButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        scriptPane.setSaveScriptHandler(tab -> {
-            try {
-                scriptFileService.writeScript(tab.getText(), tab.getScriptContent());
-            } catch (IOException e) {
-                LOGGER.error("error", e);
-            }
-        });
-        scriptPane.setRunScriptHandler(tab -> eventService.publish(new CommandSubmittedEvent(tab.getText(), this)));
+        scriptTabFactory.initializeScriptPane(scriptPane);
     }
 
     @Subscribe
     public void openScript(OpenScriptEvent event) throws IOException {
         String scriptName = FilenameUtils.removeExtension(event.getData());
-        ScriptTab tab = scriptPane.getScript(scriptName);
-        if (tab == null) {
-            tab = new ScriptTab(scriptName, scriptViewService.readScript(scriptName));
-            scriptPane.addScript(scriptName, tab);
-            tab.setOnRunHandler(t -> eventService.publish(new CommandSubmittedEvent(t.getScriptName(), this)));
-            tab.setOnCloseHandler(t -> scriptPane.remove(t.getScriptName()));
-        }
+        Tab tab = scriptTabFactory.create(scriptName, scriptPane).getTab();
         scriptPane.getSelectionModel().select(tab);
     }
 
-    @Autowired
-    public void setScriptFileService(ScriptFileService scriptFileService) {
-        this.scriptFileService = scriptFileService;
+    @Subscribe
+    public void onBreakpointReachedEvent(BreakpointReachedEvent event) {
+        ScriptContext context = scriptTabFactory.create(event.getData().getSourceId(), scriptPane);
+        int line = event.getData().getAddress().getLine() - 1;
+        releaseBreakpointButton.setOnMouseClicked(ev -> {
+            try {
+                event.getLock().lock();
+                event.getData().setReleased(true);
+                event.getReleased().signalAll();
+                releaseBreakpointButton.setDisable(true);
+                context.getCodeArea().clearStyle(line);
+            } finally {
+                event.getLock().unlock();
+            }
+        });
+        releaseBreakpointButton.setDisable(false);
+        Platform.runLater(() -> {
+            scriptPane.getSelectionModel().select(context.getTab());
+            StyledTextArea<Style> area = context.getCodeArea();
+            area.setStyle(line, () -> "-fx-font-weight: bold");
+        });
     }
 
     @Autowired
-    public void setEventService(EventService eventService) {
-        this.eventService = eventService;
-    }
-
-    @Autowired
-    public void setScriptViewService(ScriptViewService scriptViewService) {
-        this.scriptViewService = scriptViewService;
+    public void setScriptTabFactory(ScriptTabFactory scriptTabFactory) {
+        this.scriptTabFactory = scriptTabFactory;
     }
 }

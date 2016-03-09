@@ -18,7 +18,7 @@ public class MatrixTranslateHandler extends AbstractTranslateHandler {
         Instruction instruction = new Instruction();
         instruction.setArgumentsNumber(expression.getChildrenCount());
         instruction.setInstructionCode(InstructionCode.MATRIX);
-        tCM.addInstruction(instruction);
+        tCM.addInstruction(instruction, address(expression));
     }
 
     @Override

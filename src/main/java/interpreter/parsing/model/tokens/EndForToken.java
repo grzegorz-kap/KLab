@@ -6,7 +6,6 @@ import interpreter.parsing.model.ParseToken;
 
 public class EndForToken extends ParseToken {
     public EndForToken(Token token) {
-        setToken(token);
-        setParseClass(ParseClass.ENDFOR_KEYWORD);
+        super(token, ParseClass.ENDFOR_KEYWORD);
     }
 }

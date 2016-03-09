@@ -7,9 +7,7 @@ import interpreter.lexer.utils.TokenRegexReader;
 import interpreter.lexer.utils.TokenStartMatcher;
 
 public abstract class AbstractTokenizer implements Tokenizer {
-
-    public static final String UNRECOGNIZED_TOKEN_MESSAGE = "Unrecognized token.";
-
+    private static final String UNRECOGNIZED_TOKEN_MESSAGE = "Unrecognized token.";
     protected TokenizerContext tC;
     protected TokenizerContextManager tCM;
     protected TokenRegexReader tokenRegexReader;
