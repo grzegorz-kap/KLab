@@ -10,14 +10,14 @@ import org.fxmisc.richtext.StyledTextArea;
 
 import java.util.function.Consumer;
 
+import static common.FunctionUtils.emptyConsumer;
+
 public class ScriptContext {
     private Tab tab;
     private String scriptId;
     private StyledTextArea<Style> codeArea;
-    private Consumer<ScriptContext> onRunHandler = context -> {
-    };
-    private Consumer<ScriptContext> onCloseHandler = context -> {
-    };
+    private Consumer<ScriptContext> onRunHandler = emptyConsumer();
+    private Consumer<ScriptContext> onCloseHandler = emptyConsumer();
 
     public ScriptContext(String title, String content) {
         this.tab = new Tab(title);
@@ -27,7 +27,6 @@ public class ScriptContext {
         this.tab.setContent(codeArea);
         buildContextMenu();
     }
-
 
     public void createLineNumbersFactory(BreakpointService breakpointService) {
         codeArea.setParagraphGraphicFactory(new CustomLineNumberFactory<>(codeArea, breakpointService, scriptId));
