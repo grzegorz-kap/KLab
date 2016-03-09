@@ -22,7 +22,6 @@ import java.util.function.Predicate;
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ParseContextManager {
-
     private ParseContext parseContext;
 
     public Token tokenAt(int offset) {
@@ -30,8 +29,7 @@ public class ParseContextManager {
     }
 
     public ExpressionValue<ParseToken> addExpressionValue(ParseToken parseToken) {
-        ExpressionValue<ParseToken> expressionValue = new ExpressionValue<>();
-        expressionValue.setValue(parseToken);
+        ExpressionValue<ParseToken> expressionValue = new ExpressionValue<>(parseToken);
         parseContext.addExpression(expressionValue);
         return expressionValue;
     }

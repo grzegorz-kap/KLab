@@ -12,13 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MatrixVerseTranslateHandler extends AbstractTranslateHandler {
-
     @Override
     public void handle(Expression<ParseToken> expression) {
         Instruction instruction = new Instruction();
         instruction.setArgumentsNumber(expression.getChildrenCount());
         instruction.setInstructionCode(InstructionCode.MATRIX_VERSE);
-        tCM.addInstruction(instruction);
+        tCM.addInstruction(instruction, address(expression));
     }
 
     @Override

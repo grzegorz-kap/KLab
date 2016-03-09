@@ -1,37 +1,37 @@
 package interpreter.translate.model;
 
+import interpreter.lexer.model.CodeAddress;
+
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MacroInstruction {
+public class MacroInstruction implements Iterable<Instruction> {
     private List<Instruction> instructions = new ArrayList<>();
 
     public Instruction get(int index) {
         return instructions.get(index);
     }
 
-    public void set(int index, Instruction instruction) {
-        instructions.set(index, instruction);
+    @Override
+    public Iterator<Instruction> iterator() {
+        return instructions.iterator();
     }
 
-    public MacroInstruction add(Instruction instruction) {
+    public MacroInstruction add(Instruction instruction, CodeAddress codeAddress) {
+        instruction.setCodeAddress(codeAddress);
         instructions.add(instruction);
         return this;
     }
 
     public MacroInstruction add(MacroInstruction macroInstruction) {
-        instructions.addAll(macroInstruction.getInstructions());
+        instructions.addAll(macroInstruction.instructions);
         return this;
     }
 
     public void forEach(Consumer<? super Instruction> consumer) {
         instructions.forEach(consumer);
-    }
-
-    public Collection<? extends Instruction> getInstructions() {
-        return instructions;
     }
 
     public int size() {

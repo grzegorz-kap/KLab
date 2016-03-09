@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class TokenList {
-
     private List<Token> tokens = new ArrayList<>();
 
     public void add(Token token) {

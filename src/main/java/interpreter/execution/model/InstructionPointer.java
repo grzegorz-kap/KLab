@@ -6,7 +6,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class InstructionPointer {
-
     private Deque<Code> codeDeque = new ArrayDeque<>();
     private Deque<Integer> addressDeque = new ArrayDeque<>();
     private Code code;
@@ -44,4 +43,7 @@ public class InstructionPointer {
         this.address = address;
     }
 
+    public String getSourceId() {
+        return code.getSourceId();
+    }
 }

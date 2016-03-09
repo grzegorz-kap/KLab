@@ -1,5 +1,6 @@
 package interpreter.parsing.model.tokens.operators;
 
+import interpreter.lexer.model.Token;
 import interpreter.parsing.model.ParseClass;
 import interpreter.parsing.model.ParseToken;
 
@@ -9,12 +10,12 @@ public class OperatorToken extends ParseToken {
     private OperatorAssociativity operatorAssociativity;
     private OperatorCode operatorCode;
 
-    public OperatorToken() {
-        setParseClass(ParseClass.OPERATOR);
+    public OperatorToken(Token token) {
+        super(token, ParseClass.OPERATOR);
     }
 
-    public OperatorToken(int argumentsNumber, OperatorAssociativity operatorAssociativity, OperatorPriority operatorPriority, OperatorCode operatorCode) {
-        this();
+    public OperatorToken(Token token, int argumentsNumber, OperatorAssociativity operatorAssociativity, OperatorPriority operatorPriority, OperatorCode operatorCode) {
+        this(token);
         this.argumentsNumber = argumentsNumber;
         this.operatorAssociativity = operatorAssociativity;
         this.operatorPriority = operatorPriority;

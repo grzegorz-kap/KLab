@@ -13,9 +13,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public class EventBusSubscriberProcessor implements BeanPostProcessor {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EventBusSubscriberProcessor.class);
-
     private EventBus eventBus;
     private AsyncEventBus asyncEventBus;
 
@@ -26,7 +24,7 @@ public class EventBusSubscriberProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object beanObject, String beanName) throws BeansException {
-        Method[] methods = beanObject.getClass().getMethods();
+        Method[] methods = beanObject.getClass().getDeclaredMethods();
         for (Method method : methods) {
             Annotation[] annotations = method.getAnnotations();
             for (Annotation annotation : annotations) {

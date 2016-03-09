@@ -21,9 +21,7 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CloseParenthesisParseHandler extends AbstractParseHandler {
-
     private static final ParseClass[] STOP_CLASSES = new ParseClass[]{ParseClass.OPEN_PARENTHESIS, ParseClass.CALL_START};
-
     private StackHelper stackHelper;
     private ExpressionHelper expressionHelper;
     private BalanceContextService balanceContextService;
@@ -37,21 +35,20 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         moveStackToExpression();
-        ParseToken stackPeek = parseContextManager.stackPop();
+        ParseToken stackPeek = pCtxMgr.stackPop();
         if (isFunctionCallEnd(stackPeek)) {
             handleFunctionEnd();
         }
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     private void handleFunctionEnd() {
-        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager,
-                this::isCallToken);
-        Expression<ParseToken> callNode = parseContextManager.expressionPeek();
+        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(pCtxMgr, this::isCallToken);
+        Expression<ParseToken> callNode = pCtxMgr.expressionPeek();
         callNode.getValue().setParseClass(ParseClass.CALL);
         setupInternalFunctionAddress(expressions, callNode);
         callNode.addChildren(expressions);
-        balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
+        balanceContextService.popOrThrow(pCtxMgr, BalanceType.FUNCTION_ARGUMENTS);
     }
 
     private void setupInternalFunctionAddress(List<Expression<ParseToken>> expressions, Expression<ParseToken> callNode) {
@@ -69,9 +66,8 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
     }
 
     private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, STOP_CLASSES)) {
-            throw new UnexpectedCloseParenthesisException("Unexpected close parenthesis",
-                    parseContextManager.getParseContext());
+        if (!stackHelper.stackToExpressionUntilParseClass(pCtxMgr, STOP_CLASSES)) {
+            throw new UnexpectedCloseParenthesisException("Unexpected close parenthesis", pCtxMgr.getParseContext());
         }
     }
 
@@ -94,5 +90,4 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
     public void setInternalFunctionHolder(InternalFunctionsHolder internalFunctionHolder) {
         this.internalFunctionHolder = internalFunctionHolder;
     }
-
 }

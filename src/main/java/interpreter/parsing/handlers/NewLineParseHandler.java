@@ -26,7 +26,7 @@ public class NewLineParseHandler extends AbstractParseHandler {
     }
 
     private boolean isNewLineInsideMatrix() {
-        return parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
+        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
     }
 
     @Override

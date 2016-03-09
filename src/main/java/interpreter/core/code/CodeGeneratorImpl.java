@@ -1,4 +1,4 @@
-package interpreter.core;
+package interpreter.core.code;
 
 import interpreter.commons.IdentifierMapper;
 import interpreter.commons.MemorySpace;
@@ -18,60 +18,87 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.function.Supplier;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CodeGeneratorImpl implements CodeGenerator {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorImpl.class);
-
+    private Supplier<Code> defaultCodeSupplier = Code::new;
+    private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
     private Parser parser;
     private Tokenizer tokenizer;
     private InstructionTranslator instructionTranslator;
     private List<PostParseHandler> postParseHandlers;
     private MemorySpace memorySpace;
     private IdentifierMapper identifierMapper;
+    private Code codeCache;
 
     @Override
     public Code translate(String input) {
-        Code code = initCode();
-        parser.setTokenList(tokenizer.readTokens(input));
-        process(code);
-        LOGGER.debug("{}", code);
-        return code;
+        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
     }
 
     @Override
     public Code translate(TokenList input) {
-        Code code = initCode();
+        Code code = initCode(defaultCodeSupplier);
         parser.setTokenList(input);
-        process(code);
+        process(code, defaultMacroInstructionTranslatedCallback);
         return code;
     }
 
-    private Code initCode() {
-        Code code = new Code();
-        postParseHandlers.forEach(handler -> handler.setCode(code));
-        instructionTranslator.setCode(code);
+    @Override
+    public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
+        Code code = initCode(codeSupplier);
+        parser.setTokenList(tokenizer.readTokens(input));
+        process(code, macroInstructionTranslatedCallback);
         return code;
     }
 
-    private void process(Code code) {
+    @Override
+    public boolean executionCanStart() {
+        for (PostParseHandler handler : postParseHandlers) {
+            if (!handler.executionCanStart()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Code initCode(Supplier<Code> codeSupplier) {
+        Code code = codeSupplier.get();
+        if (code != codeCache) {
+            postParseHandlers.forEach(handler -> handler.setCode(code));
+            instructionTranslator.setCode(code);
+            codeCache = code;
+        }
+        return code;
+    }
+
+    private void process(Code code, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         while (parser.hasNext()) {
             List<Expression<ParseToken>> expressionList = parser.process();
             PostParseHandler postParseHandler = findPostParseHandler(expressionList);
-            if (Objects.isNull(postParseHandler)) {
-                expressionList.forEach(expression -> code.add(instructionTranslator.translate(expression).getInstructions()));
+            if (nonNull(postParseHandler)) {
+                code.add(postParseHandler.handle(expressionList, instructionTranslator));
             } else {
-                code.add(postParseHandler.handle(expressionList, instructionTranslator).getInstructions());
+                expressionList.forEach(expression -> code.add(instructionTranslator.translate(expression)));
+            }
+            memorySpace.reserve(identifierMapper.mainMappingsSize());
+            if (macroInstructionTranslatedCallback != null) {
+                macroInstructionTranslatedCallback.invoke();
             }
         }
-        memorySpace.reserve(identifierMapper.mainMappingsSize());
+        LOGGER.info("Translated: {}", code);
     }
 
-    public PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
-        return postParseHandlers.stream().filter(handler -> handler.canBeHandled(expressionList)).findFirst().orElse(null);
+    private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
+        return postParseHandlers.stream()
+                .filter(handler -> handler.canBeHandled(expressionList))
+                .findFirst()
+                .orElse(null);
     }
 
     @Autowired

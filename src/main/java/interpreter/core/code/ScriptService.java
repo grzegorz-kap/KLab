@@ -1,4 +1,4 @@
-package interpreter.core;
+package interpreter.core.code;
 
 import interpreter.execution.model.Code;
 

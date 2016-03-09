@@ -24,11 +24,11 @@ public class FunctionArgumentDelimiterParseHandler extends AbstractParseHandler 
 
     @Override
     public void handle() {
-        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.CALL_START)) {
+        if (!stackHelper.stackToExpressionUntilParseClass(pCtxMgr, ParseClass.CALL_START)) {
             throw new UnexpectedFunctionArgumentsDelimiter(UNEXPECTED_ARGUMENT_DELIMITER,
-                    parseContextManager.getParseContext());
+                    pCtxMgr.getParseContext());
         }
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     @Autowired

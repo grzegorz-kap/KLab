@@ -1,21 +1,36 @@
 package interpreter.execution.model;
 
+import interpreter.lexer.model.CodeAddress;
 import interpreter.translate.model.Instruction;
+import interpreter.translate.model.MacroInstruction;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class Code {
-
+public class Code implements Iterable<Instruction> {
     private List<Instruction> instructions = new ArrayList<>();
+    private String sourceId;
 
-    public void add(Instruction instruction) {
+    @Override
+    public Iterator<Instruction> iterator() {
+        return instructions.iterator();
+    }
+
+    public Stream<Instruction> instructions() {
+        return instructions.stream();
+    }
+
+    public void add(Instruction instruction, CodeAddress codeAddress) {
+        if (codeAddress != null) {
+            instruction.setCodeAddress(codeAddress);
+        }
         instructions.add(instruction);
     }
 
-    public void add(Collection<? extends Instruction> instructions) {
-        this.instructions.addAll(instructions);
+    public void add(MacroInstruction macroInstruction) {
+        macroInstruction.forEach(instructions::add);
     }
 
     public Instruction getAtAddress(int address) {
@@ -28,6 +43,14 @@ public class Code {
 
     public void clear() {
         instructions.clear();
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override

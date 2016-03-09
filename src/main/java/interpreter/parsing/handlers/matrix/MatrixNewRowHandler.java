@@ -33,14 +33,14 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         handleAction();
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.incrementTokenPosition(1);
     }
 
     public void handleAction() {
-        stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START);
+        stackHelper.stackToExpressionUntilParseClass(pCtxMgr, ParseClass.MATRIX_START);
         List<Expression<ParseToken>> expressions = popExpressions();
         VerseToken verseToken = createVerseToken();
-        parseContextManager.addExpression(createExpressionNode(expressions, verseToken));
+        pCtxMgr.addExpression(createExpressionNode(expressions, verseToken));
     }
 
     private ExpressionNode<ParseToken> createExpressionNode(List<Expression<ParseToken>> expressions, VerseToken verseToken) {
@@ -51,15 +51,13 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
     }
 
     private VerseToken createVerseToken() {
-        Token token = parseContextManager.tokenAt(0);
+        Token token = pCtxMgr.tokenAt(0);
         token.setLexeme(";");
-        VerseToken verseToken = new VerseToken(token);
-        verseToken.setParseClass(ParseClass.MATRIX_VERSE);
-        return verseToken;
+        return new VerseToken(token);
     }
 
     private List<Expression<ParseToken>> popExpressions() {
-        return expressionHelper.popUntilParseClass(parseContextManager, this::popExpressionPredicate);
+        return expressionHelper.popUntilParseClass(pCtxMgr, this::popExpressionPredicate);
     }
 
     private boolean popExpressionPredicate(ParseClass parseClass) {

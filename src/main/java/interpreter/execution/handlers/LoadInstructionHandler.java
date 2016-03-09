@@ -1,7 +1,7 @@
 package interpreter.execution.handlers;
 
 import interpreter.commons.MemorySpace;
-import interpreter.core.ScriptService;
+import interpreter.core.code.ScriptService;
 import interpreter.execution.exception.UndefinedVariableException;
 import interpreter.execution.model.Code;
 import interpreter.execution.model.InstructionPointer;

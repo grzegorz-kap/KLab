@@ -20,14 +20,13 @@ public class CallParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        CallToken callToken = new CallToken(parseContextManager.tokenAt(0));
-        callToken.setParseClass(ParseClass.CALL_START);
+        CallToken callToken = new CallToken(pCtxMgr.tokenAt(0), ParseClass.CALL_START);
         callToken.setVariableAddress(identifierMapper.getMainAddress(callToken.getCallName()));
         callToken.setExternalAddress(identifierMapper.registerExternalFunction(callToken.getCallName()));
-        parseContextManager.addExpressionNode(callToken);
-        parseContextManager.stackPush(callToken);
-        parseContextManager.incrementTokenPosition(2);
-        balanceContextService.add(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
+        pCtxMgr.addExpressionNode(callToken);
+        pCtxMgr.stackPush(callToken);
+        pCtxMgr.incrementTokenPosition(2);
+        balanceContextService.add(pCtxMgr, BalanceType.FUNCTION_ARGUMENTS);
     }
 
     @Override

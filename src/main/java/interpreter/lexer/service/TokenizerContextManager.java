@@ -5,7 +5,6 @@ import interpreter.lexer.model.TokenClass;
 import interpreter.lexer.model.TokenizerContext;
 
 public class TokenizerContextManager {
-
     private TokenizerContext tokenizerContext;
 
     public TokenizerContextManager(TokenizerContext tokenizerContext) {
@@ -13,8 +12,7 @@ public class TokenizerContextManager {
     }
 
     public void addToken(Token token) {
-        token.setLine(tokenizerContext.getLine());
-        token.setColumn(tokenizerContext.getColumn());
+        token.setAddress(tokenizerContext.currentAddress());
         tokenizerContext.addToken(token);
         incrementTextPosition(token.getLexeme().length());
         process(token);
@@ -44,7 +42,7 @@ public class TokenizerContextManager {
         int newLines = (int) token.getLexeme().chars().filter(character -> character == '\n').count();
         int lastLine = token.getLexeme().lastIndexOf('\n');
         incrementLine(newLines);
-        tokenizerContext.setColumn((long) (token.getLexeme().length() - lastLine));
+        tokenizerContext.setColumn(token.getLexeme().length() - lastLine);
     }
 
     private void incrementLine(int value) {

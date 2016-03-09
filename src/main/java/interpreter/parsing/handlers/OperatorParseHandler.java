@@ -30,8 +30,8 @@ public class OperatorParseHandler extends AbstractParseHandler {
         if (Objects.isNull(o1)) {
             throw new RuntimeException();
         }
-        while (!parseContextManager.isStackEmpty()) {
-            ParseToken parseToken = parseContextManager.stackPeek();
+        while (!pCtxMgr.isStackEmpty()) {
+            ParseToken parseToken = pCtxMgr.stackPeek();
             if (!(parseToken instanceof OperatorToken)) {
                 break;
             }
@@ -46,37 +46,36 @@ public class OperatorParseHandler extends AbstractParseHandler {
             }
 
             if (":".equals(o1.getToken().getLexeme()) && ":".equals(o2.getToken().getLexeme())) {
-                parseContextManager.stackPop();
-                o1 = operatorFactory.getOperator("$::");
-                o1.setToken(o2.getToken());
+                pCtxMgr.stackPop();
+                o1 = operatorFactory.getOperator("$::", o2.getToken());
                 break;
             }
 
             stackToExpression();
         }
-        parseContextManager.stackPush(o1);
-        parseContextManager.incrementTokenPosition(1);
+        pCtxMgr.stackPush(o1);
+        pCtxMgr.incrementTokenPosition(1);
     }
     
     private void preProcessUnaryPlusAndMinusOperators() {
-    	String token = parseContextManager.tokenAt(0).getLexeme();
-    	boolean isUnary = false;
+        String token = pCtxMgr.tokenAt(0).getLexeme();
+        boolean isUnary = false;
     	if("+".equals(token) || "-".equals(token)) {
     		TokenClass previousClass = previousTokenClass();
     		isUnary = previousClass == null || previousClass.isUnaryOpPrecursor();
     		if(!isUnary && TokenClass.OPERATOR.equals(previousClass)) {
-    			OperatorToken previous = operatorFactory.getOperator(parseContextManager.tokenAt(-1).getLexeme());
-    			isUnary = previous.getArgumentsNumber() > 1 || previous.getAssociativity().equals(OperatorAssociativity.RIGHT_TO_LEFT);
+                OperatorToken previous = operatorFactory.getOperator(pCtxMgr.tokenAt(-1));
+                isUnary = previous.getArgumentsNumber() > 1 || previous.getAssociativity().equals(OperatorAssociativity.RIGHT_TO_LEFT);
     		}  		
     	}
     	if(isUnary) {
-    		parseContextManager.tokenAt(0).setLexeme("$"+token);
-    	}
+            pCtxMgr.tokenAt(0).setLexeme("$" + token);
+        }
     }
      
     private TokenClass previousTokenClass() {
-    	Token token = parseContextManager.tokenAt(-1);
-    	return nonNull(token) ? token.getTokenClass() : null;
+        Token token = pCtxMgr.tokenAt(-1);
+        return nonNull(token) ? token.getTokenClass() : null;
     }
 
     @Override
@@ -90,10 +89,10 @@ public class OperatorParseHandler extends AbstractParseHandler {
     }
 
     private void stackToExpression() {
-        OperatorToken operatorToken = (OperatorToken) parseContextManager.stackPop();
+        OperatorToken operatorToken = (OperatorToken) pCtxMgr.stackPop();
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(operatorToken);
-        expressionNode.addChildren(parseContextManager.expressionPopArguments(operatorToken.getArgumentsNumber()));
-        parseContextManager.addExpression(expressionNode);
+        expressionNode.addChildren(pCtxMgr.expressionPopArguments(operatorToken.getArgumentsNumber()));
+        pCtxMgr.addExpression(expressionNode);
     }
 
     @Autowired
