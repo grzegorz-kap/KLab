@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.layout.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0"
+            prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="gui.controller.ScriptEditorController">
-    <center>
-        <TabPane fx:id="scriptPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
-                 BorderPane.alignment="CENTER">
-        </TabPane>
-    </center>
     <top>
         <VBox prefHeight="41.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <MenuBar>
+                <MenuBar prefHeight="49.0" prefWidth="614.0">
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
@@ -36,11 +30,36 @@
 
                 <ToolBar>
                     <items>
-                        <Button disable="true" fx:id="releaseBreakpointButton" mnemonicParsing="false" text="|&gt;"
+                        <Button fx:id="releaseBreakpointButton" disable="true" mnemonicParsing="false" text="|&gt;"
                                 ButtonBar.buttonData="LEFT"/>
                     </items>
                 </ToolBar>
             </children>
         </VBox>
     </top>
+    <center>
+        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
+                   BorderPane.alignment="CENTER">
+            <items>
+                <TabPane fx:id="scriptPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                </TabPane>
+                <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab closable="false" text="Console output">
+                            <content>
+                                <AnchorPane>
+                                    <fx:include source="script-console.fxml"/>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Debug">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </items>
+        </SplitPane>
+    </center>
 </BorderPane>
