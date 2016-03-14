@@ -1,19 +1,19 @@
-package interpreter.parsing.makers
+package com.klab.interpreter.parsing.makers
 
+import com.klab.interpreter.lexer.model.Token
+import com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity
+import com.klab.interpreter.parsing.model.tokens.operators.OperatorPriority
+import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken
 import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
-import interpreter.lexer.model.Token
-import interpreter.parsing.model.tokens.operators.OperatorAssociativity
-import interpreter.parsing.model.tokens.operators.OperatorPriority
-import interpreter.parsing.model.tokens.operators.OperatorToken
 
+import static com.klab.interpreter.lexer.makers.TokenMaker.*
+import static com.klab.interpreter.lexer.model.TokenClass.OPERATOR
+import static com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT
+import static com.klab.interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_30
 import static com.natpryce.makeiteasy.MakeItEasy.*
 import static com.natpryce.makeiteasy.Property.newProperty
-import static interpreter.lexer.makers.TokenMaker.*
-import static interpreter.lexer.model.TokenClass.OPERATOR
-import static interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT
-import static interpreter.parsing.model.tokens.operators.OperatorPriority.LEVEL_30
 
 class OperatorTokenMaker {
 

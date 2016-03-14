@@ -1,7 +1,7 @@
-package interpreter.lexer.helper
+package com.klab.interpreter.lexer.helper
 
-import interpreter.lexer.model.TokenizerContext
-import interpreter.lexer.utils.TokenStartMatcher
+import com.klab.interpreter.lexer.model.TokenizerContext
+import com.klab.interpreter.lexer.utils.TokenStartMatcher
 import spock.lang.Specification
 
 class TokenStartMatcherTest extends Specification {

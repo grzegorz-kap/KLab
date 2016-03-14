@@ -1,9 +1,9 @@
-package interpreter.parsing.handlers
+package com.klab.interpreter.parsing.handlers
 
-import interpreter.parsing.handlers.helpers.StackHelper
-import interpreter.parsing.handlers.matrix.MatrixNewColumnParseHandler
-import interpreter.parsing.model.ParseClass
-import interpreter.parsing.service.ParseContextManager
+import com.klab.interpreter.parsing.handlers.helpers.StackHelper
+import com.klab.interpreter.parsing.handlers.matrix.MatrixNewColumnParseHandler
+import com.klab.interpreter.parsing.model.ParseClass
+import com.klab.interpreter.parsing.service.ParseContextManager
 import spock.lang.Specification
 
 class MatrixNewColumnParseHandlerTest extends Specification {

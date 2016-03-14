@@ -1,10 +1,10 @@
-package interpreter.translate.handlers
+package com.klab.interpreter.translate.handlers
 
-import interpreter.parsing.model.ParseClass
-import interpreter.parsing.model.expression.Expression
-import interpreter.translate.model.Instruction
-import interpreter.translate.model.InstructionCode
-import interpreter.translate.service.TranslateContextManager
+import com.klab.interpreter.parsing.model.ParseClass
+import com.klab.interpreter.parsing.model.expression.Expression
+import com.klab.interpreter.translate.model.Instruction
+import com.klab.interpreter.translate.model.InstructionCode
+import com.klab.interpreter.translate.service.TranslateContextManager
 import spock.lang.Specification
 
 class MatrixTranslateHandlerTest extends Specification {

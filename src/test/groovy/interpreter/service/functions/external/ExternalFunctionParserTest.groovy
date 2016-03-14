@@ -1,6 +1,6 @@
-package interpreter.service.functions.external
+package com.klab.interpreter.service.functions.external
 
-import interpreter.AbstractServiceTest
+import com.klab.interpreter.AbstractServiceTest
 import org.springframework.beans.factory.annotation.Autowired
 
 class ExternalFunctionParserTest extends AbstractServiceTest {

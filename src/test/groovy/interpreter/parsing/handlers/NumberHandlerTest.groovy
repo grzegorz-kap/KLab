@@ -1,13 +1,13 @@
-package interpreter.parsing.handlers
+package com.klab.interpreter.parsing.handlers
 
-import interpreter.lexer.model.TokenClass
-import interpreter.parsing.model.tokens.NumberToken
-import interpreter.parsing.service.ParseContextManager
-import interpreter.types.NumericType
+import com.klab.interpreter.lexer.model.TokenClass
+import com.klab.interpreter.parsing.model.tokens.NumberToken
+import com.klab.interpreter.parsing.service.ParseContextManager
+import com.klab.interpreter.types.NumericType
 import spock.lang.Specification
 
+import static com.klab.interpreter.lexer.makers.TokenMaker.*
 import static com.natpryce.makeiteasy.MakeItEasy.*
-import static interpreter.lexer.makers.TokenMaker.*
 
 class NumberHandlerTest extends Specification {
 

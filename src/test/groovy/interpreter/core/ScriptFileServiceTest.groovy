@@ -1,6 +1,6 @@
-package interpreter.core
+package com.klab.interpreter.core
 
-import interpreter.core.code.ScriptFileServiceImpl
+import com.klab.interpreter.core.code.ScriptFileServiceImpl
 import spock.lang.Specification
 
 import java.nio.file.Paths

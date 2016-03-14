@@ -1,13 +1,13 @@
-package interpreter.lexer.makers
+package com.klab.interpreter.lexer.makers
 
+import com.klab.interpreter.lexer.model.Token
+import com.klab.interpreter.lexer.model.TokenClass
 import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
-import interpreter.lexer.model.Token
-import interpreter.lexer.model.TokenClass
 
+import static com.klab.interpreter.lexer.model.TokenClass.NUMBER
 import static com.natpryce.makeiteasy.Property.newProperty
-import static interpreter.lexer.model.TokenClass.NUMBER
 
 class TokenMaker {
 

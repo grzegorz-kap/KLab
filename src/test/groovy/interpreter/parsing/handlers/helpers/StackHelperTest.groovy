@@ -1,11 +1,11 @@
-package interpreter.parsing.handlers.helpers
+package com.klab.interpreter.parsing.handlers.helpers
 
-import interpreter.parsing.handlers.ParseHandler
-import interpreter.parsing.service.ParseContextManager
+import com.klab.interpreter.parsing.handlers.ParseHandler
+import com.klab.interpreter.parsing.service.ParseContextManager
 import spock.lang.Specification
 
-import static interpreter.parsing.model.ParseClass.MATRIX_START
-import static interpreter.parsing.model.ParseClass.NUMBER
+import static com.klab.interpreter.parsing.model.ParseClass.MATRIX_START
+import static com.klab.interpreter.parsing.model.ParseClass.NUMBER
 
 class StackHelperTest extends Specification {
 

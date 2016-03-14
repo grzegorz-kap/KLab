@@ -1,11 +1,11 @@
-package interpreter.lexer.service
+package com.klab.interpreter.lexer.service
 
-import interpreter.lexer.model.TokenClass
-import interpreter.lexer.model.TokenizerContext
+import com.klab.interpreter.lexer.model.TokenClass
+import com.klab.interpreter.lexer.model.TokenizerContext
 import spock.lang.Specification
 
+import static com.klab.interpreter.lexer.makers.TokenMaker.*
 import static com.natpryce.makeiteasy.MakeItEasy.*
-import static interpreter.lexer.makers.TokenMaker.*
 
 class TokenizerContextManagerTest extends Specification {
 

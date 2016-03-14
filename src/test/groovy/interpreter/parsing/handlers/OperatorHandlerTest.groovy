@@ -1,16 +1,16 @@
-package interpreter.parsing.handlers
+package com.klab.interpreter.parsing.handlers
 
-import interpreter.parsing.factory.operator.OperatorFactory
-import interpreter.parsing.model.ParseToken
-import interpreter.parsing.model.expression.Expression
-import interpreter.parsing.model.expression.ExpressionNode
-import interpreter.parsing.service.ParseContextManager
+import com.klab.interpreter.parsing.factory.operator.OperatorFactory
+import com.klab.interpreter.parsing.model.ParseToken
+import com.klab.interpreter.parsing.model.expression.Expression
+import com.klab.interpreter.parsing.model.expression.ExpressionNode
+import com.klab.interpreter.parsing.service.ParseContextManager
 import spock.lang.Specification
 
+import static com.klab.interpreter.lexer.makers.TokenMaker.*
+import static com.klab.interpreter.lexer.model.TokenClass.OPERATOR
+import static com.klab.interpreter.parsing.makers.OperatorTokenMaker.saveOperatorToken
 import static com.natpryce.makeiteasy.MakeItEasy.*
-import static interpreter.lexer.makers.TokenMaker.*
-import static interpreter.lexer.model.TokenClass.OPERATOR
-import static interpreter.parsing.makers.OperatorTokenMaker.saveOperatorToken
 
 class OperatorHandlerTest extends Specification {
 

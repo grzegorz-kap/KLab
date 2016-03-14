@@ -1,17 +1,17 @@
-package interpreter.translate.handlers
+package com.klab.interpreter.translate.handlers
 
-import interpreter.parsing.model.ParseToken
-import interpreter.parsing.model.expression.ExpressionValue
-import interpreter.translate.model.Instruction
-import interpreter.translate.model.InstructionCode
-import interpreter.translate.service.TranslateContextManager
-import interpreter.types.NumericObject
-import interpreter.types.scalar.NumberScalarFactory
+import com.klab.interpreter.parsing.model.ParseToken
+import com.klab.interpreter.parsing.model.expression.ExpressionValue
+import com.klab.interpreter.translate.model.Instruction
+import com.klab.interpreter.translate.model.InstructionCode
+import com.klab.interpreter.translate.service.TranslateContextManager
+import com.klab.interpreter.types.NumericObject
+import com.klab.interpreter.types.scalar.NumberScalarFactory
 import spock.lang.Specification
 
+import static com.klab.interpreter.parsing.makers.NumberTokenMaker.saveNumberToken
 import static com.natpryce.makeiteasy.MakeItEasy.a
 import static com.natpryce.makeiteasy.MakeItEasy.make
-import static interpreter.parsing.makers.NumberTokenMaker.saveNumberToken
 
 class NumberTranslateHandlerTest extends Specification {
 

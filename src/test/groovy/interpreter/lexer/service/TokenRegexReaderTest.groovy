@@ -1,8 +1,8 @@
-package interpreter.lexer.service
+package com.klab.interpreter.lexer.service
 
-import interpreter.lexer.model.TokenClass
-import interpreter.lexer.model.TokenizerContext
-import interpreter.lexer.utils.TokenRegexReader
+import com.klab.interpreter.lexer.model.TokenClass
+import com.klab.interpreter.lexer.model.TokenizerContext
+import com.klab.interpreter.lexer.utils.TokenRegexReader
 import spock.lang.Specification
 
 import java.util.regex.Pattern

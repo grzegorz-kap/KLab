@@ -1,17 +1,17 @@
-package interpreter.execution.handlers
+package com.klab.interpreter.execution.handlers
 
-import interpreter.execution.model.ExecutionContext
-import interpreter.execution.model.InstructionPointer
-import interpreter.execution.service.ExecutionContextManager
-import interpreter.translate.model.InstructionCode
-import interpreter.types.matrix.Matrix
-import interpreter.types.matrix.MatrixBuilder
-import interpreter.types.matrix.MatrixFactory
-import interpreter.types.scalar.DoubleScalar
+import com.klab.interpreter.execution.model.ExecutionContext
+import com.klab.interpreter.execution.model.InstructionPointer
+import com.klab.interpreter.execution.service.ExecutionContextManager
+import com.klab.interpreter.translate.model.InstructionCode
+import com.klab.interpreter.types.matrix.Matrix
+import com.klab.interpreter.types.matrix.MatrixBuilder
+import com.klab.interpreter.types.matrix.MatrixFactory
+import com.klab.interpreter.types.scalar.DoubleScalar
 import spock.lang.Specification
 
+import static com.klab.interpreter.translate.makers.InstructionMaker.*
 import static com.natpryce.makeiteasy.MakeItEasy.*
-import static interpreter.translate.makers.InstructionMaker.*
 
 class MatrixVerseInstructionHandlerTest extends Specification {
 

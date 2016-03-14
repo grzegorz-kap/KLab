@@ -1,13 +1,13 @@
-package interpreter.parsing.handlers
+package com.klab.interpreter.parsing.handlers
 
-import interpreter.lexer.model.Token
-import interpreter.parsing.handlers.helpers.ExpressionHelper
-import interpreter.parsing.handlers.helpers.StackHelper
-import interpreter.parsing.handlers.matrix.MatrixNewRowHandler
-import interpreter.parsing.model.ParseClass
-import interpreter.parsing.model.ParseToken
-import interpreter.parsing.model.expression.ExpressionNode
-import interpreter.parsing.service.ParseContextManager
+import com.klab.interpreter.lexer.model.Token
+import com.klab.interpreter.parsing.handlers.helpers.ExpressionHelper
+import com.klab.interpreter.parsing.handlers.helpers.StackHelper
+import com.klab.interpreter.parsing.handlers.matrix.MatrixNewRowHandler
+import com.klab.interpreter.parsing.model.ParseClass
+import com.klab.interpreter.parsing.model.ParseToken
+import com.klab.interpreter.parsing.model.expression.ExpressionNode
+import com.klab.interpreter.parsing.service.ParseContextManager
 import spock.lang.Specification
 
 import java.util.function.Predicate

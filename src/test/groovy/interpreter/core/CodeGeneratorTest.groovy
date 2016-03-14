@@ -1,8 +1,8 @@
-package interpreter.core
+package com.klab.interpreter.core
 
-import interpreter.AbstractServiceTest
-import interpreter.core.code.CodeGenerator
-import interpreter.translate.model.InstructionCode
+import com.klab.interpreter.AbstractServiceTest
+import com.klab.interpreter.core.code.CodeGenerator
+import com.klab.interpreter.translate.model.InstructionCode
 import org.springframework.beans.factory.annotation.Autowired
 
 class CodeGeneratorTest extends AbstractServiceTest {

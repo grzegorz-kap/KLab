@@ -1,7 +1,7 @@
-package interpreter.parsing.service
+package com.klab.interpreter.parsing.service
 
-import interpreter.parsing.model.BalanceContext
-import interpreter.parsing.model.BalanceType
+import com.klab.interpreter.parsing.model.BalanceContext
+import com.klab.interpreter.parsing.model.BalanceType
 import spock.lang.Specification
 
 class BalanceContextServiceTest extends Specification {

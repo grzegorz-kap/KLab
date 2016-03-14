@@ -1,16 +1,16 @@
-package interpreter.parsing.makers
+package com.klab.interpreter.parsing.makers
 
+import com.klab.interpreter.lexer.model.Token
+import com.klab.interpreter.parsing.model.tokens.NumberToken
+import com.klab.interpreter.types.NumericType
 import com.natpryce.makeiteasy.Instantiator
 import com.natpryce.makeiteasy.Property
 import com.natpryce.makeiteasy.PropertyLookup
-import interpreter.lexer.model.Token
-import interpreter.parsing.model.tokens.NumberToken
-import interpreter.types.NumericType
 
+import static com.klab.interpreter.lexer.makers.TokenMaker.saveToken
 import static com.natpryce.makeiteasy.MakeItEasy.a
 import static com.natpryce.makeiteasy.MakeItEasy.make
 import static com.natpryce.makeiteasy.Property.newProperty
-import static interpreter.lexer.makers.TokenMaker.saveToken
 
 class NumberTokenMaker {
 
