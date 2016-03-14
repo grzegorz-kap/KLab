@@ -35,4 +35,14 @@ public class AddressScalarIterator implements AddressIterator {
     public void reset() {
         nextFlag = true;
     }
+
+    @Override
+    public int getAddress() {
+        return -1;
+    }
+
+    @Override
+    public void setAddress(int index) {
+        throw new UnsupportedOperationException();
+    }
 }

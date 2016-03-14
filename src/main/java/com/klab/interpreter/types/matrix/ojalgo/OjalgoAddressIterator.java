@@ -49,4 +49,14 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     public void reset() {
         iterator = data.iterator();
     }
+
+    @Override
+    public int getAddress() {
+        return -1;
+    }
+
+    @Override
+    public void setAddress(int index) {
+        throw new UnsupportedOperationException();
+    }
 }

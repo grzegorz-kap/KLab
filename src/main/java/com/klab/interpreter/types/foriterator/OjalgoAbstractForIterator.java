@@ -32,4 +32,9 @@ public abstract class OjalgoAbstractForIterator<N extends Number> extends Abstra
     protected Converter<?> getConverter(OjalgoAbstractMatrix<N> data) {
         return NumericType.COMPLEX_MATRIX.equals(data.getNumericType()) ? new OjalgoScalarComplexConverter() : new OjalgoScalarDoubleConverter();
     }
+
+    @Override
+    public String toString() {
+        return data.toString();
+    }
 }

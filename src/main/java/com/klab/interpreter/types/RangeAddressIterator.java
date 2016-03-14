@@ -48,4 +48,14 @@ public class RangeAddressIterator implements AddressIterator, Addressable {
     public AddressIterator getAddressIterator() {
         return this;
     }
+
+    @Override
+    public void setAddress(int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getAddress() {
+        return 0;
+    }
 }

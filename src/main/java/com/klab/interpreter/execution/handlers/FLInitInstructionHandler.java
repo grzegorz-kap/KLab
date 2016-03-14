@@ -21,7 +21,7 @@ public class FLInitInstructionHandler extends AbstractInstructionHandler {
     public void handle(InstructionPointer instructionPointer) {
         ForIterable forIterable = getForIterable(executionContext.executionStackPop());
         IdentifierObject identifierObject = (IdentifierObject) instructionPointer.currentInstruction().getObjectData(0);
-        memorySpace.set(identifierObject.getAddress(), forIterable.getForIterator());
+        memorySpace.set(identifierObject.getAddress(), forIterable.getForIterator(), identifierObject.getId());
         instructionPointer.increment();
     }
 

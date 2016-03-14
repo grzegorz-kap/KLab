@@ -24,4 +24,14 @@ public class MultiOutput implements ObjectData, Iterable<ObjectData> {
     public Iterator<ObjectData> iterator() {
         return data.iterator();
     }
+
+    @Override
+    public void setAddress(int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getAddress() {
+        return 0;
+    }
 }

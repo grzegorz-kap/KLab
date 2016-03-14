@@ -12,4 +12,8 @@ public interface ObjectData extends Copyable {
     default boolean isTrue() {
         throw new UnsupportedOperationException();
     }
+
+    void setAddress(int index);
+
+    int getAddress();
 }

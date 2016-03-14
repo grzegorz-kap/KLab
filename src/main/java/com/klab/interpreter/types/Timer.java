@@ -3,6 +3,7 @@ package com.klab.interpreter.types;
 public class Timer implements ObjectData {
     private Long counter;
     private String name;
+    private int address;
 
     public void start() {
         counter = System.nanoTime();
@@ -22,5 +23,15 @@ public class Timer implements ObjectData {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void setAddress(int address) {
+        this.address = address;
+    }
+
+    @Override
+    public int getAddress() {
+        return address;
     }
 }

@@ -21,7 +21,7 @@ public class StoreInstructionHandler extends AbstractInstructionHandler {
         ObjectData source = executionContext.executionStackPop();
         IdentifierObject target = (IdentifierObject) executionContext.executionStackPop();
         source.setName(target.getId());
-        memorySpace.set(target.getAddress(), source);
+        memorySpace.set(target.getAddress(), source, target.getId());
         executionContext.executionStackPush(source);
         instructionPointer.increment();
     }
