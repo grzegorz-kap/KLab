@@ -1,4 +1,4 @@
-package interpreter
+package com.klab.interpreter
 
 import com.klab.config.ApplicationConfiguration
 import org.kubek2k.springockito.annotations.SpringockitoAnnotatedContextLoader

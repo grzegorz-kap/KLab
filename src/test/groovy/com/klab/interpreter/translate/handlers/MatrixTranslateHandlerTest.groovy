@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.handlers
 
+import com.klab.interpreter.lexer.model.CodeAddress
 import com.klab.interpreter.parsing.model.ParseClass
 import com.klab.interpreter.parsing.model.expression.Expression
 import com.klab.interpreter.translate.model.Instruction
@@ -29,6 +30,6 @@ class MatrixTranslateHandlerTest extends Specification {
         1 * handler.tCM.addInstruction({
             it.instructionCode == InstructionCode.MATRIX
             it.argumentsNumber == 10
-        } as Instruction)
+        } as Instruction, null as CodeAddress)
     }
 }
