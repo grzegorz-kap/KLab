@@ -2,6 +2,7 @@ package com.klab.gui.controller;
 
 import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.commons.MemorySpace;
+import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.types.ObjectData;
 import javafx.application.Platform;
@@ -26,7 +27,16 @@ public class VariableController {
     private Accordion variablesAccordion;
 
     @Subscribe
+    private void onExecutionComplateEvent(ExecutionCompletedEvent event) {
+        refreshVariables();
+    }
+
+    @Subscribe
     private void onBreakPointReachedEvent(BreakpointReachedEvent event) {
+        refreshVariables();
+    }
+
+    private void refreshVariables() {
         Platform.runLater(() -> {
             variablesAccordion.getPanes().clear();
             Stream<ObjectData> list = memorySpace.listCurrentScopeVariables();

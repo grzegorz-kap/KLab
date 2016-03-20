@@ -1,6 +1,7 @@
 package com.klab.interpreter.core;
 
 import com.klab.common.EventService;
+import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ public class Interpreter {
             interpreterService.startExecution(input);
         } catch (RuntimeException ex) {
             LOGGER.error("Execution failed", ex);
+        } finally {
+            eventService.publish(new ExecutionCompletedEvent(this));
         }
     }
 

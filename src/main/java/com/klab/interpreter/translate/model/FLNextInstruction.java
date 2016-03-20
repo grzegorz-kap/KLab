@@ -14,12 +14,10 @@ public class FLNextInstruction extends JumperInstruction {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-                .append(String.valueOf(FLNEXT)).append("\t")
-                .append(iteratorId).append("\t")
-                .append(iteratorData).append("\t")
-                .append(getJumpIndex())
-                .toString();
+        return String.valueOf(FLNEXT) + "\t" +
+                iteratorId + "\t" +
+                iteratorData + "\t" +
+                getJumpIndex();
     }
 
     public IdentifierObject getIteratorId() {
