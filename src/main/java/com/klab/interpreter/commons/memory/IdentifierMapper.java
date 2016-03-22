@@ -1,4 +1,4 @@
-package com.klab.interpreter.commons;
+package com.klab.interpreter.commons.memory;
 
 public interface IdentifierMapper {
     Integer registerMainIdentifier(String id);

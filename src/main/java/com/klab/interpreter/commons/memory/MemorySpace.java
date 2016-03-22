@@ -1,4 +1,4 @@
-package com.klab.interpreter.commons;
+package com.klab.interpreter.commons.memory;
 
 import com.klab.interpreter.types.ObjectData;
 
@@ -17,5 +17,9 @@ public interface MemorySpace {
 
     ObjectData get(int address);
 
-    Stream<ObjectData> listCurrentScopeVariables();
+    ObjectData getForModify(int address);
+
+    Stream<ObjectWrapper> listCurrentScopeVariables();
+
+    int scopeId();
 }

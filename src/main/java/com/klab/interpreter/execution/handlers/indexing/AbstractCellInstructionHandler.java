@@ -1,6 +1,6 @@
 package com.klab.interpreter.execution.handlers.indexing;
 
-import com.klab.interpreter.commons.MemorySpace;
+import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.execution.handlers.AbstractInstructionHandler;
 import com.klab.interpreter.execution.model.InstructionPointer;
 import com.klab.interpreter.types.IdentifierObject;

@@ -1,6 +1,6 @@
 package com.klab.interpreter.service.functions;
 
-import com.klab.interpreter.commons.IdentifierMapper;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;

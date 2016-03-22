@@ -1,4 +1,4 @@
-package com.klab.interpreter.commons;
+package com.klab.interpreter.commons.memory;
 
 public enum VariableScope {
     MAIN_SCOPE,

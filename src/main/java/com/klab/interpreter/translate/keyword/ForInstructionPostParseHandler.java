@@ -1,6 +1,6 @@
 package com.klab.interpreter.translate.keyword;
 
-import com.klab.interpreter.commons.IdentifierMapper;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;

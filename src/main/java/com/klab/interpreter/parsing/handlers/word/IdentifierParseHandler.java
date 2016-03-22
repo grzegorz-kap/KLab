@@ -1,6 +1,6 @@
 package com.klab.interpreter.parsing.handlers.word;
 
-import com.klab.interpreter.commons.IdentifierMapper;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.lexer.model.TokenClass;
 import com.klab.interpreter.parsing.handlers.AbstractParseHandler;
 import com.klab.interpreter.parsing.model.tokens.IdentifierToken;

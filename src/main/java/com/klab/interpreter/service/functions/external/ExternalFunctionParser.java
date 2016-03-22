@@ -1,7 +1,7 @@
 package com.klab.interpreter.service.functions.external;
 
 
-import com.klab.interpreter.commons.IdentifierMapper;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.core.code.CodeGenerator;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.lexer.model.TokenList;

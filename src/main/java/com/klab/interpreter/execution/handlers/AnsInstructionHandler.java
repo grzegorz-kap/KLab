@@ -1,7 +1,7 @@
 package com.klab.interpreter.execution.handlers;
 
-import com.klab.interpreter.commons.IdentifierMapper;
-import com.klab.interpreter.commons.MemorySpace;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
+import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.execution.model.InstructionPointer;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.types.ObjectData;

@@ -1,7 +1,7 @@
 package com.klab.interpreter.core.code;
 
-import com.klab.interpreter.commons.IdentifierMapper;
-import com.klab.interpreter.commons.MemorySpace;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
+import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.lexer.model.TokenList;
 import com.klab.interpreter.lexer.service.Tokenizer;

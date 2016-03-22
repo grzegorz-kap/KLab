@@ -1,8 +1,8 @@
 package com.klab.interpreter.execution.service;
 
 import com.klab.common.EventService;
-import com.klab.interpreter.commons.IdentifierMapper;
-import com.klab.interpreter.commons.MemorySpace;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
+import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.debug.Breakpoint;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.execution.InstructionAction;

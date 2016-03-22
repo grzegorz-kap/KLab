@@ -1,4 +1,4 @@
-package com.klab.interpreter.commons;
+package com.klab.interpreter.commons.memory;
 
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
