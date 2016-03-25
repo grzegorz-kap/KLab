@@ -2,6 +2,7 @@ package com.klab.gui.controller;
 
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
+import com.klab.gui.model.Variable;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.commons.memory.ObjectWrapper;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
@@ -37,7 +38,7 @@ public class VariableController implements Initializable {
     }
 
     @Subscribe
-    private void onExecutionComplateEvent(ExecutionCompletedEvent event) {
+    private void onExecutionCompleteEvent(ExecutionCompletedEvent event) {
         Platform.runLater(this::refreshVariables);
     }
 
@@ -47,32 +48,33 @@ public class VariableController implements Initializable {
     }
 
     private void refreshVariables() {
-        boolean isNewScope = memorySpace.scopeId() != currentScope;
-
-        if (isNewScope) {
+        if (memorySpace.scopeId() != currentScope) {
             variablesBox.getChildren().clear();
             variablesMap.clear();
         }
 
-
         memorySpace.listCurrentScopeVariables()
                 .filter(this::isUpdated)
-                .peek(variable -> {
-                    Variable<TitledPane> var = variablesMap.remove(variable);
-                    if (var != null) {
-                        variablesBox.getChildren().remove(var.getNode());
-                    }
-                })
-                .map(variable -> {
-                    Label text = new Label(variable.getData().toString());
-                    text.setAlignment(Pos.TOP_LEFT);
-                    TitledPane titledPane = new TitledPane(variable.getData().getName(), text);
-                    titledPane.setExpanded(false);
-                    return new Variable<>(titledPane, variable);
-                })
+                .peek(this::removeUpdated)
+                .map(this::createNew)
                 .peek(var -> variablesBox.getChildren().add(var.getNode()))
                 .forEach(var -> variablesMap.put(var.getObjectWrapper(), var));
         currentScope = memorySpace.scopeId();
+    }
+
+    private Variable<TitledPane> createNew(ObjectWrapper variable) {
+        Label text = new Label(variable.getData().toString());
+        text.setAlignment(Pos.TOP_LEFT);
+        TitledPane titledPane = new TitledPane(variable.getData().getName(), text);
+        titledPane.setExpanded(false);
+        return new Variable<>(titledPane, variable);
+    }
+
+    private void removeUpdated(ObjectWrapper variable) {
+        Variable<TitledPane> var = variablesMap.remove(variable);
+        if (var != null) {
+            variablesBox.getChildren().remove(var.getNode());
+        }
     }
 
     private boolean isUpdated(ObjectWrapper w) {
@@ -83,29 +85,5 @@ public class VariableController implements Initializable {
     @Autowired
     public void setMemorySpace(MemorySpace memorySpace) {
         this.memorySpace = memorySpace;
-    }
-
-    private static class Variable<N> {
-        private N node;
-        private long version;
-        private ObjectWrapper objectWrapper;
-
-        Variable(N node, ObjectWrapper objectWrapper) {
-            this.node = node;
-            this.version = objectWrapper.getVersion();
-            this.objectWrapper = objectWrapper;
-        }
-
-        N getNode() {
-            return node;
-        }
-
-        ObjectWrapper getObjectWrapper() {
-            return objectWrapper;
-        }
-
-        long getVersion() {
-            return version;
-        }
     }
 }
