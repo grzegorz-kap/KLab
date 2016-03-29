@@ -6,6 +6,7 @@ import com.klab.gui.factories.ScriptTabFactory;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.model.Style;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
+import com.klab.interpreter.debug.BreakpointService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +28,7 @@ import java.util.ResourceBundle;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptEditorController implements Initializable {
     private ScriptTabFactory scriptTabFactory;
+    private BreakpointService breakpointService;
 
     @FXML
     private TabPane scriptPane;
@@ -51,15 +53,9 @@ public class ScriptEditorController implements Initializable {
         ScriptContext context = scriptTabFactory.create(event.getData().getSourceId(), scriptPane);
         int line = event.getData().getAddress().getLine() - 1;
         releaseBreakpointButton.setOnMouseClicked(ev -> {
-            try {
-                event.getLock().lock();
-                event.getData().setReleased(true);
-                event.getReleased().signalAll();
-                releaseBreakpointButton.setDisable(true);
-                context.getCodeArea().clearStyle(line);
-            } finally {
-                event.getLock().unlock();
-            }
+            breakpointService.release(event.getData());
+            releaseBreakpointButton.setDisable(true);
+            context.getCodeArea().clearStyle(line);
         });
         releaseBreakpointButton.setDisable(false);
         Platform.runLater(() -> {
@@ -72,5 +68,10 @@ public class ScriptEditorController implements Initializable {
     @Autowired
     public void setScriptTabFactory(ScriptTabFactory scriptTabFactory) {
         this.scriptTabFactory = scriptTabFactory;
+    }
+
+    @Autowired
+    public void setBreakpointService(BreakpointService breakpointService) {
+        this.breakpointService = breakpointService;
     }
 }

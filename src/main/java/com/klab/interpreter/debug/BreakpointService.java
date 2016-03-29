@@ -14,4 +14,8 @@ public interface BreakpointService {
     void add(String scriptId, int line);
 
     boolean remove(String scriptId, int line);
+
+    void block(Breakpoint breakpoint);
+
+    void release(Breakpoint breakpoint);
 }

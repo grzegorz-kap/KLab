@@ -1,9 +1,14 @@
 package com.klab.interpreter.debug;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+
 public class Breakpoint {
     private String sourceId;
     private BreakpointAddress address;
     private boolean released = false;
+    private Lock lock;
+    private Condition condition;
 
     public Breakpoint(String sourceId, Integer lineNumber) {
         this.sourceId = sourceId;
@@ -40,5 +45,29 @@ public class Breakpoint {
 
     public BreakpointAddress getAddress() {
         return address;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public void setAddress(BreakpointAddress address) {
+        this.address = address;
+    }
+
+    public Lock getLock() {
+        return lock;
+    }
+
+    public void setLock(Lock lock) {
+        this.lock = lock;
+    }
+
+    public Condition getCondition() {
+        return condition;
+    }
+
+    public void setCondition(Condition condition) {
+        this.condition = condition;
     }
 }

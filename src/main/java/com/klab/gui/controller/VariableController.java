@@ -7,31 +7,25 @@ import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.commons.memory.ObjectWrapper;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
-import com.klab.interpreter.types.Addressable;
-import com.klab.interpreter.types.Indexable;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.matrix.Matrix;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.LongStream;
 
 @Component
@@ -85,15 +79,16 @@ public class VariableController implements Initializable {
 
         LongStream.range(0L, columns).forEach(n -> {
             TableColumn<VariableRow, String> column = new TableColumn<>();
-            column.setText(String.valueOf(n+1));
+            column.setText(String.valueOf(n + 1));
             column.setCellValueFactory(param -> {
                 ObjectData objectData = param.getValue().getObjectData();
-                if(objectData instanceof Matrix) {
+                if (objectData instanceof Matrix) {
                     Matrix matrix = (Matrix) objectData;
                     return new SimpleStringProperty(matrix.get(param.getValue().getRowNumber(), n).toString());
                 } else {
                     return new SimpleStringProperty(objectData.toString());
                 }
+
             });
             tableView.getColumns().add(column);
         });

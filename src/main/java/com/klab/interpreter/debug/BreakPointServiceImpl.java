@@ -3,6 +3,7 @@ package com.klab.interpreter.debug;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.klab.common.EventService;
+import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.translate.model.Instruction;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
@@ -21,10 +23,38 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
-class BreakpointServiceImpl implements BreakpointService {
+public class BreakpointServiceImpl implements BreakpointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
     private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
+
+    @Override
+    public void block(Breakpoint breakpoint) {
+        Interpreter.MAIN_LOCK.unlock();
+        breakpoint.setLock(new ReentrantLock());
+        breakpoint.setCondition(breakpoint.getLock().newCondition());
+        eventService.publish(new BreakpointReachedEvent(breakpoint, this));
+        try {
+            breakpoint.getLock().lock();
+            while (!breakpoint.isReleased())
+                breakpoint.getCondition().await();
+        } catch (Exception ignored) {
+        } finally {
+            breakpoint.getLock().unlock();
+            Interpreter.MAIN_LOCK.lock();
+        }
+    }
+
+    @Override
+    public void release(Breakpoint breakpoint) {
+        try {
+            breakpoint.getLock().lock();
+            breakpoint.setReleased(true);
+            breakpoint.getCondition().signalAll();
+        } finally {
+            breakpoint.getLock().unlock();
+        }
+    }
 
     @Override
     public void updateBreakpoints(Code code) {

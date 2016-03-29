@@ -14,7 +14,6 @@ import static com.klab.interpreter.parsing.exception.UnexpectedFunctionArguments
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class FunctionArgumentDelimiterParseHandler extends AbstractParseHandler {
-
     private StackHelper stackHelper;
 
     @Override
@@ -35,5 +34,4 @@ public class FunctionArgumentDelimiterParseHandler extends AbstractParseHandler 
     public void setStackHelper(StackHelper stackHelper) {
         this.stackHelper = stackHelper;
     }
-
 }

@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 
 @Component
 public class ExpressionPrinter {
-
     public String expressionToString(Expression<ParseToken> expression) {
         return expressionToString(expression, 0);
     }

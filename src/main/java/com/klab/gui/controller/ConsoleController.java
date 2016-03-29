@@ -59,7 +59,7 @@ public class ConsoleController {
     public void onCommandSubmittedEvent(CommandSubmittedEvent command) {
         consoleOutput.appendText(String.format(">> %s \n", command.getData()));
         commandHistory.add(command.getData());
-        interpreter.start(command.getData());
+        interpreter.startAsync(command.getData());
     }
 
     private void onArrowDown(KeyEvent keyEvent) {

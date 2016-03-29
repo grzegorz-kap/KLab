@@ -14,7 +14,6 @@ import static com.klab.interpreter.parsing.exception.WrongForInstructionExceptio
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ForKeywordParseHandler extends AbstractParseHandler {
-
     @Override
     public void handle() {
         checkIfExpected();

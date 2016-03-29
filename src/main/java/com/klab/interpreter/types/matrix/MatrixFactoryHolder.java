@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Service
 public class MatrixFactoryHolder {
-
     private MatrixFactory<?>[] matrixFactories = new MatrixFactory[NumericType.values().length];
 
     public MatrixFactory<?> get(NumericType numericType) {

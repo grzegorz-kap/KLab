@@ -10,12 +10,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ExternalFunctionParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalFunctionParser.class);
     private static final String WORD = "[A-Za-z]+[A-Za-z\\d_]*";

@@ -3,8 +3,8 @@ package com.klab.interpreter.types.foriterator;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 
-public class OjalgoSingleRowForIterator<N extends Number> extends OjalgoAbstractForIterator<N> {
-    public OjalgoSingleRowForIterator(OjalgoAbstractMatrix<N> data) {
+class OjalgoSingleRowForIterator<N extends Number> extends OjalgoAbstractForIterator<N> {
+    OjalgoSingleRowForIterator(OjalgoAbstractMatrix<N> data) {
         super(data);
     }
 

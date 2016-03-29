@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 
 @Service
 public class IntegerArgumentsMapper {
-
     public List<Integer> mapToIntArgs(ObjectData[] datas, InternalFunction function) {
         List<Integer> arguments = new ArrayList<>();
         Stream.of(datas).forEach(data -> process(function, arguments, data));

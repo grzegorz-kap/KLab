@@ -83,5 +83,4 @@ public class MemorySpaceImpl implements MemorySpace {
                 .filter(wrapper -> Objects.nonNull(wrapper.getData().getName()))
                 .peek(wrapper -> wrapper.getData().setAddress(wrapper.getAddress()));
     }
-
 }

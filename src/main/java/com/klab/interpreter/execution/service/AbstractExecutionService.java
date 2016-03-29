@@ -4,8 +4,9 @@ import com.klab.interpreter.execution.handlers.InstructionHandler;
 import com.klab.interpreter.execution.model.ExecutionContext;
 import com.klab.interpreter.execution.model.InstructionPointer;
 import com.klab.interpreter.translate.model.InstructionCode;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
+import java.util.Collection;
 
 import static java.util.Objects.nonNull;
 
@@ -13,18 +14,6 @@ public abstract class AbstractExecutionService implements ExecutionService {
     protected InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
     protected ExecutionContext executionContext;
     protected InstructionPointer instructionPointer;
-
-    public AbstractExecutionService(Set<InstructionHandler> instructionHandlers) {
-        this.executionContext = new ExecutionContext();
-        this.instructionPointer = this.executionContext.newInstructionPointer();
-        instructionHandlers.stream()
-                .filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
-                .forEach(handler -> {
-                    InstructionCode code = handler.getSupportedInstructionCode();
-                    this.instructionHandlers[code.getIndex()] = handler;
-                    handler.setExecutionContext(this.executionContext);
-                });
-    }
 
     @Override
     public ExecutionContext getExecutionContext() {
@@ -36,5 +25,18 @@ public abstract class AbstractExecutionService implements ExecutionService {
         executionContext.clearExecutionStack();
         executionContext.clearCode();
         instructionPointer = executionContext.newInstructionPointer();
+    }
+
+    @Autowired
+    public void setInstructionHandlers(Collection<InstructionHandler> instructionHandlers) {
+        this.executionContext = new ExecutionContext();
+        this.instructionPointer = this.executionContext.newInstructionPointer();
+        instructionHandlers.stream()
+                .filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
+                .forEach(handler -> {
+                    InstructionCode code = handler.getSupportedInstructionCode();
+                    this.instructionHandlers[code.getIndex()] = handler;
+                    handler.setExecutionContext(this.executionContext);
+                });
     }
 }
