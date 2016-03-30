@@ -6,10 +6,13 @@ import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class InterpreterImpl implements Interpreter {
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterImpl.class);
     private InterpreterService interpreterService;
@@ -34,8 +37,6 @@ public class InterpreterImpl implements Interpreter {
         }
         try {
             interpreterService.startExecution(input);
-        } catch (RuntimeException ex) {
-            LOGGER.error("Execution failed", ex);
         } finally {
             Interpreter.MAIN_LOCK.unlock();
             if (events) {

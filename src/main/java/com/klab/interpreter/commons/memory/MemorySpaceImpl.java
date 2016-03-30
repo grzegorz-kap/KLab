@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -78,9 +77,6 @@ public class MemorySpaceImpl implements MemorySpace {
 
     @Override
     public Stream<ObjectWrapper> listCurrentScopeVariables() {
-        return Stream.of(memory)
-                .filter(wrapper -> Objects.nonNull(wrapper.getData()))
-                .filter(wrapper -> Objects.nonNull(wrapper.getData().getName()))
-                .peek(wrapper -> wrapper.getData().setAddress(wrapper.getAddress()));
+        return Stream.of(memory);
     }
 }
