@@ -1,5 +1,6 @@
 package com.klab.gui.controller;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 import com.klab.gui.model.Variable;
@@ -26,10 +27,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.stream.LongStream;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -74,30 +77,20 @@ public class VariableController implements Initializable {
     }
 
     private Variable<TitledPane> createNew(ObjectWrapper variable) {
-        TableView<VariableRow> tableView = new TableView<>();
+        TableView<Row> tableView = new TableView<>();
         tableView.setEditable(true);
-        long rows = ((Sizeable) variable.getData()).getRows();
-        long columns = ((Sizeable) variable.getData()).getColumns();
+        int rows = (int) ((Sizeable) variable.getData()).getRows();
+        int columns = (int) ((Sizeable) variable.getData()).getColumns();
 
-        LongStream.range(0L, rows)
-                .mapToObj(m -> new VariableRow(m, variable.getData()))
+        IntStream.range(0, rows)
+                .mapToObj(r -> new Row(variable.getData(), r))
                 .forEach(row -> tableView.getItems().add(row));
 
-        LongStream.range(0L, columns).forEach(n -> {
-            TableColumn<VariableRow, String> column = new TableColumn<>();
+        IntStream.range(0, columns).forEach(n -> {
+            TableColumn<Row, String> column = new TableColumn<>();
             column.setSortable(false);
-            column.setText(String.valueOf(n + 1));
             column.setCellFactory(TextFieldTableCell.forTableColumn());
-            column.setCellValueFactory(param -> {
-                ObjectData objectData = param.getValue().getObjectData();
-                if (objectData instanceof Matrix) {
-                    Matrix matrix = (Matrix) objectData;
-                    return new SimpleStringProperty(matrix.get(param.getValue().getRowNumber(), n).toString());
-                } else {
-                    return new SimpleStringProperty(objectData.toString());
-                }
-
-            });
+            column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(n)));
             column.setEditable(true);
             column.setOnEditCommit(t -> {
                 String name = variable.getData().getName();
@@ -105,7 +98,8 @@ public class VariableController implements Initializable {
                 int j = t.getTablePosition().getColumn();
                 String command = String.format("%s(%s,%s)=%s;", name, i + 1, j + 1, t.getNewValue());
                 interpreter.startSync(command);
-                refreshVariables();
+                variablesMap.get(variable).setVersion(variable.getVersion());
+                t.getTableView().getItems().get(j).modify(variable.getData(), i, j);
             });
             tableView.getColumns().add(column);
         });
@@ -137,21 +131,42 @@ public class VariableController implements Initializable {
         this.memorySpace = memorySpace;
     }
 
-    private static class VariableRow {
-        private long rowNumber;
-        private ObjectData objectData;
+    private static class Row {
+        private ObjectData data;
+        private List<SimpleStringProperty> cells;
 
-        public VariableRow(long rowNumber, ObjectData objectData) {
-            this.rowNumber = rowNumber;
-            this.objectData = objectData;
+        Row(ObjectData data, int rowNumber) {
+            this.data = data;
+            if (data instanceof Matrix) {
+                Matrix matrix = (Matrix) data;
+                cells = IntStream.range(0, (int) matrix.getColumns())
+                        .mapToObj(n -> matrix.get(rowNumber, n).toString())
+                        .map(SimpleStringProperty::new)
+                        .collect(Collectors.toList());
+            } else {
+                cells = Lists.newArrayList(new SimpleStringProperty(data.toString()));
+            }
         }
 
-        public long getRowNumber() {
-            return rowNumber;
+        void modify(ObjectData data, int row, int column) {
+            if (data instanceof Matrix) {
+                Matrix matrix = (Matrix) data;
+                cells.get(column).setValue(matrix.get(row, column).toString());
+            } else {
+                cells.get(column).setValue(data.toString());
+            }
         }
 
-        public ObjectData getObjectData() {
-            return objectData;
+        String get(int index) {
+            return cells.get(index).getValue();
+        }
+
+        public ObjectData getData() {
+            return data;
+        }
+
+        public void setData(ObjectData data) {
+            this.data = data;
         }
     }
 }

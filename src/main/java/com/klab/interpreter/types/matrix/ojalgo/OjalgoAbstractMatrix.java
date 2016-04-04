@@ -87,6 +87,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
         while (cells.hasNext()) {
             matrixStore.set(cells.getNext() - 1, supplier.next());
         }
+        lazyStore = matrixStore;
 
         return this;
     }
@@ -113,6 +114,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
                 matrixStore.set(rowAddress, column.getNext() - 1, supplier.next());
             }
         }
+        lazyStore = matrixStore;
         return this;
     }
 

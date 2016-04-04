@@ -67,6 +67,7 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void handleAssignOperator(Expression<ParseToken> expression) {
+        expression.setProperty(Expression.ANS_PROPERTY_KEY, false);
         CodeAddress address = expression.getValue().getAddress();
         Expression<ParseToken> left = expression.getChildren().get(0);
         if (left.getValue().getParseClass().equals(ParseClass.MATRIX)) {

@@ -25,4 +25,8 @@ public class Variable<N extends Node> {
     public long getVersion() {
         return version;
     }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
 }

@@ -24,7 +24,7 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
         AddressIterator col = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         NumericObject source = (NumericObject) executionContext.executionStackPop();
-        NumericObject dest = (NumericObject) memorySpace.get(target.getAddress());
+        NumericObject dest = (NumericObject) memorySpace.getForModify(target.getAddress());
 
         NumericType numericType = dest.getNumericType();
         if (dest instanceof Scalar && (row.max() > 1 || col.max() > 1)) {

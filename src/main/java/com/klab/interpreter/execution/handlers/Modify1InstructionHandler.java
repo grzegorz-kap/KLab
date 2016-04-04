@@ -22,7 +22,7 @@ public class Modify1InstructionHandler extends AbstractInstructionHandler {
         IdentifierObject target = (IdentifierObject) executionContext.executionStackPop();
         AddressIterator cells = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         NumericObject source = (NumericObject) executionContext.executionStackPop();
-        NumericObject dest = (NumericObject) memorySpace.get(target.getAddress());
+        NumericObject dest = (NumericObject) memorySpace.getForModify(target.getAddress());
 
         if (cells.max() > dest.getCells()) {
             throw new RuntimeException(); // TODO

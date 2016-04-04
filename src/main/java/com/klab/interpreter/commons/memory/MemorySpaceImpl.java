@@ -79,4 +79,12 @@ public class MemorySpaceImpl implements MemorySpace {
     public Stream<ObjectWrapper> listCurrentScopeVariables() {
         return Stream.of(memory);
     }
+
+    @Override
+    public Long getVersion(String name) {
+        return Stream.of(memory)
+                .filter(wrapper -> wrapper.getData() != null)
+                .filter(wrapper -> name.equals(wrapper.getData().getName()))
+                .map(ObjectWrapper::getVersion).findFirst().orElse(null);
+    }
 }
