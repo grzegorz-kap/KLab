@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40"
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<ScrollPane AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0" fx:id="variableScrollPanel"
+            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.klab.gui.controller.VariableController">
-    <children>
-        <VBox fx:id="variablesBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        </VBox>
-    </children>
-</AnchorPane>
+    <VBox fx:id="variablesBox">
+    </VBox>
+</ScrollPane>

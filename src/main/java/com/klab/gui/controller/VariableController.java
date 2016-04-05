@@ -14,12 +14,15 @@ import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.matrix.Matrix;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.fxml.FXML;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -37,16 +40,17 @@ import java.util.stream.IntStream;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class VariableController implements Initializable {
+    public ScrollPane variableScrollPanel;
+    public VBox variablesBox;
+
     private Interpreter interpreter;
     private MemorySpace memorySpace;
     private int currentScope = Integer.MIN_VALUE;
     private Map<ObjectWrapper, Variable<TitledPane>> variablesMap = Maps.newHashMap();
 
-    @FXML
-    private VBox variablesBox;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        variablesBox.prefWidthProperty().bind(variableScrollPanel.widthProperty().subtract(15));
     }
 
     @Subscribe
@@ -78,6 +82,9 @@ public class VariableController implements Initializable {
 
     private Variable<TitledPane> createNew(ObjectWrapper variable) {
         TableView<Row> tableView = new TableView<>();
+
+        tableView.widthProperty().addListener(new NumberChangeListenerHideHeaderRow(tableView));
+
         tableView.setEditable(true);
         int rows = (int) ((Sizeable) variable.getData()).getRows();
         int columns = (int) ((Sizeable) variable.getData()).getColumns();
@@ -105,6 +112,7 @@ public class VariableController implements Initializable {
         });
 
         TitledPane titledPane = new TitledPane(variable.getData().getName(), tableView);
+        titledPane.prefWidthProperty().bind(variablesBox.widthProperty().subtract(15));
         titledPane.setExpanded(false);
         return new Variable<>(titledPane, variable);
     }
@@ -167,6 +175,25 @@ public class VariableController implements Initializable {
 
         public void setData(ObjectData data) {
             this.data = data;
+        }
+    }
+
+    private static class NumberChangeListenerHideHeaderRow implements ChangeListener<Number> {
+        private final TableView<Row> tableView;
+
+        NumberChangeListenerHideHeaderRow(TableView<Row> tableView) {
+            this.tableView = tableView;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            Pane header = (Pane) tableView.lookup("TableHeaderRow");
+            if (header.isVisible()) {
+                header.setMaxHeight(0);
+                header.setMinHeight(0);
+                header.setPrefHeight(0);
+                header.setVisible(false);
+            }
         }
     }
 }
