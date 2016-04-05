@@ -2,8 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="505.0" prefWidth="583.0"
-            xmlns="http://javafx.com/javafx/8.0.40" fx:controller="com.klab.gui.controller.MainController">
+<BorderPane prefHeight="505.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/8.0.40"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klab.gui.controller.MainController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -19,7 +19,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Tools">
                     <items>
-                        <CheckMenuItem mnemonicParsing="false" text="Profiling" onAction="#profilingAction"/>
+                        <CheckMenuItem mnemonicParsing="false" onAction="#profilingAction" text="Profiling"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -30,12 +30,17 @@
             </menus>
         </MenuBar>
     </top>
-    <left>
-        <SplitPane dividerPositions="0.12960760998810938" BorderPane.alignment="CENTER">
-            <items>
-                <fx:include source="script_list.fxml" BorderPane.alignment="CENTER_RIGHT"/>
-                <fx:include source="console.fxml" BorderPane.alignment="CENTER"/>
-            </items>
-        </SplitPane>
-    </left>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <SplitPane dividerPositions="0.1998" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                        <fx:include maxWidth="300.0" source="script_list.fxml" BorderPane.alignment="CENTER_RIGHT"/>
+                        <fx:include source="console.fxml" BorderPane.alignment="CENTER"/>
+                    </items>
+                </SplitPane>
+            </children>
+        </AnchorPane>
+    </center>
 </BorderPane>
