@@ -19,24 +19,24 @@ public class InterpreterImpl implements Interpreter {
     private EventService eventService;
 
     @Override
-    public void startSync(String input) {
-        start(input, false);
+    public void startSync(ExecutionCommand cmd) {
+        start(cmd, false);
     }
 
     @Override
     @Async
-    public void startAsync(String input) {
-        start(input, true);
+    public void startAsync(ExecutionCommand cmd) {
+        start(cmd, true);
     }
 
-    public void start(String input, boolean events) {
+    public void start(ExecutionCommand cmd, boolean events) {
         Interpreter.MAIN_LOCK.lock();
-        LOGGER.info("\n{}", input);
+        LOGGER.info("\n{}", cmd.getBody());
         if (events) {
-            eventService.publish(new ExecutionStartedEvent(this));
+            eventService.publish(new ExecutionStartedEvent(cmd, this));
         }
         try {
-            interpreterService.startExecution(input);
+            interpreterService.startExecution(cmd);
         } finally {
             Interpreter.MAIN_LOCK.unlock();
             if (events) {

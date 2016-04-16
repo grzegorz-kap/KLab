@@ -1,6 +1,7 @@
 package com.klab.interpreter.core;
 
 import com.klab.interpreter.core.code.CodeGenerator;
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.execution.service.ExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -13,9 +14,18 @@ class InterpreterService {
     private ExecutionService executionService;
     private CodeGenerator codeGenerator;
 
-    public void startExecution(String input) {
+    void startExecution(ExecutionCommand input) {
         executionService.resetCodeAndStack();
-        codeGenerator.translate(input, () -> executionService.getExecutionContext().getCode(), this::execute);
+        if (input.isProfiling()) {
+            executionService.enableProfiling();
+        } else {
+            executionService.disableProfiling();
+        }
+        codeGenerator.translate(input.getBody(), this::getCode, this::execute);
+    }
+
+    private Code getCode() {
+        return executionService.getExecutionContext().getCode();
     }
 
     private void execute() {

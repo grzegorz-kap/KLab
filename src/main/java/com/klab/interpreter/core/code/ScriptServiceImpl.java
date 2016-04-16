@@ -1,6 +1,7 @@
 package com.klab.interpreter.core.code;
 
 import com.google.common.eventbus.Subscribe;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.debug.BreakpointUpdatedEvent;
@@ -32,6 +33,12 @@ class ScriptServiceImpl implements ScriptService {
     @Override
     public Code getCode(String scriptName) {
         return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
+    }
+
+    @Subscribe
+    public void onExecutionStart(ExecutionStartedEvent executionStartedEvent) {
+        cachedCode.values().stream()
+            .forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
     }
 
     @Subscribe

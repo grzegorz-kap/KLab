@@ -2,6 +2,7 @@ package com.klab.interpreter.service.functions.external;
 
 import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.core.code.ScriptFileService;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.debug.BreakpointUpdatedEvent;
@@ -48,6 +49,13 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
             LOGGER.error("Error reading function '{}'. {}", key.name, e);
         }
         throw new UnsupportedOperationException(); // TODO execption
+    }
+
+    @Subscribe
+    public void onExecutionStartEvent(ExecutionStartedEvent executionStartedEvent) {
+        for (ExternalFunction externalFunction : functionsCache.values()) {
+            externalFunction.getCode().forEach(instruction -> instruction.setProfilingData(null));
+        }
     }
 
     @Subscribe

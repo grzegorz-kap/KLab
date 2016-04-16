@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.klab.gui.model.Variable;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.commons.memory.ObjectWrapper;
+import com.klab.interpreter.core.ExecutionCommand;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
@@ -104,7 +105,7 @@ public class VariableController implements Initializable {
                 int i = t.getTablePosition().getRow();
                 int j = t.getTablePosition().getColumn();
                 String command = String.format("%s(%s,%s)=%s;", name, i + 1, j + 1, t.getNewValue());
-                interpreter.startSync(command);
+                interpreter.startSync(new ExecutionCommand(command));
                 variablesMap.get(variable).setVersion(variable.getVersion());
                 t.getTableView().getItems().get(i).modify(variable.getData(), i, j);
             });
