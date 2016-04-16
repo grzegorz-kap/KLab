@@ -1,6 +1,7 @@
 package com.klab.interpreter.translate.model;
 
 import com.klab.interpreter.lexer.model.CodeAddress;
+import com.klab.interpreter.profiling.ProfilingData;
 import com.klab.interpreter.types.ObjectData;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class Instruction {
     private int argumentsNumber = 0;
     private boolean breakpoint = false;
     private CodeAddress codeAddress;
+    private ProfilingData<Instruction> profilingData;
 
     public Instruction() {
     }
@@ -37,6 +39,18 @@ public class Instruction {
 
     public <T> T getObjectData(int index, Class<T> clazz) {
         return clazz.cast(data.get(index));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append(instructionCode);
+        b.append('\t');
+        data.forEach(objectData -> b.append(objectData).append("\t"));
+        if (profilingData != null) {
+            b.append('\t').append(profilingData);
+        }
+        return b.toString();
     }
 
     public InstructionCode getInstructionCode() {
@@ -71,12 +85,11 @@ public class Instruction {
         this.codeAddress = codeAddress;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append(instructionCode);
-        b.append('\t');
-        data.forEach(objectData -> b.append(objectData).append("\t"));
-        return b.toString();
+    public ProfilingData<Instruction> getProfilingData() {
+        return profilingData;
+    }
+
+    public void setProfilingData(ProfilingData<Instruction> profilingData) {
+        this.profilingData = profilingData;
     }
 }
