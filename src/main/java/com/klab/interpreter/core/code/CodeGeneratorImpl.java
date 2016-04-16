@@ -58,9 +58,9 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Override
-    public boolean executionCanStart() {
+    public boolean isInstructionCompletelyTranslated() {
         for (PostParseHandler handler : postParseHandlers) {
-            if (!handler.executionCanStart()) {
+            if (!handler.isInstructionCompletelyTranslated()) {
                 return false;
             }
         }

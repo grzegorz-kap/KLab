@@ -12,5 +12,5 @@ public interface CodeGenerator {
 
     Code translate(TokenList input);
 
-    boolean executionCanStart();
+    boolean isInstructionCompletelyTranslated();
 }

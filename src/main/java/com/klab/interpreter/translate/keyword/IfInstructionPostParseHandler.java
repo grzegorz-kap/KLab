@@ -30,7 +30,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
     }
 
     @Override
-    public boolean executionCanStart() {
+    public boolean isInstructionCompletelyTranslated() {
         return ifInstructionContext.size() == 0;
     }
 

@@ -19,7 +19,7 @@ class InterpreterService {
     }
 
     private void execute() {
-        if (codeGenerator.executionCanStart()) {
+        if (codeGenerator.isInstructionCompletelyTranslated()) {
             executionService.start();
         }
     }

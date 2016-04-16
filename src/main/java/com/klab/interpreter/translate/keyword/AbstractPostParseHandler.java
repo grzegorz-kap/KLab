@@ -18,7 +18,7 @@ public abstract class AbstractPostParseHandler implements PostParseHandler {
     public abstract boolean canBeHandled(List<Expression<ParseToken>> expressions);
 
     @Override
-    public abstract boolean executionCanStart();
+    public abstract boolean isInstructionCompletelyTranslated();
 
     @Override
     public abstract MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator);
