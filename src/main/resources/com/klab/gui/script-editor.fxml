@@ -2,9 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="512.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.40"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0"
+            prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.klab.gui.controller.ScriptEditorController">
     <top>
         <VBox prefHeight="41.0" prefWidth="600.0" BorderPane.alignment="CENTER">
@@ -31,8 +30,10 @@
 
                 <ToolBar>
                     <items>
-                        <Button fx:id="releaseBreakpointButton" disable="true" mnemonicParsing="false" text="|&gt;"
+                        <Button fx:id="releaseBreakpointButton" disable="true" mnemonicParsing="false"
+                                text="Release breakpoint"
                                 ButtonBar.buttonData="LEFT"/>
+                        <Button mnemonicParsing="false" text="Run with profiling"/>
                     </items>
                 </ToolBar>
             </children>
@@ -56,9 +57,9 @@
                         <Tab text="Debug">
                             <content>
                                 <AnchorPane>
-                                    <fx:include AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-                                                source="variable-list.fxml"/>
+                                    <fx:include source="variable-list.fxml" AnchorPane.bottomAnchor="0.0"
+                                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                AnchorPane.topAnchor="0.0"/>
                                 </AnchorPane>
                             </content>
                         </Tab>

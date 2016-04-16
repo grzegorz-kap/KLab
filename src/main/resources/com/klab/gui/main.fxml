@@ -17,11 +17,7 @@
                         <MenuItem mnemonicParsing="false" text="Delete"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Tools">
-                    <items>
-                        <CheckMenuItem mnemonicParsing="false" onAction="#profilingAction" text="Profiling"/>
-                    </items>
-                </Menu>
+                <Menu mnemonicParsing="false" text="Tools"/>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="false" text="About"/>
