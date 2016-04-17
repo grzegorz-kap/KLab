@@ -4,7 +4,9 @@ import com.klab.gui.model.ScriptContext;
 import javafx.scene.control.TabPane;
 
 public interface ScriptTabFactory {
-    ScriptContext create(String scriptName, TabPane scriptPane);
+    ScriptContext get(String scriptName, TabPane scriptPane);
+
+    ScriptContext get(String scriptName, TabPane scriptPane, boolean noCreate);
 
     void initializeScriptPane(TabPane scriptPane);
 }

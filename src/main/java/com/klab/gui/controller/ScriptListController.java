@@ -51,7 +51,7 @@ public class ScriptListController implements Initializable {
     public void onRunScriptMenuAction(ActionEvent actionEvent) {
         String command = FilenameUtils.removeExtension(scriptView.getSelectionModel().getSelectedItem().getValue());
         LOGGER.info("Script double clicked. Submiting command: {}", command);
-        eventService.publish(new CommandSubmittedEvent(command, this));
+        eventService.publish(CommandSubmittedEvent.create().data(command).build(this));
     }
 
     @Subscribe

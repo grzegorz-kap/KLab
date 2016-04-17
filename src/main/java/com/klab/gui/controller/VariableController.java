@@ -82,6 +82,7 @@ public class VariableController implements Initializable {
     }
 
     private Variable<TitledPane> createNew(ObjectWrapper variable) {
+        // TODO do not display big matrix (speed problem)
         TableView<Row> tableView = new TableView<>();
 
         tableView.widthProperty().addListener(new NumberChangeListenerHideHeaderRow(tableView));

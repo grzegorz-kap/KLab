@@ -33,7 +33,8 @@
                         <Button fx:id="releaseBreakpointButton" disable="true" mnemonicParsing="false"
                                 text="Release breakpoint"
                                 ButtonBar.buttonData="LEFT"/>
-                        <Button mnemonicParsing="false" text="Run with profiling"/>
+                        <Button fx:id="runWithProfilingButton" mnemonicParsing="false" text="Run with profiling"
+                                onAction="#runWithProfiling"/>
                     </items>
                 </ToolBar>
             </children>
