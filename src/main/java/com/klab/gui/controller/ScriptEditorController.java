@@ -13,7 +13,6 @@ import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -36,29 +35,34 @@ public class ScriptEditorController implements Initializable {
     private BreakpointService breakpointService;
     private EventService eventService;
 
-    @FXML
-    private TabPane scriptPane;
-
-    @FXML
-    private Button releaseBreakpointButton;
-
-    @FXML
-    private Button runWithProfilingButton;
+    // @FXML
+    public TabPane scriptPane;
+    public Button runButton;
+    public Button releaseBreakpointButton;
+    public Button runWithProfilingButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scriptTabFactory.initializeScriptPane(scriptPane);
     }
 
-    @FXML
+
+    public void runWithoutProfiling(ActionEvent actionEvent) {
+        onRun(actionEvent, false);
+    }
+
     public void runWithProfiling(ActionEvent actionEvent) {
+        onRun(actionEvent, true);
+    }
+
+    private void onRun(ActionEvent actionEvent, boolean profiling) {
         Tab tab = scriptPane.getSelectionModel().getSelectedItem();
         if (tab != null) {
             ScriptContext context = scriptTabFactory.get(tab.getText(), this.scriptPane);
             if (context != null) {
                 CommandSubmittedEvent event = CommandSubmittedEvent.create()
                         .data(context.getText())
-                        .profiling(true)
+                        .profiling(profiling)
                         .build(this);
                 eventService.publish(event);
             }
@@ -68,11 +72,13 @@ public class ScriptEditorController implements Initializable {
     @Subscribe
     public void onExecutionStartedEvent(ExecutionStartedEvent event) {
         runWithProfilingButton.setDisable(true);
+        runButton.setDisable(true);
     }
 
     @Subscribe
     public void onExecutionCompletedEvent(ExecutionCompletedEvent event) {
         runWithProfilingButton.setDisable(false);
+        runButton.setDisable(false);
     }
 
     @Subscribe
