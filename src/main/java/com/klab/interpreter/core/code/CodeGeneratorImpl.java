@@ -38,7 +38,9 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public Code translate(String input) {
-        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
+        Code code = translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
+        code.setSourceCode(input);
+        return code;
     }
 
     @Override

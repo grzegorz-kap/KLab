@@ -15,7 +15,6 @@ public class FileWatcher implements Runnable {
     private Path path;
     private Consumer<WatchEvent<?>> eventHandler;
 
-
     public FileWatcher(String path, Consumer<WatchEvent<?>> eventHandler) {
         this.path = Paths.get(path);
         this.eventHandler = eventHandler;

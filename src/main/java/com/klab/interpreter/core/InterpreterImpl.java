@@ -40,7 +40,7 @@ public class InterpreterImpl implements Interpreter {
         } finally {
             Interpreter.MAIN_LOCK.unlock();
             if (events) {
-                eventService.publish(new ExecutionCompletedEvent(this));
+                eventService.publish(new ExecutionCompletedEvent(cmd, this));
             }
         }
     }

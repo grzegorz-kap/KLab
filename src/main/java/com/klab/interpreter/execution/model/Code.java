@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 public class Code implements Iterable<Instruction> {
     private List<Instruction> instructions = new ArrayList<>();
+    private String sourceCode;
     private String sourceId;
 
     @Override
@@ -27,6 +28,16 @@ public class Code implements Iterable<Instruction> {
             instruction.setCodeAddress(codeAddress);
         }
         instructions.add(instruction);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        int address = 0;
+        for (Instruction instruction : instructions) {
+            builder.append("\n").append(address++).append(") ").append(instruction);
+        }
+        return builder.toString();
     }
 
     public void add(MacroInstruction macroInstruction) {
@@ -53,13 +64,11 @@ public class Code implements Iterable<Instruction> {
         this.sourceId = sourceId;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        int address = 0;
-        for (Instruction instruction : instructions) {
-            builder.append("\n").append(address++).append(") ").append(instruction);
-        }
-        return builder.toString();
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
     }
 }

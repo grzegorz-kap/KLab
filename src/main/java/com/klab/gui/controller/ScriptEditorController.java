@@ -46,7 +46,6 @@ public class ScriptEditorController implements Initializable {
         scriptTabFactory.initializeScriptPane(scriptPane);
     }
 
-
     public void runWithoutProfiling(ActionEvent actionEvent) {
         onRun(actionEvent, false);
     }
