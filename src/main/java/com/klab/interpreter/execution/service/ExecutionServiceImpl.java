@@ -7,7 +7,7 @@ import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.execution.InstructionAction;
 import com.klab.interpreter.execution.exception.UnsupportedInstructionException;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
-import com.klab.interpreter.profiling.ProfilingService;
+import com.klab.interpreter.profiling.ProfilingServiceImpl;
 import com.klab.interpreter.translate.model.Instruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -21,7 +21,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
     private InstructionAction handleAction = InstructionHandler::handle;
-    private ProfilingService profilingService;
+    private ProfilingServiceImpl profilingService;
     private BreakpointService breakpointService;
 
     @Override
@@ -62,7 +62,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     }
 
     @Autowired
-    public void setProfilingService(ProfilingService profilingService) {
+    public void setProfilingService(ProfilingServiceImpl profilingService) {
         this.profilingService = profilingService;
     }
 

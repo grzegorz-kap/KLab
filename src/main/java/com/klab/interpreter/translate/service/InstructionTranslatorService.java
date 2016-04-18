@@ -40,10 +40,10 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         Expression<ParseToken> parseTokenExpression = translateContext.getExpression();
         process(parseTokenExpression);
         if (getAnsProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.ANS, 1), null);
+            translateContextManager.addInstruction(new Instruction(InstructionCode.ANS, 1), translateContextManager.previousCodeAddress());
         }
         if (getPrintProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0), null);
+            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0), translateContextManager.previousCodeAddress());
         }
     }
 

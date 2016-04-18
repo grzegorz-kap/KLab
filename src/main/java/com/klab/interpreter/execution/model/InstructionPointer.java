@@ -46,4 +46,8 @@ public class InstructionPointer {
     public String getSourceId() {
         return code.getSourceId();
     }
+
+    public Code getCode() {
+        return code;
+    }
 }

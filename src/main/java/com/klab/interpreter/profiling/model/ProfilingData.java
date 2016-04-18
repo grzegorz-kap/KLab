@@ -1,4 +1,4 @@
-package com.klab.interpreter.profiling;
+package com.klab.interpreter.profiling.model;
 
 public class ProfilingData<T> {
     private T subject;

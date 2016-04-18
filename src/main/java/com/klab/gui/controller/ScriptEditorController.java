@@ -57,14 +57,11 @@ public class ScriptEditorController implements Initializable {
     private void onRun(ActionEvent actionEvent, boolean profiling) {
         Tab tab = scriptPane.getSelectionModel().getSelectedItem();
         if (tab != null) {
-            ScriptContext context = scriptTabFactory.get(tab.getText(), this.scriptPane);
-            if (context != null) {
-                CommandSubmittedEvent event = CommandSubmittedEvent.create()
-                        .data(context.getText())
-                        .profiling(profiling)
-                        .build(this);
-                eventService.publish(event);
-            }
+            CommandSubmittedEvent event = CommandSubmittedEvent.create()
+                    .data(tab.getText())
+                    .profiling(profiling)
+                    .build(this);
+            eventService.publish(event);
         }
     }
 

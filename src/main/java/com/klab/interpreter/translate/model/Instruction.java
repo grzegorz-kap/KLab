@@ -1,7 +1,7 @@
 package com.klab.interpreter.translate.model;
 
 import com.klab.interpreter.lexer.model.CodeAddress;
-import com.klab.interpreter.profiling.ProfilingData;
+import com.klab.interpreter.profiling.model.ProfilingData;
 import com.klab.interpreter.types.ObjectData;
 
 import java.util.ArrayList;

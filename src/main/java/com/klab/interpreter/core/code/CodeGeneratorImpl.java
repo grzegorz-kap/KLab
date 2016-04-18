@@ -56,6 +56,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
         Code code = initCode(codeSupplier);
         parser.setTokenList(tokenizer.readTokens(input));
         process(code, macroInstructionTranslatedCallback);
+        code.setSourceCode(input);
         return code;
     }
 
