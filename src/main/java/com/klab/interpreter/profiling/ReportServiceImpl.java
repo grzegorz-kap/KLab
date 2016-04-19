@@ -30,7 +30,6 @@ public class ReportServiceImpl implements ReportService {
 
     private CodeLiner codeLiner;
 
-
     @Override
     public ProfilingReport process(Collection<Code> measured) {
         ProfilingReport report = new ProfilingReport();
@@ -45,7 +44,7 @@ public class ReportServiceImpl implements ReportService {
         report.setCalled(report.getSourceType() == SourceType.COMMAND ? 1 : callCount(code));
         report.setTotalTime(totalTime(code));
         report.setTitle(report.getSourceType() == SourceType.COMMAND ? COMMAND : code.getSourceId());
-        List<CodeLine> separate = codeLiner.separate(code);
+        List<CodeLine> lines = codeLiner.separate(code);
         return report;
     }
 
