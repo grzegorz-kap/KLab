@@ -1,18 +1,23 @@
 package com.klab.interpreter.profiling.model;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProfilingReport {
-    private List<CodeReport> codeReports = Lists.newArrayList();
+    private Map<String, CodeReport> codeReports = Maps.newHashMap();
 
     public void add(CodeReport codeReport) {
-        codeReports.add(codeReport);
+        codeReports.put(codeReport.getTitle(), codeReport);
+    }
+
+    public CodeReport getCodeReport(String title) {
+        return codeReports.get(title);
     }
 
     public List<CodeReport> getCodeReports() {
-        return Collections.unmodifiableList(codeReports);
+        return new ArrayList<>(codeReports.values());
     }
 }

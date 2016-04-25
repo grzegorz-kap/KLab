@@ -29,6 +29,10 @@ public class ProfilingData<T> {
         return time;
     }
 
+    public double getTimeSeconds() {
+        return time / 1_000_000_000.0;
+    }
+
     public void setTime(long time) {
         this.time = time;
     }

@@ -23,10 +23,6 @@ public class Code implements Iterable<Instruction> {
         return instructions.stream();
     }
 
-    public Stream<Instruction> instructionStreamParallel() {
-        return instructions.parallelStream();
-    }
-
     public void add(Instruction instruction, CodeAddress codeAddress) {
         if (codeAddress != null) {
             instruction.setCodeAddress(codeAddress);

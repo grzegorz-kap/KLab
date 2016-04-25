@@ -1,17 +1,42 @@
 package com.klab.interpreter.profiling.model;
 
+import com.klab.interpreter.analyze.CodeLine;
 import com.klab.interpreter.execution.model.Code;
 
+import java.util.Map;
+
 public class CodeReport {
+    private ProfilingReport parent;
     private Code code;
     private String title;
     private SourceType sourceType;
+    private Map<Integer, ProfilingData<CodeLine>> linesProfile;
     private long called;
     private long totalTime;
 
     public CodeReport(Code code, SourceType sourceType) {
         this.code = code;
         this.sourceType = sourceType;
+    }
+
+    public Map<Integer, ProfilingData<CodeLine>> getLinesProfile() {
+        return linesProfile;
+    }
+
+    public void setLinesProfile(Map<Integer, ProfilingData<CodeLine>> linesProfile) {
+        this.linesProfile = linesProfile;
+    }
+
+    public void setSourceType(SourceType sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public ProfilingReport getParent() {
+        return parent;
+    }
+
+    public void setParent(ProfilingReport parent) {
+        this.parent = parent;
     }
 
     public Code getCode() {

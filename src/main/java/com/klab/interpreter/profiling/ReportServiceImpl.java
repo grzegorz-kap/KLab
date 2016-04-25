@@ -1,5 +1,6 @@
 package com.klab.interpreter.profiling;
 
+import com.google.common.collect.Maps;
 import com.klab.interpreter.analyze.CodeLine;
 import com.klab.interpreter.analyze.CodeLiner;
 import com.klab.interpreter.execution.model.Code;
@@ -9,10 +10,14 @@ import com.klab.interpreter.profiling.model.ProfilingReport;
 import com.klab.interpreter.profiling.model.SourceType;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.klab.interpreter.translate.model.InstructionCode.FUNCTION_END;
@@ -33,8 +38,9 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ProfilingReport process(Collection<Code> measured) {
         ProfilingReport report = new ProfilingReport();
-        measured.parallelStream()
+        measured.stream()
                 .map(this::codeReport)
+                .peek(codeReport -> codeReport.setParent(report))
                 .forEach(report::add);
         return report;
     }
@@ -44,7 +50,6 @@ public class ReportServiceImpl implements ReportService {
         report.setCalled(report.getSourceType() == SourceType.COMMAND ? 1 : callCount(code));
         report.setTotalTime(totalTime(code));
         report.setTitle(report.getSourceType() == SourceType.COMMAND ? COMMAND : code.getSourceId());
-        List<CodeLine> lines = codeLiner.separate(code);
         return report;
     }
 
@@ -70,6 +75,30 @@ public class ReportServiceImpl implements ReportService {
                 .filter(Objects::nonNull)
                 .mapToLong(ProfilingData::getTime)
                 .sum();
+    }
+
+    @Override
+    public void computeLines(CodeReport codeReport) {
+        if (!MapUtils.isNotEmpty(codeReport.getLinesProfile())) {
+            Map<Integer, ProfilingData<CodeLine>> map = Maps.newLinkedHashMap();
+            codeLiner.separate(codeReport.getCode()).stream()
+                    .map(ProfilingData::new)
+                    .peek(data -> {
+                        long sum = data.getSubject().getInstructions().stream()
+                                .map(Instruction::getProfilingData)
+                                .filter(Objects::nonNull)
+                                .mapToLong(ProfilingData::getTime).sum();
+                        long count = data.getSubject().getInstructions().stream()
+                                .map(Instruction::getProfilingData)
+                                .filter(Objects::nonNull)
+                                .mapToLong(ProfilingData::getCount)
+                                .max().orElse(0L);
+                        data.setCount(count);
+                        data.setTime(sum);
+                    })
+                    .forEach(data -> map.put(data.getSubject().getNumber(), data));
+            codeReport.setLinesProfile(map);
+        }
     }
 
     @Autowired

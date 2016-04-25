@@ -15,7 +15,7 @@ public class CodeLinerImpl implements CodeLiner {
     public List<CodeLine> separate(Code code) {
         String[] lines = code.getSourceCode().split("\\r?\\n");
 
-        return code.instructionStreamParallel()
+        return code.instructions()
                 .filter(instruction -> instruction.getCodeAddress() != null)
                 .collect(groupingBy(instruction -> instruction.getCodeAddress().getLine()))
                 .entrySet().stream()

@@ -1,5 +1,6 @@
 package com.klab.gui.config;
 
+import com.klab.CustomInitializeble;
 import com.klab.gui.App;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 @Component
 public class GuiContext implements ApplicationContextAware, InitializingBean {
@@ -48,8 +50,25 @@ public class GuiContext implements ApplicationContextAware, InitializingBean {
         primaryStage.show();
     }
 
-    private <T> T loadScene(final String url) throws IOException {
-        return FXMLLoader.load(App.class.getResource(url), null, null, applicationContext::getBean);
+    private <T> T loadScene(final String url) {
+        return loadScene(url, null);
+    }
+
+    public <T, U> T loadScene(final String url, Consumer<U> controllerConsumer) {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(url), null, null, applicationContext::getBean);
+        try {
+            T load = loader.load();
+            if (controllerConsumer != null) {
+                U controller = loader.getController();
+                controllerConsumer.accept(controller);
+                if (controller instanceof CustomInitializeble) {
+                    ((CustomInitializeble) controller).customInit();
+                }
+            }
+            return load;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setPrimaryStage(Stage primaryStage) {
