@@ -3,6 +3,7 @@ package com.klab.interpreter.translate.model;
 import com.klab.interpreter.lexer.model.CodeAddress;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -12,6 +13,10 @@ public class MacroInstruction implements Iterable<Instruction> {
 
     public Instruction get(int index) {
         return instructions.get(index);
+    }
+
+    public List<Instruction> get() {
+        return Collections.unmodifiableList(instructions);
     }
 
     @Override

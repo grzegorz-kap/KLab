@@ -38,7 +38,9 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public Code translate(String input) {
-        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
+        Code code = translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
+        code.setSourceCode(input);
+        return code;
     }
 
     @Override
@@ -54,13 +56,14 @@ public class CodeGeneratorImpl implements CodeGenerator {
         Code code = initCode(codeSupplier);
         parser.setTokenList(tokenizer.readTokens(input));
         process(code, macroInstructionTranslatedCallback);
+        code.setSourceCode(input);
         return code;
     }
 
     @Override
-    public boolean executionCanStart() {
+    public boolean isInstructionCompletelyTranslated() {
         for (PostParseHandler handler : postParseHandlers) {
-            if (!handler.executionCanStart()) {
+            if (!handler.isInstructionCompletelyTranslated()) {
                 return false;
             }
         }

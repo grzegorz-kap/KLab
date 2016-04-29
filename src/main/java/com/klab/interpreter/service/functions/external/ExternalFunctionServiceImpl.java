@@ -1,7 +1,9 @@
 package com.klab.interpreter.service.functions.external;
 
+import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.core.code.ScriptFileService;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.debug.BreakpointUpdatedEvent;
@@ -13,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -23,7 +23,7 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     private ScriptFileService scriptFileService;
     private BreakpointService breakpointService;
     private ExternalFunctionParser externalFunctionParser;
-    private Map<FunctionMapKey, ExternalFunction> functionsCache = Collections.synchronizedMap(new HashMap<>());
+    private Map<FunctionMapKey, ExternalFunction> functionsCache = Maps.newHashMap();
 
     @Override
     public ExternalFunction loadFunction(CallInstruction cl) {
@@ -48,6 +48,13 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
             LOGGER.error("Error reading function '{}'. {}", key.name, e);
         }
         throw new UnsupportedOperationException(); // TODO execption
+    }
+
+    @Subscribe
+    public void onExecutionStartEvent(ExecutionStartedEvent executionStartedEvent) {
+        for (ExternalFunction externalFunction : functionsCache.values()) {
+            externalFunction.getCode().forEach(instruction -> instruction.setProfilingData(null));
+        }
     }
 
     @Subscribe

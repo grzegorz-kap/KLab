@@ -1,6 +1,8 @@
 package com.klab.interpreter.core.code;
 
+import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.debug.BreakpointUpdatedEvent;
@@ -14,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ import static java.util.Objects.nonNull;
 @Service
 class ScriptServiceImpl implements ScriptService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptServiceImpl.class);
-    private Map<String, Code> cachedCode = Collections.synchronizedMap(new HashMap<>());
+    private Map<String, Code> cachedCode = Maps.newHashMap();
     private CodeGenerator codeGenerator;
     private ScriptFileService scriptFileService;
     private BreakpointService breakpointService;
@@ -32,6 +32,12 @@ class ScriptServiceImpl implements ScriptService {
     @Override
     public Code getCode(String scriptName) {
         return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
+    }
+
+    @Subscribe
+    public void onExecutionStart(ExecutionStartedEvent executionStartedEvent) {
+        cachedCode.values().stream()
+                .forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
     }
 
     @Subscribe

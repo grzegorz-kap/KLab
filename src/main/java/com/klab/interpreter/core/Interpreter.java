@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public interface Interpreter {
     Lock MAIN_LOCK = new ReentrantLock();
 
-    void startAsync(String input);
+    void startAsync(ExecutionCommand cmd);
 
-    void startSync(String input);
+    void startSync(ExecutionCommand cmd);
 }

@@ -1,4 +1,4 @@
-package com.klab.interpreter.profiling;
+package com.klab.interpreter.profiling.model;
 
 public class ProfilingData<T> {
     private T subject;
@@ -27,6 +27,10 @@ public class ProfilingData<T> {
 
     public long getTime() {
         return time;
+    }
+
+    public double getTimeSeconds() {
+        return time / 1_000_000_000.0;
     }
 
     public void setTime(long time) {

@@ -34,12 +34,17 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     private Map<String, ScriptContext> scripts = Maps.newHashMap();
 
     @Override
-    public ScriptContext create(String scriptName, TabPane scriptPane) {
+    public ScriptContext get(String scriptName, TabPane scriptPane) {
+        return get(scriptName, scriptPane, false);
+    }
+
+    @Override
+    public ScriptContext get(String scriptName, TabPane scriptPane, boolean noCreate) {
         ScriptContext context = scripts.get(scriptName);
-        if (isNull(context)) {
+        if (isNull(context) && !noCreate) {
             context = new ScriptContext(scriptName, scriptViewService.readScript(scriptName));
             context.createLineNumbersFactory(breakpointService);
-            context.setOnRunHandler(t -> eventService.publish(new CommandSubmittedEvent(scriptName, this)));
+            context.setOnRunHandler(t -> eventService.publish(CommandSubmittedEvent.create().data(scriptName).build(this)));
             context.setOnCloseHandler(t -> {
                 scriptPane.getTabs().remove(t.getTab());
                 scripts.remove(scriptName);
@@ -59,13 +64,13 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
             }
             if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
                 try {
-                    scriptFileService.writeScript(tab.getText(), create(tab.getText(), scriptPane).getText());
+                    scriptFileService.writeScript(tab.getText(), get(tab.getText(), scriptPane).getText());
                 } catch (IOException e) {
                     LOGGER.error("error", e);
                 }
             }
             if (event.getCode().equals(KeyCode.F5)) {
-                eventService.publish(new CommandSubmittedEvent(tab.getText(), this));
+                eventService.publish(CommandSubmittedEvent.create().data(tab.getText()).build(this));
             }
         });
     }

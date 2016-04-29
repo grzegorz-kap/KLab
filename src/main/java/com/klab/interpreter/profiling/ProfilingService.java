@@ -1,35 +1,13 @@
 package com.klab.interpreter.profiling;
 
-import com.klab.interpreter.execution.InstructionAction;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.execution.model.InstructionPointer;
-import com.klab.interpreter.translate.model.Instruction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Collection;
 
-@Component
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ProfilingService implements InstructionAction {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProfilingService.class);
-    private HashMap<Instruction, ProfilingData<Instruction>> data = new HashMap<>();
+public interface ProfilingService {
+    void handle(InstructionHandler handler, InstructionPointer pointer);
 
-    @Override
-    public void handle(InstructionHandler handler, InstructionPointer pointer) {
-        Instruction instruction = pointer.currentInstruction();
-        ProfilingData<Instruction> pd = data.get(instruction);
-        if (pd == null) {
-            data.put(instruction, pd = new ProfilingData<>(instruction));
-        }
-        long start = System.nanoTime();
-        handler.handle(pointer);
-        long end = System.nanoTime();
-        pd.addTime(end - start);
-        pd.addCount(1L);
-        LOGGER.info("{}, took: {}", instruction, pd);
-    }
+    Collection<Code> measured();
 }

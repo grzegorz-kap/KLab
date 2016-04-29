@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0"
+            prefWidth="611.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.klab.gui.controller.ProfilingReportController">
+    <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <top>
+                <Pane prefHeight="66.0" prefWidth="600.0" style="-fx-border-width: 5;" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label layoutX="25.0" layoutY="-2.0" prefHeight="54.0" prefWidth="247.0" text="Profile summary">
+                            <font>
+                                <Font size="25.0"/>
+                            </font>
+                        </Label>
+                        <Label layoutX="25.0" layoutY="39.0" prefHeight="17.0" prefWidth="251.0"
+                               text="Generated at 19.04.2016 22:15 using CPU time"/>
+                        <Separator layoutY="65.0" prefHeight="3.0" prefWidth="611.0"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets bottom="5.0"/>
+                    </opaqueInsets>
+                </Pane>
+            </top>
+            <center>
+                <Pane prefHeight="295.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <children>
+                        <TableView fx:id="profileSummary" prefHeight="357.0" prefWidth="611.0">
+                            <columns>
+                                <TableColumn fx:id="titleColumn" prefWidth="116.0" text="Function name"/>
+                                <TableColumn fx:id="callsColumn" prefWidth="75.0" text="Calls"/>
+                                <TableColumn fx:id="totalTimeColumn" prefWidth="115.0" text="Total time"/>
+                            </columns>
+                        </TableView>
+                    </children>
+                </Pane>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

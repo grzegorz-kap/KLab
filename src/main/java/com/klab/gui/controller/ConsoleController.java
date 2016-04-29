@@ -5,6 +5,7 @@ import com.klab.common.EventService;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.helpers.KeyboardHelper;
 import com.klab.gui.model.CommandHistory;
+import com.klab.interpreter.core.ExecutionCommand;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.events.PrintEvent;
 import javafx.application.Platform;
@@ -59,7 +60,7 @@ public class ConsoleController {
     public void onCommandSubmittedEvent(CommandSubmittedEvent command) {
         consoleOutput.appendText(String.format(">> %s \n", command.getData()));
         commandHistory.add(command.getData());
-        interpreter.startAsync(command.getData());
+        interpreter.startAsync(new ExecutionCommand(command.getData(), command.isProfiling()));
     }
 
     private void onArrowDown(KeyEvent keyEvent) {
@@ -75,7 +76,11 @@ public class ConsoleController {
     }
 
     private void onEnter(KeyEvent keyEvent) {
-        eventService.publish(new CommandSubmittedEvent(commandInput.getText(), this));
+        CommandSubmittedEvent event = CommandSubmittedEvent.create()
+                .data(commandInput.getText())
+                .profiling(false)
+                .build(this);
+        eventService.publish(event);
         commandInput.clear();
         keyEvent.consume();
     }
