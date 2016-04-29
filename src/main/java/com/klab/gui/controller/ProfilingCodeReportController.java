@@ -47,15 +47,14 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
         String[] lines = sourceCode.split("\\r?\\n");
         reportService.computeLines(codeReport);
         IntStream.range(0, lines.length).forEach(index -> {
-            builder.append("<tr>");
             ProfilingData<CodeLine> line = codeReport.getLinesProfile().get(index + 1);
+            builder.append("<tr>");
             builder.append("<td>").append(line != null ? line.getTimeSeconds() : 0.00).append(" s</td>");
             builder.append("<td>").append(line != null ? line.getCount() : 0).append("</td>");
             builder
                     .append("<td>")
                     .append(HtmlUtils.formatCode(lines[index]))
                     .append("</td>");
-            builder.append("<td colspan='3'></td>");
             builder.append("</tr>");
         });
         return builder.toString();

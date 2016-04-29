@@ -58,10 +58,14 @@ public class ProfilingReportController implements Initializable {
 
     @Subscribe
     public void onExecutionCompleted(ExecutionCompletedEvent event) {
-        Platform.runLater(() -> guiContext.showProfilingStage());
-        ProfilingReport report = reportService.process(profilingService.measured());
-        profileSummary.getItems().clear();
-        profileSummary.getItems().addAll(report.getCodeReports());
+        if (event.getData().isProfiling()) {
+            Platform.runLater(() -> {
+                ProfilingReport report = reportService.process(profilingService.measured());
+                profileSummary.getItems().clear();
+                profileSummary.getItems().addAll(report.getCodeReports());
+                guiContext.showProfilingStage();
+            });
+        }
     }
 
     @Autowired
