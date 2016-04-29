@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.*?>
+<?import org.fxmisc.richtext.CodeArea?>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" dividerPositions="0.7" orientation="VERTICAL"
+           xmlns="http://javafx.com/javafx/8.0.40" fx:controller="com.klab.gui.controller.ConsoleController">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="278.0" prefWidth="635.0">
+            <children>
+                <CodeArea fx:id="consoleOutput" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0"
+                          prefWidth="635.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" editable="false"/>
+            </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+            <children>
+                <CodeArea fx:id="commandInput" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed"
+                          prefHeight="100.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            </children>
+        </AnchorPane>
+    </items>
+    <opaqueInsets>
+        <Insets/>
+    </opaqueInsets>
+</SplitPane>
