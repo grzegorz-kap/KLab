@@ -24,7 +24,7 @@ public class Plot2DFunction extends AbstractInternalFunction {
             Matrix<Double> x = convertersHolder.convert(data[0], NumericType.MATRIX_DOUBLE);
             Matrix<Double> y = convertersHolder.convert(data[1], NumericType.MATRIX_DOUBLE);
             Plot plot = plotService.create2D(x, y);
-            plot.show();
+            plot.showPlot();
             return null;
         } catch (ClassCastException ex) {
             throw new InterpreterException(ex);
