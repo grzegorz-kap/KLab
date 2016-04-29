@@ -12,8 +12,8 @@ import java.nio.file.Path;
 class JFreeChartPlot extends JFrame implements Plot {
     private JFreeChart chart;
 
-    JFreeChartPlot(JFreeChart chart) {
-        super("2D plot");
+    JFreeChartPlot(String title, JFreeChart chart) {
+        super(title);
         this.chart = chart;
     }
 

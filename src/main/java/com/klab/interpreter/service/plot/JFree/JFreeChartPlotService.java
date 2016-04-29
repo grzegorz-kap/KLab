@@ -28,14 +28,13 @@ public class JFreeChartPlotService implements PlotService {
         }
 
         JFreeChart xyLineChart = ChartFactory.createXYLineChart("f(x)", "x", "y", new XYSeriesCollection(xySeries));
-
         XYPlot xyPlot = xyLineChart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.RED);
         renderer.setSeriesStroke(0, new BasicStroke(1.0f));
         xyPlot.setRenderer(renderer);
 
-        return new JFreeChartPlot(xyLineChart);
+        return new JFreeChartPlot("2D plot", xyLineChart);
     }
 
     private void checkSizes2D(Matrix<Double> x, Matrix<Double> y) {
