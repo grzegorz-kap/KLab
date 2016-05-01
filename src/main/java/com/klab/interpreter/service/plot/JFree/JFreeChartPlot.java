@@ -9,10 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 
-class JFreeChartPlot extends JFrame implements Plot {
+public class JFreeChartPlot extends JFrame implements Plot {
     private JFreeChart chart;
 
-    JFreeChartPlot(String title, JFreeChart chart) {
+    public JFreeChartPlot(String title, JFreeChart chart) {
         super(title);
         this.chart = chart;
     }
