@@ -1,6 +1,6 @@
 package com.klab.gui.controller;
 
-import com.klab.CustomInitializeble;
+import com.klab.gui.CustomInitializeble;
 import com.klab.gui.HtmlUtils;
 import com.klab.gui.ProfilingCodeReportDetailsViewer;
 import com.klab.interpreter.analyze.CodeLine;
@@ -49,7 +49,9 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
         IntStream.range(0, lines.length).forEach(index -> {
             ProfilingData<CodeLine> line = codeReport.getLinesProfile().get(index + 1);
             builder.append("<tr>");
-            builder.append("<td>").append(line != null ? line.getTimeSeconds() : 0.00).append(" s</td>");
+            builder.append("<td style='text-align:right;'>")
+                    .append(line != null ? line.getTimeSeconds() : 0.00)
+                    .append(" s</td>");
             builder.append("<td>").append(line != null ? line.getCount() : 0).append("</td>");
             builder
                     .append("<td>")
