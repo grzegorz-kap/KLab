@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -41,13 +42,17 @@ import java.util.stream.IntStream;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class VariableController implements Initializable {
-    public ScrollPane variableScrollPanel;
-    public VBox variablesBox;
-
     private Interpreter interpreter;
     private MemorySpace memorySpace;
     private int currentScope = Integer.MIN_VALUE;
     private Map<ObjectWrapper, Variable<TitledPane>> variablesMap = Maps.newHashMap();
+    private int maxCellsToDisplay = 300;
+
+    @FXML
+    private ScrollPane variableScrollPanel;
+
+    @FXML
+    private VBox variablesBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,39 +87,40 @@ public class VariableController implements Initializable {
     }
 
     private Variable<TitledPane> createNew(ObjectWrapper variable) {
-        // TODO do not display big matrix (speed problem)
         TableView<Row> tableView = new TableView<>();
-
         tableView.widthProperty().addListener(new NumberChangeListenerHideHeaderRow(tableView));
-
         tableView.setEditable(true);
         int rows = (int) ((Sizeable) variable.getData()).getRows();
         int columns = (int) ((Sizeable) variable.getData()).getColumns();
+        int cells = rows * columns;
 
-        IntStream.range(0, rows)
-                .mapToObj(r -> new Row(variable.getData(), r))
-                .forEach(row -> tableView.getItems().add(row));
-
-        IntStream.range(0, columns).forEach(n -> {
-            TableColumn<Row, String> column = new TableColumn<>();
-            column.setSortable(false);
-            column.setCellFactory(TextFieldTableCell.forTableColumn());
-            column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(n)));
-            column.setEditable(true);
-            column.setOnEditCommit(t -> {
-                String name = variable.getData().getName();
-                int i = t.getTablePosition().getRow();
-                int j = t.getTablePosition().getColumn();
-                String command = String.format("%s(%s,%s)=%s;", name, i + 1, j + 1, t.getNewValue());
-                interpreter.startSync(new ExecutionCommand(command));
-                variablesMap.get(variable).setVersion(variable.getVersion());
-                t.getTableView().getItems().get(i).modify(variable.getData(), i, j);
+        if (cells <= maxCellsToDisplay) {
+            IntStream.range(0, rows)
+                    .mapToObj(r -> new Row(variable.getData(), r))
+                    .forEach(row -> tableView.getItems().add(row));
+            IntStream.range(0, columns).forEach(n -> {
+                TableColumn<Row, String> column = new TableColumn<>();
+                column.setSortable(false);
+                column.setCellFactory(TextFieldTableCell.forTableColumn());
+                column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(n)));
+                column.setEditable(true);
+                column.setOnEditCommit(t -> {
+                    String name = variable.getData().getName();
+                    int i = t.getTablePosition().getRow();
+                    int j = t.getTablePosition().getColumn();
+                    String command = String.format("%s(%s,%s)=%s;", name, i + 1, j + 1, t.getNewValue());
+                    interpreter.startSync(new ExecutionCommand(command));
+                    variablesMap.get(variable).setVersion(variable.getVersion());
+                    t.getTableView().getItems().get(i).modify(variable.getData(), i, j);
+                });
+                tableView.getColumns().add(column);
             });
-            tableView.getColumns().add(column);
-        });
+        }
 
-        TitledPane titledPane = new TitledPane(variable.getData().getName(), tableView);
+        String name = String.format("%s (%d x %d)", variable.getData().getName(), rows, columns);
+        TitledPane titledPane = new TitledPane(name, tableView);
         titledPane.prefWidthProperty().bind(variablesBox.widthProperty().subtract(15));
+        titledPane.setDisable(cells > maxCellsToDisplay);
         titledPane.setExpanded(false);
         return new Variable<>(titledPane, variable);
     }
