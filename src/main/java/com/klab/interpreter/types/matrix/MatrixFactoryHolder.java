@@ -10,8 +10,8 @@ import java.util.Set;
 public class MatrixFactoryHolder {
     private MatrixFactory<?>[] matrixFactories = new MatrixFactory[NumericType.values().length];
 
-    public MatrixFactory<?> get(NumericType numericType) {
-        return matrixFactories[numericType.getIndex()];
+    public <T extends Number> MatrixFactory<T> get(NumericType numericType) {
+        return (MatrixFactory<T>) matrixFactories[numericType.getIndex()];
     }
 
     @Autowired
