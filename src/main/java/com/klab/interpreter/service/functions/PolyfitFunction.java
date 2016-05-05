@@ -27,7 +27,7 @@ public class PolyfitFunction extends AbstractInternalFunction {
 
             // TODO better to int cast
             NumericObject degree = (NumericObject) data[2];
-            int degreeVal = (int) x.getRows();
+            int degreeVal;
             if (degree instanceof Scalar) {
                 degreeVal = ((Scalar) degree).getValue().intValue();
             } else if (degree instanceof Matrix) {
