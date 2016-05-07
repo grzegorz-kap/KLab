@@ -92,6 +92,7 @@ public class BreakpointServiceImpl implements BreakpointService {
         } else {
             addresses.add(new BreakpointAddress(line));
         }
+        eventService.publish(new BreakpointUpdatedEvent(new Breakpoint(scriptId, line), this));
         LOGGER.info("ADDED: {} | {}", scriptId, line);
     }
 
