@@ -185,8 +185,9 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     public PhysicalStore<T> getMatrixStore() {
-        if (matrixStore == null) {
-            matrixStore = getLazyStore().copy();
+        if (matrixStore != lazyStore) {
+            matrixStore = lazyStore.copy();
+            lazyStore = matrixStore;
         }
         return matrixStore;
     }

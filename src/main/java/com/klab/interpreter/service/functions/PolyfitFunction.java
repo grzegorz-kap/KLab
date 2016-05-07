@@ -35,7 +35,6 @@ public class PolyfitFunction extends AbstractInternalFunction {
             } else {
                 throw new RuntimeException();
             }
-
             return lagrangeInterpolator.interpolate(x, y, degreeVal);
         } catch (ClassCastException ex) {
             throw new InterpreterException(ex);
