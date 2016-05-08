@@ -1,9 +1,11 @@
 package com.klab.interpreter.execution.service;
 
+import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.debug.Breakpoint;
 import com.klab.interpreter.debug.BreakpointService;
+import com.klab.interpreter.debug.BreakpointUpdatedEvent;
 import com.klab.interpreter.execution.InstructionAction;
 import com.klab.interpreter.execution.exception.UnsupportedInstructionException;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
@@ -32,6 +34,12 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     @Override
     public void disableProfiling() {
         handleAction = InstructionHandler::handle;
+    }
+
+    @Subscribe
+    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
+        instructionPointer.codeStream().forEach(breakpointService::updateBreakpoints);
+        breakpointService.updateBreakpoints(instructionPointer.getCode());
     }
 
     @Override

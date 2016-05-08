@@ -32,10 +32,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -98,7 +95,9 @@ public class VariableController implements Initializable {
             IntStream.range(0, rows)
                     .mapToObj(r -> new Row(variable.getData(), r))
                     .forEach(row -> tableView.getItems().add(row));
-            IntStream.range(0, columns).forEach(n -> {
+
+            int col = tableView.getItems().stream().mapToInt(row -> row.cells.size()).findFirst().orElse(0);
+            IntStream.range(0, col).forEach(n -> {
                 TableColumn<Row, String> column = new TableColumn<>();
                 column.setSortable(false);
                 column.setCellFactory(TextFieldTableCell.forTableColumn());
