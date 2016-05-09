@@ -34,15 +34,28 @@
                     <items>
                         <fx:include maxWidth="300.0" source="script_list.fxml" BorderPane.alignment="CENTER_RIGHT"/>
                         <fx:include source="console.fxml" BorderPane.alignment="CENTER"/>
-                        <AnchorPane prefHeight="480.0" maxWidth="300">
+                        <AnchorPane maxWidth="300" prefHeight="480.0">
                             <children>
                                 <SplitPane dividerPositions="0.6974789915966386" layoutX="-22.0" layoutY="118.0"
                                            orientation="VERTICAL" prefHeight="478.0" prefWidth="130.0"
                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0"
-                                                    prefWidth="160.0"/>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                            <children>
+                                                <TableView fx:id="mainVarTable" layoutX="-22.0" layoutY="91.0"
+                                                           prefHeight="200.0" prefWidth="200.0"
+                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <columns>
+                                                        <TableColumn editable="false" sortable="false" fx:id="varName"
+                                                                     prefWidth="75.0" text="Name"/>
+                                                        <TableColumn editable="false" sortable="false" fx:id="varValue"
+                                                                     prefWidth="75.0" text="Value"/>
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                             <children>
                                                 <TreeView fx:id="commandTree" prefHeight="200.0" prefWidth="200.0"

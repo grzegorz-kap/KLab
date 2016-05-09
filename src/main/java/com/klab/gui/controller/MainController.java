@@ -10,7 +10,17 @@ import com.klab.gui.events.NewCommandEvent;
 import com.klab.gui.events.OpenScriptEvent;
 import com.klab.gui.model.Command;
 import com.klab.gui.service.CommandHistoryService;
+import com.klab.interpreter.commons.memory.MemorySpace;
+import com.klab.interpreter.commons.memory.ObjectWrapper;
+import com.klab.interpreter.core.events.ExecutionCompletedEvent;
+import com.klab.interpreter.types.ObjectData;
+import com.klab.interpreter.types.Sizeable;
+import com.klab.interpreter.types.scalar.Scalar;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import org.apache.commons.lang3.StringUtils;
@@ -20,22 +30,56 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class MainController implements CustomInitializeble {
+public class MainController implements CustomInitializeble, Initializable {
     private EventService eventService;
     private CommandHistoryService commandHistoryService;
+    private MemorySpace memorySpace;
     private GuiContext guiContext;
     private TreeItem<String> nowHistory = new TreeItem<>("Teraz");
 
     @FXML
     private TreeView<String> commandTree;
+    @FXML
+    private TableView<ObjectData> mainVarTable;
+    @FXML
+    private TableColumn<ObjectData, String> varName;
+    @FXML
+    private TableColumn<ObjectData, String> varValue;
+
+    @Subscribe
+    private void onExecutionComplete(ExecutionCompletedEvent event) {
+        mainVarTable.getItems().clear();
+        List<ObjectData> vars = memorySpace.listCurrentScopeVariables()
+                .map(ObjectWrapper::getData)
+                .filter(Objects::nonNull)
+                .filter(obj -> StringUtils.isNotEmpty(obj.getName()))
+                .sorted(Comparator.comparing(ObjectData::getName))
+                .limit(100)
+                .collect(Collectors.toList());
+        mainVarTable.getItems().addAll(vars);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        varName.setCellValueFactory(val -> new SimpleStringProperty(val.getValue().getName()));
+        varValue.setCellValueFactory(val -> {
+            String text = "";
+            ObjectData data = val.getValue();
+            if (data instanceof Scalar) {
+                text = data.toString();
+            } else if (data instanceof Sizeable) {
+                text = ((Sizeable) data).formatToString();
+            }
+            return new SimpleStringProperty(text);
+        });
+    }
 
     @Override
     public void customInit() {
@@ -89,6 +133,11 @@ public class MainController implements CustomInitializeble {
     @Autowired
     public void setGuiContext(GuiContext guiContext) {
         this.guiContext = guiContext;
+    }
+
+    @Autowired
+    public void setMemorySpace(MemorySpace memorySpace) {
+        this.memorySpace = memorySpace;
     }
 
     @Autowired
