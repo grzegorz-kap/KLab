@@ -58,12 +58,12 @@ public class GuiContext implements ApplicationContextAware, InitializingBean {
         FXMLLoader loader = new FXMLLoader(App.class.getResource(url), null, null, applicationContext::getBean);
         try {
             T load = loader.load();
+            U controller = loader.getController();
             if (controllerConsumer != null) {
-                U controller = loader.getController();
                 controllerConsumer.accept(controller);
-                if (controller instanceof CustomInitializeble) {
-                    ((CustomInitializeble) controller).customInit();
-                }
+            }
+            if (controller instanceof CustomInitializeble) {
+                ((CustomInitializeble) controller).customInit();
             }
             return load;
         } catch (IOException e) {

@@ -29,11 +29,31 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <SplitPane dividerPositions="0.1998" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <SplitPane dividerPositions="0.19965576592082615, 0.7555938037865749" AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                         <fx:include maxWidth="300.0" source="script_list.fxml" BorderPane.alignment="CENTER_RIGHT"/>
                         <fx:include source="console.fxml" BorderPane.alignment="CENTER"/>
+                        <AnchorPane prefHeight="480.0" maxWidth="300">
+                            <children>
+                                <SplitPane dividerPositions="0.6974789915966386" layoutX="-22.0" layoutY="118.0"
+                                           orientation="VERTICAL" prefHeight="478.0" prefWidth="130.0"
+                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <items>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0"
+                                                    prefWidth="160.0"/>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                            <children>
+                                                <TreeView fx:id="commandTree" prefHeight="200.0" prefWidth="200.0"
+                                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </items>
+                                </SplitPane>
+                            </children>
+                        </AnchorPane>
                     </items>
                 </SplitPane>
             </children>
