@@ -10,6 +10,7 @@ import com.klab.gui.model.Style;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
+import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import javafx.application.Platform;
@@ -88,6 +89,17 @@ public class ScriptEditorController implements Initializable {
         String scriptName = FilenameUtils.removeExtension(event.getData());
         Tab tab = scriptTabFactory.get(scriptName, scriptPane).getTab();
         scriptPane.getSelectionModel().select(tab);
+    }
+
+    @Subscribe
+    public void onScriptChangeEvent(ScriptChangeEvent event) {
+        if (event.getType() == ScriptChangeEvent.Type.DELETED) {
+            String name = FilenameUtils.removeExtension(event.getData());
+            ScriptContext context = scriptTabFactory.removeFromContext(name);
+            if (context != null) {
+                Platform.runLater(() -> scriptPane.getTabs().remove(context.getTab()));
+            }
+        }
     }
 
     @Subscribe

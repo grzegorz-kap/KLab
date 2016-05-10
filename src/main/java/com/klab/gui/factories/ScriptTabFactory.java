@@ -9,4 +9,6 @@ public interface ScriptTabFactory {
     ScriptContext get(String scriptName, TabPane scriptPane, boolean noCreate);
 
     void initializeScriptPane(TabPane scriptPane);
+
+    ScriptContext removeFromContext(String data);
 }

@@ -49,10 +49,33 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
                 scriptPane.getTabs().remove(t.getTab());
                 scripts.remove(scriptName);
             });
+            context.setOnDeleteHandler(this::handleOnDelete);
+            context.setOnRenameHandler(this::handleOnRename);
             scripts.put(scriptName, context);
             scriptPane.getTabs().add(context.getTab());
         }
         return context;
+    }
+
+    @Override
+    public ScriptContext removeFromContext(String data) {
+        return scripts.remove(data);
+    }
+
+    private void handleOnDelete(ScriptContext scriptContext) {
+        try {
+            scriptViewService.deleteScript(scriptContext.getScriptId());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void handleOnRename(ScriptContext scriptContext) {
+        try {
+            scriptViewService.renameScript(scriptContext.getScriptId());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -12,4 +12,8 @@ public interface ScriptFileService {
     List<Path> listScripts() throws IOException;
 
     boolean exists(String name);
+
+    void rename(String oldName, String newName) throws IOException;
+
+    boolean removeScript(String value) throws IOException;
 }

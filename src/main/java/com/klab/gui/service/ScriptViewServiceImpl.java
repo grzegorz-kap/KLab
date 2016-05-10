@@ -4,6 +4,8 @@ import com.klab.common.EventService;
 import com.klab.gui.events.OpenScriptEvent;
 import com.klab.interpreter.core.code.ScriptFileService;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
 import org.slf4j.Logger;
@@ -12,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +58,7 @@ class ScriptViewServiceImpl implements ScriptViewService {
 
     @Override
     public void createNewScriptDialog() throws IOException {
-        TextInputDialog dialog = new TextInputDialog("script" + System.currentTimeMillis() + ".m");
+        TextInputDialog dialog = new TextInputDialog("script" + System.currentTimeMillis());
         dialog.setTitle("Script name");
         dialog.setHeaderText("Script or function name");
         dialog.setContentText("Name:");
@@ -70,6 +69,27 @@ class ScriptViewServiceImpl implements ScriptViewService {
             }
             eventService.publish(new OpenScriptEvent(name, this));
         }
+    }
+
+    @Override
+    public Optional<String> renameScript(String oldName) throws IOException {
+        TextInputDialog dialog = new TextInputDialog(oldName);
+        dialog.setTitle("Change script name");
+        dialog.setHeaderText("New name for script: '" + oldName + "'");
+        dialog.setContentText("Name: ");
+        Optional<String> name = dialog.showAndWait();
+        if (name.isPresent()) {
+            scriptFileService.rename(oldName, name.get());
+        }
+        return name;
+    }
+
+    @Override
+    public boolean deleteScript(String value) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure to remove'" + value + "'?");
+        alert.setTitle("Confirm script delete");
+        ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+        return result == ButtonType.OK && scriptFileService.removeScript(value);
     }
 
     @Autowired
