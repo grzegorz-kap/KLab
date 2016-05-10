@@ -9,6 +9,7 @@ import com.klab.gui.model.CommandHistoryIterator;
 import com.klab.gui.service.CommandHistoryService;
 import com.klab.interpreter.core.ExecutionCommand;
 import com.klab.interpreter.core.Interpreter;
+import com.klab.interpreter.core.events.ClearConsoleEvent;
 import com.klab.interpreter.core.events.PrintEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -76,6 +77,11 @@ public class ConsoleController implements InitializingBean {
     @Subscribe
     public void onCommandAppendEvent(AppendCommandEvent event) {
         commandInput.appendText(StringUtils.appendIfMissing(event.getData(), "\n"));
+    }
+
+    @Subscribe
+    public void onClearConsoleEvent(ClearConsoleEvent event) {
+        Platform.runLater(consoleOutput::clear);
     }
 
     private void onArrowDown(KeyEvent keyEvent) {
