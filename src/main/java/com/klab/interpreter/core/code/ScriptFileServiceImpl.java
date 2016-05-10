@@ -51,6 +51,13 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     }
 
     @Override
+    public boolean exists(String name) {
+        name = FilenameUtils.removeExtension(name);
+        Path path = Paths.get(workingDirectory, String.format("%s%s", name, extension));
+        return Files.exists(path);
+    }
+
+    @Override
     public String readScript(String scriptName) throws IOException {
         scriptName = FilenameUtils.removeExtension(scriptName);
         Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, extension));

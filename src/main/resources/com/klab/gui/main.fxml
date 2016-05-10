@@ -9,6 +9,7 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
+                        <MenuItem mnemonicParsing="false" text="New script" onAction="#newScript"/>
                         <MenuItem mnemonicParsing="false" text="Close"/>
                     </items>
                 </Menu>
@@ -48,10 +49,10 @@
                                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
-                                                        <TableColumn editable="false" sortable="false" fx:id="varName"
-                                                                     prefWidth="75.0" text="Name"/>
-                                                        <TableColumn editable="false" sortable="false" fx:id="varValue"
-                                                                     prefWidth="75.0" text="Value"/>
+                                                        <TableColumn fx:id="varName" editable="false" prefWidth="75.0"
+                                                                     sortable="false" text="Name"/>
+                                                        <TableColumn fx:id="varValue" editable="false" prefWidth="75.0"
+                                                                     sortable="false" text="Value"/>
                                                     </columns>
                                                 </TableView>
                                             </children>

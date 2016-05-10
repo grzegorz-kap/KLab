@@ -7,6 +7,7 @@ import com.klab.gui.events.OpenScriptEvent;
 import com.klab.gui.factories.ScriptTabFactory;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.model.Style;
+import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
@@ -34,6 +35,7 @@ public class ScriptEditorController implements Initializable {
     private ScriptTabFactory scriptTabFactory;
     private BreakpointService breakpointService;
     private EventService eventService;
+    private ScriptViewService scriptViewService;
 
     // @FXML
     public TabPane scriptPane;
@@ -63,6 +65,10 @@ public class ScriptEditorController implements Initializable {
                     .build(this);
             eventService.publish(event);
         }
+    }
+
+    public void newScript(ActionEvent actionEvent) throws IOException {
+        scriptViewService.createNewScriptDialog();
     }
 
     @Subscribe
@@ -115,5 +121,10 @@ public class ScriptEditorController implements Initializable {
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    @Autowired
+    public void setScriptViewService(ScriptViewService scriptViewService) {
+        this.scriptViewService = scriptViewService;
     }
 }

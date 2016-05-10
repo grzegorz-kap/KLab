@@ -10,13 +10,16 @@ import com.klab.gui.events.NewCommandEvent;
 import com.klab.gui.events.OpenScriptEvent;
 import com.klab.gui.model.Command;
 import com.klab.gui.service.CommandHistoryService;
+import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.commons.memory.ObjectWrapper;
+import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.scalar.Scalar;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -39,7 +42,9 @@ import java.util.stream.Collectors;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MainController implements CustomInitializeble, Initializable {
     private EventService eventService;
+    private ScriptFileService scriptFileService;
     private CommandHistoryService commandHistoryService;
+    private ScriptViewService scriptViewService;
     private MemorySpace memorySpace;
     private GuiContext guiContext;
     private TreeItem<String> nowHistory = new TreeItem<>("Teraz");
@@ -113,6 +118,10 @@ public class MainController implements CustomInitializeble, Initializable {
         }
     }
 
+    public void newScript(ActionEvent actionEvent) throws IOException {
+        scriptViewService.createNewScriptDialog();
+    }
+
     @Subscribe
     public void onNewCommand(NewCommandEvent newCommandEvent) {
         if (StringUtils.isNoneBlank(newCommandEvent.getData())) {
@@ -143,5 +152,15 @@ public class MainController implements CustomInitializeble, Initializable {
     @Autowired
     public void setCommandHistoryService(CommandHistoryService commandHistoryService) {
         this.commandHistoryService = commandHistoryService;
+    }
+
+    @Autowired
+    public void setScriptFileService(ScriptFileService scriptFileService) {
+        this.scriptFileService = scriptFileService;
+    }
+
+    @Autowired
+    public void setScriptViewService(ScriptViewService scriptViewService) {
+        this.scriptViewService = scriptViewService;
     }
 }

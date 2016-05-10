@@ -18,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
 import java.util.stream.IntStream;
 
 @Component
@@ -32,9 +33,9 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
 
     @Override
     public void customInit() {
-        try {
-            Resource resource = resourceLoader.getResource("classpath:html/code-profiling-table.html");
-            String html = IOUtils.toString(resource.getInputStream(), "UTF-8");
+        Resource resource = resourceLoader.getResource("classpath:html/code-profiling-table.html");
+        try (InputStream in = resource.getInputStream()) {
+            String html = IOUtils.toString(in, "UTF-8");
             codeListening.getEngine().loadContent(html.replace("{{content}}", createTableRows()));
         } catch (Exception ex) {
             throw new RuntimeException(ex);

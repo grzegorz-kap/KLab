@@ -10,4 +10,6 @@ public interface ScriptFileService {
     void writeScript(String scriptName, String content) throws IOException;
 
     List<Path> listScripts() throws IOException;
+
+    boolean exists(String name);
 }
