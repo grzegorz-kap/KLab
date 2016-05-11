@@ -13,6 +13,7 @@ import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.matrix.Matrix;
+import com.klab.interpreter.types.scalar.Scalar;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -32,7 +33,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -116,7 +120,10 @@ public class VariableController implements Initializable {
             });
         }
 
-        String name = String.format("%s (%d x %d)", variable.getData().getName(), rows, columns);
+
+        String value = variable.getData() instanceof Scalar ? variable.getData().toString() :
+                String.format("%d x %d", rows, columns);
+        String name = String.format("%s (%s)", variable.getData().getName(), value);
         TitledPane titledPane = new TitledPane(name, tableView);
         titledPane.prefWidthProperty().bind(variablesBox.widthProperty().subtract(15));
         titledPane.setDisable(cells > maxCellsToDisplay);

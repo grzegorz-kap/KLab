@@ -34,7 +34,6 @@ public class ConsoleController implements InitializingBean {
 
     @FXML
     private CodeArea commandInput;
-
     @FXML
     private CodeArea consoleOutput;
 
