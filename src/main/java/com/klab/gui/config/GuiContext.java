@@ -33,6 +33,7 @@ public class GuiContext implements ApplicationContextAware, InitializingBean {
     }
 
     public void showScriptEditor() {
+        editorStage.setMaximized(true);
         showToFront(editorStage);
     }
 
