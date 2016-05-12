@@ -46,6 +46,16 @@
                                 </ImageView>
                             </graphic>
                         </Button>
+                        <Button fx:id="runWithProfilingButton" mnemonicParsing="false" onAction="#runWithProfiling">
+                            <tooltip>
+                                <Tooltip text="Run with profiling"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../../../img/run-profiling.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                         <Button fx:id="releaseBreakpointButton" disable="true" mnemonicParsing="false"
                                 ButtonBar.buttonData="LEFT">
                             <tooltip>
@@ -57,17 +67,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="runWithProfilingButton" mnemonicParsing="false" onAction="#runWithProfiling">
-                            <tooltip>
-                                <Tooltip text="Run with profiling"/>
-                            </tooltip>
-                            <graphic>
-                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                                    <Image url="@../../../img/run-profiling.png"/>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button mnemonicParsing="false" disable="true">
+                        <Button disable="true" mnemonicParsing="false">
                             <tooltip>
                                 <Tooltip text="Step over"/>
                             </tooltip>
@@ -88,9 +88,10 @@
             <items>
                 <TabPane fx:id="scriptPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                 </TabPane>
-                <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0">
+                <SplitPane dividerPositions="0.29172714078374457, 0.7242380261248186" prefHeight="200.0"
+                           prefWidth="200.0">
                     <items>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane prefHeight="222.0" prefWidth="252.0">
                             <children>
                                 <TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="Console"
                                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -108,7 +109,7 @@
                                         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="196.0" prefWidth="58.0">
                                         <children>
                                             <fx:include source="variable-list.fxml" AnchorPane.bottomAnchor="0.0"
                                                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -117,6 +118,24 @@
                                     </AnchorPane>
                                 </content>
                             </TitledPane>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                            <children>
+                                <TitledPane animated="false" collapsible="false" text="Micro-instructions"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <ListView fx:id="microInstructionList" layoutX="-15.0" layoutY="-2.0"
+                                                          prefHeight="200.0" prefWidth="200.0"
+                                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </TitledPane>
+                            </children>
                         </AnchorPane>
                     </items>
                 </SplitPane>

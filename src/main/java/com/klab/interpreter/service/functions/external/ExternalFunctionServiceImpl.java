@@ -1,5 +1,6 @@
 package com.klab.interpreter.service.functions.external;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.core.code.ScriptFileService;
@@ -7,15 +8,19 @@ import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.debug.BreakpointUpdatedEvent;
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.service.functions.model.CallInstruction;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Service
 class ExternalFunctionServiceImpl implements ExternalFunctionService {
@@ -24,12 +29,25 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     private BreakpointService breakpointService;
     private ExternalFunctionParser externalFunctionParser;
     private Map<FunctionMapKey, ExternalFunction> functionsCache = Maps.newHashMap();
+    private List<Consumer<ExternalFunction>> loadListeners = Lists.newArrayList();
+    private TaskExecutor taskExecutor;
 
     @Override
     public ExternalFunction loadFunction(CallInstruction cl) {
         FunctionMapKey key = new FunctionMapKey(cl.getName(), cl.getArgumentsNumber(), cl.getExpectedOutputSize());
         ExternalFunction externalFunction = functionsCache.get(key);
         return externalFunction != null ? externalFunction : read(key, cl);
+    }
+
+    @Override
+    public Code loadFunction(String name) {
+        Map.Entry<FunctionMapKey, ExternalFunction> entry = functionsCache.entrySet().stream()
+                .filter(e -> e.getKey().name.equals(name)).findFirst().orElse(null);
+        if (entry != null) {
+            return entry.getValue().getCode();
+        } else {
+            return null;
+        }
     }
 
     private ExternalFunction read(FunctionMapKey key, CallInstruction cl) {
@@ -42,12 +60,17 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
             e.getCode().setSourceId(key.name);
             breakpointService.updateBreakpoints(e.getCode());
             functionsCache.put(key, e);
-            LOGGER.info("Function \n{}", e);
+            taskExecutor.execute(() -> loadListeners.forEach(c -> c.accept(e)));
             return e;
         } catch (IOException e) {
             LOGGER.error("Error reading function '{}'. {}", key.name, e);
         }
         throw new UnsupportedOperationException(); // TODO execption
+    }
+
+    @Override
+    public void addLoadListener(Consumer<ExternalFunction> listener) {
+        loadListeners.add(listener);
     }
 
     @Subscribe
@@ -86,5 +109,10 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     @Autowired
     public void setBreakpointService(BreakpointService breakpointService) {
         this.breakpointService = breakpointService;
+    }
+
+    @Autowired
+    public void setTaskExecutor(TaskExecutor taskExecutor) {
+        this.taskExecutor = taskExecutor;
     }
 }
