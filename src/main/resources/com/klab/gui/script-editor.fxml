@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0"
             prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
@@ -31,11 +32,51 @@
 
                 <ToolBar>
                     <items>
+                        <Button fx:id="runButton" accessibleHelp="Run" mnemonicParsing="false"
+                                onAction="#runWithoutProfiling">
+                            <tooltip>
+                                <Tooltip text="Run"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true"
+                                           visible="true">
+                                    <image>
+                                        <Image url="@../../../img/run.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                         <Button fx:id="releaseBreakpointButton" disable="true" mnemonicParsing="false"
-                                text="Release breakpoint" ButtonBar.buttonData="LEFT"/>
-                        <Button fx:id="runButton" mnemonicParsing="false" onAction="#runWithoutProfiling" text="Run"/>
-                        <Button fx:id="runWithProfilingButton" mnemonicParsing="false" onAction="#runWithProfiling"
-                                text="Run with profiling"/>
+                                ButtonBar.buttonData="LEFT">
+                            <tooltip>
+                                <Tooltip text="Release breakpoint"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../../../img/release.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="runWithProfilingButton" mnemonicParsing="false" onAction="#runWithProfiling">
+                            <tooltip>
+                                <Tooltip text="Run with profiling"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../../../img/run-profiling.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" disable="true">
+                            <tooltip>
+                                <Tooltip text="Step over"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../../../img/step-over.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                     </items>
                 </ToolBar>
             </children>
