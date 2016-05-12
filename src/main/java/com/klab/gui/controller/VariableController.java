@@ -145,7 +145,7 @@ public class VariableController implements Initializable {
         Variable<TitledPane> var = variablesMap.remove(variable);
         if (var != null) {
             variablesBox.getChildren().remove(var.getNode());
-            expandedPanes.remove(var.getNode());
+            expandedPanes.remove(var.getNode().getText());
         }
     }
 
