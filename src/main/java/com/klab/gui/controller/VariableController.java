@@ -82,9 +82,9 @@ public class VariableController implements Initializable {
                 .filter(objectWrapper -> Objects.nonNull(objectWrapper.getData()))
                 .filter(objectWrapper -> Objects.nonNull(objectWrapper.getData().getName()))
                 .map(this::createNew)
-                .sorted(Comparator.comparing(var -> var.getNode().getText()))
                 .peek(var -> variablesBox.getChildren().add(var.getNode()))
                 .forEach(var -> variablesMap.put(var.getObjectWrapper(), var));
+
         currentScope = memorySpace.scopeId();
     }
 

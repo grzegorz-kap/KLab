@@ -154,7 +154,7 @@ public class ScriptEditorController implements Initializable {
             releaseBreakpointButton.setDisable(false);
             scriptPane.getSelectionModel().select(context.getTab());
             StyledTextArea<Style> area = context.getCodeArea();
-            area.setStyle(line, () -> "-fx-font-weight: bold");
+            area.setStyle(line, () -> "-fx-background-fill: yellow");
         });
     }
 
