@@ -18,4 +18,6 @@ public interface BreakpointService {
     void block(Breakpoint breakpoint);
 
     void release(Breakpoint breakpoint);
+
+    void releaseStepOver(Breakpoint breakpoint);
 }

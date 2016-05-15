@@ -6,7 +6,6 @@ import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.events.OpenScriptEvent;
 import com.klab.gui.factories.ScriptTabFactory;
 import com.klab.gui.model.ScriptContext;
-import com.klab.gui.model.Style;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.code.ScriptService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
@@ -25,7 +24,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import org.apache.commons.io.FilenameUtils;
-import org.fxmisc.richtext.StyledTextArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +52,7 @@ public class ScriptEditorController implements Initializable {
     public Button runButton;
     public Button releaseBreakpointButton;
     public Button runWithProfilingButton;
+    public Button stepOverButton;
     public ListView<Instruction> microInstructionList;
 
     @Override
@@ -143,18 +142,29 @@ public class ScriptEditorController implements Initializable {
     @Subscribe
     public void onBreakpointReachedEvent(BreakpointReachedEvent event) {
         Platform.runLater(() -> {
-            ScriptContext context = scriptTabFactory.get(event.getData().getSourceId(), scriptPane);
-            int line = event.getData().getAddress().getLine() - 1;
-            releaseBreakpointButton.setOnMouseClicked(ev -> {
-                breakpointService.release(event.getData());
+            ScriptContext context = scriptTabFactory.get(event.getData().getScriptId(), scriptPane);
+            int line = event.getData().getLine() - 1;
+
+            Runnable release = () -> {
                 releaseBreakpointButton.setDisable(true);
+                stepOverButton.setDisable(true);
                 context.getCodeArea().clearStyle(line);
+            };
+
+            releaseBreakpointButton.setOnMouseClicked(ev -> {
+                release.run();
+                breakpointService.release(event.getData());
+            });
+
+            stepOverButton.setOnMouseClicked(ev -> {
+                release.run();
+                breakpointService.releaseStepOver(event.getData());
             });
 
             releaseBreakpointButton.setDisable(false);
+            stepOverButton.setDisable(false);
             scriptPane.getSelectionModel().select(context.getTab());
-            StyledTextArea<Style> area = context.getCodeArea();
-            area.setStyle(line, () -> "-fx-background-fill: yellow");
+            context.getCodeArea().setStyle(line, () -> "-fx-background-fill: yellow");
         });
     }
 

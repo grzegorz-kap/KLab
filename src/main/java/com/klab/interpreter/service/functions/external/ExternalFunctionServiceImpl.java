@@ -92,7 +92,7 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
     @Subscribe
     public void onBreakpointListChanged(BreakpointUpdatedEvent event) {
         functionsCache.values().stream()
-                .filter(fun -> fun.getName().equals(event.getData().getSourceId()))
+                .filter(fun -> fun.getName().equals(event.getData().getScriptId()))
                 .forEach(fun -> breakpointService.updateBreakpoints(fun.getCode()));
     }
 

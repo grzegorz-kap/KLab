@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
@@ -31,29 +30,23 @@ public class BreakpointServiceImpl implements BreakpointService {
     @Override
     public void block(Breakpoint breakpoint) {
         Interpreter.MAIN_LOCK.unlock();
-        breakpoint.setLock(new ReentrantLock());
-        breakpoint.setCondition(breakpoint.getLock().newCondition());
         eventService.publish(new BreakpointReachedEvent(breakpoint, this));
         try {
-            breakpoint.getLock().lock();
-            while (!breakpoint.isReleased())
-                breakpoint.getCondition().await();
+            breakpoint.block();
         } catch (Exception ignored) {
         } finally {
-            breakpoint.getLock().unlock();
             Interpreter.MAIN_LOCK.lock();
         }
     }
 
     @Override
+    public void releaseStepOver(Breakpoint breakpoint) {
+        release(breakpoint);
+    }
+
+    @Override
     public void release(Breakpoint breakpoint) {
-        try {
-            breakpoint.getLock().lock();
-            breakpoint.setReleased(true);
-            breakpoint.getCondition().signalAll();
-        } finally {
-            breakpoint.getLock().unlock();
-        }
+        breakpoint.release();
     }
 
     @Override
@@ -92,7 +85,7 @@ public class BreakpointServiceImpl implements BreakpointService {
         } else {
             addresses.add(new BreakpointAddress(line));
         }
-        eventService.publish(new BreakpointUpdatedEvent(new Breakpoint(scriptId, line), this));
+        eventService.publish(new BreakpointUpdatedEvent(new BreakpointImpl(scriptId, line, null), this));
         LOGGER.info("ADDED: {} | {}", scriptId, line);
     }
 
@@ -101,7 +94,7 @@ public class BreakpointServiceImpl implements BreakpointService {
         Set<BreakpointAddress> addresses = breakPoints.get(scriptId);
         boolean removed = isNotEmpty(addresses) && addresses.removeIf(address -> address.getLine().equals(line));
         if (removed) {
-            eventService.publish(new BreakpointUpdatedEvent(new Breakpoint(scriptId, line), this));
+            eventService.publish(new BreakpointUpdatedEvent(new BreakpointImpl(scriptId, line, null), this));
             LOGGER.info("REMOVED: {} | {}", scriptId, line);
             if (addresses.isEmpty()) {
                 breakPoints.remove(scriptId);

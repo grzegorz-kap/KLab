@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.debug.Breakpoint;
+import com.klab.interpreter.debug.BreakpointImpl;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.debug.BreakpointUpdatedEvent;
 import com.klab.interpreter.execution.InstructionAction;
@@ -52,7 +53,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
                 throw new UnsupportedInstructionException(UNEXPECTED_INSTRUCTION_MESSAGE, instruction);
             }
             if (instruction.isBreakpoint()) {
-                Breakpoint breakpoint = new Breakpoint(instructionPointer.getSourceId(), instruction.getCodeAddress().getLine());
+                Breakpoint breakpoint = new BreakpointImpl(instructionPointer.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
                 breakpointService.block(breakpoint);
             }
             handleAction.handle(instructionHandler, instructionPointer);

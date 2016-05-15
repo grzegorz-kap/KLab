@@ -67,7 +67,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button disable="true" mnemonicParsing="false">
+                        <Button fx:id="stepOverButton" disable="true" mnemonicParsing="false">
                             <tooltip>
                                 <Tooltip text="Step over"/>
                             </tooltip>
