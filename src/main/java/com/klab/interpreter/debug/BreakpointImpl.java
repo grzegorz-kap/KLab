@@ -1,5 +1,6 @@
 package com.klab.interpreter.debug;
 
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.translate.model.Instruction;
 
 import java.util.concurrent.locks.Condition;
@@ -13,6 +14,7 @@ public class BreakpointImpl implements Breakpoint {
     private Condition condition;
     private Integer lineNumber;
     private Instruction instruction;
+    private Code code;
 
     public BreakpointImpl(String sourceId, Integer lineNumber, Instruction instruction) {
         this.sourceId = sourceId;
@@ -25,6 +27,7 @@ public class BreakpointImpl implements Breakpoint {
         lock = new ReentrantLock();
         condition = lock.newCondition();
         lock.lock();
+        released = false;
         try {
             while (!released) {
                 condition.await();
@@ -87,5 +90,15 @@ public class BreakpointImpl implements Breakpoint {
     @Override
     public String getScriptId() {
         return sourceId;
+    }
+
+    @Override
+    public Code getCode() {
+        return code;
+    }
+
+    @Override
+    public void setCode(Code code) {
+        this.code = code;
     }
 }

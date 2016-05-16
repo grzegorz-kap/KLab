@@ -24,6 +24,7 @@ public class InstructionPointer {
     }
 
     public void restorePreviousCode() {
+        code.setStepOver(null);
         code = codeDeque.removeFirst();
         address = addressDeque.removeFirst();
     }

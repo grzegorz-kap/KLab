@@ -37,6 +37,9 @@ public class InterpreterImpl implements Interpreter {
         }
         try {
             interpreterService.startExecution(cmd);
+
+        } catch (Exception ex) {
+            LOGGER.error("", ex);
         } finally {
             Interpreter.MAIN_LOCK.unlock();
             if (events) {

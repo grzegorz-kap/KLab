@@ -3,12 +3,8 @@ package com.klab.interpreter.execution.service;
 import com.google.common.eventbus.Subscribe;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
-import com.klab.interpreter.debug.Breakpoint;
-import com.klab.interpreter.debug.BreakpointImpl;
-import com.klab.interpreter.debug.BreakpointService;
-import com.klab.interpreter.debug.BreakpointUpdatedEvent;
+import com.klab.interpreter.debug.*;
 import com.klab.interpreter.execution.InstructionAction;
-import com.klab.interpreter.execution.exception.UnsupportedInstructionException;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
 import com.klab.interpreter.profiling.ProfilingServiceImpl;
 import com.klab.interpreter.translate.model.Instruction;
@@ -39,25 +35,34 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
 
     @Subscribe
     public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
-        instructionPointer.codeStream().forEach(breakpointService::updateBreakpoints);
-        breakpointService.updateBreakpoints(instructionPointer.getCode());
+        ip.codeStream().forEach(breakpointService::updateBreakpoints);
+        breakpointService.updateBreakpoints(ip.getCode());
     }
 
     @Override
     public void start() {
         memorySpace.reserve(identifierMapper.mainMappingsSize());
-        while (!instructionPointer.isCodeEnd()) {
-            Instruction instruction = instructionPointer.currentInstruction();
+
+        while (!ip.isCodeEnd()) {
+            Instruction instruction = ip.currentInstruction();
             InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
-            if (instructionHandler == null) {
-                throw new UnsupportedInstructionException(UNEXPECTED_INSTRUCTION_MESSAGE, instruction);
-            }
             if (instruction.isBreakpoint()) {
-                Breakpoint breakpoint = new BreakpointImpl(instructionPointer.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
+                ip.getCode().setStepOver(null);
+                breakpointService.block(instruction.getBreakpoint());
+            } else if (ip.getCode().getStepOver() != null && ip.getCode().getStepOver().isBreakpoint(instruction)) {
+                ip.getCode().setStepOver(null);
+                BreakpointImpl breakpoint = new BreakpointImpl(ip.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
+                breakpoint.setCode(ip.getCode());
                 breakpointService.block(breakpoint);
             }
-            handleAction.handle(instructionHandler, instructionPointer);
+            handleAction.handle(instructionHandler, ip);
         }
+    }
+
+    @Subscribe
+    private void onStepOverEvent(StepOverEvent event) {
+        Breakpoint breakpoint = event.getData();
+        ip.getCode().setStepOver(new StepOver(breakpoint.getLine()));
     }
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.klab.interpreter.debug;
 
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.translate.model.Instruction;
 
 public interface Breakpoint {
@@ -16,4 +17,8 @@ public interface Breakpoint {
     void release();
 
     void block() throws InterruptedException;
+
+    Code getCode();
+
+    void setCode(Code code);
 }

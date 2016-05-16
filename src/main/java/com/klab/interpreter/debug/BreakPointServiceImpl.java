@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.klab.common.EventService;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.execution.model.Code;
+import com.klab.interpreter.execution.service.ExecutionService;
 import com.klab.interpreter.translate.model.Instruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 public class BreakpointServiceImpl implements BreakpointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
+    private ExecutionService executionService;
     private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
 
     @Override
@@ -41,6 +43,7 @@ public class BreakpointServiceImpl implements BreakpointService {
 
     @Override
     public void releaseStepOver(Breakpoint breakpoint) {
+        eventService.publish(new StepOverEvent(breakpoint, this));
         release(breakpoint);
     }
 
@@ -51,7 +54,7 @@ public class BreakpointServiceImpl implements BreakpointService {
 
     @Override
     public void updateBreakpoints(Code code) {
-        code.instructions().forEach(instruction -> instruction.setBreakpoint(false));
+        code.instructions().forEach(instruction -> instruction.setBreakpoint(null));
         Set<BreakpointAddress> addresses = firstNonNull(breakPoints.get(code.getSourceId()), emptySet());
         for (BreakpointAddress address : addresses) {
             Instruction instr = code.instructions()
@@ -59,7 +62,9 @@ public class BreakpointServiceImpl implements BreakpointService {
                     .filter(instruction -> address.getLine().equals(instruction.getCodeAddress().getLine()))
                     .findFirst().orElse(null);
             if (nonNull(instr)) {
-                instr.setBreakpoint(true);
+                BreakpointImpl breakpoint = new BreakpointImpl(code.getSourceId(), instr.getCodeAddress().getLine(), instr);
+                breakpoint.setCode(code);
+                instr.setBreakpoint(breakpoint);
                 LOGGER.info("Added breakpoints {} || {}", code.getSourceId(), instr);
             }
         }
@@ -107,5 +112,10 @@ public class BreakpointServiceImpl implements BreakpointService {
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    @Autowired
+    public void setExecutionService(ExecutionService executionService) {
+        this.executionService = executionService;
     }
 }

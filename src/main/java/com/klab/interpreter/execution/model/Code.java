@@ -1,5 +1,6 @@
 package com.klab.interpreter.execution.model;
 
+import com.klab.interpreter.debug.StepOver;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.MacroInstruction;
@@ -13,6 +14,7 @@ public class Code implements Iterable<Instruction> {
     private List<Instruction> instructions = new ArrayList<>();
     private String sourceCode;
     private String sourceId;
+    private StepOver stepOver;
 
     @Override
     public Iterator<Instruction> iterator() {
@@ -74,5 +76,13 @@ public class Code implements Iterable<Instruction> {
 
     public List<Instruction> getInstructions() {
         return instructions;
+    }
+
+    public StepOver getStepOver() {
+        return stepOver;
+    }
+
+    public void setStepOver(StepOver stepOver) {
+        this.stepOver = stepOver;
     }
 }

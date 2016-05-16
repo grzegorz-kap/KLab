@@ -32,10 +32,8 @@ public class ConsoleController implements InitializingBean {
     private CommandHistoryService commandHistoryService;
     private CommandHistoryIterator commandHistoryIterator;
 
-    @FXML
-    private CodeArea commandInput;
-    @FXML
-    private CodeArea consoleOutput;
+    public CodeArea commandInput;
+    public CodeArea consoleOutput;
 
     @Override
     public void afterPropertiesSet() throws Exception {
