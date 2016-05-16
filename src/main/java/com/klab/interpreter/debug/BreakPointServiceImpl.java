@@ -2,10 +2,12 @@ package com.klab.interpreter.debug;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
 import com.klab.interpreter.core.Interpreter;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
+import com.klab.interpreter.core.events.ReleaseBreakpointsEvent;
 import com.klab.interpreter.execution.model.Code;
-import com.klab.interpreter.execution.service.ExecutionService;
 import com.klab.interpreter.translate.model.Instruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +28,15 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 public class BreakpointServiceImpl implements BreakpointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
-    private ExecutionService executionService;
     private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
+    private Set<Breakpoint> blocked = Sets.newHashSet();
 
     @Override
     public void block(Breakpoint breakpoint) {
         Interpreter.MAIN_LOCK.unlock();
         eventService.publish(new BreakpointReachedEvent(breakpoint, this));
         try {
+            blocked.add(breakpoint);
             breakpoint.block();
         } catch (Exception ignored) {
         } finally {
@@ -49,7 +52,20 @@ public class BreakpointServiceImpl implements BreakpointService {
 
     @Override
     public void release(Breakpoint breakpoint) {
+        boolean remove = blocked.remove(breakpoint);
         breakpoint.release();
+    }
+
+    @Subscribe
+    public void onStopEvent(ReleaseBreakpointsEvent event) {
+        blocked.stream().filter(breakpoint -> !breakpoint.isReleased())
+                .forEach(Breakpoint::release);
+        blocked.clear();
+    }
+
+    @Subscribe
+    public void onExecutionStart(ExecutionStartedEvent event) {
+        blocked.clear();
     }
 
     @Override
@@ -112,10 +128,5 @@ public class BreakpointServiceImpl implements BreakpointService {
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
-    }
-
-    @Autowired
-    public void setExecutionService(ExecutionService executionService) {
-        this.executionService = executionService;
     }
 }

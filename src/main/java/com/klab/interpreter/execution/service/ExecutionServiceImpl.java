@@ -1,8 +1,11 @@
 package com.klab.interpreter.execution.service;
 
 import com.google.common.eventbus.Subscribe;
+import com.klab.common.EventService;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
+import com.klab.interpreter.core.events.ReleaseBreakpointsEvent;
+import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.*;
 import com.klab.interpreter.execution.InstructionAction;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
@@ -22,6 +25,8 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private InstructionAction handleAction = InstructionHandler::handle;
     private ProfilingServiceImpl profilingService;
     private BreakpointService breakpointService;
+    private EventService eventService;
+    private boolean stop = false;
 
     @Override
     public void enableProfiling() {
@@ -42,8 +47,8 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     @Override
     public void start() {
         memorySpace.reserve(identifierMapper.mainMappingsSize());
-
-        while (!ip.isCodeEnd()) {
+        stop = false;
+        while (!ip.isCodeEnd() && !this.stop) {
             Instruction instruction = ip.currentInstruction();
             InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
             if (instruction.isBreakpoint()) {
@@ -57,6 +62,12 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
             }
             handleAction.handle(instructionHandler, ip);
         }
+    }
+
+    @Subscribe
+    private void onExecStop(StopExecutionEvent event) {
+        this.stop = true;
+        eventService.publish(new ReleaseBreakpointsEvent(this));
     }
 
     @Subscribe
@@ -83,5 +94,10 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     @Autowired
     public void setBreakpointService(BreakpointService breakpointService) {
         this.breakpointService = breakpointService;
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }

@@ -1,11 +1,13 @@
 package com.klab.gui.factories;
 
 import com.google.common.collect.Maps;
+import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.code.ScriptFileService;
+import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -76,6 +78,13 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Subscribe
+    private void onStopExecution(StopExecutionEvent event) {
+        scripts.values().stream()
+                .map(ScriptContext::getCodeArea)
+                .forEach(codeArea -> codeArea.clearStyle(0, codeArea.getText().length()));
     }
 
     @Override

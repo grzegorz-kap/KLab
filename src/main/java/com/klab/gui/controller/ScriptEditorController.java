@@ -11,6 +11,7 @@ import com.klab.interpreter.core.code.ScriptService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
+import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.execution.model.Code;
@@ -54,6 +55,7 @@ public class ScriptEditorController implements Initializable {
     public Button runWithProfilingButton;
     public Button stepOverButton;
     public ListView<Instruction> microInstructionList;
+    public Button stopButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -109,16 +111,22 @@ public class ScriptEditorController implements Initializable {
         scriptViewService.createNewScriptDialog();
     }
 
+    public void stopExecution(ActionEvent actionEvent) {
+        eventService.publish(new StopExecutionEvent(this));
+    }
+
     @Subscribe
     public void onExecutionStartedEvent(ExecutionStartedEvent event) {
         runWithProfilingButton.setDisable(true);
         runButton.setDisable(true);
+        stopButton.setDisable(false);
     }
 
     @Subscribe
     public void onExecutionCompletedEvent(ExecutionCompletedEvent event) {
         runWithProfilingButton.setDisable(false);
         runButton.setDisable(false);
+        stopButton.setDisable(true);
     }
 
     @Subscribe
