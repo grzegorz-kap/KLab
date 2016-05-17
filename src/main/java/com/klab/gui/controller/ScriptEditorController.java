@@ -54,6 +54,7 @@ public class ScriptEditorController implements Initializable {
     public Button releaseBreakpointButton;
     public Button runWithProfilingButton;
     public Button stepOverButton;
+    public Button stepIntoButton;
     public ListView<Instruction> microInstructionList;
     public Button stopButton;
 
@@ -156,6 +157,7 @@ public class ScriptEditorController implements Initializable {
             Runnable release = () -> {
                 releaseBreakpointButton.setDisable(true);
                 stepOverButton.setDisable(true);
+                stepIntoButton.setDisable(true);
                 context.getCodeArea().clearStyle(line);
             };
 
@@ -169,8 +171,14 @@ public class ScriptEditorController implements Initializable {
                 breakpointService.releaseStepOver(event.getData());
             });
 
+            stepIntoButton.setOnMouseClicked(ev -> {
+                release.run();
+                breakpointService.releaseStepInto(event.getData());
+            });
+
             releaseBreakpointButton.setDisable(false);
             stepOverButton.setDisable(false);
+            stepIntoButton.setDisable(false);
             scriptPane.getSelectionModel().select(context.getTab());
             context.getCodeArea().setStyle(line, () -> "-fx-background-fill: yellow");
         });

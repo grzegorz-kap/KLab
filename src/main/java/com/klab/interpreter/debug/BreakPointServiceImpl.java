@@ -51,6 +51,12 @@ public class BreakpointServiceImpl implements BreakpointService {
     }
 
     @Override
+    public void releaseStepInto(Breakpoint breakpoint) {
+        eventService.publish(new StepIntoEvent(breakpoint, this));
+        release(breakpoint);
+    }
+
+    @Override
     public void release(Breakpoint breakpoint) {
         boolean remove = blocked.remove(breakpoint);
         breakpoint.release();

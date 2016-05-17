@@ -23,8 +23,11 @@ public class InstructionPointer {
         address = 0;
     }
 
+    public int callLevel() {
+        return codeDeque.size();
+    }
+
     public void restorePreviousCode() {
-        code.setStepOver(null);
         code = codeDeque.removeFirst();
         address = addressDeque.removeFirst();
     }

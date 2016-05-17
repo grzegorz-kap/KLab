@@ -77,6 +77,16 @@
                                 </ImageView>
                             </graphic>
                         </Button>
+                        <Button fx:id="stepIntoButton" disable="true" mnemonicParsing="false">
+                            <tooltip>
+                                <Tooltip text="Step into"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../../../img/step-into.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                         <Button fx:id="stopButton" onAction="#stopExecution" disable="true" mnemonicParsing="false">
                             <tooltip>
                                 <Tooltip text="Stop"/>
