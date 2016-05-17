@@ -1,5 +1,6 @@
 package com.klab.interpreter.execution.service;
 
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
@@ -9,6 +10,7 @@ import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.*;
 import com.klab.interpreter.execution.InstructionAction;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.profiling.ProfilingServiceImpl;
 import com.klab.interpreter.translate.model.Instruction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+import java.util.List;
+
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ExecutionServiceImpl extends AbstractExecutionService {
-    private static final String UNEXPECTED_INSTRUCTION_MESSAGE = "Unexpected instruction";
     private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
     private InstructionAction handleAction = InstructionHandler::handle;
@@ -68,11 +72,23 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
         }
     }
 
-    public void block(Instruction instruction) {
+    private void block(Instruction instruction) {
         previousBreakpoint = null;
         BreakpointImpl breakpoint = new BreakpointImpl(ip.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
         breakpoint.setCode(ip.getCode());
         breakpointService.block(breakpoint);
+    }
+
+    @Override
+    public List<Code> callStack() {
+        List<Code> callStack = Lists.newArrayList();
+        callStack.add(ip.getCode());
+        Iterator<Code> iterator = ip.stackIterator();
+        Code code;
+        while (iterator.hasNext() && (code = iterator.next()) != null) {
+            callStack.add(code);
+        }
+        return callStack;
     }
 
     @Subscribe

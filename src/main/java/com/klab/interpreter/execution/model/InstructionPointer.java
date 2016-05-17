@@ -4,6 +4,7 @@ import com.klab.interpreter.translate.model.Instruction;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 public class InstructionPointer {
@@ -58,5 +59,9 @@ public class InstructionPointer {
 
     public Stream<Code> codeStream() {
         return codeDeque.stream();
+    }
+
+    public Iterator<Code> stackIterator() {
+        return codeDeque.iterator();
     }
 }

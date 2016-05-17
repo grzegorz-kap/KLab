@@ -7,6 +7,7 @@ import com.klab.gui.events.OpenScriptEvent;
 import com.klab.gui.factories.ScriptTabFactory;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
+import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.code.ScriptService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
@@ -34,7 +35,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -47,6 +51,7 @@ public class ScriptEditorController implements Initializable {
     private ScriptViewService scriptViewService;
     private ScriptService scriptService;
     private ExternalFunctionService externalFunctionService;
+    private Interpreter interpreter;
 
     // @FXML
     public TabPane scriptPane;
@@ -56,6 +61,7 @@ public class ScriptEditorController implements Initializable {
     public Button stepOverButton;
     public Button stepIntoButton;
     public ListView<Instruction> microInstructionList;
+    public ListView<String> callStack;
     public Button stopButton;
 
     @Override
@@ -125,9 +131,12 @@ public class ScriptEditorController implements Initializable {
 
     @Subscribe
     public void onExecutionCompletedEvent(ExecutionCompletedEvent event) {
-        runWithProfilingButton.setDisable(false);
-        runButton.setDisable(false);
-        stopButton.setDisable(true);
+        Platform.runLater(() -> {
+            runWithProfilingButton.setDisable(false);
+            runButton.setDisable(false);
+            stopButton.setDisable(true);
+            callStack.getItems().clear();
+        });
     }
 
     @Subscribe
@@ -181,6 +190,15 @@ public class ScriptEditorController implements Initializable {
             stepIntoButton.setDisable(false);
             scriptPane.getSelectionModel().select(context.getTab());
             context.getCodeArea().setStyle(line, () -> "-fx-background-fill: yellow");
+
+            callStack.getItems().clear();
+            List<String> collect = interpreter.callStack()
+                    .stream()
+                    .map(Code::getSourceId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            callStack.getItems().addAll(collect);
+            callStack.refresh();
         });
     }
 
@@ -212,5 +230,10 @@ public class ScriptEditorController implements Initializable {
     @Autowired
     public void setExternalFunctionService(ExternalFunctionService externalFunctionService) {
         this.externalFunctionService = externalFunctionService;
+    }
+
+    @Autowired
+    public void setInterpreter(Interpreter interpreter) {
+        this.interpreter = interpreter;
     }
 }
