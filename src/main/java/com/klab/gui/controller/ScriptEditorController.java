@@ -13,7 +13,9 @@ import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.core.events.StopExecutionEvent;
+import com.klab.interpreter.debug.Breakpoint;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
+import com.klab.interpreter.debug.BreakpointReleaseEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.service.functions.external.ExternalFunctionService;
@@ -52,6 +54,7 @@ public class ScriptEditorController implements Initializable {
     private ScriptService scriptService;
     private ExternalFunctionService externalFunctionService;
     private Interpreter interpreter;
+    private Breakpoint reachedBreakpoint = null;
 
     // @FXML
     public TabPane scriptPane;
@@ -158,30 +161,35 @@ public class ScriptEditorController implements Initializable {
     }
 
     @Subscribe
+    private void onBreakpointReleaseEvent(BreakpointReleaseEvent event) {
+        Platform.runLater(() -> {
+            releaseBreakpointButton.setDisable(true);
+            stepOverButton.setDisable(true);
+            stepIntoButton.setDisable(true);
+            ScriptContext context = scriptTabFactory.get(reachedBreakpoint.getScriptId(), scriptPane);
+            int line = reachedBreakpoint.getLine() - 1;
+            context.getCodeArea().clearStyle(line);
+            reachedBreakpoint = null;
+        });
+    }
+
+    @Subscribe
     public void onBreakpointReachedEvent(BreakpointReachedEvent event) {
         Platform.runLater(() -> {
             ScriptContext context = scriptTabFactory.get(event.getData().getScriptId(), scriptPane);
             int line = event.getData().getLine() - 1;
+            reachedBreakpoint = event.getData();
 
-            Runnable release = () -> {
-                releaseBreakpointButton.setDisable(true);
-                stepOverButton.setDisable(true);
-                stepIntoButton.setDisable(true);
-                context.getCodeArea().clearStyle(line);
-            };
 
             releaseBreakpointButton.setOnMouseClicked(ev -> {
-                release.run();
                 breakpointService.release(event.getData());
             });
 
             stepOverButton.setOnMouseClicked(ev -> {
-                release.run();
                 breakpointService.releaseStepOver(event.getData());
             });
 
             stepIntoButton.setOnMouseClicked(ev -> {
-                release.run();
                 breakpointService.releaseStepInto(event.getData());
             });
 

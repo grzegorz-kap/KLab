@@ -22,6 +22,16 @@
                                 <MenuItem mnemonicParsing="false" text="Delete"/>
                             </items>
                         </Menu>
+                        <Menu mnemonicParsing="false" text="Run">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Run (Shift + F10)"/>
+                                <MenuItem mnemonicParsing="false" text="Run with profiling (Shift + F9)"/>
+                                <MenuItem mnemonicParsing="false" text="Stop(Ctrl + F2"/>
+                                <MenuItem mnemonicParsing="false" text="Resume progam (F9)"/>
+                                <MenuItem mnemonicParsing="false" text="Step Over (F8)"/>
+                                <MenuItem mnemonicParsing="false" text="Step Into (F7)"/>
+                            </items>
+                        </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                             <items>
                                 <MenuItem mnemonicParsing="false" text="About"/>

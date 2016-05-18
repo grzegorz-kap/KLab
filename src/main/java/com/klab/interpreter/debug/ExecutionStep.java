@@ -11,11 +11,6 @@ public class ExecutionStep {
         this.stepInto = stepInto;
     }
 
-    public ExecutionStep(int line, int callStackLevel) {
-        this.line = line;
-        this.callStackLevel = callStackLevel;
-    }
-
     public int getLine() {
         return line;
     }

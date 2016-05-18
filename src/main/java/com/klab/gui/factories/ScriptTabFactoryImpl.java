@@ -2,12 +2,16 @@ package com.klab.gui.factories;
 
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.util.concurrent.Runnables;
 import com.klab.common.EventService;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.StopExecutionEvent;
+import com.klab.interpreter.debug.Breakpoint;
+import com.klab.interpreter.debug.BreakpointReachedEvent;
+import com.klab.interpreter.debug.BreakpointReleaseEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -34,6 +38,9 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     private EventService eventService;
     private ScriptFileService scriptFileService;
     private Map<String, ScriptContext> scripts = Maps.newHashMap();
+    private Runnable resumeExecution = Runnables.doNothing();
+    private Runnable stepOverAction = Runnables.doNothing();
+    private Runnable stepIntoAction = Runnables.doNothing();
 
     @Override
     public ScriptContext get(String scriptName, TabPane scriptPane) {
@@ -87,24 +94,68 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
                 .forEach(codeArea -> codeArea.clearStyle(0, codeArea.getText().length()));
     }
 
+    @Subscribe
+    private void onBreakpointEvent(BreakpointReachedEvent event) {
+        Breakpoint data = event.getData();
+        resumeExecution = () -> {
+            breakpointService.release(data);
+        };
+        stepOverAction = () -> {
+            breakpointService.releaseStepOver(data);
+        };
+        stepIntoAction = () -> {
+            breakpointService.releaseStepInto(data);
+        };
+    }
+
+    @Subscribe
+    private void onBreakpointRelease(BreakpointReleaseEvent event) {
+        resumeExecution = Runnables.doNothing();
+        stepOverAction = Runnables.doNothing();
+        stepIntoAction = Runnables.doNothing();
+    }
+
     @Override
     public void initializeScriptPane(TabPane scriptPane) {
         scriptPane.setOnKeyPressed(event -> {
             Tab tab = scriptPane.getSelectionModel().getSelectedItem();
-            if (tab == null) {
-                return;
+            if (event.getCode() == KeyCode.F2 && event.isControlDown()) {
+                eventService.publish(new StopExecutionEvent(this));
+            } else if (event.getCode() == KeyCode.F9) {
+                resumeExecution.run();
+            } else if (event.getCode() == KeyCode.F8) {
+                stepOverAction.run();
+            } else if (event.getCode() == KeyCode.F7) {
+                stepIntoAction.run();
             }
-            if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
-                try {
-                    scriptFileService.writeScript(tab.getText(), get(tab.getText(), scriptPane).getText());
-                } catch (IOException e) {
-                    LOGGER.error("error", e);
+
+            if (tab != null) {
+                if (event.getCode().equals(KeyCode.S) && event.isControlDown()) {
+                    writeScript(scriptPane, tab);
+                } else if (event.getCode().equals(KeyCode.F5)) {
+                    runScript(scriptPane, tab, false);
+                } else if (event.getCode() == KeyCode.F9 && event.isShiftDown()) {
+                    runScript(scriptPane, tab, true);
                 }
             }
-            if (event.getCode().equals(KeyCode.F5)) {
-                eventService.publish(CommandSubmittedEvent.create().data(tab.getText()).build(this));
-            }
         });
+    }
+
+    private void runScript(TabPane scriptPane, Tab tab, boolean profiling) {
+        writeScript(scriptPane, tab);
+        eventService.publish(CommandSubmittedEvent.create()
+                .data(tab.getText())
+                .profiling(profiling)
+                .build(this)
+        );
+    }
+
+    private void writeScript(TabPane scriptPane, Tab tab) {
+        try {
+            scriptFileService.writeScript(tab.getText(), get(tab.getText(), scriptPane).getText());
+        } catch (IOException e) {
+            LOGGER.error("error", e);
+        }
     }
 
     @Autowired
