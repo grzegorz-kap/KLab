@@ -31,7 +31,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private BreakpointService breakpointService;
     private EventService eventService;
     private boolean stop = false;
-    private ExecutionStep previousBreakpoint = null;
+    private PauseStep executionPause = null;
 
     @Override
     public void enableProfiling() {
@@ -57,26 +57,25 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
             Instruction instruction = ip.currentInstruction();
             InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
             if (instruction.isBreakpoint()) {
-                previousBreakpoint = null;
+                executionPause = null;
                 breakpointService.block(instruction.getBreakpoint());
-            } else if (previousBreakpoint != null && instruction.getCodeAddress() != null) {
-                int line = instruction.getCodeAddress().getLine();
-                if (previousBreakpoint.isStepInto() && previousBreakpoint.getCallLevel() < ip.callLevel()) {
-                    block(instruction);
-                } else if (ip.callLevel() == previousBreakpoint.getCallLevel() && previousBreakpoint.getLine() != line ||
-                        ip.callLevel() < previousBreakpoint.getCallLevel()) {
-                    block(instruction);
-                }
+            } else if (executionPause != null && executionPause.shouldStop(ip)) {
+                block(instruction);
             }
             handleAction.handle(instructionHandler, ip);
         }
     }
 
     private void block(Instruction instruction) {
-        previousBreakpoint = null;
+        executionPause = null;
         BreakpointImpl breakpoint = new BreakpointImpl(ip.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
         breakpoint.setCode(ip.getCode());
         breakpointService.block(breakpoint);
+    }
+
+    @Subscribe
+    private void onRunToEvent(RunToEvent event) {
+        executionPause = new RunTo(event.getLine(), event.getScript());
     }
 
     @Override
@@ -99,12 +98,12 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
 
     @Subscribe
     private void onStepOverEvent(StepOverEvent event) {
-        previousBreakpoint = new ExecutionStep(event.getData().getLine(), ip.callLevel(), false);
+        executionPause = new StepOver(ip.callLevel(), event.getData().getLine());
     }
 
     @Subscribe
     private void onStepIntoEvent(StepIntoEvent event) {
-        previousBreakpoint = new ExecutionStep(event.getData().getLine(), ip.callLevel(), true);
+        executionPause = new StepInto(ip.callLevel(), event.getData().getLine());
     }
 
     @Autowired
