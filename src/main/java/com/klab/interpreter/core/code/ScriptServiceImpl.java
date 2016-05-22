@@ -50,7 +50,7 @@ class ScriptServiceImpl implements ScriptService {
 
     @Subscribe
     public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
-        Code code = cachedCode.get(event.getData().getSourceId());
+        Code code = cachedCode.get(event.getData().getScriptId());
         if (nonNull(code)) {
             breakpointService.updateBreakpoints(code);
         }

@@ -2,6 +2,7 @@ package com.klab.gui.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.klab.gui.model.Variable;
 import com.klab.interpreter.commons.memory.MemorySpace;
@@ -13,6 +14,7 @@ import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.matrix.Matrix;
+import com.klab.interpreter.types.scalar.Scalar;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -32,10 +34,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -47,6 +46,7 @@ public class VariableController implements Initializable {
     private int currentScope = Integer.MIN_VALUE;
     private Map<ObjectWrapper, Variable<TitledPane>> variablesMap = Maps.newHashMap();
     private int maxCellsToDisplay = 300;
+    private Set<String> expandedPanes = Sets.newHashSet();
 
     @FXML
     private ScrollPane variableScrollPanel;
@@ -73,6 +73,7 @@ public class VariableController implements Initializable {
         if (memorySpace.scopeId() != currentScope) {
             variablesBox.getChildren().clear();
             variablesMap.clear();
+            expandedPanes.clear();
         }
 
         memorySpace.listCurrentScopeVariables()
@@ -83,6 +84,7 @@ public class VariableController implements Initializable {
                 .map(this::createNew)
                 .peek(var -> variablesBox.getChildren().add(var.getNode()))
                 .forEach(var -> variablesMap.put(var.getObjectWrapper(), var));
+
         currentScope = memorySpace.scopeId();
     }
 
@@ -98,7 +100,9 @@ public class VariableController implements Initializable {
             IntStream.range(0, rows)
                     .mapToObj(r -> new Row(variable.getData(), r))
                     .forEach(row -> tableView.getItems().add(row));
-            IntStream.range(0, columns).forEach(n -> {
+
+            int col = tableView.getItems().stream().mapToInt(row -> row.cells.size()).findFirst().orElse(0);
+            IntStream.range(0, col).forEach(n -> {
                 TableColumn<Row, String> column = new TableColumn<>();
                 column.setSortable(false);
                 column.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -117,11 +121,23 @@ public class VariableController implements Initializable {
             });
         }
 
-        String name = String.format("%s (%d x %d)", variable.getData().getName(), rows, columns);
+
+        String value = variable.getData() instanceof Scalar ? variable.getData().toString() :
+                String.format("%d x %d", rows, columns);
+        String name = String.format("%s (%s)", variable.getData().getName(), value);
         TitledPane titledPane = new TitledPane(name, tableView);
         titledPane.prefWidthProperty().bind(variablesBox.widthProperty().subtract(15));
         titledPane.setDisable(cells > maxCellsToDisplay);
-        titledPane.setExpanded(false);
+        titledPane.setExpanded(expandedPanes.contains(variable.getData().getName()));
+
+        titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                expandedPanes.add(variable.getData().getName());
+            } else {
+                expandedPanes.remove(variable.getData().getName());
+            }
+        });
+
         return new Variable<>(titledPane, variable);
     }
 
@@ -129,6 +145,7 @@ public class VariableController implements Initializable {
         Variable<TitledPane> var = variablesMap.remove(variable);
         if (var != null) {
             variablesBox.getChildren().remove(var.getNode());
+            expandedPanes.remove(var.getNode().getText());
         }
     }
 

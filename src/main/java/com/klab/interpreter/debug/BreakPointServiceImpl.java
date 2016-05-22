@@ -2,8 +2,11 @@ package com.klab.interpreter.debug;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
 import com.klab.interpreter.core.Interpreter;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
+import com.klab.interpreter.core.events.ReleaseBreakpointsEvent;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.translate.model.Instruction;
 import org.slf4j.Logger;
@@ -13,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
@@ -27,38 +29,55 @@ public class BreakpointServiceImpl implements BreakpointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
     private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
+    private Set<Breakpoint> blocked = Sets.newHashSet();
 
     @Override
     public void block(Breakpoint breakpoint) {
         Interpreter.MAIN_LOCK.unlock();
-        breakpoint.setLock(new ReentrantLock());
-        breakpoint.setCondition(breakpoint.getLock().newCondition());
         eventService.publish(new BreakpointReachedEvent(breakpoint, this));
         try {
-            breakpoint.getLock().lock();
-            while (!breakpoint.isReleased())
-                breakpoint.getCondition().await();
+            blocked.add(breakpoint);
+            breakpoint.block();
         } catch (Exception ignored) {
         } finally {
-            breakpoint.getLock().unlock();
             Interpreter.MAIN_LOCK.lock();
         }
     }
 
     @Override
+    public void releaseStepOver(Breakpoint breakpoint) {
+        eventService.publish(new StepOverEvent(breakpoint, this));
+        release(breakpoint);
+    }
+
+    @Override
+    public void releaseStepInto(Breakpoint breakpoint) {
+        eventService.publish(new StepIntoEvent(breakpoint, this));
+        release(breakpoint);
+    }
+
+    @Override
     public void release(Breakpoint breakpoint) {
-        try {
-            breakpoint.getLock().lock();
-            breakpoint.setReleased(true);
-            breakpoint.getCondition().signalAll();
-        } finally {
-            breakpoint.getLock().unlock();
-        }
+        boolean remove = blocked.remove(breakpoint);
+        eventService.publish(new BreakpointReleaseEvent(this));
+        breakpoint.release();
+    }
+
+    @Subscribe
+    public void onStopEvent(ReleaseBreakpointsEvent event) {
+        blocked.stream().filter(breakpoint -> !breakpoint.isReleased())
+                .forEach(Breakpoint::release);
+        blocked.clear();
+    }
+
+    @Subscribe
+    public void onExecutionStart(ExecutionStartedEvent event) {
+        blocked.clear();
     }
 
     @Override
     public void updateBreakpoints(Code code) {
-        code.instructions().forEach(instruction -> instruction.setBreakpoint(false));
+        code.instructions().forEach(instruction -> instruction.setBreakpoint(null));
         Set<BreakpointAddress> addresses = firstNonNull(breakPoints.get(code.getSourceId()), emptySet());
         for (BreakpointAddress address : addresses) {
             Instruction instr = code.instructions()
@@ -66,7 +85,9 @@ public class BreakpointServiceImpl implements BreakpointService {
                     .filter(instruction -> address.getLine().equals(instruction.getCodeAddress().getLine()))
                     .findFirst().orElse(null);
             if (nonNull(instr)) {
-                instr.setBreakpoint(true);
+                BreakpointImpl breakpoint = new BreakpointImpl(code.getSourceId(), instr.getCodeAddress().getLine(), instr);
+                breakpoint.setCode(code);
+                instr.setBreakpoint(breakpoint);
                 LOGGER.info("Added breakpoints {} || {}", code.getSourceId(), instr);
             }
         }
@@ -92,7 +113,7 @@ public class BreakpointServiceImpl implements BreakpointService {
         } else {
             addresses.add(new BreakpointAddress(line));
         }
-        eventService.publish(new BreakpointUpdatedEvent(new Breakpoint(scriptId, line), this));
+        eventService.publish(new BreakpointUpdatedEvent(new BreakpointImpl(scriptId, line, null), this));
         LOGGER.info("ADDED: {} | {}", scriptId, line);
     }
 
@@ -101,7 +122,7 @@ public class BreakpointServiceImpl implements BreakpointService {
         Set<BreakpointAddress> addresses = breakPoints.get(scriptId);
         boolean removed = isNotEmpty(addresses) && addresses.removeIf(address -> address.getLine().equals(line));
         if (removed) {
-            eventService.publish(new BreakpointUpdatedEvent(new Breakpoint(scriptId, line), this));
+            eventService.publish(new BreakpointUpdatedEvent(new BreakpointImpl(scriptId, line, null), this));
             LOGGER.info("REMOVED: {} | {}", scriptId, line);
             if (addresses.isEmpty()) {
                 breakPoints.remove(scriptId);

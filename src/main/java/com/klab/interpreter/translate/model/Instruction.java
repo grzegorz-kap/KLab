@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.model;
 
+import com.klab.interpreter.debug.Breakpoint;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.profiling.model.ProfilingData;
 import com.klab.interpreter.types.ObjectData;
@@ -12,7 +13,7 @@ public class Instruction {
     private InstructionCode instructionCode;
     private List<ObjectData> data = new ArrayList<>();
     private int argumentsNumber = 0;
-    private boolean breakpoint = false;
+    private Breakpoint breakpoint = null;
     private CodeAddress codeAddress;
     private ProfilingData<Instruction> profilingData;
 
@@ -70,10 +71,14 @@ public class Instruction {
     }
 
     public boolean isBreakpoint() {
+        return breakpoint != null;
+    }
+
+    public Breakpoint getBreakpoint() {
         return breakpoint;
     }
 
-    public void setBreakpoint(boolean breakpoint) {
+    public void setBreakpoint(Breakpoint breakpoint) {
         this.breakpoint = breakpoint;
     }
 

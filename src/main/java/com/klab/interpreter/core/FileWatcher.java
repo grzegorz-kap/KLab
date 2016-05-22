@@ -11,7 +11,6 @@ import static java.nio.file.StandardWatchEventKinds.*;
 
 public class FileWatcher implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileWatcher.class);
-
     private Path path;
     private Consumer<WatchEvent<?>> eventHandler;
 

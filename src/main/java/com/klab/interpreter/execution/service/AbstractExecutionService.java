@@ -11,9 +11,10 @@ import java.util.Collection;
 import static java.util.Objects.nonNull;
 
 public abstract class AbstractExecutionService implements ExecutionService {
-    protected InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
+    InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
+    InstructionPointer ip;
+
     protected ExecutionContext executionContext;
-    protected InstructionPointer instructionPointer;
 
     @Override
     public ExecutionContext getExecutionContext() {
@@ -24,13 +25,13 @@ public abstract class AbstractExecutionService implements ExecutionService {
     public void resetCodeAndStack() {
         executionContext.clearExecutionStack();
         executionContext.clearCode();
-        instructionPointer = executionContext.newInstructionPointer();
+        ip = executionContext.newInstructionPointer();
     }
 
     @Autowired
     public void setInstructionHandlers(Collection<InstructionHandler> instructionHandlers) {
         this.executionContext = new ExecutionContext();
-        this.instructionPointer = this.executionContext.newInstructionPointer();
+        this.ip = this.executionContext.newInstructionPointer();
         instructionHandlers.stream()
                 .filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
                 .forEach(handler -> {

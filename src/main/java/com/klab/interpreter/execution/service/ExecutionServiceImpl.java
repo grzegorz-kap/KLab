@@ -1,12 +1,16 @@
 package com.klab.interpreter.execution.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.eventbus.Subscribe;
+import com.klab.common.EventService;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
-import com.klab.interpreter.debug.Breakpoint;
-import com.klab.interpreter.debug.BreakpointService;
+import com.klab.interpreter.core.events.ReleaseBreakpointsEvent;
+import com.klab.interpreter.core.events.StopExecutionEvent;
+import com.klab.interpreter.debug.*;
 import com.klab.interpreter.execution.InstructionAction;
-import com.klab.interpreter.execution.exception.UnsupportedInstructionException;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
+import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.profiling.ProfilingServiceImpl;
 import com.klab.interpreter.translate.model.Instruction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +18,20 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+import java.util.List;
+
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ExecutionServiceImpl extends AbstractExecutionService {
-    private static final String UNEXPECTED_INSTRUCTION_MESSAGE = "Unexpected instruction";
     private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
     private InstructionAction handleAction = InstructionHandler::handle;
     private ProfilingServiceImpl profilingService;
     private BreakpointService breakpointService;
+    private EventService eventService;
+    private boolean stop = false;
+    private PauseStep executionPause = null;
 
     @Override
     public void enableProfiling() {
@@ -34,21 +43,67 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
         handleAction = InstructionHandler::handle;
     }
 
+    @Subscribe
+    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
+        ip.codeStream().forEach(breakpointService::updateBreakpoints);
+        breakpointService.updateBreakpoints(ip.getCode());
+    }
+
     @Override
     public void start() {
         memorySpace.reserve(identifierMapper.mainMappingsSize());
-        while (!instructionPointer.isCodeEnd()) {
-            Instruction instruction = instructionPointer.currentInstruction();
+        stop = false;
+        while (!ip.isCodeEnd() && !this.stop) {
+            Instruction instruction = ip.currentInstruction();
             InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
-            if (instructionHandler == null) {
-                throw new UnsupportedInstructionException(UNEXPECTED_INSTRUCTION_MESSAGE, instruction);
-            }
             if (instruction.isBreakpoint()) {
-                Breakpoint breakpoint = new Breakpoint(instructionPointer.getSourceId(), instruction.getCodeAddress().getLine());
-                breakpointService.block(breakpoint);
+                executionPause = null;
+                breakpointService.block(instruction.getBreakpoint());
+            } else if (executionPause != null && executionPause.shouldStop(ip)) {
+                block(instruction);
             }
-            handleAction.handle(instructionHandler, instructionPointer);
+            handleAction.handle(instructionHandler, ip);
         }
+    }
+
+    private void block(Instruction instruction) {
+        executionPause = null;
+        BreakpointImpl breakpoint = new BreakpointImpl(ip.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
+        breakpoint.setCode(ip.getCode());
+        breakpointService.block(breakpoint);
+    }
+
+    @Subscribe
+    private void onRunToEvent(RunToEvent event) {
+        executionPause = new RunTo(event.getLine(), event.getScript());
+    }
+
+    @Override
+    public List<Code> callStack() {
+        List<Code> callStack = Lists.newArrayList();
+        callStack.add(ip.getCode());
+        Iterator<Code> iterator = ip.stackIterator();
+        Code code;
+        while (iterator.hasNext() && (code = iterator.next()) != null) {
+            callStack.add(code);
+        }
+        return callStack;
+    }
+
+    @Subscribe
+    private void onExecStop(StopExecutionEvent event) {
+        this.stop = true;
+        eventService.publish(new ReleaseBreakpointsEvent(this));
+    }
+
+    @Subscribe
+    private void onStepOverEvent(StepOverEvent event) {
+        executionPause = new StepOver(ip.callLevel(), event.getData().getLine());
+    }
+
+    @Subscribe
+    private void onStepIntoEvent(StepIntoEvent event) {
+        executionPause = new StepInto(ip.callLevel(), event.getData().getLine());
     }
 
     @Autowired
@@ -69,5 +124,10 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     @Autowired
     public void setBreakpointService(BreakpointService breakpointService) {
         this.breakpointService = breakpointService;
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }
