@@ -13,7 +13,6 @@ import com.klab.gui.service.CommandHistoryService;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.commons.memory.ObjectWrapper;
-import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
@@ -38,11 +37,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.reverseOrder;
+import static java.util.Map.Entry.comparingByKey;
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MainController implements CustomInitializeble, Initializable {
     private EventService eventService;
-    private ScriptFileService scriptFileService;
     private CommandHistoryService commandHistoryService;
     private ScriptViewService scriptViewService;
     private MemorySpace memorySpace;
@@ -105,17 +106,20 @@ public class MainController implements CustomInitializeble, Initializable {
         });
 
         Map<Date, List<Command>> allByDay = commandHistoryService.getAllByDay();
-        for (Map.Entry<Date, List<Command>> day : allByDay.entrySet()) {
-            TreeItem<String> dayRoot = new TreeItem<>(format.format(day.getKey()));
-            List<TreeItem<String>> collect = Lists.reverse(day.getValue()).stream()
-                    .map(Command::getContent)
-                    .filter(StringUtils::isNoneBlank)
-                    .map(TreeItem::new)
-                    .collect(Collectors.toList());
-            dayRoot.getChildren().addAll(collect);
-            dayRoot.setExpanded(true);
-            rootHistory.getChildren().add(dayRoot);
-        }
+        allByDay.entrySet().stream()
+                .sorted(reverseOrder(comparingByKey()))
+                .limit(3000)
+                .forEach(day -> {
+                    TreeItem<String> dayRoot = new TreeItem<>(format.format(day.getKey()));
+                    List<TreeItem<String>> collect = Lists.reverse(day.getValue()).stream()
+                            .map(Command::getContent)
+                            .filter(StringUtils::isNoneBlank)
+                            .map(TreeItem::new)
+                            .collect(Collectors.toList());
+                    dayRoot.getChildren().addAll(collect);
+                    dayRoot.setExpanded(true);
+                    rootHistory.getChildren().add(dayRoot);
+                });
     }
 
     public void newScript(ActionEvent actionEvent) throws IOException {
@@ -152,11 +156,6 @@ public class MainController implements CustomInitializeble, Initializable {
     @Autowired
     public void setCommandHistoryService(CommandHistoryService commandHistoryService) {
         this.commandHistoryService = commandHistoryService;
-    }
-
-    @Autowired
-    public void setScriptFileService(ScriptFileService scriptFileService) {
-        this.scriptFileService = scriptFileService;
     }
 
     @Autowired
