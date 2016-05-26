@@ -33,6 +33,11 @@ public class ScalarNumericObjectsOperator<N extends Number> implements NumericOb
     }
 
     @Override
+    public NumericObject adiv(NumericObject a, NumericObject b) {
+        return div.operate(a, b);
+    }
+
+    @Override
     public NumericObject negate(NumericObject a) {
         return negator.operate(a);
     }

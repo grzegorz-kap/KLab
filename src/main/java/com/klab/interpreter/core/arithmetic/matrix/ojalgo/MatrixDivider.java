@@ -37,5 +37,6 @@ public class MatrixDivider<T extends Number> extends OjalgoOperator<T> {
 
     @Override
     protected void checkSize(Sizeable a, Sizeable b) {
+        // TODO check size
     }
 }

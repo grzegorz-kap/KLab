@@ -11,6 +11,7 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     private AbstractOjalgoMatrixComparator<T> comparator;
     private MatrixAdder<T> adder;
     private MatrixDivider<T> divider;
+    private MatrixArrayDivider<T> arrayDivider;
     private MatrixMultiplicator<T> multiplicator;
     private MatrixArrayMult<T> arrayMult;
     private MatrixSubtractor<T> matrixSubtractor;
@@ -21,6 +22,11 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     private MatrixArrayDisjuctionOperator<T> arrayOr;
     private MatrixArrayNegate<T> negator;
     private NumericType supportedType;
+
+    @Override
+    public NumericObject adiv(NumericObject a, NumericObject b) {
+        return arrayDivider.operate(a, b);
+    }
 
     @Override
     public NumericType getSupportedType() {
@@ -134,6 +140,11 @@ public class OjalgoMatrixOperator<T extends Number> implements NumericObjectsOpe
     @Required
     public void setDivider(MatrixDivider<T> divider) {
         this.divider = divider;
+    }
+
+    @Required
+    public void setArrayDivider(MatrixArrayDivider<T> arrayDivider) {
+        this.arrayDivider = arrayDivider;
     }
 
     @Required
