@@ -20,6 +20,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         guiContext.setPrimaryStage(primaryStage);
+        primaryStage.setTitle("KLab");
+        primaryStage.getIcons().add(guiContext.getImage("main.png"));
         primaryStage.setMaximized(true);
         guiContext.showMainScreen();
     }

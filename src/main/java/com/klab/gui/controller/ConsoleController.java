@@ -13,6 +13,7 @@ import com.klab.interpreter.core.events.ClearConsoleEvent;
 import com.klab.interpreter.core.events.PrintEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.fxmisc.richtext.CodeArea;
@@ -32,7 +33,7 @@ public class ConsoleController implements InitializingBean {
     private CommandHistoryService commandHistoryService;
     private CommandHistoryIterator commandHistoryIterator;
 
-    public CodeArea commandInput;
+    public TextArea commandInput;
     public CodeArea consoleOutput;
 
     @Override
