@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -53,7 +54,9 @@ public class ScriptListController implements Initializable {
     @FXML
     public void onScriptViewMouseClick(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            eventService.publish(new OpenScriptEvent(scriptView.getSelectionModel().getSelectedItem().getValue(), this));
+            Optional.ofNullable(scriptView.getSelectionModel().getSelectedItem()).ifPresent(item -> {
+                eventService.publish(new OpenScriptEvent(item.getValue(), this));
+            });
         }
     }
 

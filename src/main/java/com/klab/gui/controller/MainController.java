@@ -14,6 +14,8 @@ import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.commons.memory.ObjectWrapper;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
+import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.scalar.Scalar;
@@ -21,10 +23,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -58,19 +57,8 @@ public class MainController implements CustomInitializeble, Initializable {
     private TableColumn<ObjectData, String> varName;
     @FXML
     private TableColumn<ObjectData, String> varValue;
-
-    @Subscribe
-    private void onExecutionComplete(ExecutionCompletedEvent event) {
-        mainVarTable.getItems().clear();
-        List<ObjectData> vars = memorySpace.listCurrentScopeVariables()
-                .map(ObjectWrapper::getData)
-                .filter(Objects::nonNull)
-                .filter(obj -> StringUtils.isNotEmpty(obj.getName()))
-                .sorted(Comparator.comparing(ObjectData::getName))
-                .limit(100)
-                .collect(Collectors.toList());
-        mainVarTable.getItems().addAll(vars);
-    }
+    @FXML
+    private Button stopExecutionButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -122,6 +110,10 @@ public class MainController implements CustomInitializeble, Initializable {
                 });
     }
 
+    public void stopExecution(ActionEvent actionEvent) {
+        eventService.publish(new StopExecutionEvent(this));
+    }
+
     public void newScript(ActionEvent actionEvent) throws IOException {
         scriptViewService.createNewScriptDialog();
     }
@@ -136,6 +128,25 @@ public class MainController implements CustomInitializeble, Initializable {
     @Subscribe
     public void showEditorScreen(OpenScriptEvent event) throws IOException {
         guiContext.showScriptEditor();
+    }
+
+    @Subscribe
+    private void onExecutionStart(ExecutionStartedEvent event) {
+        stopExecutionButton.setDisable(false);
+    }
+
+    @Subscribe
+    private void onExecutionComplete(ExecutionCompletedEvent event) {
+        mainVarTable.getItems().clear();
+        List<ObjectData> vars = memorySpace.listCurrentScopeVariables()
+                .map(ObjectWrapper::getData)
+                .filter(Objects::nonNull)
+                .filter(obj -> StringUtils.isNotEmpty(obj.getName()))
+                .sorted(Comparator.comparing(ObjectData::getName))
+                .limit(100)
+                .collect(Collectors.toList());
+        mainVarTable.getItems().addAll(vars);
+        stopExecutionButton.setDisable(true);
     }
 
     @Autowired

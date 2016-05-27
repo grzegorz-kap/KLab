@@ -1,31 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <BorderPane prefHeight="505.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/8.0.40"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klab.gui.controller.MainController">
     <top>
-        <MenuBar BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#newScript" text="New script"/>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Tools"/>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <ToolBar prefHeight="40.0" prefWidth="200.0">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="New script" onAction="#newScript"/>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
+                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="26.0"
+                                onAction="#newScript">
+                            <tooltip>
+                                <Tooltip text="New Script"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="16.0">
+                                    <Image url="@../../../img/file.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="stopExecutionButton" disable="true" mnemonicParsing="false" prefHeight="24.0"
+                                prefWidth="26.0" onAction="#stopExecution">
+                            <tooltip>
+                                <Tooltip text="Stop execution"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="16.0">
+                                    <Image url="@../../../img/stop.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                     </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Tools"/>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
+                </ToolBar>
+            </children>
+        </VBox>
     </top>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
