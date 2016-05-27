@@ -4,9 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class BalanceContext {
-
-    Deque<BalanceType> balanceTypes = new ArrayDeque<>();
-    Deque<KeywordBalance> keywordBalance = new ArrayDeque<>();
+    private Deque<BalanceType> balanceTypes = new ArrayDeque<>();
+    private Deque<KeywordBalance> keywordBalance = new ArrayDeque<>();
 
     public void put(KeywordBalance balance) {
         keywordBalance.addFirst(balance);

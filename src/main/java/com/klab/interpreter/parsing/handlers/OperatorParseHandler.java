@@ -1,12 +1,11 @@
 package com.klab.interpreter.parsing.handlers;
 
-import com.klab.interpreter.lexer.model.Token;
 import com.klab.interpreter.lexer.model.TokenClass;
 import com.klab.interpreter.parsing.factory.operator.OperatorFactory;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.ExpressionNode;
-import com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
+import com.klab.interpreter.parsing.utils.ExpressionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -16,12 +15,14 @@ import java.util.Objects;
 
 import static com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
 import static com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
-import static java.util.Objects.nonNull;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OperatorParseHandler extends AbstractParseHandler {
     private OperatorFactory operatorFactory;
+
+    @Autowired
+    private ExpressionUtils expressionUtils;
 
     @Override
     public void handle() {
@@ -59,23 +60,9 @@ public class OperatorParseHandler extends AbstractParseHandler {
 
     private void preProcessUnaryPlusAndMinusOperators() {
         String token = pCtxMgr.tokenAt(0).getLexeme();
-        boolean isUnary = false;
-        if ("+".equals(token) || "-".equals(token)) {
-            TokenClass previousClass = previousTokenClass();
-            isUnary = previousClass == null || previousClass.isUnaryOpPrecursor();
-            if (!isUnary && TokenClass.OPERATOR.equals(previousClass)) {
-                OperatorToken previous = operatorFactory.getOperator(pCtxMgr.tokenAt(-1));
-                isUnary = previous.getArgumentsNumber() > 1 || previous.getAssociativity().equals(OperatorAssociativity.RIGHT_TO_LEFT);
-            }
-        }
-        if (isUnary) {
+        if (expressionUtils.isUnaryOperator(pCtxMgr, 0)) {
             pCtxMgr.tokenAt(0).setLexeme("$" + token);
         }
-    }
-
-    private TokenClass previousTokenClass() {
-        Token token = pCtxMgr.tokenAt(-1);
-        return nonNull(token) ? token.getTokenClass() : null;
     }
 
     @Override
@@ -83,16 +70,16 @@ public class OperatorParseHandler extends AbstractParseHandler {
         stackToExpression();
     }
 
-    @Override
-    public TokenClass getSupportedTokenClass() {
-        return TokenClass.OPERATOR;
-    }
-
     private void stackToExpression() {
         OperatorToken operatorToken = (OperatorToken) pCtxMgr.stackPop();
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(operatorToken);
         expressionNode.addChildren(pCtxMgr.expressionPopArguments(operatorToken.getArgumentsNumber()));
         pCtxMgr.addExpression(expressionNode);
+    }
+
+    @Override
+    public TokenClass getSupportedTokenClass() {
+        return TokenClass.OPERATOR;
     }
 
     @Autowired
