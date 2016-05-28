@@ -11,7 +11,7 @@ public abstract class OjalgoAbstractMatrixBuilder<T extends Number> implements M
     protected PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory;
     protected PhysicalStore.Builder<T> builder = null;
 
-    public OjalgoAbstractMatrixBuilder(PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory) {
+    OjalgoAbstractMatrixBuilder(PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory) {
         this.factory = factory;
     }
 

@@ -107,6 +107,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
         while (row.hasNext()) {
             long rowAddress = row.getNext() - 1;
+            column.reset();
             while (column.hasNext()) {
                 if (!supplier.hasNext()) {
                     throw new RuntimeException(); // TODO

@@ -4,10 +4,10 @@ import com.klab.interpreter.types.converters.OjalgoMatrixDoubleConverter;
 import com.klab.interpreter.types.matrix.Matrix;
 import org.ojalgo.matrix.store.PrimitiveDenseStore;
 
-public class OjalgoDoubleMatrixBuilder extends OjalgoAbstractMatrixBuilder<Double> {
+class OjalgoDoubleMatrixBuilder extends OjalgoAbstractMatrixBuilder<Double> {
     private OjalgoMatrixDoubleConverter ojalgoMatrixDoubleConverter = new OjalgoMatrixDoubleConverter();
 
-    public OjalgoDoubleMatrixBuilder() {
+    OjalgoDoubleMatrixBuilder() {
         super(PrimitiveDenseStore.FACTORY);
     }
 
@@ -23,7 +23,10 @@ public class OjalgoDoubleMatrixBuilder extends OjalgoAbstractMatrixBuilder<Doubl
 
     @Override
     public Matrix<Double> build() {
-        // TODO null pointer when trying to create empty matrix
-        return new OjalgoDoubleMatrix(builder.build());
+        if (builder != null) {
+            return new OjalgoDoubleMatrix(builder.build());
+        } else {
+            return new OjalgoDoubleMatrix(factory.makeZero(0, 0));
+        }
     }
 }
