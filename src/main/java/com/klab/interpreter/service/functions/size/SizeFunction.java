@@ -30,9 +30,10 @@ class SizeFunction extends AbstractInternalFunction {
             matrix.set(0, 1, (double) columns);
             return matrix;
         } else {
-            return MultiOutput.build()
-                    .add(numberScalarFactory.getDouble(rows))
-                    .add(numberScalarFactory.getDouble(columns));
+            MultiOutput objectDatas = new MultiOutput(2);
+            objectDatas.add(0, numberScalarFactory.getDouble(rows));
+            objectDatas.add(1, numberScalarFactory.getDouble(columns));
+            return objectDatas;
         }
     }
 

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class InternalFunctionCallHandler extends AbstractInstructionHandler {
@@ -30,8 +32,9 @@ public class InternalFunctionCallHandler extends AbstractInstructionHandler {
             throw new RuntimeException(); //TODO
         }
         if (instruction.getExpectedOutputSize() > 1) {
-            for (ObjectData objectData : ((MultiOutput) result)) {
-                executionContext.executionStackPush(objectData);
+            MultiOutput datas = (MultiOutput) result;
+            for (int i = datas.size() - 1; i >= 0; i--) {
+                executionContext.executionStackPush(Objects.requireNonNull(datas.get(i)));
             }
         } else {
             executionContext.executionStackPush(result);

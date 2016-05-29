@@ -1,5 +1,6 @@
 package com.klab.interpreter.types.matrix;
 
+import com.klab.interpreter.service.LUResult;
 import com.klab.interpreter.types.*;
 import com.klab.interpreter.types.foriterator.ForIterable;
 
@@ -17,4 +18,6 @@ public interface Matrix<T extends Number> extends NumericObject, Sizeable, ForIt
     void forEach(Consumer<? super T> action);
 
     T getNumber(int i);
+
+    LUResult lu();
 }

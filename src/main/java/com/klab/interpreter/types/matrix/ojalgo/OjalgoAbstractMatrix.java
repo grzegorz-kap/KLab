@@ -1,11 +1,13 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
+import com.klab.interpreter.service.LUResult;
 import com.klab.interpreter.types.*;
 import com.klab.interpreter.types.foriterator.ForIterator;
 import com.klab.interpreter.types.foriterator.OjalgoForIteratorFactory;
 import com.klab.interpreter.types.matrix.Matrix;
 import com.klab.interpreter.types.scalar.Scalar;
 import org.ojalgo.function.BinaryFunction;
+import org.ojalgo.matrix.decomposition.LU;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 
@@ -22,6 +24,10 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     public abstract OjalgoAbstractMatrix<T> create(MatrixStore<T> matrixStore);
+
+    public PhysicalStore.Factory<T, ? extends PhysicalStore<T>> getFactory() {
+        return factory;
+    }
 
     @Override
     public boolean isTrue() {
@@ -139,6 +145,13 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
         return create(matrix);
     }
 
+    @Override
+    public LUResult lu() {
+        LU<T> lu = LU.make(getLazyStore());
+        lu.decompose(getLazyStore());
+        return new OjalgoLUResult<>(this, lu);
+    }
+
     protected abstract Scalar createScalar(Number number);
 
     @Override
@@ -221,4 +234,5 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     public BinaryFunction<T> getDivideFunction() {
         return lazyStore.factory().function().divide();
     }
+
 }
