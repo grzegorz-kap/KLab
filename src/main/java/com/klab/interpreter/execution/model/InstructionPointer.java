@@ -22,6 +22,10 @@ public class InstructionPointer {
         addressDeque.addFirst(address);
         code = newCode;
         address = 0;
+
+        if (callLevel() > 1000) {
+            throw new RuntimeException("Stack overflow exception!");
+        }
     }
 
     public int callLevel() {
