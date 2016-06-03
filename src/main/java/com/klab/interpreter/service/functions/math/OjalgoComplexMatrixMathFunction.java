@@ -16,7 +16,6 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class OjalgoComplexMatrixMathFunction extends OjalgoAbstractMatrixMathFunction<ComplexNumber> {
-
     @PostConstruct
     public void init() {
         setInverterFactory(InverterTask.COMPLEX);

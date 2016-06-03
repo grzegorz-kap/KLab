@@ -49,15 +49,6 @@ public class ComplexScalar extends AbstractScalar<ComplexNumber> implements Addr
         return value;
     }
 
-    @Override
-    public int getIntOrThrow() {
-        if (isMathematicalInteger()) {
-            return value.intValue();
-        } else {
-            throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
-        }
-    }
-
     private boolean isMathematicalInteger() {
         return value.getImaginary() == 0.0D && Math.rint(value.getReal()) == value.getReal();
     }
@@ -86,7 +77,15 @@ public class ComplexScalar extends AbstractScalar<ComplexNumber> implements Addr
     }
 
     @Override
-    public Negable<Scalar<ComplexNumber>> negate() {
+    public Negable<ComplexNumber> negate() {
         return new ComplexScalar(value.getReal() != 0.0D || value.getImaginary() != 0.0D ? 0.0D : 1.0D);
+    }
+
+    private int getIntOrThrow() {
+        if (isMathematicalInteger()) {
+            return value.intValue();
+        } else {
+            throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
+        }
     }
 }

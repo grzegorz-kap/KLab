@@ -7,14 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SqrtInternalFunction extends AbstractMathFunction {
-
     public SqrtInternalFunction() {
         super(1, 1, InternalFunction.SQRT_FUNCTION);
     }
 
     @Override
-    public ObjectData process(NumericObject[] datas) {
-        return functionsHolder.get(datas[0].getNumericType(), this).sqrt(datas[0]);
+    public ObjectData process(NumericObject[] data) {
+        return functionsHolder.get(data[0].getNumericType(), this).sqrt(data[0]);
     }
-
 }

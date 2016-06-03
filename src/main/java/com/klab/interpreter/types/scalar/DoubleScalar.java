@@ -42,11 +42,6 @@ public class DoubleScalar extends AbstractScalar<Double> implements Addressable 
     }
 
     @Override
-    public int getIntOrThrow() {
-        return AbstractScalar.getIntOrThrow(value);
-    }
-
-    @Override
     public String toString() {
         return value.toString();
     }
@@ -63,11 +58,11 @@ public class DoubleScalar extends AbstractScalar<Double> implements Addressable 
 
     @Override
     public AddressIterator getAddressIterator() {
-        return new AddressScalarIterator(getIntOrThrow());
+        return new AddressScalarIterator(AbstractScalar.getIntOrThrow(value));
     }
 
     @Override
-    public Negable<Scalar<Double>> negate() {
+    public Negable<Double> negate() {
         return new DoubleScalar(value == 0.0D ? 1.0D : 0.0D);
     }
 }

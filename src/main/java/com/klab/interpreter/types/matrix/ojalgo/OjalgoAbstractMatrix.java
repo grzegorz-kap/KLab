@@ -30,6 +30,15 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     @Override
+    public T getValue() {
+        if (isScalar()) {
+            return getLazyStore().get(0);
+        } else {
+            throw new RuntimeException("Not scalar value!");
+        }
+    }
+
+    @Override
     public boolean isTrue() {
         for (T value : getMatrixStore()) {
             if (value.doubleValue() == 0.0D) {

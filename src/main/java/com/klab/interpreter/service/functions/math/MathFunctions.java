@@ -4,7 +4,6 @@ import com.klab.interpreter.types.NumericObject;
 import com.klab.interpreter.types.NumericType;
 
 public interface MathFunctions {
-
     NumericType supports();
 
     NumericObject sqrt(NumericObject value);
@@ -18,4 +17,10 @@ public interface MathFunctions {
     NumericObject tan(NumericObject value);
 
     NumericObject cos(NumericObject value);
+
+    NumericObject log(NumericObject a, NumericObject b);
+
+    NumericObject log(NumericObject a);
+
+    NumericObject log10(NumericObject a);
 }

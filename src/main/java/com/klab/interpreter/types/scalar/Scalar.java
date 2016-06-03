@@ -5,11 +5,9 @@ import com.klab.interpreter.types.*;
 public interface Scalar<T extends Number> extends
         Sizeable,
         NumericObject,
-        Negable<Scalar<T>>,
+        Negable<T>,
         Editable<T>,
         EditSupportable<T>
 {
     T getValue();
-
-    int getIntOrThrow();
 }

@@ -12,7 +12,7 @@ public class SinFunction extends AbstractMathFunction {
     }
 
     @Override
-    protected ObjectData process(NumericObject[] datas) {
-        return functionsHolder.get(datas[0].getNumericType(), this).sin(datas[0]);
+    protected ObjectData process(NumericObject[] data) {
+        return functionsHolder.get(data[0].getNumericType(), this).sin(data[0]);
     }
 }

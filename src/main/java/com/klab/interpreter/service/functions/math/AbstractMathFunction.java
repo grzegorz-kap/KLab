@@ -3,30 +3,58 @@ package com.klab.interpreter.service.functions.math;
 import com.klab.interpreter.commons.exception.IllegalArgumentException;
 import com.klab.interpreter.service.functions.AbstractInternalFunction;
 import com.klab.interpreter.types.NumericObject;
+import com.klab.interpreter.types.NumericType;
 import com.klab.interpreter.types.ObjectData;
+import com.klab.interpreter.types.converters.ConvertersHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public abstract class AbstractMathFunction extends AbstractInternalFunction {
-    @Autowired
-    protected MathFunctionsHolder functionsHolder;
+    MathFunctionsHolder functionsHolder;
+
+    private ConvertersHolder convertersHolder;
 
     public AbstractMathFunction(int argsMin, int argsMax, String name) {
         super(argsMin, argsMax, name);
     }
 
-    protected abstract ObjectData process(NumericObject[] datas);
+    protected abstract ObjectData process(NumericObject[] data);
 
-    @Override
-    public ObjectData call(ObjectData[] data, int output) {
-        return process(Stream.of(data).map(this::mapToNumeric).toArray(NumericObject[]::new));
+    protected NumericObject convert(NumericObject a, NumericType type) {
+        return convertersHolder.convert(a, type);
     }
 
-    protected NumericObject mapToNumeric(ObjectData data) {
-        if (!(data instanceof NumericObject)) {
-            throw new IllegalArgumentException("Numeric object expected");
-        }
-        return (NumericObject) data;
+    @Override
+    public ObjectData call(ObjectData[] args, int output) {
+        NumericObject[] converted = Stream.of(args)
+                .map(data -> {
+                    if (!(data instanceof NumericObject)) {
+                        throw new IllegalArgumentException("Numeric object expected");
+                    }
+                    return (NumericObject) data;
+                })
+                .toArray(NumericObject[]::new);
+        return process(converted);
+    }
+
+    ObjectData single(NumericObject[] data, Function<MathFunctions, Function<NumericObject, NumericObject>> producer) {
+        MathFunctions mathFunctions = functionsHolder.get(data[0].getNumericType(), this);
+        return producer.apply(mathFunctions).apply(data[0]);
+    }
+
+    NumericType promote(NumericObject a, NumericObject b) {
+        return convertersHolder.promote(a.getNumericType(), b.getNumericType());
+    }
+
+    @Autowired
+    public void setFunctionsHolder(MathFunctionsHolder functionsHolder) {
+        this.functionsHolder = functionsHolder;
+    }
+
+    @Autowired
+    public void setConvertersHolder(ConvertersHolder convertersHolder) {
+        this.convertersHolder = convertersHolder;
     }
 }

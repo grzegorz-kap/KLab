@@ -17,6 +17,23 @@ public class ComplexDoubleMathFunction implements MathFunctions {
     }
 
     @Override
+    public NumericObject log(NumericObject a) {
+        return new ComplexScalar(LOG.apply(getComplex(a)));
+    }
+
+    @Override
+    public NumericObject log10(NumericObject a) {
+        return new ComplexScalar(LOG10.apply(getComplex(a)));
+    }
+
+    @Override
+    public NumericObject log(NumericObject a, NumericObject b) {
+        ComplexNumber A = getComplex(a);
+        ComplexNumber B = getComplex(b);
+        return new ComplexScalar(LOG10.apply(B).divide(LOG10.apply(A)));
+    }
+
+    @Override
     public NumericObject sqrt(NumericObject value) {
         return new ComplexScalar(SQRT.invoke(getComplex(value)));
     }
@@ -46,7 +63,7 @@ public class ComplexDoubleMathFunction implements MathFunctions {
         return new ComplexScalar(COS.invoke(getComplex(value)));
     }
 
-    protected ComplexNumber getComplex(NumericObject value) {
+    private ComplexNumber getComplex(NumericObject value) {
         return ((ComplexScalar) value).getComplex();
     }
 

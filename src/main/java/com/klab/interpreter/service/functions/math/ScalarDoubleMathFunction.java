@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ScalarDoubleMathFunction implements MathFunctions {
-
     @Override
     public NumericType supports() {
         return NumericType.DOUBLE;
@@ -22,6 +21,21 @@ public class ScalarDoubleMathFunction implements MathFunctions {
         } else {
             return new DoubleScalar(Math.sqrt(val));
         }
+    }
+
+    @Override
+    public NumericObject log10(NumericObject a) {
+        return new DoubleScalar(Math.log10(getValue(a)));
+    }
+
+    @Override
+    public NumericObject log(NumericObject a) {
+        return new DoubleScalar(Math.log(getValue(a)));
+    }
+
+    @Override
+    public NumericObject log(NumericObject a, NumericObject b) {
+        return new DoubleScalar(Math.log10(getValue(b)) / Math.log10(getValue(a)));
     }
 
     @Override
@@ -52,5 +66,4 @@ public class ScalarDoubleMathFunction implements MathFunctions {
     protected double getValue(NumericObject value) {
         return ((DoubleScalar) value).getValue();
     }
-
 }

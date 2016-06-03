@@ -2,7 +2,6 @@ package com.klab.interpreter.types.matrix.ojalgo;
 
 import com.klab.interpreter.commons.exception.InterpreterCastException;
 import com.klab.interpreter.types.*;
-import com.klab.interpreter.types.matrix.Matrix;
 import com.klab.interpreter.types.scalar.ComplexScalar;
 import com.klab.interpreter.types.scalar.Scalar;
 import org.ojalgo.matrix.store.ComplexDenseStore;
@@ -12,8 +11,9 @@ import org.ojalgo.scalar.ComplexNumber;
 import static com.klab.interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
 public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> implements Addressable {
-    private static final Negable.UnaryNagate<ComplexNumber> NEGATE_FUN =
-            arg -> ComplexNumber.valueOf(arg.getReal() != 0 || arg.getImaginary() != 0 ? 0.0D : 1.D);
+    private static final Negable.UnaryNagate<ComplexNumber> NEGATE_FUN = arg -> {
+        return ComplexNumber.valueOf(arg.getReal() != 0 || arg.getImaginary() != 0 ? 0.0D : 1.D);
+    };
 
     public OjalgoComplexMatrix(MatrixStore<ComplexNumber> store) {
         super(NumericType.COMPLEX_MATRIX);
@@ -22,7 +22,7 @@ public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> imp
     }
 
     @Override
-    public Negable<Matrix<ComplexNumber>> negate() {
+    public Negable<ComplexNumber> negate() {
         return new OjalgoComplexMatrix(getLazyStore().operateOnAll(NEGATE_FUN).get());
     }
 
