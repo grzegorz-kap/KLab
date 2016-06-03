@@ -1,6 +1,6 @@
 package com.klab.interpreter.types;
 
-public class Timer implements ObjectData {
+public class Timer implements ObjectData, Sizeable {
     private Long counter;
     private String name;
     private int address;
@@ -33,5 +33,21 @@ public class Timer implements ObjectData {
     @Override
     public int getAddress() {
         return address;
+    }
+
+
+    @Override
+    public long getRows() {
+        return 1;
+    }
+
+    @Override
+    public long getColumns() {
+        return 1;
+    }
+
+    @Override
+    public long getCells() {
+        return 1;
     }
 }

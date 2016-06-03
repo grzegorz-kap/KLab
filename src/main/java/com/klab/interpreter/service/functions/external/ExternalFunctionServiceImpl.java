@@ -41,19 +41,23 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
 
     @Override
     public Code loadFunction(String name) {
-        Map.Entry<FunctionMapKey, ExternalFunction> entry = functionsCache.entrySet().stream()
-                .filter(e -> e.getKey().name.equals(name)).findFirst().orElse(null);
-        if (entry != null) {
-            return entry.getValue().getCode();
-        } else {
-            return null;
-        }
+        Map.Entry<FunctionMapKey, ExternalFunction> entry = functionsCache
+                .entrySet().stream()
+                .filter(e -> e.getKey().name.equals(name))
+                .findFirst()
+                .orElse(null);
+        return entry != null ? entry.getValue().getCode() : null;
     }
 
     private ExternalFunction read(FunctionMapKey key, CallInstruction cl) {
         try {
             String fileContent = scriptFileService.readScript(key.name);
             ExternalFunction e = externalFunctionParser.parse(fileContent);
+
+            if (!e.getName().equals(key.name)) {
+                throw new RuntimeException("Function name does not match file name!");
+            }
+
             EndFunctionInstruction ret = new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size());
             ret.setExpectedOutput(cl.getExpectedOutputSize());
             e.getCode().add(ret, null);
