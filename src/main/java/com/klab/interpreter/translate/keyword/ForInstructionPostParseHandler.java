@@ -26,7 +26,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private static final String DATA_FORMAT = "$$%s$iterator%d";
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
-    private int iteratorSequenceData = 0;
+    private int iteratorSequenceNumber = 0;
 
     @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
@@ -103,6 +103,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         clearInstruction.add(new TokenIdentifierObject(iteratorName, iteratorAddress));
         forInstructionContext.pop();
         CodeAddress address = expressions.get(0).getValue().getAddress();
+        iteratorSequenceNumber--;
         return new MacroInstruction().add(flhnextJump, address).add(clearInstruction, address);
     }
 
@@ -111,7 +112,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
         forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new TokenIdentifierObject(id.getId(), id.getAddress()));
-        String name = String.format(DATA_FORMAT, id.getId(), iteratorSequenceData++);
+        String name = String.format(DATA_FORMAT, id.getId(), iteratorSequenceNumber++);
         forInstructionContext.setIteratorDataName(name);
         Integer address = identifierMapper.registerMainIdentifier(name);
         flnextInstruction.setIteratorData(new TokenIdentifierObject(name, address));

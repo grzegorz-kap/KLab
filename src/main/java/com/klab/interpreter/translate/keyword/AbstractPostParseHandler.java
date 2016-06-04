@@ -28,23 +28,23 @@ public abstract class AbstractPostParseHandler implements PostParseHandler {
         this.code = code;
     }
 
-    protected boolean isParseClass(List<Expression<ParseToken>> expressions, ParseClass parseClass, int index) {
+    boolean isParseClass(List<Expression<ParseToken>> expressions, ParseClass parseClass, int index) {
         return expressions.get(index).getValue().getParseClass().equals(parseClass);
     }
 
-    protected void setupNoPrintNoAns(List<Expression<ParseToken>> expressions, int index) {
+    void setupNoPrintNoAns(List<Expression<ParseToken>> expressions, int index) {
         expressions.get(index).setProperty(Expression.PRINT_PROPERTY_KEY, false);
         expressions.get(index).setProperty(Expression.ANS_PROPERTY_KEY, false);
     }
 
-    protected JumperInstruction createJmpInstruction() {
+    JumperInstruction createJmpInstruction() {
         JumperInstruction jumperInstruction = new JumperInstruction();
         jumperInstruction.setArgumentsNumber(0);
         jumperInstruction.setInstructionCode(InstructionCode.JMP);
         return jumperInstruction;
     }
 
-    protected JumperInstruction createJumpOnFalse() {
+    JumperInstruction createJumpOnFalse() {
         JumperInstruction jumperInstruction = new JumperInstruction();
         jumperInstruction.setArgumentsNumber(0);
         jumperInstruction.setInstructionCode(InstructionCode.JMPF);
