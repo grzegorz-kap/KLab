@@ -1,12 +1,13 @@
 package com.klab.interpreter.types.scalar;
 
 import com.klab.interpreter.types.AddressIterator;
+import com.klab.interpreter.types.ObjectData;
 
-public class AddressScalarIterator implements AddressIterator {
+class AddressScalarIterator implements AddressIterator {
     private boolean nextFlag = true;
     private long value;
 
-    public AddressScalarIterator(int value) {
+    AddressScalarIterator(int value) {
         this.value = value;
     }
 
@@ -19,6 +20,21 @@ public class AddressScalarIterator implements AddressIterator {
     public long getNext() {
         nextFlag = false;
         return value;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isTemp() {
+        return false;
+    }
+
+    @Override
+    public ObjectData copy() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

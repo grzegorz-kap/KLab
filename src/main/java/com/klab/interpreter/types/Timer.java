@@ -4,6 +4,7 @@ public class Timer implements ObjectData, Sizeable {
     private Long counter;
     private String name;
     private int address;
+    private boolean temp = true;
 
     public void start() {
         counter = System.nanoTime();
@@ -13,6 +14,23 @@ public class Timer implements ObjectData, Sizeable {
         Long interval = System.nanoTime() - counter;
         counter = null;
         return interval / 1_000_000L;
+    }
+
+    @Override
+    public boolean isTemp() {
+        return temp;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        this.temp = temp;
+    }
+
+    @Override
+    public ObjectData copy() {
+        Timer timer = new Timer();
+        timer.counter = counter;
+        return timer;
     }
 
     @Override

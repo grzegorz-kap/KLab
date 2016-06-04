@@ -22,6 +22,4 @@ public interface MemorySpace {
     Stream<ObjectWrapper> listCurrentScopeVariables();
 
     int scopeId();
-
-    Long getVersion(String name);
 }

@@ -1,6 +1,9 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
-import com.klab.interpreter.types.*;
+import com.klab.interpreter.types.AddressIterator;
+import com.klab.interpreter.types.Addressable;
+import com.klab.interpreter.types.Negable;
+import com.klab.interpreter.types.NumericType;
 import com.klab.interpreter.types.scalar.DoubleScalar;
 import com.klab.interpreter.types.scalar.Scalar;
 import org.ojalgo.matrix.store.MatrixStore;
@@ -23,11 +26,6 @@ public class OjalgoDoubleMatrix extends OjalgoAbstractMatrix<Double> implements 
     @Override
     public Negable<Double> negate() {
         return new OjalgoDoubleMatrix(getLazyStore().operateOnAll(NEG_FUN).get());
-    }
-
-    @Override
-    public ObjectData copyObjectData() {
-        return new OjalgoDoubleMatrix(getLazyStore().copy());
     }
 
     @Override

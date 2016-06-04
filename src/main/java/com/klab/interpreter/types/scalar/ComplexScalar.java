@@ -62,7 +62,7 @@ public class ComplexScalar extends AbstractScalar<ComplexNumber> implements Addr
     }
 
     @Override
-    public ObjectData copyObjectData() {
+    public ObjectData copy() {
         return new ComplexScalar(this);
     }
 

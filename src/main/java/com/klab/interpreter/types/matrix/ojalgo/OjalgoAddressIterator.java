@@ -1,6 +1,7 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
 import com.klab.interpreter.types.AddressIterator;
+import com.klab.interpreter.types.ObjectData;
 import org.ojalgo.matrix.store.MatrixStore;
 
 import java.util.Iterator;
@@ -11,7 +12,7 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     private MatrixStore<N> data;
     private Long max;
 
-    public OjalgoAddressIterator(MatrixStore<N> data) {
+    OjalgoAddressIterator(MatrixStore<N> data) {
         this.data = data;
         iterator = data.iterator();
         dataLength = data.count();
@@ -53,6 +54,21 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     @Override
     public int getAddress() {
         return -1;
+    }
+
+    @Override
+    public boolean isTemp() {
+        return false;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ObjectData copy() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

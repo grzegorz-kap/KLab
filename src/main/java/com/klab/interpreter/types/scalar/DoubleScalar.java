@@ -22,6 +22,11 @@ public class DoubleScalar extends AbstractScalar<Double> implements Addressable 
     }
 
     @Override
+    public ObjectData copy() {
+        return new DoubleScalar(value);
+    }
+
+    @Override
     public Editable<Double> edit(AddressIterator row, AddressIterator column, EditSupplier<Double> supplier) {
         return edit(null, supplier);
     }
@@ -44,11 +49,6 @@ public class DoubleScalar extends AbstractScalar<Double> implements Addressable 
     @Override
     public String toString() {
         return value.toString();
-    }
-
-    @Override
-    public ObjectData copyObjectData() {
-        return new DoubleScalar(value);
     }
 
     @Override

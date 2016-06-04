@@ -18,6 +18,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     private PhysicalStore<T> matrixStore;
     private MatrixStore<T> lazyStore;
     private PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory;
+    private boolean temp = true;
 
     public OjalgoAbstractMatrix(NumericType numericType) {
         super(numericType);
@@ -27,6 +28,21 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public PhysicalStore.Factory<T, ? extends PhysicalStore<T>> getFactory() {
         return factory;
+    }
+
+    @Override
+    public boolean isTemp() {
+        return temp;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        this.temp = temp;
+    }
+
+    @Override
+    public ObjectData copy() {
+        return create(getLazyStore());
     }
 
     @Override

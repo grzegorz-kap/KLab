@@ -16,6 +16,21 @@ public class RangeAddressIterator implements AddressIterator, Addressable {
     }
 
     @Override
+    public boolean isTemp() {
+        return false;
+    }
+
+    @Override
+    public ObjectData copy() {
+        return new RangeAddressIterator(start, end);
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public boolean hasNext() {
         return start <= end;
     }

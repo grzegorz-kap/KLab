@@ -53,7 +53,8 @@ public class MemorySpaceImpl implements MemorySpace {
     @Override
     public void set(int address, ObjectData data) {
         ObjectWrapper wrapper = memory[address];
-        wrapper.data = data;
+        wrapper.data = data.isTemp() ? data : data.copy();
+        wrapper.data.setTemp(false);
         wrapper.version++;
     }
 
@@ -78,13 +79,5 @@ public class MemorySpaceImpl implements MemorySpace {
     @Override
     public Stream<ObjectWrapper> listCurrentScopeVariables() {
         return Stream.of(memory);
-    }
-
-    @Override
-    public Long getVersion(String name) {
-        return Stream.of(memory)
-                .filter(wrapper -> wrapper.getData() != null)
-                .filter(wrapper -> name.equals(wrapper.getData().getName()))
-                .map(ObjectWrapper::getVersion).findFirst().orElse(null);
     }
 }

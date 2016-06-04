@@ -1,7 +1,10 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
 import com.klab.interpreter.commons.exception.InterpreterCastException;
-import com.klab.interpreter.types.*;
+import com.klab.interpreter.types.AddressIterator;
+import com.klab.interpreter.types.Addressable;
+import com.klab.interpreter.types.Negable;
+import com.klab.interpreter.types.NumericType;
 import com.klab.interpreter.types.scalar.ComplexScalar;
 import com.klab.interpreter.types.scalar.Scalar;
 import org.ojalgo.matrix.store.ComplexDenseStore;
@@ -42,11 +45,6 @@ public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> imp
             }
         }
         return true;
-    }
-
-    @Override
-    public ObjectData copyObjectData() {
-        return new OjalgoComplexMatrix(getLazyStore().copy());
     }
 
     @Override

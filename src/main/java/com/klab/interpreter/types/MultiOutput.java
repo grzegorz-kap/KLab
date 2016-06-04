@@ -38,4 +38,19 @@ public class MultiOutput implements ObjectData, Iterable<ObjectData> {
     public int getAddress() {
         return 0;
     }
+
+    @Override
+    public ObjectData copy() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isTemp() {
+        return true;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
+    }
 }

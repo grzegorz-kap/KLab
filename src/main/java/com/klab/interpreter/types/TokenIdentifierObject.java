@@ -18,6 +18,16 @@ public class TokenIdentifierObject extends AbstractObjectData implements Identif
     }
 
     @Override
+    public boolean isTemp() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public boolean isCanBeScript() {
         return canBeScript;
     }
@@ -33,7 +43,7 @@ public class TokenIdentifierObject extends AbstractObjectData implements Identif
     }
 
     @Override
-    public ObjectData copyObjectData() {
+    public ObjectData copy() {
         return new TokenIdentifierObject(id, address);
     }
 
