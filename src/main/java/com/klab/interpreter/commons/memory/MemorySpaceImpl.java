@@ -53,8 +53,12 @@ public class MemorySpaceImpl implements MemorySpace {
     @Override
     public void set(int address, ObjectData data) {
         ObjectWrapper wrapper = memory[address];
-        wrapper.data = data.isTemp() ? data : data.copy();
-        wrapper.data.setTemp(false);
+        if (data != null) {
+            wrapper.data = data.isTemp() ? data : data.copy();
+            wrapper.data.setTemp(false);
+        } else {
+            wrapper.data = null;
+        }
         wrapper.version++;
     }
 

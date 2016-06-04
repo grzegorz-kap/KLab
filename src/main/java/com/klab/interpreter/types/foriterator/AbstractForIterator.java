@@ -38,11 +38,10 @@ abstract class AbstractForIterator implements ForIterator {
 
     @Override
     public boolean isTemp() {
-        return false;
+        return true;
     }
 
     @Override
     public void setTemp(boolean temp) {
-        throw new UnsupportedOperationException();
     }
 }
