@@ -68,6 +68,16 @@ public class TokenIdentifierObject extends AbstractObjectData implements Identif
     }
 
     @Override
+    public String getName() {
+        return getId();
+    }
+
+    @Override
+    public void setName(String name) {
+        setId(name);
+    }
+
+    @Override
     public boolean isTrue() {
         throw new UnsupportedOperationException();
     }

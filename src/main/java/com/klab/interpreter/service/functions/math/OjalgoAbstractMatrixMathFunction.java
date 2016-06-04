@@ -3,7 +3,6 @@ package com.klab.interpreter.service.functions.math;
 import com.klab.interpreter.types.NumericObject;
 import com.klab.interpreter.types.matrix.Matrix;
 import com.klab.interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
-import com.klab.interpreter.types.scalar.Scalar;
 import org.ojalgo.function.BinaryFunction;
 import org.ojalgo.function.FunctionSet;
 import org.ojalgo.function.UnaryFunction;
@@ -38,7 +37,7 @@ public abstract class OjalgoAbstractMatrixMathFunction<T extends Number> impleme
     public NumericObject log(NumericObject a, NumericObject b) {
         final UnaryFunction<T> log10 = functions.log10();
         final BinaryFunction<T> divide = functions.divide();
-        final T base = log10.apply((T) ((Scalar<?>) a).getValue());
+        final T base = log10.apply((T) ((Matrix<?>) a).getValue());
         final double baseDouble = base.doubleValue();
 
         return create(b, new UnaryFunction<T>() {

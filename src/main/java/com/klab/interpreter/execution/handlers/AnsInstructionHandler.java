@@ -26,15 +26,14 @@ public class AnsInstructionHandler extends AbstractInstructionHandler {
     public void handle(InstructionPointer instructionPointer) {
         if (executionContext.executionStackSize() > 0) {
             ObjectData data = executionContext.executionStackPop();
-            data.setName("ans");
-            memorySpace.set(ansAddress, data);
+            memorySpace.set(ansAddress, data, "ans");
             executionContext.executionStackPush(data);
         }
         instructionPointer.increment();
     }
 
     @Autowired
-    private void setIndentifierMapper(IdentifierMapper identifierMapper) {
+    private void setIdentifierMapper(IdentifierMapper identifierMapper) {
         ansAddress = identifierMapper.registerMainIdentifier("ans");
     }
 

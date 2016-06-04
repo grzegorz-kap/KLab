@@ -21,7 +21,7 @@ public class RStoreInstructionHandler extends AbstractInstructionHandler {
         IdentifierObject target = (IdentifierObject) executionContext.executionStackPop();
         ObjectData source = executionContext.executionStackPop();
         source.setName(target.getId());
-        memorySpace.set(target.getAddress(), source);
+        memorySpace.set(target.getAddress(), source, target.getName());
         instructionPointer.increment();
     }
 

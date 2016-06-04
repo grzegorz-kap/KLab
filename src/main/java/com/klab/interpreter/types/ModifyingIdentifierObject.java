@@ -55,11 +55,12 @@ public class ModifyingIdentifierObject implements IdentifierObject {
 
     @Override
     public String getName() {
-        return null;
+        return id;
     }
 
     @Override
     public void setName(String name) {
+        this.id = name;
     }
 
     @Override
