@@ -36,8 +36,7 @@ class ScriptServiceImpl implements ScriptService {
 
     @Subscribe
     public void onExecutionStart(ExecutionStartedEvent executionStartedEvent) {
-        cachedCode.values().stream()
-                .forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
+        cachedCode.values().forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
     }
 
     @Subscribe

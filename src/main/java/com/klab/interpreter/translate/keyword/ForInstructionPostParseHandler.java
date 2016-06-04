@@ -23,9 +23,10 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
-    private static final String DATA_FORMAT = "$$%s$iterator";
+    private static final String DATA_FORMAT = "$$%s$iterator%d";
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
+    private int iteratorSequenceData = 0;
 
     @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
@@ -87,7 +88,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
 
     private Instruction createFlInit() {
         Instruction instruction = new Instruction(InstructionCode.FLINIT, 0);
-        String name = String.format(DATA_FORMAT, forInstructionContext.getName());
+        String name = forInstructionContext.getIteratorDataName();
         instruction.add(new TokenIdentifierObject(name, identifierMapper.getMainAddress(name)));
         return instruction;
     }
@@ -96,7 +97,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         JumperInstruction flhnextJump = createJmpInstruction();
         flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
         forInstructionContext.setJumpsOnFalse(code.size() + 1);
-        String iteratorName = String.format(DATA_FORMAT, forInstructionContext.getName());
+        String iteratorName = forInstructionContext.getIteratorDataName();
         Integer iteratorAddress = identifierMapper.getMainAddress(iteratorName);
         Instruction clearInstruction = new Instruction(InstructionCode.CLEAR, 0);
         clearInstruction.add(new TokenIdentifierObject(iteratorName, iteratorAddress));
@@ -110,7 +111,8 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
         forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new TokenIdentifierObject(id.getId(), id.getAddress()));
-        String name = String.format(DATA_FORMAT, id.getId());
+        String name = String.format(DATA_FORMAT, id.getId(), iteratorSequenceData++);
+        forInstructionContext.setIteratorDataName(name);
         Integer address = identifierMapper.registerMainIdentifier(name);
         flnextInstruction.setIteratorData(new TokenIdentifierObject(name, address));
         id.setAddress(address);

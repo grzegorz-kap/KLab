@@ -26,8 +26,16 @@ public class ForInstructionContext {
         iterators.peekFirst().name = name;
     }
 
+    public void setIteratorDataName(String iteratorDataName) {
+        iterators.peekFirst().iteratorDataName = iteratorDataName;
+    }
+
+    public String getIteratorDataName() {
+        return iterators.peekFirst().iteratorDataName;
+    }
+
     public int getFlhNextAddress() {
-        return iterators.peekFirst().flhnextAddress;
+        return iterators.peekFirst().flhNextAddress;
     }
 
     public void pop() {
@@ -43,12 +51,13 @@ public class ForInstructionContext {
     }
 
     private static class ForIterator {
-        public int flhnextAddress;
-        public Set<JumperInstruction> falseJumpers = new HashSet<>();
+        Set<JumperInstruction> falseJumpers = new HashSet<>();
+        int flhNextAddress;
         public String name;
+        public String iteratorDataName;
 
-        public ForIterator(int flhnextAddress, JumperInstruction falseJumper) {
-            this.flhnextAddress = flhnextAddress;
+        ForIterator(int flhNextAddress, JumperInstruction falseJumper) {
+            this.flhNextAddress = flhNextAddress;
             falseJumpers.add(falseJumper);
         }
     }
