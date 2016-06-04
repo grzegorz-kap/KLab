@@ -91,8 +91,10 @@ public class ScriptEditorController implements Initializable {
         externalFunctionService.addLoadListener(externalFunction -> {
             Tab tab = scriptPane.getSelectionModel().getSelectedItem();
             if (tab != null && tab.getText().equals(externalFunction.getName())) {
-                microInstructionList.getItems().clear();
-                microInstructionList.getItems().addAll(externalFunction.getCode().getInstructions());
+                Platform.runLater(() -> {
+                    microInstructionList.getItems().clear();
+                    microInstructionList.getItems().addAll(externalFunction.getCode().getInstructions());
+                });
             }
         });
 

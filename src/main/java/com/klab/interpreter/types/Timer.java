@@ -16,6 +16,11 @@ public class Timer implements ObjectData, Sizeable {
     }
 
     @Override
+    public boolean ansSupported() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

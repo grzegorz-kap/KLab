@@ -16,4 +16,8 @@ public interface ObjectData extends Copyable {
     void setAddress(int index);
 
     int getAddress();
+
+    default boolean ansSupported() {
+        return true;
+    }
 }

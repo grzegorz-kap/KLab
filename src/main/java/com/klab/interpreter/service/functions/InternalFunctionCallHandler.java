@@ -32,9 +32,9 @@ public class InternalFunctionCallHandler extends AbstractInstructionHandler {
             throw new RuntimeException(); //TODO
         }
         if (instruction.getExpectedOutputSize() > 1) {
-            MultiOutput datas = (MultiOutput) result;
-            for (int i = datas.size() - 1; i >= 0; i--) {
-                executionContext.executionStackPush(Objects.requireNonNull(datas.get(i)));
+            MultiOutput outData = (MultiOutput) result;
+            for (int i = outData.size() - 1; i >= 0; i--) {
+                executionContext.executionStackPush(Objects.requireNonNull(outData.get(i)));
             }
         } else {
             executionContext.executionStackPush(result);

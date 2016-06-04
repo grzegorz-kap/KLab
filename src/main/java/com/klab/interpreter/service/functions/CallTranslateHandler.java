@@ -25,12 +25,13 @@ public class CallTranslateHandler extends AbstractTranslateHandler {
     private void resolveOutputSize(CallInstruction instruction, Expression<ParseToken> expression) {
         instruction.setExpectedOutputSize(-1);
         Expression<ParseToken> parent = expression.getParent();
-        if (parent != null && parent.getValue() != null && parent.getValue().getToken().getLexeme().equals("=")) {
-            Expression<ParseToken> left = parent.getChildren().get(0); // TODO check arguments number
-            if (ParseClass.MATRIX.equals(left.getValue().getParseClass())) {
-                instruction.setExpectedOutputSize(left.getChildren().get(0).getChildren().size());
-            } else {
-                instruction.setExpectedOutputSize(1);
+        if (parent != null && parent.getValue() != null) {
+            instruction.setExpectedOutputSize(1);
+            if (parent.getValue().getToken().getLexeme().equals("=")) {
+                Expression<ParseToken> left = parent.getChildren().get(0); // TODO check arguments number
+                if (ParseClass.MATRIX.equals(left.getValue().getParseClass())) {
+                    instruction.setExpectedOutputSize(left.getChildren().get(0).getChildren().size());
+                }
             }
         }
     }
