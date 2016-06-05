@@ -52,11 +52,6 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     }
 
     @Override
-    public int getAddress() {
-        return -1;
-    }
-
-    @Override
     public boolean isTemp() {
         return false;
     }
@@ -68,11 +63,6 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
 
     @Override
     public ObjectData copy() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setAddress(int index) {
         throw new UnsupportedOperationException();
     }
 }

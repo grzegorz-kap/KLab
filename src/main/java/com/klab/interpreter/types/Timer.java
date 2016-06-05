@@ -3,7 +3,6 @@ package com.klab.interpreter.types;
 public class Timer implements ObjectData, Sizeable {
     private Long counter;
     private String name;
-    private int address;
     private boolean temp = true;
 
     public void start() {
@@ -47,17 +46,6 @@ public class Timer implements ObjectData, Sizeable {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Override
-    public void setAddress(int address) {
-        this.address = address;
-    }
-
-    @Override
-    public int getAddress() {
-        return address;
-    }
-
 
     @Override
     public long getRows() {

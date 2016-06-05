@@ -13,10 +13,6 @@ public interface ObjectData {
         throw new UnsupportedOperationException();
     }
 
-    void setAddress(int index);
-
-    int getAddress();
-
     default boolean ansSupported() {
         return true;
     }

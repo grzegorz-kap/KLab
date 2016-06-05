@@ -8,17 +8,18 @@ import com.klab.interpreter.lexer.utils.TokenStartMatcher;
 
 public abstract class AbstractTokenizer implements Tokenizer {
     private static final String UNRECOGNIZED_TOKEN_MESSAGE = "Unrecognized token.";
-    protected TokenizerContext tC;
-    protected TokenizerContextManager tCM;
-    protected TokenRegexReader tokenRegexReader;
-    private TokenStartMatcher tokenStartMatcher;
 
+    TokenizerContext tokenizerContext;
+    TokenizerContextManager tokenizerContextManager;
+    TokenRegexReader tokenRegexReader;
+
+    private TokenStartMatcher tokenStartMatcher;
 
     public synchronized TokenList readTokens(String inputText) {
         setContext(inputText);
         setState();
         process();
-        return tC.getTokenList();
+        return tokenizerContext.getTokenList();
     }
 
     public abstract void onNumber();
@@ -33,14 +34,16 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
     public abstract boolean tryReadOtherSymbol();
 
+    public abstract boolean tryReadString();
+
     private void setState() {
-        tokenStartMatcher = new TokenStartMatcher(tC);
-        tCM = new TokenizerContextManager(tC);
-        tokenRegexReader = new TokenRegexReader(tC);
+        tokenStartMatcher = new TokenStartMatcher(tokenizerContext);
+        tokenizerContextManager = new TokenizerContextManager(tokenizerContext);
+        tokenRegexReader = new TokenRegexReader(tokenizerContext);
     }
 
     private void process() {
-        while (!tC.isInputEnd()) {
+        while (!tokenizerContext.isInputEnd()) {
             takeAction();
         }
     }
@@ -58,6 +61,9 @@ public abstract class AbstractTokenizer implements Tokenizer {
             onSpaceOrTabulator();
             return;
         }
+        if (tryReadString()) {
+            return;
+        }
         if (tryReadOperator()) {
             return;
         }
@@ -68,10 +74,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
         if (tryReadOtherSymbol()) {
             return;
         }
-        throw new UnrecognizedTokenException(UNRECOGNIZED_TOKEN_MESSAGE, tC);
+        throw new UnrecognizedTokenException(UNRECOGNIZED_TOKEN_MESSAGE, tokenizerContext);
     }
 
     protected void setContext(String inputText) {
-        tC = new TokenizerContext(inputText);
+        tokenizerContext = new TokenizerContext(inputText);
     }
 }

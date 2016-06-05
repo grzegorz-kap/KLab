@@ -18,12 +18,13 @@ public enum TokenClass {
     ELSE_KEYWORD(14, true, true),
     ELSEIF_KEYWORD(15, true, true),
     FOR_KEYWORD(16, true, true),
-    ENDFOR_KEYWORD(17, true, true),
+    END_FOR_KEYWORD(17, true, true),
     BREAK_KEYWORD(18, true, true),
     CONTINUE_KEYWORD(19, true, true),
-    FUNCTION_KEYWROD(20, true, true),
+    FUNCTION_KEYWORD(20, true, true),
     MATRIX_ALL(21, true, false),
-    END_KEYWORD(22, false, true);
+    END_KEYWORD(22, false, true),
+    STRING(23, false, false);
 
     private int index;
     private boolean keyword;

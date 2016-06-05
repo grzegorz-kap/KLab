@@ -30,16 +30,6 @@ public class MultiOutput implements ObjectData, Iterable<ObjectData> {
     }
 
     @Override
-    public void setAddress(int index) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int getAddress() {
-        return 0;
-    }
-
-    @Override
     public ObjectData copy() {
         throw new UnsupportedOperationException();
     }

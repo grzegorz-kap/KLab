@@ -3,7 +3,6 @@ package com.klab.interpreter.types.foriterator;
 import com.klab.interpreter.types.ObjectData;
 
 abstract class AbstractForIterator implements ForIterator {
-    private int address;
     private String name;
 
     @Override
@@ -14,16 +13,6 @@ abstract class AbstractForIterator implements ForIterator {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public int getAddress() {
-        return address;
-    }
-
-    @Override
-    public void setAddress(int index) {
-        this.address = index;
     }
 
     @Override

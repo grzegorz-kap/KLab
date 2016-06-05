@@ -9,7 +9,6 @@ import com.klab.interpreter.parsing.model.tokens.IdentifierToken;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
 import com.klab.interpreter.service.functions.model.CallToken;
-import com.klab.interpreter.translate.exception.UnsupportedParseToken;
 import com.klab.interpreter.translate.handlers.TranslateHandler;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,9 +46,7 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
-        TranslateHandler translateHandler = getTranslateHandler(expression.getValue().getParseClass());
-        checkIfSupported(expression, translateHandler);
-        translateHandler.handle(expression);
+        getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
     }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
@@ -145,11 +141,5 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         return Optional
                 .ofNullable(translateContext.getExpression().getProperty(Expression.PRINT_PROPERTY_KEY, Boolean.class))
                 .orElse(false);
-    }
-
-    private void checkIfSupported(Expression<ParseToken> expression, TranslateHandler translateHandler) {
-        if (Objects.isNull(translateHandler)) {
-            throw new UnsupportedParseToken(UNEXPECTED_TOKEN_MESSAGE, expression.getValue());
-        }
     }
 }
