@@ -20,6 +20,16 @@ public class MemorySpaceImpl implements MemorySpace {
     }
 
     @Override
+    public int find(ObjectData objectData) {
+        for (int index = memory.length - 1; index >= 0; index--) {
+            if (memory[index].data == objectData) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    @Override
     public void newScope(ObjectData[] data) {
         scopeId++;
         stack.addFirst(memory);
@@ -78,5 +88,10 @@ public class MemorySpaceImpl implements MemorySpace {
     @Override
     public Stream<ObjectWrapper> listCurrentScopeVariables() {
         return Stream.of(memory);
+    }
+
+    @Override
+    public int size() {
+        return memory.length;
     }
 }

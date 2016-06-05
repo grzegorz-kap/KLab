@@ -54,7 +54,7 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     public boolean tryReadString() {
-        if (tokenizerContext.isCharAt(0, '\'') && !noStringPrecursors.contains(tokenizerContextManager.tokenClassAt(-1))) {
+        if (tokenizerContext.isCharAt(0, '\'') && !noStringPrecursors.contains(tokenizerContextManager.tokenClassAt(0))) {
             StringBuilder lexeme = new StringBuilder("'");
             int offset = 1;
             while (true) {

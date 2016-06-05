@@ -20,4 +20,8 @@ public interface MemorySpace {
     Stream<ObjectWrapper> listCurrentScopeVariables();
 
     int scopeId();
+
+    int size();
+
+    int find(ObjectData objectData);
 }
