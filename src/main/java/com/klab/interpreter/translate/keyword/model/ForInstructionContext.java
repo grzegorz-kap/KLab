@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.keyword.model;
 
+import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.translate.model.JumperInstruction;
 
 import java.util.ArrayDeque;
@@ -50,11 +51,29 @@ public class ForInstructionContext {
         iterators.peekFirst().falseJumpers.forEach(jmp -> jmp.setJumpIndex(i));
     }
 
+    public CodeAddress getCodeAddress() {
+        return iterators.peekFirst().codeAddress;
+    }
+
+    public void setCodeAddress(CodeAddress codeAddress) {
+        iterators.peekFirst().codeAddress = codeAddress;
+    }
+
+    public void setScriptId(String scriptId) {
+        iterators.peekFirst().scriptId = scriptId;
+    }
+
+    public String getScriptId() {
+        return iterators.peekFirst().scriptId;
+    }
+
     private static class ForIterator {
         Set<JumperInstruction> falseJumpers = new HashSet<>();
         int flhNextAddress;
         public String name;
         public String iteratorDataName;
+        public CodeAddress codeAddress;
+        public String scriptId;
 
         ForIterator(int flhNextAddress, JumperInstruction falseJumper) {
             this.flhNextAddress = flhNextAddress;

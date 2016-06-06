@@ -23,10 +23,9 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
-    private static final String DATA_FORMAT = "$$%s$iterator%d";
+    private static final String DATA_FORMAT = "$$%s$iterator%d%d/%s";
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
-    private int iteratorSequenceNumber = 0;
 
     @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
@@ -76,9 +75,13 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private MacroInstruction handleForStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
         setupNoPrintNoAns(expressions, 1);
         checkIfAssignOperator(expressions);
+        CodeAddress forAddress = expressions.get(0).getValue().getAddress();
+        String sourceId = code.getSourceId();
         FLNextInstruction flnextInstruction = new FLNextInstruction();
         MacroInstruction macroInstruction = translator.translate(expressions.get(1));
         forInstructionContext.push(code.size() + macroInstruction.size() + 1, flnextInstruction);
+        forInstructionContext.setCodeAddress(forAddress);
+        forInstructionContext.setScriptId(code.getSourceId());
         findIteratorTarget(macroInstruction, flnextInstruction);
         CodeAddress address = expressions.get(0).getValue().getAddress();
         return macroInstruction
@@ -103,7 +106,6 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         clearInstruction.add(new TokenIdentifierObject(iteratorName, iteratorAddress));
         forInstructionContext.pop();
         CodeAddress address = expressions.get(0).getValue().getAddress();
-        iteratorSequenceNumber--;
         return new MacroInstruction().add(flhnextJump, address).add(clearInstruction, address);
     }
 
@@ -112,7 +114,8 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
         forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new TokenIdentifierObject(id.getId(), id.getAddress()));
-        String name = String.format(DATA_FORMAT, id.getId(), iteratorSequenceNumber++);
+        CodeAddress codeAddress = forInstructionContext.getCodeAddress();
+        String name = String.format(DATA_FORMAT, id.getId(), codeAddress.getLine(), codeAddress.getColumn(), forInstructionContext.getScriptId());
         forInstructionContext.setIteratorDataName(name);
         Integer address = identifierMapper.registerMainIdentifier(name);
         flnextInstruction.setIteratorData(new TokenIdentifierObject(name, address));
