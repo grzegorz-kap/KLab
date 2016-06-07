@@ -3,11 +3,18 @@ package com.klab.gui.model;
 import com.klab.gui.service.CustomLineNumberFactory;
 import com.klab.interpreter.debug.BreakpointService;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.stage.Popup;
+import org.apache.commons.lang3.StringUtils;
+import org.fxmisc.richtext.MouseOverTextEvent;
 import org.fxmisc.richtext.StyleClassedTextArea;
 
+import java.time.Duration;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import static com.klab.common.FunctionUtils.emptyConsumer;
 
@@ -19,6 +26,7 @@ public class ScriptContext {
     private Consumer<ScriptContext> onCloseHandler = emptyConsumer();
     private Consumer<ScriptContext> onDeleteHandler = emptyConsumer();
     private Consumer<ScriptContext> onRenameHandler = emptyConsumer();
+    private Function<String, String> tooltipProducer = (val) -> null;
 
     public ScriptContext(String title, String content) {
         this.tab = new Tab(title);
@@ -27,7 +35,38 @@ public class ScriptContext {
         this.codeArea.setStyle("-fx-font-size: 14px");
         this.codeArea.appendText(content);
         this.tab.setContent(codeArea);
+        createTooltip();
         buildContextMenu();
+    }
+
+    private void createTooltip() {
+        Popup popup = new Popup();
+        Label message = new Label("dupa");
+        message.setStyle("-fx-background-color: black;  -fx-text-fill: white; -fx-padding: 5;");
+        popup.getContent().addAll(message);
+
+        this.codeArea.setMouseOverTextDelay(Duration.ofMillis(700));
+        this.codeArea.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, e -> {
+            int start = e.getCharacterIndex();
+            int end = e.getCharacterIndex();
+            String text = codeArea.getText();
+            Pattern pattern = Pattern.compile("[0-9a-zA-Z_]");
+            while (start >= 0 && pattern.matcher(text.substring(start, start + 1)).matches()) {
+                start--;
+            }
+            start++;
+            while (end < text.length() && pattern.matcher(text.substring(end, end + 1)).matches()) {
+                end++;
+            }
+            if (start < end && start >= 0 && end <= text.length()) {
+                String var = tooltipProducer.apply(text.substring(start, end));
+                if (StringUtils.isNoneBlank(var)) {
+                    message.setText(var);
+                    popup.show(codeArea, e.getScreenPosition().getX(), e.getScreenPosition().getY() + 15);
+                }
+            }
+        });
+        this.codeArea.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, event -> popup.hide());
     }
 
     public void createLineNumbersFactory(BreakpointService breakpointService) {
@@ -86,5 +125,9 @@ public class ScriptContext {
 
     public void setOnRenameHandler(Consumer<ScriptContext> onRenameHandler) {
         this.onRenameHandler = onRenameHandler;
+    }
+
+    public void setTooltipProducer(Function<String, String> tooltipProducer) {
+        this.tooltipProducer = tooltipProducer;
     }
 }

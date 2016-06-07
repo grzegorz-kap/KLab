@@ -7,12 +7,18 @@ import com.klab.common.EventService;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
+import com.klab.interpreter.commons.memory.IdentifierMapper;
+import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.*;
+import com.klab.interpreter.types.ObjectData;
+import com.klab.interpreter.types.Sizeable;
+import com.klab.interpreter.types.scalar.Scalar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
+import org.apache.commons.lang3.StringUtils;
 import org.fxmisc.richtext.StyleClassedTextArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +37,8 @@ import static java.util.Objects.isNull;
 public class ScriptTabFactoryImpl implements ScriptTabFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTabFactoryImpl.class);
 
+    private IdentifierMapper identifierMapper;
+    private MemorySpace memorySpace;
     private ScriptViewService scriptViewService;
     private BreakpointService breakpointService;
     private EventService eventService;
@@ -58,10 +66,34 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
             });
             context.setOnDeleteHandler(this::handleOnDelete);
             context.setOnRenameHandler(this::handleOnRename);
+            context.setTooltipProducer(this::handleVariableTooltip);
             scripts.put(scriptName, context);
             scriptPane.getTabs().add(context.getTab());
         }
         return context;
+    }
+
+    private String handleVariableTooltip(String name) {
+        Integer address = identifierMapper.getMainAddress(name);
+        if (address != null) {
+            ObjectData data = memorySpace.get(address);
+            if (data != null && StringUtils.isNoneBlank(data.getName())) {
+                String result = String.format("%s = ", data.getName());
+                if (data instanceof Scalar) {
+                    return result + data.toString();
+                }
+                if (data instanceof Sizeable) {
+                    Sizeable sizeable = (Sizeable) data;
+                    if (sizeable.length() <= 5) {
+                        return result + "\n" + data.toString();
+                    } else {
+                        return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getCells());
+                    }
+                }
+                return result + data.toString();
+            }
+        }
+        return "";
     }
 
     @Override
@@ -186,5 +218,15 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     @Autowired
     public void setScriptFileService(ScriptFileService scriptFileService) {
         this.scriptFileService = scriptFileService;
+    }
+
+    @Autowired
+    public void setIdentifierMapper(IdentifierMapper identifierMapper) {
+        this.identifierMapper = identifierMapper;
+    }
+
+    @Autowired
+    public void setMemorySpace(MemorySpace memorySpace) {
+        this.memorySpace = memorySpace;
     }
 }

@@ -7,6 +7,10 @@ public interface Sizeable {
 
     long getCells();
 
+    default long length() {
+        return Math.max(getRows(), getColumns());
+    }
+
     default boolean isScalar() {
         return getRows() == 1 && getColumns() == 1;
     }
