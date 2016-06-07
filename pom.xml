@@ -19,7 +19,7 @@
         <javafx.plugin.version>8.1.4</javafx.plugin.version>
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <richtextfx.version>0.6.10</richtextfx.version>
+        <richtextfx.version>0.7-M1</richtextfx.version>
         <ojalgo.version>39.0</ojalgo.version>
         <junit.version>4.12</junit.version>
         <guava.version>19.0</guava.version>

@@ -6,7 +6,6 @@ import com.google.common.util.concurrent.Runnables;
 import com.klab.common.EventService;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.model.ScriptContext;
-import com.klab.gui.model.Style;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.StopExecutionEvent;
@@ -14,7 +13,7 @@ import com.klab.interpreter.debug.*;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
-import org.fxmisc.richtext.StyledTextArea;
+import org.fxmisc.richtext.StyleClassedTextArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +144,7 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     private void runWithPause(TabPane scriptPane, Tab tab) {
         ScriptContext scriptContext = get(tab.getText(), scriptPane, true);
         if (scriptContext != null) {
-            StyledTextArea<Style> codeArea = scriptContext.getCodeArea();
+            StyleClassedTextArea codeArea = scriptContext.getCodeArea();
             int currentParagraph = codeArea.getCurrentParagraph();
             eventService.publish(new RunToEvent(scriptContext.getScriptId(), currentParagraph + 1, this));
             runScript(scriptPane, tab, false);

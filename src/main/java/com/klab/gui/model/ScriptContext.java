@@ -5,8 +5,7 @@ import com.klab.interpreter.debug.BreakpointService;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
-import org.fxmisc.richtext.InlineStyleTextArea;
-import org.fxmisc.richtext.StyledTextArea;
+import org.fxmisc.richtext.StyleClassedTextArea;
 
 import java.util.function.Consumer;
 
@@ -15,7 +14,7 @@ import static com.klab.common.FunctionUtils.emptyConsumer;
 public class ScriptContext {
     private Tab tab;
     private String scriptId;
-    private StyledTextArea<Style> codeArea;
+    private StyleClassedTextArea codeArea;
     private Consumer<ScriptContext> onRunHandler = emptyConsumer();
     private Consumer<ScriptContext> onCloseHandler = emptyConsumer();
     private Consumer<ScriptContext> onDeleteHandler = emptyConsumer();
@@ -24,7 +23,8 @@ public class ScriptContext {
     public ScriptContext(String title, String content) {
         this.tab = new Tab(title);
         this.scriptId = title;
-        this.codeArea = new InlineStyleTextArea<>(String::new, Style::toCss);
+        this.codeArea = new StyleClassedTextArea();
+        this.codeArea.setStyle("-fx-font-size: 14px");
         this.codeArea.appendText(content);
         this.tab.setContent(codeArea);
         buildContextMenu();
@@ -60,7 +60,7 @@ public class ScriptContext {
         return tab;
     }
 
-    public StyledTextArea<Style> getCodeArea() {
+    public StyleClassedTextArea getCodeArea() {
         return codeArea;
     }
 

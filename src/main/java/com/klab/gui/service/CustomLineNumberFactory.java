@@ -28,7 +28,7 @@ public class CustomLineNumberFactory<S> implements IntFunction<Label> {
     private final BreakpointService breakpointService;
     private final String scriptId;
 
-    public CustomLineNumberFactory(StyledTextArea<S> area, BreakpointService breakpointService, String scriptId) {
+    public CustomLineNumberFactory(StyledTextArea<S, S> area, BreakpointService breakpointService, String scriptId) {
         this.nParagraphs = LiveList.sizeOf(area.getParagraphs());
         this.breakpointService = Objects.requireNonNull(breakpointService);
         this.scriptId = scriptId;

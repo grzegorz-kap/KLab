@@ -37,6 +37,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -199,7 +200,7 @@ public class ScriptEditorController implements Initializable {
             stepOverButton.setDisable(false);
             stepIntoButton.setDisable(false);
             scriptPane.getSelectionModel().select(context.getTab());
-            context.getCodeArea().setStyle(line, () -> "-fx-background-fill: yellow");
+            context.getCodeArea().setStyle(line, Collections.singleton("breakpoint-reached"));
 
             callStack.getItems().clear();
             List<String> collect = interpreter.callStack()

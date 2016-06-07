@@ -39,7 +39,9 @@ public class GuiContext implements ApplicationContextAware, InitializingBean, Re
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        editorStage.setScene(new Scene(loadScene("script-editor.fxml")));
+        Scene editorScene = new Scene(loadScene("script-editor.fxml"));
+        editorScene.getStylesheets().addAll(resourceLoader.getResource("classpath:styles.css").getURL().toExternalForm());
+        editorStage.setScene(editorScene);
         profilingStage.setScene(new Scene(loadScene("profiling.fxml")));
 
         editorStage.setTitle("KLab - script editor");
