@@ -12,7 +12,9 @@ import java.util.stream.Stream;
 public class MemorySpaceImpl implements MemorySpace {
     private ObjectWrapper[] memory = new ObjectWrapper[0];
     private Deque<ObjectWrapper[]> stack = new ArrayDeque<>();
+    private Deque<Integer> scopesIds = new ArrayDeque<>();
     private int scopeId = 0;
+    private int sequence = 0;
 
     @Override
     public int scopeId() {
@@ -31,7 +33,8 @@ public class MemorySpaceImpl implements MemorySpace {
 
     @Override
     public void newScope(ObjectData[] data) {
-        scopeId++;
+        scopesIds.addFirst(scopeId);
+        scopeId = ++sequence;
         stack.addFirst(memory);
         if (data != null) {
             memory = new ObjectWrapper[data.length];
@@ -45,7 +48,7 @@ public class MemorySpaceImpl implements MemorySpace {
 
     @Override
     public void previousScope() {
-        scopeId--;
+        scopeId = scopesIds.removeFirst();
         memory = stack.removeFirst();
     }
 

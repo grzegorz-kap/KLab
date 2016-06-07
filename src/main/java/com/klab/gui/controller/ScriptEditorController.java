@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -205,10 +206,14 @@ public class ScriptEditorController implements Initializable {
             callStack.getItems().clear();
             List<String> collect = interpreter.callStack()
                     .stream()
-                    .map(Code::getSourceId)
+                    .filter(code -> code.getSourceId() != null)
+                    .map(code -> code.getSourceId() + "@" + code.hashCode())
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-            callStack.getItems().addAll(collect);
+
+            IntStream.range(0, collect.size()).mapToObj(index -> index + ") " + collect.get(index))
+                    .forEach(v -> callStack.getItems().add(0, v));
+
             callStack.refresh();
         });
     }

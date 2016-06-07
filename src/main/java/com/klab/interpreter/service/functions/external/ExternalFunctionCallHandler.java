@@ -29,7 +29,8 @@ public class ExternalFunctionCallHandler extends AbstractInstructionHandler {
             for (int i = nargin - 1; i >= 0; i--) {
                 ObjectData objectData = executionContext.executionStackPop();
                 data[i] = objectData.isTemp() ? objectData : objectData.copy();
-                objectData.setTemp(false);
+                data[i].setTemp(false);
+                data[i].setName(extFunction.getArguments().get(i).getName());
             }
             data[extFunction.getNarginAddress()] = numberScalarFactory.getDouble(instr.getArgumentsNumber());
             data[extFunction.getNargoutAddress()] = numberScalarFactory.getDouble(instr.getExpectedOutputSize());
