@@ -8,9 +8,13 @@ import java.util.function.Supplier;
 public interface CodeGenerator {
     Code translate(String input);
 
+    Code translate(String input, Supplier<Code> codeSupplier);
+
     Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback);
 
     Code translate(TokenList input);
+
+    Code translate(TokenList input, Supplier<Code> codeSupplier);
 
     boolean isInstructionCompletelyTranslated();
 }

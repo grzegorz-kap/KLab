@@ -70,7 +70,7 @@ public class ExternalFunctionParser {
         TokenList tokenList = tokenizer.readTokens(StringUtils.removeEnd(input, end));
         int lines = StringUtils.countMatches(signature, '\n');
         tokenList.removeIf(token -> token.getAddress().getLine() <= lines);
-        Code code = codeGenerator.translate(tokenList);
+        Code code = codeGenerator.translate(tokenList, () -> new Code(fun.getName()));
         code.setSourceCode(input);
         fun.setCode(code);
         fun.setMemoryLength(identifierMapper.mainMappingsSize());
