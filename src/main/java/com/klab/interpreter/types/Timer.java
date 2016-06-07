@@ -1,8 +1,7 @@
 package com.klab.interpreter.types;
 
-public class Timer implements ObjectData, Sizeable {
+public class Timer extends AbstractObjectData implements Sizeable {
     private Long counter;
-    private String name;
     private boolean temp = true;
 
     public void start() {
@@ -35,16 +34,6 @@ public class Timer implements ObjectData, Sizeable {
     @Override
     public boolean ansSupported() {
         return false;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

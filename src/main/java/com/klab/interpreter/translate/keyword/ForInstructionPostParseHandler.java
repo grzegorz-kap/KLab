@@ -76,7 +76,6 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         setupNoPrintNoAns(expressions, 1);
         checkIfAssignOperator(expressions);
         CodeAddress forAddress = expressions.get(0).getValue().getAddress();
-        String sourceId = code.getSourceId();
         FLNextInstruction flnextInstruction = new FLNextInstruction();
         MacroInstruction macroInstruction = translator.translate(expressions.get(1));
         forInstructionContext.push(code.size() + macroInstruction.size() + 1, flnextInstruction);

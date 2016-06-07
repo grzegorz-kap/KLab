@@ -1,6 +1,6 @@
 package com.klab.interpreter.types;
 
-public abstract class AbstractObjectData implements ObjectData {
+abstract class AbstractObjectData implements ObjectData {
     private String name;
 
     @Override

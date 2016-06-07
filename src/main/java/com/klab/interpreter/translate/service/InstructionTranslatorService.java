@@ -13,6 +13,7 @@ import com.klab.interpreter.translate.handlers.TranslateHandler;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.translate.model.JumperInstruction;
+import com.klab.interpreter.translate.model.ReverseStoreInstruction;
 import com.klab.interpreter.types.ModifyingIdentifierObject;
 import com.klab.interpreter.types.TokenIdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,11 +72,12 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
                 throw new RuntimeException("Wrong assignment target");
             }
             process(expression.getChildren().get(1));
+            boolean print = expression.getProperty(Expression.PRINT_PROPERTY_KEY, Boolean.class);
             for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
                 if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
                     TokenIdentifierObject id = new TokenIdentifierObject((IdentifierToken) target.getValue());
                     translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
-                    translateContextManager.addInstruction(new Instruction(InstructionCode.RSTORE, 0), address);
+                    translateContextManager.addInstruction(new ReverseStoreInstruction(print), address);
                 } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
                     createModifyAssign(target);
                 } else {

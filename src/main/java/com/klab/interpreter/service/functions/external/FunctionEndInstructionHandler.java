@@ -29,6 +29,7 @@ public class FunctionEndInstructionHandler extends AbstractInstructionHandler {
             if (object == null) {
                 throw new RuntimeException(); // TODO
             }
+            object.setTemp(true);
             output.add(object);
         }
         memorySpace.previousScope();

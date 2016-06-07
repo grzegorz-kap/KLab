@@ -11,7 +11,7 @@ public interface MemorySpace {
 
     void reserve(int size);
 
-    void set(int address, ObjectData data, String name);
+    ObjectData set(int address, ObjectData data, String name);
 
     ObjectData get(int address);
 

@@ -61,7 +61,7 @@ public class MemorySpaceImpl implements MemorySpace {
     }
 
     @Override
-    public void set(int address, ObjectData data, String name) {
+    public ObjectData set(int address, ObjectData data, String name) {
         ObjectWrapper wrapper = memory[address];
         if (data != null) {
             wrapper.data = data.isTemp() ? data : data.copy();
@@ -71,6 +71,7 @@ public class MemorySpaceImpl implements MemorySpace {
             wrapper.data = null;
         }
         wrapper.version++;
+        return wrapper.data;
     }
 
     @Override
