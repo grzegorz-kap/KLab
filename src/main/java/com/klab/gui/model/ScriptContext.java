@@ -1,5 +1,7 @@
 package com.klab.gui.model;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.klab.gui.service.CustomLineNumberFactory;
 import com.klab.interpreter.debug.BreakpointService;
 import javafx.scene.control.ContextMenu;
@@ -12,6 +14,9 @@ import org.fxmisc.richtext.MouseOverTextEvent;
 import org.fxmisc.richtext.StyleClassedTextArea;
 
 import java.time.Duration;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -22,6 +27,7 @@ public class ScriptContext {
     private Tab tab;
     private String scriptId;
     private StyleClassedTextArea codeArea;
+    private Map<Integer, Set<String>> styles = Maps.newHashMap();
     private Consumer<ScriptContext> onRunHandler = emptyConsumer();
     private Consumer<ScriptContext> onCloseHandler = emptyConsumer();
     private Consumer<ScriptContext> onDeleteHandler = emptyConsumer();
@@ -37,6 +43,20 @@ public class ScriptContext {
         this.tab.setContent(codeArea);
         createTooltip();
         buildContextMenu();
+    }
+
+    public void addStyle(Integer line, String style) {
+        Set<String> styles = this.styles.computeIfAbsent(line, (lineIndex) -> Sets.newHashSet());
+        styles.add(style);
+        codeArea.setStyle(line, Sets.newHashSet(styles));
+    }
+
+    public void removeStyle(Integer line, String style) {
+        Optional.ofNullable(styles.get(line)).ifPresent(set -> {
+            set.remove(style);
+            codeArea.clearStyle(line);
+            codeArea.setStyle(line, Sets.newHashSet(set));
+        });
     }
 
     private void createTooltip() {

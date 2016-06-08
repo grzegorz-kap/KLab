@@ -37,7 +37,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -172,7 +171,7 @@ public class ScriptEditorController implements Initializable {
             stepIntoButton.setDisable(true);
             ScriptContext context = scriptTabFactory.get(reachedBreakpoint.getScriptId(), scriptPane);
             int line = reachedBreakpoint.getLine() - 1;
-            context.getCodeArea().clearStyle(line);
+            context.removeStyle(line, "breakpoint-reached");
             reachedBreakpoint = null;
         });
     }
@@ -201,8 +200,7 @@ public class ScriptEditorController implements Initializable {
             stepOverButton.setDisable(false);
             stepIntoButton.setDisable(false);
             scriptPane.getSelectionModel().select(context.getTab());
-            context.getCodeArea().setStyle(line, Collections.singleton("breakpoint-reached"));
-
+            context.addStyle(line, "breakpoint-reached");
             callStack.getItems().clear();
             List<String> collect = interpreter.callStack()
                     .stream()
