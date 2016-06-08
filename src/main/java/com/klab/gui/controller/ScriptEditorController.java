@@ -42,7 +42,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -228,8 +227,7 @@ public class ScriptEditorController implements Initializable {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
-            IntStream.range(0, collect.size()).mapToObj(index -> index + ") " + collect.get(index))
-                    .forEach(v -> callStack.getItems().add(0, v));
+            callStack.getItems().addAll(collect);
 
             callStack.refresh();
         });
