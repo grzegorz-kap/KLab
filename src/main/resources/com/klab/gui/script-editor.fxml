@@ -24,12 +24,14 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Run">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Run (Shift + F10)"/>
-                                <MenuItem mnemonicParsing="false" text="Run with profiling (Shift + F9)"/>
-                                <MenuItem mnemonicParsing="false" text="Stop(Ctrl + F2"/>
-                                <MenuItem mnemonicParsing="false" text="Resume progam (F9)"/>
-                                <MenuItem mnemonicParsing="false" text="Step Over (F8)"/>
-                                <MenuItem mnemonicParsing="false" text="Step Into (F7)"/>
+                                <MenuItem mnemonicParsing="false" text="Run (F5)" onAction="#runWithoutProfiling"/>
+                                <MenuItem mnemonicParsing="false" text="Run to cursor (F3)" onAction="#runToCursor"/>
+                                <MenuItem mnemonicParsing="false" text="Run with profiling (Shift + F5)"
+                                          onAction="#runWithProfiling"/>
+                                <MenuItem mnemonicParsing="false" text="Stop(Ctrl + F2)" onAction="#stopExecution"/>
+                                <MenuItem mnemonicParsing="false" text="Resume program (F9)" onAction="#resume"/>
+                                <MenuItem mnemonicParsing="false" text="Step Over (F8)" onAction="#stepOver"/>
+                                <MenuItem mnemonicParsing="false" text="Step Into (F7)" onAction="#stepInto"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">

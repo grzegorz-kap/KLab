@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -109,6 +110,12 @@ public class ScriptEditorController implements Initializable {
         onRun(actionEvent, true);
     }
 
+    public void runToCursor(ActionEvent actionEvent) {
+        Optional.ofNullable(scriptPane.getSelectionModel().getSelectedItem()).ifPresent(tab -> {
+            scriptTabFactory.runWithPause(scriptPane, tab);
+        });
+    }
+
     private void onRun(ActionEvent actionEvent, boolean profiling) {
         Tab tab = scriptPane.getSelectionModel().getSelectedItem();
         if (tab != null) {
@@ -126,6 +133,18 @@ public class ScriptEditorController implements Initializable {
 
     public void stopExecution(ActionEvent actionEvent) {
         eventService.publish(new StopExecutionEvent(this));
+    }
+
+    public void resume(ActionEvent actionEvent) {
+        scriptTabFactory.resumeExecution();
+    }
+
+    public void stepOver(ActionEvent actionEvent) {
+        scriptTabFactory.stepOver();
+    }
+
+    public void stepInto(ActionEvent actionEvent) {
+        scriptTabFactory.stepInto();
     }
 
     @Subscribe

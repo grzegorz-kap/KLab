@@ -152,11 +152,11 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
             if (event.getCode() == KeyCode.F2 && event.isControlDown()) {
                 eventService.publish(new StopExecutionEvent(this));
             } else if (event.getCode() == KeyCode.F9) {
-                resumeExecution.run();
+                resumeExecution();
             } else if (event.getCode() == KeyCode.F8) {
-                stepOverAction.run();
+                stepOver();
             } else if (event.getCode() == KeyCode.F7) {
-                stepIntoAction.run();
+                stepInto();
             }
 
             if (tab != null) {
@@ -164,7 +164,7 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
                     writeScript(scriptPane, tab);
                 } else if (event.getCode().equals(KeyCode.F5)) {
                     runScript(scriptPane, tab, false);
-                } else if (event.getCode() == KeyCode.F9 && event.isShiftDown()) {
+                } else if (event.getCode() == KeyCode.F5 && event.isShiftDown()) {
                     runScript(scriptPane, tab, true);
                 } else if (event.getCode() == KeyCode.F3) {
                     runWithPause(scriptPane, tab);
@@ -173,7 +173,23 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
         });
     }
 
-    private void runWithPause(TabPane scriptPane, Tab tab) {
+    @Override
+    public void stepInto() {
+        stepIntoAction.run();
+    }
+
+    @Override
+    public void stepOver() {
+        stepOverAction.run();
+    }
+
+    @Override
+    public void resumeExecution() {
+        resumeExecution.run();
+    }
+
+    @Override
+    public void runWithPause(TabPane scriptPane, Tab tab) {
         ScriptContext scriptContext = get(tab.getText(), scriptPane, true);
         if (scriptContext != null) {
             StyleClassedTextArea codeArea = scriptContext.getCodeArea();
