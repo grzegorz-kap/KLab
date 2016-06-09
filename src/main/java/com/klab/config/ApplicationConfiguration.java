@@ -19,7 +19,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = {"com.klab.interpreter"})
 public class ApplicationConfiguration {
-
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();

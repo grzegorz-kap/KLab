@@ -1,0 +1,7 @@
+.code-area-font-size {
+    -fx-font-size: 14px;
+}
+
+.breakpoint-reached {
+    -fx-background-fill: yellow;
+}

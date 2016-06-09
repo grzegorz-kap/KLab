@@ -22,12 +22,14 @@ public class FunctionEndInstructionHandler extends AbstractInstructionHandler {
     public void handle(InstructionPointer instructionPointer) {
         EndFunctionInstruction instruction = (EndFunctionInstruction) instructionPointer.currentInstruction();
         List<ObjectData> output = new ArrayList<>(instruction.getOutputStart());
-        final int end = instruction.getOutputStart() + instruction.getExpectedOutput();
+        int expectedOutput = instruction.getExpectedOutput() < 0 ? 1 : instruction.getExpectedOutput();
+        final int end = instruction.getOutputStart() + expectedOutput;
         for (int index = end - 1; index >= instruction.getOutputStart(); index--) {
             ObjectData object = memorySpace.get(index);
             if (object == null) {
                 throw new RuntimeException(); // TODO
             }
+            object.setTemp(true);
             output.add(object);
         }
         memorySpace.previousScope();

@@ -5,7 +5,7 @@ import com.klab.interpreter.execution.model.InstructionPointer;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.types.*;
 import com.klab.interpreter.types.converters.ConvertersHolder;
-import com.klab.interpreter.types.scalar.Scalar;
+import com.klab.interpreter.types.matrix.Matrix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -27,7 +27,7 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
         NumericObject dest = (NumericObject) memorySpace.getForModify(target.getAddress());
 
         NumericType numericType = dest.getNumericType();
-        if (dest instanceof Scalar && (row.max() > 1 || col.max() > 1)) {
+        if (!(dest instanceof Matrix) && (row.max() > 1 || col.max() > 1)) {
             numericType = convertersHolder.scalarToMatrix(numericType);
         }
 
@@ -39,9 +39,6 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
         Editable editable = (Editable) dest;
         EditSupportable supplier = (EditSupportable) source;
         editable.edit(row, col, supplier.getEditSupplier());
-
-        memorySpace.set(target.getAddress(), dest);
-
         instructionPointer.increment();
     }
 

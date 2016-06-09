@@ -23,7 +23,7 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
-    private static final String DATA_FORMAT = "$$%s$iterator";
+    private static final String DATA_FORMAT = "$$%s$iterator%d%d/%s";
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
 
@@ -75,9 +75,12 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private MacroInstruction handleForStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
         setupNoPrintNoAns(expressions, 1);
         checkIfAssignOperator(expressions);
+        CodeAddress forAddress = expressions.get(0).getValue().getAddress();
         FLNextInstruction flnextInstruction = new FLNextInstruction();
         MacroInstruction macroInstruction = translator.translate(expressions.get(1));
         forInstructionContext.push(code.size() + macroInstruction.size() + 1, flnextInstruction);
+        forInstructionContext.setCodeAddress(forAddress);
+        forInstructionContext.setScriptId(code.getSourceId());
         findIteratorTarget(macroInstruction, flnextInstruction);
         CodeAddress address = expressions.get(0).getValue().getAddress();
         return macroInstruction
@@ -87,7 +90,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
 
     private Instruction createFlInit() {
         Instruction instruction = new Instruction(InstructionCode.FLINIT, 0);
-        String name = String.format(DATA_FORMAT, forInstructionContext.getName());
+        String name = forInstructionContext.getIteratorDataName();
         instruction.add(new TokenIdentifierObject(name, identifierMapper.getMainAddress(name)));
         return instruction;
     }
@@ -96,7 +99,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         JumperInstruction flhnextJump = createJmpInstruction();
         flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
         forInstructionContext.setJumpsOnFalse(code.size() + 1);
-        String iteratorName = String.format(DATA_FORMAT, forInstructionContext.getName());
+        String iteratorName = forInstructionContext.getIteratorDataName();
         Integer iteratorAddress = identifierMapper.getMainAddress(iteratorName);
         Instruction clearInstruction = new Instruction(InstructionCode.CLEAR, 0);
         clearInstruction.add(new TokenIdentifierObject(iteratorName, iteratorAddress));
@@ -110,7 +113,9 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
         forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new TokenIdentifierObject(id.getId(), id.getAddress()));
-        String name = String.format(DATA_FORMAT, id.getId());
+        CodeAddress codeAddress = forInstructionContext.getCodeAddress();
+        String name = String.format(DATA_FORMAT, id.getId(), codeAddress.getLine(), codeAddress.getColumn(), forInstructionContext.getScriptId());
+        forInstructionContext.setIteratorDataName(name);
         Integer address = identifierMapper.registerMainIdentifier(name);
         flnextInstruction.setIteratorData(new TokenIdentifierObject(name, address));
         id.setAddress(address);

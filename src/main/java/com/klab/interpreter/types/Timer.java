@@ -1,9 +1,8 @@
 package com.klab.interpreter.types;
 
-public class Timer implements ObjectData {
+public class Timer extends AbstractObjectData implements Sizeable {
     private Long counter;
-    private String name;
-    private int address;
+    private boolean temp = true;
 
     public void start() {
         counter = System.nanoTime();
@@ -16,22 +15,39 @@ public class Timer implements ObjectData {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public boolean isTemp() {
+        return temp;
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
+    public void setTemp(boolean temp) {
+        this.temp = temp;
     }
 
     @Override
-    public void setAddress(int address) {
-        this.address = address;
+    public ObjectData copy() {
+        Timer timer = new Timer();
+        timer.counter = counter;
+        return timer;
     }
 
     @Override
-    public int getAddress() {
-        return address;
+    public boolean ansSupported() {
+        return false;
+    }
+
+    @Override
+    public long getRows() {
+        return 1;
+    }
+
+    @Override
+    public long getColumns() {
+        return 1;
+    }
+
+    @Override
+    public long getCells() {
+        return 1;
     }
 }

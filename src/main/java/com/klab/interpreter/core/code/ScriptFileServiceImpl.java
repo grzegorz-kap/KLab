@@ -5,6 +5,7 @@ import com.klab.interpreter.core.FileWatcher;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.utils.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,10 +52,33 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     }
 
     @Override
+    public boolean exists(String name) {
+        name = FilenameUtils.removeExtension(name);
+        Path path = Paths.get(workingDirectory, String.format("%s%s", name, extension));
+        return Files.exists(path);
+    }
+
+    @Override
     public String readScript(String scriptName) throws IOException {
         scriptName = FilenameUtils.removeExtension(scriptName);
         Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, extension));
         return new String(Files.readAllBytes(path)).replaceAll("\\r\\n", "\n");
+    }
+
+    @Override
+    public void rename(String oldName, String newName) throws IOException {
+        oldName = StringUtils.appendIfMissing(oldName, extension);
+        newName = StringUtils.appendIfMissing(newName, extension);
+        Path oldPath = Paths.get(workingDirectory, oldName);
+        Path newPath = Paths.get(workingDirectory, newName);
+        Files.move(oldPath, newPath);
+    }
+
+    @Override
+    public boolean removeScript(String value) throws IOException {
+        value = StringUtils.appendIfMissing(value, extension);
+        Path path = Paths.get(workingDirectory, value);
+        return Files.deleteIfExists(path);
     }
 
     private void init() throws IOException {

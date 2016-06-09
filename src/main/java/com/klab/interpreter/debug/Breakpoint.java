@@ -1,73 +1,24 @@
 package com.klab.interpreter.debug;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
+import com.klab.interpreter.execution.model.Code;
+import com.klab.interpreter.translate.model.Instruction;
 
-public class Breakpoint {
-    private String sourceId;
-    private BreakpointAddress address;
-    private boolean released = false;
-    private Lock lock;
-    private Condition condition;
+public interface Breakpoint {
+    String getScriptId();
 
-    public Breakpoint(String sourceId, Integer lineNumber) {
-        this.sourceId = sourceId;
-        this.address = new BreakpointAddress(lineNumber);
-    }
+    Integer getLine();
 
-    @Override
-    public boolean equals(Object obj) {
-        Breakpoint s = obj instanceof Breakpoint ? ((Breakpoint) obj) : null;
-        return s != null && address.equals(s.address) && sourceId.equals(s.sourceId);
-    }
+    Integer getColumn();
 
-    @Override
-    public int hashCode() {
-        return address.hashCode();
-    }
+    boolean isReleased();
 
-    @Override
-    public String toString() {
-        return String.format("Breakpoint: '%s', %s", sourceId, address);
-    }
+    Instruction getInstruction();
 
-    public boolean isReleased() {
-        return released;
-    }
+    void release();
 
-    public void setReleased(boolean released) {
-        this.released = released;
-    }
+    void block() throws InterruptedException;
 
-    public String getSourceId() {
-        return sourceId;
-    }
+    Code getCode();
 
-    public BreakpointAddress getAddress() {
-        return address;
-    }
-
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public void setAddress(BreakpointAddress address) {
-        this.address = address;
-    }
-
-    public Lock getLock() {
-        return lock;
-    }
-
-    public void setLock(Lock lock) {
-        this.lock = lock;
-    }
-
-    public Condition getCondition() {
-        return condition;
-    }
-
-    public void setCondition(Condition condition) {
-        this.condition = condition;
-    }
+    void setCode(Code code);
 }

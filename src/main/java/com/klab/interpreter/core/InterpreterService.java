@@ -8,6 +8,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 class InterpreterService {
@@ -22,6 +24,10 @@ class InterpreterService {
             executionService.disableProfiling();
         }
         codeGenerator.translate(input.getBody(), this::getCode, this::execute);
+    }
+
+    List<Code> callStack() {
+        return executionService.callStack();
     }
 
     private Code getCode() {

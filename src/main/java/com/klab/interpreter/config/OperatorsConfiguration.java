@@ -19,6 +19,7 @@ public class OperatorsConfiguration {
         OjalgoMatrixOperator<Double> op = new OjalgoMatrixOperator<>();
         op.setAdder(new MatrixAdder<>(OjalgoDoubleMatrix::new));
         op.setComparator(new DoubleOjalgoMatrixComparator(OjalgoDoubleMatrix::new));
+        op.setArrayDivider(new MatrixArrayDivider<>(OjalgoDoubleMatrix::new));
         op.setDivider(new MatrixDivider<>(SolverTask.PRIMITIVE, OjalgoDoubleMatrix::new));
         op.setMatrixSubtractor(new MatrixSubtractor<>(OjalgoDoubleMatrix::new));
         op.setMultiplicator(new MatrixMultiplicator<>(OjalgoDoubleMatrix::new));
@@ -39,6 +40,7 @@ public class OperatorsConfiguration {
         op.setAdder(new MatrixAdder<>(OjalgoComplexMatrix::new));
         op.setComparator(new CompexOjalgoMatrixComparator(OjalgoComplexMatrix::new));
         op.setDivider(new MatrixDivider<>(SolverTask.COMPLEX, OjalgoComplexMatrix::new));
+        op.setArrayDivider(new MatrixArrayDivider<>(OjalgoComplexMatrix::new));
         op.setMatrixSubtractor(new MatrixSubtractor<>(OjalgoComplexMatrix::new));
         op.setMultiplicator(new MatrixMultiplicator<>(OjalgoComplexMatrix::new));
         op.setArrayMult(new MatrixArrayMult<>(OjalgoComplexMatrix::new));

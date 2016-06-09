@@ -2,8 +2,7 @@ package com.klab.interpreter.types.foriterator;
 
 import com.klab.interpreter.types.ObjectData;
 
-public abstract class AbstractForIterator implements ForIterator {
-    private int address;
+abstract class AbstractForIterator implements ForIterator {
     private String name;
 
     @Override
@@ -17,22 +16,21 @@ public abstract class AbstractForIterator implements ForIterator {
     }
 
     @Override
-    public int getAddress() {
-        return address;
-    }
-
-    @Override
-    public void setAddress(int index) {
-        this.address = index;
-    }
-
-    @Override
     public boolean isTrue() {
         return false;
     }
 
     @Override
-    public ObjectData copyObjectData() {
-        return null;
+    public ObjectData copy() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isTemp() {
+        return true;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
     }
 }

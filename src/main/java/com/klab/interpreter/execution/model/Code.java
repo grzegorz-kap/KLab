@@ -14,6 +14,13 @@ public class Code implements Iterable<Instruction> {
     private String sourceCode;
     private String sourceId;
 
+    public Code() {
+    }
+
+    public Code(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
     @Override
     public Iterator<Instruction> iterator() {
         return instructions.iterator();
@@ -70,5 +77,9 @@ public class Code implements Iterable<Instruction> {
 
     public void setSourceCode(String sourceCode) {
         this.sourceCode = sourceCode;
+    }
+
+    public List<Instruction> getInstructions() {
+        return instructions;
     }
 }

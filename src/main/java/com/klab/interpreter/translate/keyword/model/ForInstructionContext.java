@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.keyword.model;
 
+import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.translate.model.JumperInstruction;
 
 import java.util.ArrayDeque;
@@ -26,8 +27,16 @@ public class ForInstructionContext {
         iterators.peekFirst().name = name;
     }
 
+    public void setIteratorDataName(String iteratorDataName) {
+        iterators.peekFirst().iteratorDataName = iteratorDataName;
+    }
+
+    public String getIteratorDataName() {
+        return iterators.peekFirst().iteratorDataName;
+    }
+
     public int getFlhNextAddress() {
-        return iterators.peekFirst().flhnextAddress;
+        return iterators.peekFirst().flhNextAddress;
     }
 
     public void pop() {
@@ -42,13 +51,32 @@ public class ForInstructionContext {
         iterators.peekFirst().falseJumpers.forEach(jmp -> jmp.setJumpIndex(i));
     }
 
-    private static class ForIterator {
-        public int flhnextAddress;
-        public Set<JumperInstruction> falseJumpers = new HashSet<>();
-        public String name;
+    public CodeAddress getCodeAddress() {
+        return iterators.peekFirst().codeAddress;
+    }
 
-        public ForIterator(int flhnextAddress, JumperInstruction falseJumper) {
-            this.flhnextAddress = flhnextAddress;
+    public void setCodeAddress(CodeAddress codeAddress) {
+        iterators.peekFirst().codeAddress = codeAddress;
+    }
+
+    public void setScriptId(String scriptId) {
+        iterators.peekFirst().scriptId = scriptId;
+    }
+
+    public String getScriptId() {
+        return iterators.peekFirst().scriptId;
+    }
+
+    private static class ForIterator {
+        Set<JumperInstruction> falseJumpers = new HashSet<>();
+        int flhNextAddress;
+        public String name;
+        public String iteratorDataName;
+        public CodeAddress codeAddress;
+        public String scriptId;
+
+        ForIterator(int flhNextAddress, JumperInstruction falseJumper) {
+            this.flhNextAddress = flhNextAddress;
             falseJumpers.add(falseJumper);
         }
     }

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class NumberTranslateHandler extends AbstractTranslateHandler {
-
     private NumberScalarFactory numberScalarFactory;
 
     @Override

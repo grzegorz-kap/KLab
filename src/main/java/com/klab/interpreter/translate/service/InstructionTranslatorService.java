@@ -9,11 +9,11 @@ import com.klab.interpreter.parsing.model.tokens.IdentifierToken;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
 import com.klab.interpreter.service.functions.model.CallToken;
-import com.klab.interpreter.translate.exception.UnsupportedParseToken;
 import com.klab.interpreter.translate.handlers.TranslateHandler;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.translate.model.JumperInstruction;
+import com.klab.interpreter.translate.model.ReverseStoreInstruction;
 import com.klab.interpreter.types.ModifyingIdentifierObject;
 import com.klab.interpreter.types.TokenIdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,9 +47,7 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
-        TranslateHandler translateHandler = getTranslateHandler(expression.getValue().getParseClass());
-        checkIfSupported(expression, translateHandler);
-        translateHandler.handle(expression);
+        getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
     }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
@@ -75,11 +72,12 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
                 throw new RuntimeException("Wrong assignment target");
             }
             process(expression.getChildren().get(1));
+            boolean print = expression.getProperty(Expression.PRINT_PROPERTY_KEY, Boolean.class);
             for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
                 if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
                     TokenIdentifierObject id = new TokenIdentifierObject((IdentifierToken) target.getValue());
                     translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
-                    translateContextManager.addInstruction(new Instruction(InstructionCode.RSTORE, 0), address);
+                    translateContextManager.addInstruction(new ReverseStoreInstruction(print), address);
                 } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
                     createModifyAssign(target);
                 } else {
@@ -145,11 +143,5 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         return Optional
                 .ofNullable(translateContext.getExpression().getProperty(Expression.PRINT_PROPERTY_KEY, Boolean.class))
                 .orElse(false);
-    }
-
-    private void checkIfSupported(Expression<ParseToken> expression, TranslateHandler translateHandler) {
-        if (Objects.isNull(translateHandler)) {
-            throw new UnsupportedParseToken(UNEXPECTED_TOKEN_MESSAGE, expression.getValue());
-        }
     }
 }

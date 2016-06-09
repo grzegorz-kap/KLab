@@ -39,17 +39,28 @@ public class ModifyingIdentifierObject implements IdentifierObject {
     }
 
     @Override
-    public ObjectData copyObjectData() {
+    public ObjectData copy() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isTemp() {
+        return true;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public String getName() {
-        return null;
+        return id;
     }
 
     @Override
     public void setName(String name) {
+        this.id = name;
     }
 
     @Override

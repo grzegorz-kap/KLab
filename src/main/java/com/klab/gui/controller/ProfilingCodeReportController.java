@@ -1,6 +1,6 @@
 package com.klab.gui.controller;
 
-import com.klab.CustomInitializeble;
+import com.klab.gui.CustomInitializeble;
 import com.klab.gui.HtmlUtils;
 import com.klab.gui.ProfilingCodeReportDetailsViewer;
 import com.klab.interpreter.analyze.CodeLine;
@@ -18,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
 import java.util.stream.IntStream;
 
 @Component
@@ -32,9 +33,9 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
 
     @Override
     public void customInit() {
-        try {
-            Resource resource = resourceLoader.getResource("classpath:html/code-profiling-table.html");
-            String html = IOUtils.toString(resource.getInputStream(), "UTF-8");
+        Resource resource = resourceLoader.getResource("classpath:html/code-profiling-table.html");
+        try (InputStream in = resource.getInputStream()) {
+            String html = IOUtils.toString(in, "UTF-8");
             codeListening.getEngine().loadContent(html.replace("{{content}}", createTableRows()));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -49,7 +50,9 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
         IntStream.range(0, lines.length).forEach(index -> {
             ProfilingData<CodeLine> line = codeReport.getLinesProfile().get(index + 1);
             builder.append("<tr>");
-            builder.append("<td>").append(line != null ? line.getTimeSeconds() : 0.00).append(" s</td>");
+            builder.append("<td style='text-align:right;'>")
+                    .append(line != null ? line.getTimeSeconds() : 0.00)
+                    .append(" s</td>");
             builder.append("<td>").append(line != null ? line.getCount() : 0).append("</td>");
             builder
                     .append("<td>")

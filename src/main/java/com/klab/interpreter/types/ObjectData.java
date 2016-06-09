@@ -1,6 +1,6 @@
 package com.klab.interpreter.types;
 
-public interface ObjectData extends Copyable {
+public interface ObjectData {
     default String getName() {
         throw new UnsupportedOperationException();
     }
@@ -13,7 +13,13 @@ public interface ObjectData extends Copyable {
         throw new UnsupportedOperationException();
     }
 
-    void setAddress(int index);
+    default boolean ansSupported() {
+        return true;
+    }
 
-    int getAddress();
+    boolean isTemp();
+
+    void setTemp(boolean temp);
+
+    ObjectData copy();
 }

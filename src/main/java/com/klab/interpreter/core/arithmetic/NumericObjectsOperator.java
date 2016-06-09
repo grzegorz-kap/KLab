@@ -24,6 +24,8 @@ public interface NumericObjectsOperator {
 
     NumericObject div(NumericObject a, NumericObject b);
 
+    NumericObject adiv(NumericObject a, NumericObject b);
+
     NumericObject pow(NumericObject a, NumericObject b);
 
     NumericObject apow(NumericObject a, NumericObject b);

@@ -1,6 +1,8 @@
 package com.klab.interpreter.types.converters;
 
+import com.klab.interpreter.types.NumericObject;
 import com.klab.interpreter.types.NumericType;
+import com.klab.interpreter.types.ObjectData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,12 @@ public class ConvertersHolderImpl implements ConvertersHolder {
         put(NumericType.COMPLEX_DOUBLE, NumericType.COMPLEX_MATRIX);
     }};
     private Converter<?>[] converters = new Converter[NumericType.values().length];
+
+    @Override
+    public <T> T convert(ObjectData objectData, NumericType dest) {
+        NumericObject numericObject = (NumericObject) objectData;
+        return (T) getConverter(numericObject.getNumericType(), dest).convert(numericObject);
+    }
 
     @Override
     public Converter<?> getConverter(NumericType sourceType, NumericType destType) {

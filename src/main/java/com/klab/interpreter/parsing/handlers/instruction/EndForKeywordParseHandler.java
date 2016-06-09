@@ -24,7 +24,7 @@ public class EndForKeywordParseHandler extends AbstractParseHandler {
 
     @Override
     public TokenClass getSupportedTokenClass() {
-        return TokenClass.ENDFOR_KEYWORD;
+        return TokenClass.END_FOR_KEYWORD;
     }
 
     private void checkIfExpected() {

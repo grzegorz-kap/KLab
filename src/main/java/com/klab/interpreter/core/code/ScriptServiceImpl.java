@@ -36,8 +36,7 @@ class ScriptServiceImpl implements ScriptService {
 
     @Subscribe
     public void onExecutionStart(ExecutionStartedEvent executionStartedEvent) {
-        cachedCode.values().stream()
-                .forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
+        cachedCode.values().forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
     }
 
     @Subscribe
@@ -50,7 +49,7 @@ class ScriptServiceImpl implements ScriptService {
 
     @Subscribe
     public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
-        Code code = cachedCode.get(event.getData().getSourceId());
+        Code code = cachedCode.get(event.getData().getScriptId());
         if (nonNull(code)) {
             breakpointService.updateBreakpoints(code);
         }
@@ -59,8 +58,11 @@ class ScriptServiceImpl implements ScriptService {
     private Code read(String scriptName) {
         Code code = null;
         try {
-            code = codeGenerator.translate(scriptFileService.readScript(scriptName));
-            code.setSourceId(scriptName);
+            code = codeGenerator.translate(scriptFileService.readScript(scriptName), () -> {
+                Code instructions = new Code();
+                instructions.setSourceId(scriptName);
+                return instructions;
+            });
             code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0), null);
             breakpointService.updateBreakpoints(code);
             cachedCode.put(scriptName, code);

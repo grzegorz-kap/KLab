@@ -2,16 +2,22 @@ package com.klab.gui.controller;
 
 import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
+import com.klab.gui.events.AppendCommandEvent;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.helpers.KeyboardHelper;
-import com.klab.gui.model.CommandHistory;
+import com.klab.gui.model.CommandHistoryIterator;
+import com.klab.gui.service.CommandHistoryService;
 import com.klab.interpreter.core.ExecutionCommand;
 import com.klab.interpreter.core.Interpreter;
+import com.klab.interpreter.core.events.ClearConsoleEvent;
 import com.klab.interpreter.core.events.PrintEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
+import org.apache.commons.lang3.StringUtils;
 import org.fxmisc.richtext.CodeArea;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -21,16 +27,19 @@ import java.util.Objects;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ConsoleController {
-    private CommandHistory commandHistory = new CommandHistory();
+public class ConsoleController implements InitializingBean {
     private Interpreter interpreter;
     private EventService eventService;
+    private CommandHistoryService commandHistoryService;
+    private CommandHistoryIterator commandHistoryIterator;
 
-    @FXML
-    private CodeArea commandInput;
+    public TextArea commandInput;
+    public CodeArea consoleOutput;
 
-    @FXML
-    private CodeArea consoleOutput;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        commandHistoryIterator = commandHistoryService.iterator();
+    }
 
     @FXML
     public void onKeyPressed(KeyEvent keyEvent) {
@@ -59,19 +68,29 @@ public class ConsoleController {
     @Subscribe
     public void onCommandSubmittedEvent(CommandSubmittedEvent command) {
         consoleOutput.appendText(String.format(">> %s \n", command.getData()));
-        commandHistory.add(command.getData());
+        commandHistoryService.add(command.getData());
         interpreter.startAsync(new ExecutionCommand(command.getData(), command.isProfiling()));
+    }
+
+    @Subscribe
+    public void onCommandAppendEvent(AppendCommandEvent event) {
+        commandInput.appendText(StringUtils.appendIfMissing(event.getData(), "\n"));
+    }
+
+    @Subscribe
+    public void onClearConsoleEvent(ClearConsoleEvent event) {
+        Platform.runLater(consoleOutput::clear);
     }
 
     private void onArrowDown(KeyEvent keyEvent) {
         commandInput.clear();
-        commandInput.appendText(commandHistory.prev());
+        commandInput.appendText(commandHistoryIterator.prev());
         keyEvent.consume();
     }
 
     private void onArrowUp(KeyEvent keyEvent) {
         commandInput.clear();
-        commandInput.appendText(commandHistory.next());
+        commandInput.appendText(commandHistoryIterator.next());
         keyEvent.consume();
     }
 
@@ -93,5 +112,10 @@ public class ConsoleController {
     @Autowired
     public void setInterpreter(Interpreter interpreter) {
         this.interpreter = interpreter;
+    }
+
+    @Autowired
+    public void setCommandHistoryService(CommandHistoryService commandHistoryService) {
+        this.commandHistoryService = commandHistoryService;
     }
 }

@@ -22,13 +22,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptListController implements Initializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptListController.class);
-
     private ScriptViewService scriptViewService;
     private EventService eventService;
 
@@ -40,10 +40,23 @@ public class ScriptListController implements Initializable {
         scriptView.setRoot(scriptViewService.listScripts());
     }
 
+
     @FXML
-    protected void onScriptViewMouseClick(MouseEvent event) throws IOException {
+    public void onScriptRename(ActionEvent actionEvent) throws IOException {
+        scriptViewService.renameScript(scriptView.getSelectionModel().getSelectedItem().getValue());
+    }
+
+    @FXML
+    public void onDeleteScript(ActionEvent actionEvent) throws IOException {
+        scriptViewService.deleteScript(scriptView.getSelectionModel().getSelectedItem().getValue());
+    }
+
+    @FXML
+    public void onScriptViewMouseClick(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2) {
-            eventService.publish(new OpenScriptEvent(scriptView.getSelectionModel().getSelectedItem().getValue(), this));
+            Optional.ofNullable(scriptView.getSelectionModel().getSelectedItem()).ifPresent(item -> {
+                eventService.publish(new OpenScriptEvent(item.getValue(), this));
+            });
         }
     }
 
@@ -55,7 +68,7 @@ public class ScriptListController implements Initializable {
     }
 
     @Subscribe
-    public void onSciptFileChange(ScriptChangeEvent event) {
+    public void onScriptFileChange(ScriptChangeEvent event) {
         Platform.runLater(() -> scriptView.setRoot(scriptViewService.listScripts()));
     }
 

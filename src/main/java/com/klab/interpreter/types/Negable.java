@@ -2,7 +2,7 @@ package com.klab.interpreter.types;
 
 import org.ojalgo.function.UnaryFunction;
 
-public interface Negable<T extends ObjectData> extends ObjectData {
+public interface Negable<T extends Number> extends ObjectData {
     Negable<T> negate();
 
     interface UnaryNagate<N extends Number> extends UnaryFunction<N> {

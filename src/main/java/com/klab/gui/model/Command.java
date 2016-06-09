@@ -1,14 +1,17 @@
 package com.klab.gui.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Command {
     private String content;
-    private LocalDateTime createdAt;
+    private Date createdAt;
+
+    private Command() {
+    }
 
     public Command(String content) {
         this.content = content;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = new Date();
     }
 
     public String getContent() {
@@ -19,11 +22,11 @@ public class Command {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 }

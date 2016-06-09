@@ -23,20 +23,15 @@ public class Modify1InstructionHandler extends AbstractInstructionHandler {
         AddressIterator cells = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         NumericObject source = (NumericObject) executionContext.executionStackPop();
         NumericObject dest = (NumericObject) memorySpace.getForModify(target.getAddress());
-
         if (cells.max() > dest.getCells()) {
             throw new RuntimeException(); // TODO
         }
-
         NumericType numericType = convertersHolder.promote(source.getNumericType(), dest.getNumericType());
         dest = convertersHolder.getConverter(dest.getNumericType(), numericType).convert(dest);
         source = convertersHolder.getConverter(source.getNumericType(), numericType).convert(source);
-
         Editable editable = (Editable) dest;
         EditSupportable supplier = (EditSupportable) source;
         editable.edit(cells, supplier.getEditSupplier());
-
-        memorySpace.set(target.getAddress(), dest);
         instructionPointer.increment();
     }
 

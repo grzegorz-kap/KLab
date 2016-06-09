@@ -17,7 +17,7 @@ public class PrintInstructionHandler extends AbstractInstructionHandler implemen
     @Override
     public void handle(InstructionPointer instructionPointer) {
         // TODO script and functions call (can return void)
-        if (executionContext.executionStackSize() > 0) {
+        if (executionContext.executionStackSize() > 0 && executionContext.executionStackPeek().ansSupported()) {
             eventService.publish(new PrintEvent(executionContext.executionStackPop(), this));
         }
         instructionPointer.increment();

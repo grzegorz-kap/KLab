@@ -18,7 +18,7 @@ public class CLEARInstructionHandler extends AbstractInstructionHandler {
     @Override
     public void handle(InstructionPointer instructionPointer) {
         IdentifierObject id = instructionPointer.currentInstruction().getObjectData(0, TokenIdentifierObject.class);
-        memorySpace.set(id.getAddress(), null);
+        memorySpace.set(id.getAddress(), null, null);
         instructionPointer.increment();
     }
 

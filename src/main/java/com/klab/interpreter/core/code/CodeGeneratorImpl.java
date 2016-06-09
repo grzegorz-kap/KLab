@@ -38,22 +38,31 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public Code translate(String input) {
-        Code code = translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
-        code.setSourceCode(input);
-        return code;
+        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
     }
 
     @Override
-    public Code translate(TokenList input) {
-        Code code = initCode(defaultCodeSupplier);
+    public Code translate(String input, Supplier<Code> codeSupplier) {
+        return translate(input, codeSupplier, defaultMacroInstructionTranslatedCallback);
+    }
+
+    @Override
+    public Code translate(TokenList input, Supplier<Code> codeSupplier) {
+        Code code = initCode(codeSupplier);
         parser.setTokenList(input);
         process(code, defaultMacroInstructionTranslatedCallback);
         return code;
     }
 
     @Override
+    public Code translate(TokenList input) {
+        return translate(input, defaultCodeSupplier);
+    }
+
+    @Override
     public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
+        code.setSourceCode(input);
         parser.setTokenList(tokenizer.readTokens(input));
         process(code, macroInstructionTranslatedCallback);
         code.setSourceCode(input);

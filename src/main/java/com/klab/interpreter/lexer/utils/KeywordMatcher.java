@@ -14,10 +14,10 @@ public abstract class KeywordMatcher {
         put("else", TokenClass.ELSE_KEYWORD);
         put("elseif", TokenClass.ELSEIF_KEYWORD);
         put("for", TokenClass.FOR_KEYWORD);
-        put("endfor", TokenClass.ENDFOR_KEYWORD);
+        put("endfor", TokenClass.END_FOR_KEYWORD);
         put("break", TokenClass.BREAK_KEYWORD);
         put("continue", TokenClass.CONTINUE_KEYWORD);
-        put("function", TokenClass.FUNCTION_KEYWROD);
+        put("function", TokenClass.FUNCTION_KEYWORD);
         put("end", TokenClass.END_KEYWORD);
     }};
 

@@ -1,6 +1,10 @@
 package com.klab.interpreter.service.functions;
 
+import com.klab.interpreter.types.scalar.NumberScalarFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public abstract class AbstractInternalFunction implements InternalFunction {
+    protected NumberScalarFactory numberScalarFactory;
     private int address;
     private int argsMin;
     private int argsMax;
@@ -35,5 +39,10 @@ public abstract class AbstractInternalFunction implements InternalFunction {
     @Override
     public void setAddress(int address) {
         this.address = address;
+    }
+
+    @Autowired
+    public void setNumberScalarFactory(NumberScalarFactory numberScalarFactory) {
+        this.numberScalarFactory = numberScalarFactory;
     }
 }

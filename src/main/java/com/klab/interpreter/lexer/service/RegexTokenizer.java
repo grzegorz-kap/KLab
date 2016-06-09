@@ -1,5 +1,6 @@
 package com.klab.interpreter.lexer.service;
 
+import com.google.common.collect.Lists;
 import com.klab.interpreter.lexer.model.RegexTokenizerContext;
 import com.klab.interpreter.lexer.model.Token;
 import com.klab.interpreter.lexer.model.TokenClass;
@@ -11,32 +12,33 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.klab.interpreter.lexer.model.TokenClass.*;
+
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RegexTokenizer extends AbstractTokenizer {
-    private static final String NUMBER_PATTERN = "^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?";
-    private static final String WORD_PATTERN = "^[A-Za-z_\\$][A-Za-z_\\$0-9]*";
-    private static final String SPACE_PATTERN = "^[ \\t]+";
-    private static final String NEWLINE_PATTERN = "^[\\n\\t\\r ]+";
-    private static final Pattern NUMBER_REGEX = Pattern.compile(NUMBER_PATTERN);
-    private static final Pattern WORD_REGEX = Pattern.compile(WORD_PATTERN);
-    private static final Pattern SPACE_REGEX = Pattern.compile(SPACE_PATTERN);
-    private static final Pattern NEWLINE_REGEX = Pattern.compile(NEWLINE_PATTERN);
+    private static final Pattern NUMBER_REGEX = Pattern.compile("^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?");
+    private static final Pattern WORD_REGEX = Pattern.compile("^[A-Za-z_$][A-Za-z_$0-9]*");
+    private static final Pattern SPACE_REGEX = Pattern.compile("^[ \\t]+");
+    private static final Pattern NEWLINE_REGEX = Pattern.compile("^[\\n\\t\\r ]+");
+
+    private ArrayList<TokenClass> noStringPrecursors = Lists.newArrayList(NUMBER, CLOSE_PARENTHESIS, CLOSE_BRACKET, WORD);
 
     @Override
     public void onNumber() {
-        addToken(NUMBER_REGEX, TokenClass.NUMBER);
+        addToken(NUMBER_REGEX, NUMBER);
     }
 
     @Override
     public void onWord() {
-        Token token = tokenRegexReader.readToken(WORD_REGEX, TokenClass.WORD);
+        Token token = tokenRegexReader.readToken(WORD_REGEX, WORD);
         KeywordMatcher.changeIfKeyword(token);
-        tCM.addToken(token);
+        tokenizerContextManager.addToken(token);
     }
 
     @Override
@@ -49,10 +51,34 @@ public class RegexTokenizer extends AbstractTokenizer {
         addToken(NEWLINE_REGEX, TokenClass.NEW_LINE);
     }
 
+
+    @Override
+    public boolean tryReadString() {
+        if (tokenizerContext.isCharAt(0, '\'') && !noStringPrecursors.contains(tokenizerContextManager.tokenClassAt(0))) {
+            StringBuilder lexeme = new StringBuilder("'");
+            int offset = 1;
+            while (true) {
+                char character = tokenizerContext.charAt(offset++);
+                if ("\n\0".indexOf(character) != -1) {
+                    throw new RuntimeException("Error reading string");
+                }
+                lexeme.append(character);
+                if (character == '\'') {
+                    break;
+                }
+            }
+
+            addToken(lexeme.toString(), TokenClass.STRING);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public boolean tryReadOperator() {
-        if (tC.isCharAt(0, ':')) {
-            TokenClass prev = tCM.tokenClassAt(0);
+        if (tokenizerContext.isCharAt(0, ':')) {
+            TokenClass prev = tokenizerContextManager.tokenClassAt(0);
             if (TokenClass.COMMA.equals(prev) || TokenClass.OPEN_PARENTHESIS.equals(prev)) {
                 return false;
             }
@@ -83,22 +109,22 @@ public class RegexTokenizer extends AbstractTokenizer {
 
     @Override
     protected void setContext(String inputText) {
-        tC = new RegexTokenizerContext(inputText);
+        tokenizerContext = new RegexTokenizerContext(inputText);
     }
 
     private String tryRead(Pattern pattern) {
-        Matcher matcher = pattern.matcher(tC.getInputText());
+        Matcher matcher = pattern.matcher(tokenizerContext.getInputText());
         return matcher.find() ? matcher.group() : null;
     }
 
     private void addToken(final Pattern pattern, TokenClass tokenClass) {
-        tCM.addToken(tokenRegexReader.readToken(pattern, tokenClass));
+        tokenizerContextManager.addToken(tokenRegexReader.readToken(pattern, tokenClass));
     }
 
     private void addToken(final String lexame, TokenClass tokenClass) {
         Token token = new Token();
         token.setLexeme(lexame);
         token.setTokenClass(tokenClass);
-        tCM.addToken(token);
+        tokenizerContextManager.addToken(token);
     }
 }

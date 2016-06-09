@@ -7,17 +7,12 @@ import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.Sizeable;
 import com.klab.interpreter.types.matrix.Matrix;
 import com.klab.interpreter.types.matrix.MatrixFactory;
-import com.klab.interpreter.types.scalar.NumberScalarFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SizeFunction extends AbstractInternalFunction {
-    @Autowired
+class SizeFunction extends AbstractInternalFunction {
     private MatrixFactory<Double> matrixFactory;
-
-    @Autowired
-    private NumberScalarFactory numberScalarFactory;
 
     public SizeFunction() {
         super(1, 1, InternalFunction.SIZE_FUNCTION);
@@ -35,9 +30,15 @@ public class SizeFunction extends AbstractInternalFunction {
             matrix.set(0, 1, (double) columns);
             return matrix;
         } else {
-            return MultiOutput.build()
-                    .add(numberScalarFactory.getDouble(rows))
-                    .add(numberScalarFactory.getDouble(columns));
+            MultiOutput objectDatas = new MultiOutput(2);
+            objectDatas.add(0, numberScalarFactory.getDouble(rows));
+            objectDatas.add(1, numberScalarFactory.getDouble(columns));
+            return objectDatas;
         }
+    }
+
+    @Autowired
+    public void setMatrixFactory(MatrixFactory<Double> matrixFactory) {
+        this.matrixFactory = matrixFactory;
     }
 }

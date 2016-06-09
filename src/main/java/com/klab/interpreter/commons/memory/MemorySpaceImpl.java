@@ -12,7 +12,9 @@ import java.util.stream.Stream;
 public class MemorySpaceImpl implements MemorySpace {
     private ObjectWrapper[] memory = new ObjectWrapper[0];
     private Deque<ObjectWrapper[]> stack = new ArrayDeque<>();
+    private Deque<Integer> scopesIds = new ArrayDeque<>();
     private int scopeId = 0;
+    private int sequence = 0;
 
     @Override
     public int scopeId() {
@@ -20,8 +22,19 @@ public class MemorySpaceImpl implements MemorySpace {
     }
 
     @Override
+    public int find(ObjectData objectData) {
+        for (int index = memory.length - 1; index >= 0; index--) {
+            if (memory[index].data == objectData) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    @Override
     public void newScope(ObjectData[] data) {
-        scopeId++;
+        scopesIds.addFirst(scopeId);
+        scopeId = ++sequence;
         stack.addFirst(memory);
         if (data != null) {
             memory = new ObjectWrapper[data.length];
@@ -35,7 +48,7 @@ public class MemorySpaceImpl implements MemorySpace {
 
     @Override
     public void previousScope() {
-        scopeId--;
+        scopeId = scopesIds.removeFirst();
         memory = stack.removeFirst();
     }
 
@@ -51,16 +64,17 @@ public class MemorySpaceImpl implements MemorySpace {
     }
 
     @Override
-    public void set(int address, ObjectData data) {
+    public ObjectData set(int address, ObjectData data, String name) {
         ObjectWrapper wrapper = memory[address];
-        wrapper.data = data;
+        if (data != null) {
+            wrapper.data = data.isTemp() ? data : data.copy();
+            wrapper.data.setTemp(false);
+            wrapper.data.setName(name);
+        } else {
+            wrapper.data = null;
+        }
         wrapper.version++;
-    }
-
-    @Override
-    public void set(int address, ObjectData data, String name) {
-        set(address, data);
-        data.setName(name);
+        return wrapper.data;
     }
 
     @Override
@@ -81,10 +95,7 @@ public class MemorySpaceImpl implements MemorySpace {
     }
 
     @Override
-    public Long getVersion(String name) {
-        return Stream.of(memory)
-                .filter(wrapper -> wrapper.getData() != null)
-                .filter(wrapper -> name.equals(wrapper.getData().getName()))
-                .map(ObjectWrapper::getVersion).findFirst().orElse(null);
+    public int size() {
+        return memory.length;
     }
 }

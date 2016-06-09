@@ -11,9 +11,7 @@ public interface MemorySpace {
 
     void reserve(int size);
 
-    void set(int address, ObjectData data);
-
-    void set(int address, ObjectData data, String name);
+    ObjectData set(int address, ObjectData data, String name);
 
     ObjectData get(int address);
 
@@ -23,5 +21,7 @@ public interface MemorySpace {
 
     int scopeId();
 
-    Long getVersion(String name);
+    int size();
+
+    int find(ObjectData objectData);
 }

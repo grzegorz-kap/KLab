@@ -1,11 +1,13 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
+import com.klab.interpreter.service.LUResult;
 import com.klab.interpreter.types.*;
 import com.klab.interpreter.types.foriterator.ForIterator;
 import com.klab.interpreter.types.foriterator.OjalgoForIteratorFactory;
 import com.klab.interpreter.types.matrix.Matrix;
 import com.klab.interpreter.types.scalar.Scalar;
 import org.ojalgo.function.BinaryFunction;
+import org.ojalgo.matrix.decomposition.LU;
 import org.ojalgo.matrix.store.MatrixStore;
 import org.ojalgo.matrix.store.PhysicalStore;
 
@@ -16,12 +18,41 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     private PhysicalStore<T> matrixStore;
     private MatrixStore<T> lazyStore;
     private PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory;
+    private boolean temp = true;
 
     public OjalgoAbstractMatrix(NumericType numericType) {
         super(numericType);
     }
 
     public abstract OjalgoAbstractMatrix<T> create(MatrixStore<T> matrixStore);
+
+    public PhysicalStore.Factory<T, ? extends PhysicalStore<T>> getFactory() {
+        return factory;
+    }
+
+    @Override
+    public boolean isTemp() {
+        return temp;
+    }
+
+    @Override
+    public void setTemp(boolean temp) {
+        this.temp = temp;
+    }
+
+    @Override
+    public ObjectData copy() {
+        return create(getLazyStore());
+    }
+
+    @Override
+    public T getValue() {
+        if (isScalar()) {
+            return getLazyStore().get(0);
+        } else {
+            throw new RuntimeException("Not scalar value!");
+        }
+    }
 
     @Override
     public boolean isTrue() {
@@ -107,6 +138,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
         while (row.hasNext()) {
             long rowAddress = row.getNext() - 1;
+            column.reset();
             while (column.hasNext()) {
                 if (!supplier.hasNext()) {
                     throw new RuntimeException(); // TODO
@@ -136,6 +168,13 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
             rowIndex++;
         }
         return create(matrix);
+    }
+
+    @Override
+    public LUResult lu() {
+        LU<T> lu = LU.make(getLazyStore());
+        lu.decompose(getLazyStore());
+        return new OjalgoLUResult<>(this, lu);
     }
 
     protected abstract Scalar createScalar(Number number);
@@ -185,8 +224,9 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     public PhysicalStore<T> getMatrixStore() {
-        if (matrixStore == null) {
-            matrixStore = getLazyStore().copy();
+        if (matrixStore != lazyStore) {
+            matrixStore = lazyStore.copy();
+            lazyStore = matrixStore;
         }
         return matrixStore;
     }

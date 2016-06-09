@@ -12,16 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CommaParseHandler extends AbstractParseHandler {
-
     private MatrixNewColumnParseHandler matrixNewColumnParseHandler;
     private InstructionEndHandler instructionEndHandler;
     private FunctionArgumentDelimiterParseHandler argumentDilimiterHandler;
 
     @Override
     public void handle() {
-        if (isThisCommaInsideMatrix()) {
+        if (pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
             matrixNewColumnParseHandler.handle();
-        } else if (isThisCommaInsideFunctionCall()) {
+        } else if (pCtxMgr.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS)) {
             argumentDilimiterHandler.handle();
         } else {
             instructionEndHandler.handle();
@@ -39,14 +38,6 @@ public class CommaParseHandler extends AbstractParseHandler {
         matrixNewColumnParseHandler.setContextManager(parseContextManager);
         instructionEndHandler.setContextManager(parseContextManager);
         argumentDilimiterHandler.setContextManager(parseContextManager);
-    }
-
-    private boolean isThisCommaInsideMatrix() {
-        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
-    }
-
-    private boolean isThisCommaInsideFunctionCall() {
-        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS);
     }
 
     @Autowired
