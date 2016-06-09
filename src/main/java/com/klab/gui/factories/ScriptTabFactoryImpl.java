@@ -7,7 +7,6 @@ import com.klab.common.EventService;
 import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
-import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.StopExecutionEvent;
@@ -37,7 +36,6 @@ import static java.util.Objects.isNull;
 public class ScriptTabFactoryImpl implements ScriptTabFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTabFactoryImpl.class);
 
-    private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
     private ScriptViewService scriptViewService;
     private BreakpointService breakpointService;
@@ -74,9 +72,7 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     }
 
     private String handleVariableTooltip(String name) {
-        Integer address = identifierMapper.getMainAddress(name);
-        if (address != null) {
-            ObjectData data = memorySpace.get(address);
+        ObjectData data = memorySpace.find(name);
             if (data != null && StringUtils.isNoneBlank(data.getName())) {
                 String result = String.format("%s = ", data.getName());
                 if (data instanceof Scalar) {
@@ -92,7 +88,6 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
                 }
                 return result + data.toString();
             }
-        }
         return "";
     }
 
@@ -234,11 +229,6 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     @Autowired
     public void setScriptFileService(ScriptFileService scriptFileService) {
         this.scriptFileService = scriptFileService;
-    }
-
-    @Autowired
-    public void setIdentifierMapper(IdentifierMapper identifierMapper) {
-        this.identifierMapper = identifierMapper;
     }
 
     @Autowired
