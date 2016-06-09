@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -75,6 +76,15 @@ public class MemorySpaceImpl implements MemorySpace {
         }
         wrapper.version++;
         return wrapper.data;
+    }
+
+    @Override
+    public ObjectData find(String name) {
+        return Stream.of(memory)
+                .map(ObjectWrapper::getData)
+                .filter(Objects::nonNull)
+                .filter(objectData -> name.equals(objectData.getName()))
+                .findFirst().orElse(null);
     }
 
     @Override

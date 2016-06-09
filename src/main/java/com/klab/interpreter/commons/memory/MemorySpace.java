@@ -24,4 +24,6 @@ public interface MemorySpace {
     int size();
 
     int find(ObjectData objectData);
+
+    ObjectData find(String name);
 }

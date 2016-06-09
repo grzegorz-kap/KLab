@@ -28,15 +28,14 @@
                                 <MenuItem mnemonicParsing="false" text="Run to cursor (F3)" onAction="#runToCursor"/>
                                 <MenuItem mnemonicParsing="false" text="Run with profiling (Shift + F5)"
                                           onAction="#runWithProfiling"/>
-                                <MenuItem mnemonicParsing="false" text="Stop(Ctrl + F2)" onAction="#stopExecution"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Debug">
+                            <items>
                                 <MenuItem mnemonicParsing="false" text="Resume program (F9)" onAction="#resume"/>
                                 <MenuItem mnemonicParsing="false" text="Step Over (F8)" onAction="#stepOver"/>
                                 <MenuItem mnemonicParsing="false" text="Step Into (F7)" onAction="#stepInto"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About"/>
+                                <MenuItem mnemonicParsing="false" text="Stop(Ctrl + F2)" onAction="#stopExecution"/>
                             </items>
                         </Menu>
                     </menus>
