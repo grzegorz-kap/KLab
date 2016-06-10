@@ -7,11 +7,11 @@ import com.klab.interpreter.types.converters.OjalgoScalarComplexConverter;
 import com.klab.interpreter.types.converters.OjalgoScalarDoubleConverter;
 import com.klab.interpreter.types.matrix.ojalgo.OjalgoAbstractMatrix;
 
-abstract class OjalgoAbstractForIterator<N extends Number> extends AbstractForIterator {
+abstract public class OjalgoAbstractForIterator<N extends Number> extends AbstractForIterator {
     Converter<?> converter;
     protected OjalgoAbstractMatrix<N> data;
-    private long columns = 0;
-    protected long rows = 0;
+    private int columns = 0;
+    protected int rows = 0;
     long currentColumn = 0;
 
     OjalgoAbstractForIterator(OjalgoAbstractMatrix<N> data) {
@@ -22,12 +22,12 @@ abstract class OjalgoAbstractForIterator<N extends Number> extends AbstractForIt
     }
 
     @Override
-    public long getRows() {
+    public int getRows() {
         return rows;
     }
 
     @Override
-    public long getColumns() {
+    public int getColumns() {
         return columns;
     }
 

@@ -45,12 +45,12 @@ public class StringData extends AbstractObjectData implements ObjectData, Sizeab
 
 
     @Override
-    public long getRows() {
+    public int getRows() {
         return 1;
     }
 
     @Override
-    public long getColumns() {
+    public int getColumns() {
         return data.length();
     }
 

@@ -40,20 +40,21 @@ public abstract class OjalgoAbstractMatrixFactory<N extends Number> implements M
     }
 
     @Override
-    public Matrix<N> createRange(Number start, Number step, Number stop) {
-        double j = start.doubleValue();
-        double i = step.doubleValue();
-        double k = stop.doubleValue();
-        double temp = (k - j) / i;
-        long m = (long) (temp >= 0.0 ? Math.floor(temp) : Math.ceil(temp));
-        if (i == 0 || m == 0 || i > 0 && j > k || i < 0 && j < k) {
-            return create(factory.makeZero(0, 0));
-        }
-        PhysicalStore<N> store = factory.makeZero(1, (m + 1));
-        for (long mult = 0; mult <= m; mult++) {
-            store.set(mult, j + i * mult);
-        }
-        return create(store);
+    public Matrix createRange(Number start, Number step, Number stop) {
+//        double j = start.doubleValue();
+//        double i = step.doubleValue();
+//        double k = stop.doubleValue();
+//        double temp = (k - j) / i;
+//        long m = (long) (temp >= 0.0 ? Math.floor(temp) : Math.ceil(temp));
+//        if (i == 0 || m == 0 || i > 0 && j > k || i < 0 && j < k) {
+//            return create(factory.makeZero(0, 0));
+//        }
+//        PhysicalStore<N> store = factory.makeZero(1, (m + 1));
+//        for (long mult = 0; mult <= m; mult++) {
+//            store.set(mult, j + i * mult);
+//        }
+//        return create(store);
+        return new OjalgoRangeMatrix(start, step, stop);
     }
 
     public void setFactory(PhysicalStore.Factory<N, ? extends PhysicalStore<N>> factory) {

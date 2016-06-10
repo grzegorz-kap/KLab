@@ -47,12 +47,12 @@ abstract class AbstractScalar<N extends Number> extends AbstractNumericObject im
     }
 
     @Override
-    public long getRows() {
+    public int getRows() {
         return 1;
     }
 
     @Override
-    public long getColumns() {
+    public int getColumns() {
         return 1;
     }
 

@@ -10,7 +10,7 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     private Iterator<N> iterator;
     private long dataLength;
     private MatrixStore<N> data;
-    private Long max;
+    private Integer max;
 
     OjalgoAddressIterator(MatrixStore<N> data) {
         this.data = data;
@@ -19,12 +19,13 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     }
 
     @Override
-    public long max() {
+    public int max() {
         if (max == null) {
-            max = 0L;
+            max = 0;
             for (N n : data) {
-                if (n.longValue() > max) {
-                    max = n.longValue();
+                int i = n.intValue();
+                if (i > max) {
+                    max = i;
                 }
             }
         }
@@ -37,8 +38,8 @@ public class OjalgoAddressIterator<N extends Number> implements AddressIterator 
     }
 
     @Override
-    public long getNext() {
-        return iterator.next().longValue();
+    public int getNext() {
+        return iterator.next().intValue();
     }
 
     @Override

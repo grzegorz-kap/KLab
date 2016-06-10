@@ -21,7 +21,7 @@ public class MAllCellsInstructionHandler extends AbstractInstructionHandler {
     public void handle(InstructionPointer instructionPointer) {
         IdentifierObject id = (IdentifierObject) instructionPointer.currentInstruction().getObjectData(0);
         Sizeable sizeable = (Sizeable) memorySpace.get(id.getAddress());
-        executionContext.executionStackPush(new RangeAddressIterator(1, sizeable.getCells()));
+        executionContext.executionStackPush(new RangeAddressIterator(1, (int) sizeable.getCells()));
         instructionPointer.increment();
     }
 

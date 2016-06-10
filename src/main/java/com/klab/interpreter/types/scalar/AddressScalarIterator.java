@@ -5,7 +5,7 @@ import com.klab.interpreter.types.ObjectData;
 
 class AddressScalarIterator implements AddressIterator {
     private boolean nextFlag = true;
-    private long value;
+    private int value;
 
     AddressScalarIterator(int value) {
         this.value = value;
@@ -17,7 +17,7 @@ class AddressScalarIterator implements AddressIterator {
     }
 
     @Override
-    public long getNext() {
+    public int getNext() {
         nextFlag = false;
         return value;
     }
@@ -38,7 +38,7 @@ class AddressScalarIterator implements AddressIterator {
     }
 
     @Override
-    public long max() {
+    public int max() {
         return value;
     }
 

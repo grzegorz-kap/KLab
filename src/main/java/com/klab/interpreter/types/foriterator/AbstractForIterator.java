@@ -2,7 +2,7 @@ package com.klab.interpreter.types.foriterator;
 
 import com.klab.interpreter.types.ObjectData;
 
-abstract class AbstractForIterator implements ForIterator {
+public abstract class AbstractForIterator implements ForIterator {
     private String name;
 
     @Override
