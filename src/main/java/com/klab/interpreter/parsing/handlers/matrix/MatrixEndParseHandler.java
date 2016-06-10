@@ -40,32 +40,32 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         handleAction();
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     public void handleAction() {
-        balanceContextService.popOrThrow(pCtxMgr, BalanceType.INSIDE_MATRIX);
+        balanceContextService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX);
         endRow();
         moveStackToExpression();
         reduceExpression();
     }
 
     private void endRow() {
-        if (pCtxMgr.expressionSize() > 0 && !pCtxMgr.expressionPeek().getValue().getParseClass().equals(ParseClass.MATRIX_VERSE)) {
+        if (parseContextManager.expressionSize() > 0 && !parseContextManager.expressionPeek().getValue().getParseClass().equals(ParseClass.MATRIX_VERSE)) {
             matrixNewRowHandler.handleAction();
         }
     }
 
     private void reduceExpression() {
         ExpressionNode<ParseToken> matrixNode = new ExpressionNode<>(null);
-        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(pCtxMgr, this::popUntilPredicate);
+        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, this::popUntilPredicate);
         NumericType numericType = typeResolver.resolveNumeric(expressions);
         matrixNode.visitEach(node -> node.setResolvedNumericType(numericType));
         matrixNode.setResolvedNumericType(numericType);
         matrixNode.addChildren(expressions);
-        matrixNode.setValue(pCtxMgr.expressionPop().getValue());
+        matrixNode.setValue(parseContextManager.expressionPop().getValue());
         matrixNode.getValue().setParseClass(ParseClass.MATRIX);
-        pCtxMgr.addExpression(matrixNode);
+        parseContextManager.addExpression(matrixNode);
     }
 
     private boolean popUntilPredicate(ParseClass parseClass) {
@@ -73,10 +73,10 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     }
 
     private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilParseClass(pCtxMgr, MATRIX_START)) {
+        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, MATRIX_START)) {
             throw new RuntimeException();
         }
-        pCtxMgr.stackPop();
+        parseContextManager.stackPop();
     }
 
     @Override

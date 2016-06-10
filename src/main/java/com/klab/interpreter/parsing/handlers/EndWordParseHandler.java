@@ -14,9 +14,9 @@ public class EndWordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         //TODO
-        if (pCtxMgr.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS)) {
-            pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.LAST_CELL));
-            pCtxMgr.incrementTokenPosition(1);
+        if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS)) {
+            parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.LAST_CELL));
+            parseContextManager.incrementTokenPosition(1);
         } else {
             throw new RuntimeException();
         }

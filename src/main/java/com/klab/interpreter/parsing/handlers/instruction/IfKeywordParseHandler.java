@@ -23,14 +23,14 @@ public class IfKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         checkKeywordCorrectPlacement();
-        pCtxMgr.getBalanceContext().put(KeywordBalance.IF_INSTRUCTION);
-        pCtxMgr.addExpressionValue(new IfToken(pCtxMgr.tokenAt(0)));
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.getBalanceContext().put(KeywordBalance.IF_INSTRUCTION);
+        parseContextManager.addExpressionValue(new IfToken(parseContextManager.tokenAt(0)));
+        parseContextManager.incrementTokenPosition(1);
     }
 
     private void checkKeywordCorrectPlacement() {
-        if (pCtxMgr.expressionSize() != 0) {
-            throw new WrongIfInstructionException(UNEXPECTED_IF_OR_ELSEIF_KEYWORD, pCtxMgr.getParseContext());
+        if (parseContextManager.expressionSize() != 0) {
+            throw new WrongIfInstructionException(UNEXPECTED_IF_OR_ELSEIF_KEYWORD, parseContextManager.getParseContext());
         }
     }
 }

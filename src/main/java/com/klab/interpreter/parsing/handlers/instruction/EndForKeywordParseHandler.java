@@ -18,8 +18,8 @@ public class EndForKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         checkIfExpected();
-        pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.ENDFOR_KEYWORD));
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.ENDFOR_KEYWORD));
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
@@ -28,11 +28,11 @@ public class EndForKeywordParseHandler extends AbstractParseHandler {
     }
 
     private void checkIfExpected() {
-        if (pCtxMgr.expressionSize() != 0) {
-            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, pCtxMgr.getParseContext());
+        if (parseContextManager.expressionSize() != 0) {
+            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
-        if (!pCtxMgr.getBalanceContext().isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
-            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, pCtxMgr.getParseContext());
+        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
+            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
     }
 }

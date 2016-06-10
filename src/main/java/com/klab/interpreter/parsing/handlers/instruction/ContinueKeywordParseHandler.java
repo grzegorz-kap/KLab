@@ -17,18 +17,18 @@ public class ContinueKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         check();
-        pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.CONTINUE_FOR));
-        pCtxMgr.incrementTokenPosition(1);
-        pCtxMgr.setInstructionPrint(true);
+        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.CONTINUE_FOR));
+        parseContextManager.incrementTokenPosition(1);
+        parseContextManager.setInstructionPrint(true);
     }
 
     public void check() {
-        BalanceContext balanceContext = pCtxMgr.getBalanceContext();
+        BalanceContext balanceContext = parseContextManager.getBalanceContext();
         if (!balanceContext.isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
-            throw new UnexpectedKeywordException("continue", pCtxMgr.getParseContext());
+            throw new UnexpectedKeywordException("continue", parseContextManager.getParseContext());
         }
-        if (pCtxMgr.expressionSize() != 0) {
-            throw new UnexpectedKeywordException("continue", pCtxMgr.getParseContext());
+        if (parseContextManager.expressionSize() != 0) {
+            throw new UnexpectedKeywordException("continue", parseContextManager.getParseContext());
         }
     }
 

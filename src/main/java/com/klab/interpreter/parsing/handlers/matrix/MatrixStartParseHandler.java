@@ -18,11 +18,11 @@ public class MatrixStartParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        ParseToken parseToken = new MatrixStartToken(pCtxMgr.tokenAt(0));
-        pCtxMgr.addExpressionNode(parseToken);
-        pCtxMgr.stackPush(parseToken);
-        balanceContextService.add(pCtxMgr, BalanceType.INSIDE_MATRIX);
-        pCtxMgr.incrementTokenPosition(1);
+        ParseToken parseToken = new MatrixStartToken(parseContextManager.tokenAt(0));
+        parseContextManager.addExpressionNode(parseToken);
+        parseContextManager.stackPush(parseToken);
+        balanceContextService.add(parseContextManager, BalanceType.INSIDE_MATRIX);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override

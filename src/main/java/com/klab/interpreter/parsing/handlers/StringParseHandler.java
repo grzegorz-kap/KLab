@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 public class StringParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        Token string = getContextManager().tokenAt(0);
+        Token string = parseContextManager.tokenAt(0);
         ParseToken parseToken = new ParseToken(string, ParseClass.STRING);
-        getContextManager().addExpressionValue(parseToken);
-        getContextManager().incrementTokenPosition(1);
+        parseContextManager.addExpressionValue(parseToken);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override

@@ -11,9 +11,9 @@ public class InstructionEndHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        pCtxMgr.setInstructionStop(true);
+        parseContextManager.setInstructionStop(true);
         setupPrintProperty();
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
@@ -22,8 +22,8 @@ public class InstructionEndHandler extends AbstractParseHandler {
     }
 
     private void setupPrintProperty() {
-        TokenClass currentClass = pCtxMgr.tokenAt(0).getTokenClass();
-        pCtxMgr.setInstructionPrint(isExpressionShouldBePrinted(currentClass));
+        TokenClass currentClass = parseContextManager.tokenAt(0).getTokenClass();
+        parseContextManager.setInstructionPrint(isExpressionShouldBePrinted(currentClass));
     }
 
     private boolean isExpressionShouldBePrinted(TokenClass currentClass) {

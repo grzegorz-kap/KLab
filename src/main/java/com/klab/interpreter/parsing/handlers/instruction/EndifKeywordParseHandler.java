@@ -25,21 +25,21 @@ public class EndifKeywordParseHandler extends AbstractParseHandler {
     public void handle() {
         checkCorrectExpressionSize();
         checkKeywordBalance();
-        pCtxMgr.addExpressionValue(new EndifToken(pCtxMgr.tokenAt(0)));
-        pCtxMgr.getBalanceContext().popKeyword();
-        pCtxMgr.incrementTokenPosition(1);
-        pCtxMgr.setInstructionStop(true);
+        parseContextManager.addExpressionValue(new EndifToken(parseContextManager.tokenAt(0)));
+        parseContextManager.getBalanceContext().popKeyword();
+        parseContextManager.incrementTokenPosition(1);
+        parseContextManager.setInstructionStop(true);
     }
 
     private void checkKeywordBalance() {
-        if (!pCtxMgr.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
-            throw new WrongIfInstructionException(KEYWORD_ENDIF_CANNOT_BE_USED_WITHOUT_IF, pCtxMgr.getParseContext());
+        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
+            throw new WrongIfInstructionException(KEYWORD_ENDIF_CANNOT_BE_USED_WITHOUT_IF, parseContextManager.getParseContext());
         }
     }
 
     private void checkCorrectExpressionSize() {
-        if (pCtxMgr.expressionSize() != 0) {
-            throw new WrongIfInstructionException(KEYWORD_ENDIF_NOT_EXPECTED_HERE, pCtxMgr.getParseContext());
+        if (parseContextManager.expressionSize() != 0) {
+            throw new WrongIfInstructionException(KEYWORD_ENDIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
     }
 }

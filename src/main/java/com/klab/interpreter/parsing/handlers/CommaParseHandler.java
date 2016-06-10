@@ -18,9 +18,9 @@ public class CommaParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        if (pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
+        if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
             matrixNewColumnParseHandler.handle();
-        } else if (pCtxMgr.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS)) {
+        } else if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS)) {
             argumentDilimiterHandler.handle();
         } else {
             instructionEndHandler.handle();

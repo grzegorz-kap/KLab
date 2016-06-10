@@ -17,10 +17,10 @@ public class IdentifierParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        IdentifierToken identifierToken = new IdentifierToken(pCtxMgr.tokenAt(0));
+        IdentifierToken identifierToken = new IdentifierToken(parseContextManager.tokenAt(0));
         identifierToken.setAddress(identifierMapper.registerMainIdentifier(identifierToken.getId()));
-        pCtxMgr.addExpressionValue(identifierToken);
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.addExpressionValue(identifierToken);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override

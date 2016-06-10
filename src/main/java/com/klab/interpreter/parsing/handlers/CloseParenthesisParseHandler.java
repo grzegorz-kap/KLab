@@ -35,20 +35,20 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         moveStackToExpression();
-        ParseToken stackPeek = pCtxMgr.stackPop();
+        ParseToken stackPeek = parseContextManager.stackPop();
         if (isFunctionCallEnd(stackPeek)) {
             handleFunctionEnd();
         }
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     private void handleFunctionEnd() {
-        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(pCtxMgr, this::isCallToken);
-        Expression<ParseToken> callNode = pCtxMgr.expressionPeek();
+        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, this::isCallToken);
+        Expression<ParseToken> callNode = parseContextManager.expressionPeek();
         callNode.getValue().setParseClass(ParseClass.CALL);
         setupInternalFunctionAddress(expressions, callNode);
         callNode.addChildren(expressions);
-        balanceContextService.popOrThrow(pCtxMgr, BalanceType.FUNCTION_ARGUMENTS);
+        balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
     }
 
     private void setupInternalFunctionAddress(List<Expression<ParseToken>> expressions, Expression<ParseToken> callNode) {
@@ -66,8 +66,8 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
     }
 
     private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilParseClass(pCtxMgr, STOP_CLASSES)) {
-            throw new UnexpectedCloseParenthesisException("Unexpected close parenthesis", pCtxMgr.getParseContext());
+        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, STOP_CLASSES)) {
+            throw new UnexpectedCloseParenthesisException("Unexpected close parenthesis", parseContextManager.getParseContext());
         }
     }
 

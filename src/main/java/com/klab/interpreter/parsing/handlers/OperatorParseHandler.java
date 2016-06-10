@@ -27,12 +27,12 @@ public class OperatorParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         preProcessUnaryPlusAndMinusOperators();
-        OperatorToken o1 = operatorFactory.getOperator(getContextManager().tokenAt(0));
+        OperatorToken o1 = operatorFactory.getOperator(parseContextManager.tokenAt(0));
         if (Objects.isNull(o1)) {
             throw new RuntimeException();
         }
-        while (!pCtxMgr.isStackEmpty()) {
-            ParseToken parseToken = pCtxMgr.stackPeek();
+        while (!parseContextManager.isStackEmpty()) {
+            ParseToken parseToken = parseContextManager.stackPeek();
             if (!(parseToken instanceof OperatorToken)) {
                 break;
             }
@@ -47,21 +47,21 @@ public class OperatorParseHandler extends AbstractParseHandler {
             }
 
             if (":".equals(o1.getToken().getLexeme()) && ":".equals(o2.getToken().getLexeme())) {
-                pCtxMgr.stackPop();
+                parseContextManager.stackPop();
                 o1 = operatorFactory.getOperator("$::", o2.getToken());
                 break;
             }
 
             stackToExpression();
         }
-        pCtxMgr.stackPush(o1);
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.stackPush(o1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     private void preProcessUnaryPlusAndMinusOperators() {
-        String token = pCtxMgr.tokenAt(0).getLexeme();
-        if (expressionUtils.isUnaryOperator(pCtxMgr, 0)) {
-            pCtxMgr.tokenAt(0).setLexeme("$" + token);
+        String token = parseContextManager.tokenAt(0).getLexeme();
+        if (expressionUtils.isUnaryOperator(parseContextManager, 0)) {
+            parseContextManager.tokenAt(0).setLexeme("$" + token);
         }
     }
 
@@ -71,10 +71,10 @@ public class OperatorParseHandler extends AbstractParseHandler {
     }
 
     private void stackToExpression() {
-        OperatorToken operatorToken = (OperatorToken) pCtxMgr.stackPop();
+        OperatorToken operatorToken = (OperatorToken) parseContextManager.stackPop();
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(operatorToken);
-        expressionNode.addChildren(pCtxMgr.expressionPopArguments(operatorToken.getArgumentsNumber()));
-        pCtxMgr.addExpression(expressionNode);
+        expressionNode.addChildren(parseContextManager.expressionPopArguments(operatorToken.getArgumentsNumber()));
+        parseContextManager.addExpression(expressionNode);
     }
 
     @Override

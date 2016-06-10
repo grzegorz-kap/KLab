@@ -26,7 +26,7 @@ public class SemicolonParseHandler extends AbstractParseHandler {
     }
 
     private boolean isSemicolonInsideMatrix() {
-        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
+        return parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
     }
 
     @Override

@@ -18,13 +18,13 @@ public class SpaceParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        if (pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
-            if (tokenClassAt(-1) != TokenClass.OPERATOR || expressionUtils.isUnaryOperator(pCtxMgr, 1)) {
+        if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
+            if (tokenClassAt(-1) != TokenClass.OPERATOR || expressionUtils.isUnaryOperator(parseContextManager, 1)) {
                 matrixNewColumnParseHandler.handle();
                 return;
             }
         }
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
