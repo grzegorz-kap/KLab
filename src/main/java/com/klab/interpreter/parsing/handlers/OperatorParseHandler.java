@@ -11,10 +11,9 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 import static com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity.LEFT_TO_RIGHT;
 import static com.klab.interpreter.parsing.model.tokens.operators.OperatorAssociativity.RIGHT_TO_LEFT;
+import static java.util.Objects.requireNonNull;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -27,10 +26,7 @@ public class OperatorParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
         preProcessUnaryPlusAndMinusOperators();
-        OperatorToken o1 = operatorFactory.getOperator(parseContextManager.tokenAt(0));
-        if (Objects.isNull(o1)) {
-            throw new RuntimeException();
-        }
+        OperatorToken o1 = requireNonNull(operatorFactory.getOperator(parseContextManager.tokenAt(0)));
         while (!parseContextManager.isStackEmpty()) {
             ParseToken parseToken = parseContextManager.stackPeek();
             if (!(parseToken instanceof OperatorToken)) {
@@ -39,8 +35,7 @@ public class OperatorParseHandler extends AbstractParseHandler {
 
             OperatorToken o2 = (OperatorToken) parseToken;
             int compereResult = o1.getPriority().compareTo(o2.getPriority());
-            boolean operate = o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 ||
-                    o1.getAssociativity() == RIGHT_TO_LEFT && compereResult <= -1;
+            boolean operate = o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 || o1.getAssociativity() == RIGHT_TO_LEFT && compereResult <= -1;
 
             if (!operate) {
                 break;

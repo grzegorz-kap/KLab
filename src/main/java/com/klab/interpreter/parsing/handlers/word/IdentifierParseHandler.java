@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IdentifierParseHandler extends AbstractParseHandler {
-
     private IdentifierMapper identifierMapper;
 
     @Override
@@ -32,5 +31,4 @@ public class IdentifierParseHandler extends AbstractParseHandler {
     private void setIdentifierMapper(IdentifierMapper identifierMapper) {
         this.identifierMapper = identifierMapper;
     }
-
 }

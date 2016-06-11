@@ -19,6 +19,10 @@ public class ExpressionHelper {
         return parseContextManager.expressionPopArguments(parseContextManager.expressionSize() - foundIndex - 1);
     }
 
+    public List<Expression<ParseToken>> popUntilParseClass(ParseContextManager parseContextManager, ParseClass parseClass) {
+        return popUntilParseClass(parseContextManager, _class -> _class == parseClass);
+    }
+
     private void checkCorrectIndexFound(Integer matrixStartIndex) {
         if (Objects.isNull(matrixStartIndex)) {
             throw new RuntimeException();

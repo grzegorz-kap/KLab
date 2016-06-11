@@ -34,41 +34,20 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        moveStackToExpression();
-        ParseToken stackPeek = parseContextManager.stackPop();
-        if (isFunctionCallEnd(stackPeek)) {
-            handleFunctionEnd();
-        }
-        parseContextManager.incrementTokenPosition(1);
-    }
-
-    private void handleFunctionEnd() {
-        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, this::isCallToken);
-        Expression<ParseToken> callNode = parseContextManager.expressionPeek();
-        callNode.getValue().setParseClass(ParseClass.CALL);
-        setupInternalFunctionAddress(expressions, callNode);
-        callNode.addChildren(expressions);
-        balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
-    }
-
-    private void setupInternalFunctionAddress(List<Expression<ParseToken>> expressions, Expression<ParseToken> callNode) {
-        CallToken callToken = (CallToken) callNode.getValue();
-        Integer address = internalFunctionHolder.getAddress(callToken.getCallName(), expressions.size());
-        callToken.setInternalFunctionAddress(address);
-    }
-
-    private boolean isFunctionCallEnd(ParseToken stackPeek) {
-        return stackPeek.getParseClass().equals(ParseClass.CALL_START);
-    }
-
-    private boolean isCallToken(ParseClass parseClass) {
-        return parseClass.equals(ParseClass.CALL_START);
-    }
-
-    private void moveStackToExpression() {
         if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, STOP_CLASSES)) {
             throw new UnexpectedCloseParenthesisException("Unexpected close parenthesis", parseContextManager.getParseContext());
         }
+        ParseToken stackPeek = parseContextManager.stackPop();
+        if (stackPeek.getParseClass().equals(ParseClass.CALL_START)) {
+            List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, ParseClass.CALL_START);
+            Expression<ParseToken> callNode = parseContextManager.expressionPeek();
+            callNode.getValue().setParseClass(ParseClass.CALL);
+            callNode.addChildren(expressions);
+            CallToken callToken = (CallToken) callNode.getValue();
+            callToken.setInternalFunctionAddress(internalFunctionHolder.getAddress(callToken.getCallName(), expressions.size()));
+            balanceContextService.popOrThrow(parseContextManager, BalanceType.FUNCTION_ARGUMENTS);
+        }
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Autowired

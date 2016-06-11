@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+@Deprecated
 public class ParseContextManager {
     private ParseContext parseContext;
 

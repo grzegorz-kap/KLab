@@ -39,26 +39,18 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        handleAction();
-        parseContextManager.incrementTokenPosition(1);
-    }
-
-    public void handleAction() {
         balanceContextService.popOrThrow(parseContextManager, BalanceType.INSIDE_MATRIX);
-        endRow();
-        moveStackToExpression();
-        reduceExpression();
-    }
-
-    private void endRow() {
         if (parseContextManager.expressionSize() > 0 && !parseContextManager.expressionPeek().getValue().getParseClass().equals(ParseClass.MATRIX_VERSE)) {
             matrixNewRowHandler.handleAction();
         }
-    }
 
-    private void reduceExpression() {
+        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, MATRIX_START)) {
+            throw new RuntimeException();
+        }
+        parseContextManager.stackPop();
+
         ExpressionNode<ParseToken> matrixNode = new ExpressionNode<>(null);
-        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, this::popUntilPredicate);
+        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, MATRIX_START);
         NumericType numericType = typeResolver.resolveNumeric(expressions);
         matrixNode.visitEach(node -> node.setResolvedNumericType(numericType));
         matrixNode.setResolvedNumericType(numericType);
@@ -66,17 +58,8 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
         matrixNode.setValue(parseContextManager.expressionPop().getValue());
         matrixNode.getValue().setParseClass(ParseClass.MATRIX);
         parseContextManager.addExpression(matrixNode);
-    }
 
-    private boolean popUntilPredicate(ParseClass parseClass) {
-        return parseClass.equals(MATRIX_START);
-    }
-
-    private void moveStackToExpression() {
-        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, MATRIX_START)) {
-            throw new RuntimeException();
-        }
-        parseContextManager.stackPop();
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override

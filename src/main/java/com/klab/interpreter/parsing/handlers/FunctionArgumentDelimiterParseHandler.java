@@ -24,8 +24,7 @@ public class FunctionArgumentDelimiterParseHandler extends AbstractParseHandler 
     @Override
     public void handle() {
         if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.CALL_START)) {
-            throw new UnexpectedFunctionArgumentsDelimiter(UNEXPECTED_ARGUMENT_DELIMITER,
-                    parseContextManager.getParseContext());
+            throw new UnexpectedFunctionArgumentsDelimiter(UNEXPECTED_ARGUMENT_DELIMITER, parseContextManager.getParseContext());
         }
         parseContextManager.incrementTokenPosition(1);
     }

@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 public class CommaParseHandler extends AbstractParseHandler {
     private MatrixNewColumnParseHandler matrixNewColumnParseHandler;
     private InstructionEndHandler instructionEndHandler;
-    private FunctionArgumentDelimiterParseHandler argumentDilimiterHandler;
+    private FunctionArgumentDelimiterParseHandler functionArgumentDelimiterParseHandler;
 
     @Override
     public void handle() {
         if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
             matrixNewColumnParseHandler.handle();
         } else if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.FUNCTION_ARGUMENTS)) {
-            argumentDilimiterHandler.handle();
+            functionArgumentDelimiterParseHandler.handle();
         } else {
             instructionEndHandler.handle();
         }
@@ -37,7 +37,7 @@ public class CommaParseHandler extends AbstractParseHandler {
         super.setContextManager(parseContextManager);
         matrixNewColumnParseHandler.setContextManager(parseContextManager);
         instructionEndHandler.setContextManager(parseContextManager);
-        argumentDilimiterHandler.setContextManager(parseContextManager);
+        functionArgumentDelimiterParseHandler.setContextManager(parseContextManager);
     }
 
     @Autowired
@@ -51,7 +51,7 @@ public class CommaParseHandler extends AbstractParseHandler {
     }
 
     @Autowired
-    public void setArgumentDilimiterHandler(FunctionArgumentDelimiterParseHandler argumentDilimiterHandler) {
-        this.argumentDilimiterHandler = argumentDilimiterHandler;
+    public void setFunctionArgumentDelimiterParseHandler(FunctionArgumentDelimiterParseHandler functionArgumentDelimiterParseHandler) {
+        this.functionArgumentDelimiterParseHandler = functionArgumentDelimiterParseHandler;
     }
 }
