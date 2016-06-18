@@ -23,7 +23,7 @@ public class BreakKeywordParseHandler extends AbstractParseHandler {
         parseContextManager.setInstructionStop(true);
     }
 
-    public void check(BalanceContext balanceContext) {
+    private void check(BalanceContext balanceContext) {
         if (!balanceContext.isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
             throw new UnexpectedKeywordException("break", parseContextManager.getParseContext());
         }

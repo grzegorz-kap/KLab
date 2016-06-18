@@ -15,7 +15,6 @@ import static com.klab.interpreter.parsing.exception.WrongIfInstructionException
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class EndifKeywordParseHandler extends AbstractParseHandler {
-
     @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.ENDIF_KEYWORD;
@@ -23,23 +22,15 @@ public class EndifKeywordParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        checkCorrectExpressionSize();
-        checkKeywordBalance();
+        if (parseContextManager.expressionSize() != 0) {
+            throw new WrongIfInstructionException(KEYWORD_ENDIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
+        }
+        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
+            throw new WrongIfInstructionException(KEYWORD_ENDIF_CANNOT_BE_USED_WITHOUT_IF, parseContextManager.getParseContext());
+        }
         parseContextManager.addExpressionValue(new EndifToken(parseContextManager.tokenAt(0)));
         parseContextManager.getBalanceContext().popKeyword();
         parseContextManager.incrementTokenPosition(1);
         parseContextManager.setInstructionStop(true);
-    }
-
-    private void checkKeywordBalance() {
-        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
-            throw new WrongIfInstructionException(KEYWORD_ENDIF_CANNOT_BE_USED_WITHOUT_IF, parseContextManager.getParseContext());
-        }
-    }
-
-    private void checkCorrectExpressionSize() {
-        if (parseContextManager.expressionSize() != 0) {
-            throw new WrongIfInstructionException(KEYWORD_ENDIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
-        }
     }
 }

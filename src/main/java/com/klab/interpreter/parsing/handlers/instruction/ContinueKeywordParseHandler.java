@@ -22,7 +22,7 @@ public class ContinueKeywordParseHandler extends AbstractParseHandler {
         parseContextManager.setInstructionPrint(true);
     }
 
-    public void check() {
+    private void check() {
         BalanceContext balanceContext = parseContextManager.getBalanceContext();
         if (!balanceContext.isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
             throw new UnexpectedKeywordException("continue", parseContextManager.getParseContext());

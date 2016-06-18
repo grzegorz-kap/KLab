@@ -18,7 +18,7 @@ public abstract class AbstractParseHandler implements ParseHandler {
         this.parseContextManager = parseContextManager;
     }
 
-    protected boolean isKeywordBalance(KeywordBalance keywordBalance) {
+    boolean isKeywordBalance(KeywordBalance keywordBalance) {
         return parseContextManager.getBalanceContext().isKeywordBalance(keywordBalance);
     }
 }

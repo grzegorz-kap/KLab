@@ -15,7 +15,6 @@ import static com.klab.interpreter.parsing.exception.WrongIfInstructionException
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ElseifKeywordParseHandler extends AbstractParseHandler {
-
     @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.ELSEIF_KEYWORD;
@@ -23,21 +22,13 @@ public class ElseifKeywordParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        checkCorrectExpression();
-        checkKeywordBalance();
-        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.ELSEIF_KEYWORD));
-        parseContextManager.incrementTokenPosition(1);
-    }
-
-    private void checkCorrectExpression() {
         if (parseContextManager.expressionSize() != 0) {
             throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
-    }
-
-    private void checkKeywordBalance() {
         if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
             throw new WrongIfInstructionException(ELSEIF_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
         }
+        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.ELSEIF_KEYWORD));
+        parseContextManager.incrementTokenPosition(1);
     }
 }

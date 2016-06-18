@@ -17,7 +17,12 @@ import static com.klab.interpreter.parsing.exception.WrongForInstructionExceptio
 public class EndForKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        checkIfExpected();
+        if (parseContextManager.expressionSize() != 0) {
+            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
+        }
+        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
+            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
+        }
         parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.ENDFOR_KEYWORD));
         parseContextManager.incrementTokenPosition(1);
     }
@@ -25,14 +30,5 @@ public class EndForKeywordParseHandler extends AbstractParseHandler {
     @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.END_FOR_KEYWORD;
-    }
-
-    private void checkIfExpected() {
-        if (parseContextManager.expressionSize() != 0) {
-            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
-        }
-        if (!parseContextManager.getBalanceContext().isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
-            throw new WrongForInstructionException(ENDFOR_KEYWORD_NOT_EXPECTED_HERE, parseContextManager.getParseContext());
-        }
     }
 }
