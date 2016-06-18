@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
+import com.klab.interpreter.core.ExecutionError;
 import com.klab.interpreter.core.events.ReleaseBreakpointsEvent;
 import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.*;
@@ -30,8 +31,8 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private ProfilingServiceImpl profilingService;
     private BreakpointService breakpointService;
     private EventService eventService;
-    private boolean stop = false;
     private PauseStep executionPause = null;
+    private boolean stop = false;
 
     @Override
     public void enableProfiling() {
@@ -50,7 +51,7 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     }
 
     @Override
-    public void start() {
+    public void start() throws ExecutionError {
         memorySpace.reserve(identifierMapper.mainMappingsSize());
         stop = false;
         while (!ip.isCodeEnd() && !this.stop) {
@@ -62,7 +63,11 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
             } else if (executionPause != null && executionPause.shouldStop(ip)) {
                 block(instruction);
             }
-            handleAction.handle(instructionHandler, ip);
+            try {
+                handleAction.handle(instructionHandler, ip);
+            } catch (Exception ex) {
+                throw new ExecutionError(ex.getMessage(), ip.getSourceId(), ex, instruction);
+            }
         }
     }
 

@@ -18,12 +18,16 @@ class InterpreterService {
 
     void startExecution(ExecutionCommand input) {
         executionService.resetCodeAndStack();
+        codeGenerator.reset();
         if (input.isProfiling()) {
             executionService.enableProfiling();
         } else {
             executionService.disableProfiling();
         }
         codeGenerator.translate(input.getBody(), this::getCode, this::execute);
+        if (!codeGenerator.isInstructionCompletelyTranslated()) {
+            throw new RuntimeException("Not completed statement");
+        }
     }
 
     List<Code> callStack() {
@@ -34,7 +38,7 @@ class InterpreterService {
         return executionService.getExecutionContext().getCode();
     }
 
-    private void execute() {
+    private void execute() throws ExecutionError {
         if (codeGenerator.isInstructionCompletelyTranslated()) {
             executionService.start();
         }

@@ -87,6 +87,11 @@ public class CodeGeneratorImpl implements CodeGenerator {
         return code;
     }
 
+    @Override
+    public void reset() {
+        postParseHandlers.forEach(PostParseHandler::reset);
+    }
+
     private void process(Code code, MacroInstructionTranslatedCallback callback) {
         while (parser.hasNext()) {
             List<Expression<ParseToken>> expressionList = parser.process();

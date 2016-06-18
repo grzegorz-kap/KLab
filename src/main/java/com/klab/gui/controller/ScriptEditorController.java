@@ -81,7 +81,7 @@ public class ScriptEditorController implements Initializable {
     private void updateMicroInstructionLists(String script) {
         try {
             Code code = Optional.ofNullable(externalFunctionService.loadFromCache(script)).orElseGet(() -> {
-                return scriptService.getCode(script);
+                return scriptService.read(script, false);
             });
             Platform.runLater(() -> {
                 microInstructionList.getItems().clear();

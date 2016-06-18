@@ -4,4 +4,6 @@ import com.klab.interpreter.execution.model.Code;
 
 public interface ScriptService {
     Code getCode(String scriptName);
+
+    Code read(String scriptName, boolean cached);
 }

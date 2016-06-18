@@ -17,4 +17,6 @@ public interface PostParseHandler {
     MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator);
 
     void setCode(Code code);
+
+    void reset();
 }

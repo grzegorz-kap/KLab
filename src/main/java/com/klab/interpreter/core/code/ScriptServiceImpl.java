@@ -31,7 +31,7 @@ class ScriptServiceImpl implements ScriptService {
 
     @Override
     public Code getCode(String scriptName) {
-        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
+        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName, true));
     }
 
     @Subscribe
@@ -55,7 +55,8 @@ class ScriptServiceImpl implements ScriptService {
         }
     }
 
-    private Code read(String scriptName) {
+    @Override
+    public Code read(String scriptName, boolean cached) {
         Code code = null;
         try {
             code = codeGenerator.translate(scriptFileService.readScript(scriptName), () -> {
@@ -65,7 +66,9 @@ class ScriptServiceImpl implements ScriptService {
             });
             code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0), null);
             breakpointService.updateBreakpoints(code);
-            cachedCode.put(scriptName, code);
+            if (cached) {
+                cachedCode.put(scriptName, code);
+            }
         } catch (IOException e) {
             LOGGER.error("Error reading script: '{}', cause: '{}", scriptName);
         }

@@ -1,6 +1,7 @@
 package com.klab.interpreter.core;
 
 import com.klab.common.EventService;
+import com.klab.interpreter.core.events.ErrorEvent;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.execution.model.Code;
@@ -42,7 +43,9 @@ public class InterpreterImpl implements Interpreter {
         }
         try {
             interpreterService.startExecution(cmd);
-
+        } catch (ExecutionError ex) {
+            eventService.publish(new ErrorEvent(ex, this));
+            LOGGER.error("", ex);
         } catch (Exception ex) {
             LOGGER.error("", ex);
         } finally {

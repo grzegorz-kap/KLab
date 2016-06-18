@@ -21,8 +21,12 @@ import static com.klab.interpreter.parsing.model.expression.Expression.PRINT_PRO
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
-
     private IfInstructionContext ifInstructionContext = new IfInstructionContext();
+
+    @Override
+    public void reset() {
+//        ifInstructionContext = new IfInstructionContext();
+    }
 
     @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {

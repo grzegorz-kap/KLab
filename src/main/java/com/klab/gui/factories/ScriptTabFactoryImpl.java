@@ -195,7 +195,7 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
     }
 
     private void runScript(TabPane scriptPane, Tab tab, boolean profiling) {
-        writeScript(scriptPane, tab);
+//   TODO     writeScript(scriptPane, tab);
         eventService.publish(CommandSubmittedEvent.create()
                 .data(tab.getText())
                 .profiling(profiling)

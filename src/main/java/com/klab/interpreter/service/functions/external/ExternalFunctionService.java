@@ -6,7 +6,5 @@ import com.klab.interpreter.service.functions.model.CallInstruction;
 public interface ExternalFunctionService {
     ExternalFunction loadFunction(CallInstruction cI);
 
-    Code loadFunction(String name);
-
     Code loadFromCache(String name);
 }

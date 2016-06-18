@@ -10,12 +10,14 @@ import com.klab.gui.service.CommandHistoryService;
 import com.klab.interpreter.core.ExecutionCommand;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.events.ClearConsoleEvent;
+import com.klab.interpreter.core.events.ErrorEvent;
 import com.klab.interpreter.core.events.PrintEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fxmisc.richtext.CodeArea;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,16 @@ public class ConsoleController implements InitializingBean {
         } else if (KeyboardHelper.isEnterShift(keyEvent)) {
             commandInput.appendText("\n");
         }
+    }
+
+    @Subscribe
+    public void onError(ErrorEvent event) {
+        Platform.runLater(() -> {
+            consoleOutput.appendText("\n" + event.getData().getAddress());
+            consoleOutput.appendText("\n" + event.getData().getMessage() + "\n");
+            consoleOutput.appendText(ExceptionUtils.getStackTrace(event.getData()));
+            consoleOutput.appendText("\n");
+        });
     }
 
     @Subscribe

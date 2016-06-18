@@ -28,6 +28,11 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private IdentifierMapper identifierMapper;
 
     @Override
+    public void reset() {
+//        forInstructionContext = new ForInstructionContext();
+    }
+
+    @Override
     public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
         return isForStart(expressions) || isForEnd(expressions) || isBreak(expressions) || isContinue(expressions);
     }

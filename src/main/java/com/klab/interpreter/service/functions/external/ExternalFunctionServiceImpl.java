@@ -44,16 +44,6 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
         return fun == null ? null : fun.getCode();
     }
 
-    @Override
-    public Code loadFunction(String name) {
-        Map.Entry<FunctionMapKey, ExternalFunction> entry = functionsCache
-                .entrySet().stream()
-                .filter(e -> e.getKey().name.equals(name))
-                .findFirst()
-                .orElse(null);
-        return entry != null ? entry.getValue().getCode() : null;
-    }
-
     private ExternalFunction read(FunctionMapKey key, CallInstruction cl) {
         try {
             String fileContent = scriptFileService.readScript(key.name);
