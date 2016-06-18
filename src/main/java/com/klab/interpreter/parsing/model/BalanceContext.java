@@ -15,6 +15,13 @@ public class BalanceContext {
         return keywordBalance.removeFirst();
     }
 
+    public KeywordBalance peekKeyword() {
+        if (keywordBalance.size() == 0) {
+            return null;
+        }
+        return keywordBalance.peekFirst();
+    }
+
     public boolean isKeywordBalance(KeywordBalance balance) {
         return keywordBalance.stream().filter(value -> value.equals(balance)).findFirst().orElse(null) != null;
     }

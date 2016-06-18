@@ -9,10 +9,7 @@ import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.code.ScriptService;
-import com.klab.interpreter.core.events.ExecutionCompletedEvent;
-import com.klab.interpreter.core.events.ExecutionStartedEvent;
-import com.klab.interpreter.core.events.ScriptChangeEvent;
-import com.klab.interpreter.core.events.StopExecutionEvent;
+import com.klab.interpreter.core.events.*;
 import com.klab.interpreter.debug.Breakpoint;
 import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.debug.BreakpointReleaseEvent;
@@ -27,7 +24,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +38,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.io.FilenameUtils.removeExtension;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -72,33 +70,52 @@ public class ScriptEditorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         scriptTabFactory.initializeScriptPane(scriptPane);
         scriptPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                int index = newValue.intValue();
+            if (newValue.intValue() != -1) {
+                updateMicroInstructionLists(removeExtension(scriptPane.getTabs().get(newValue.intValue()).getText()));
+            } else {
+                Platform.runLater(() -> microInstructionList.getItems().clear());
+            }
+        });
+    }
+
+    private void updateMicroInstructionLists(String script) {
+        try {
+            Code code = Optional.ofNullable(externalFunctionService.loadFromCache(script)).orElseGet(() -> {
+                return scriptService.getCode(script);
+            });
+            Platform.runLater(() -> {
                 microInstructionList.getItems().clear();
-                if (index != -1) {
-                    String script = FilenameUtils.removeExtension(scriptPane.getTabs().get(index).getText());
-                    Code instructions = externalFunctionService.loadFunction(script);
-                    if (instructions != null) {
-                        microInstructionList.getItems().addAll(instructions.getInstructions());
-                    }
-                    Code code = scriptService.getCode(script);
-                    microInstructionList.getItems().addAll(code.getInstructions());
-                }
-            } catch (Exception ignored) {
-                LOGGER.error("Error loading microcode");
+                microInstructionList.getItems().addAll(code.getInstructions());
+            });
+        } catch (Exception ignored) {
+            Platform.runLater(() -> microInstructionList.getItems().clear());
+        }
+    }
+
+    @Subscribe
+    public void onCodeTransletedEvent(CodeTranslatedEvent event) {
+        String scriptName = removeExtension(event.getData().getSourceId());
+        Optional.ofNullable(scriptPane.getSelectionModel().getSelectedItem()).ifPresent(tab -> {
+            if (removeExtension(tab.getText()).equals(scriptName)) {
+                updateMicroInstructionLists(scriptName);
             }
         });
+    }
 
-        externalFunctionService.addLoadListener(externalFunction -> {
-            Tab tab = scriptPane.getSelectionModel().getSelectedItem();
-            if (tab != null && tab.getText().equals(externalFunction.getName())) {
-                Platform.runLater(() -> {
-                    microInstructionList.getItems().clear();
-                    microInstructionList.getItems().addAll(externalFunction.getCode().getInstructions());
-                });
+    @Subscribe
+    public void onScriptChangeEvent(ScriptChangeEvent event) {
+        String scriptName = removeExtension(event.getData());
+        if (event.getType() == ScriptChangeEvent.Type.DELETED) {
+            ScriptContext context = scriptTabFactory.removeFromContext(scriptName);
+            if (context != null) {
+                Platform.runLater(() -> scriptPane.getTabs().remove(context.getTab()));
+            }
+        }
+        Optional.ofNullable(scriptPane.getSelectionModel().getSelectedItem()).ifPresent(tab -> {
+            if (removeExtension(tab.getText()).equals(scriptName)) {
+                updateMicroInstructionLists(scriptName);
             }
         });
-
     }
 
     public void runWithoutProfiling(ActionEvent actionEvent) {
@@ -165,20 +182,9 @@ public class ScriptEditorController implements Initializable {
 
     @Subscribe
     public void openScript(OpenScriptEvent event) throws IOException {
-        String scriptName = FilenameUtils.removeExtension(event.getData());
+        String scriptName = removeExtension(event.getData());
         Tab tab = scriptTabFactory.get(scriptName, scriptPane).getTab();
         scriptPane.getSelectionModel().select(tab);
-    }
-
-    @Subscribe
-    public void onScriptChangeEvent(ScriptChangeEvent event) {
-        if (event.getType() == ScriptChangeEvent.Type.DELETED) {
-            String name = FilenameUtils.removeExtension(event.getData());
-            ScriptContext context = scriptTabFactory.removeFromContext(name);
-            if (context != null) {
-                Platform.runLater(() -> scriptPane.getTabs().remove(context.getTab()));
-            }
-        }
     }
 
     @Subscribe

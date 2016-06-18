@@ -18,9 +18,9 @@ public class EndWordParseHandler extends AbstractParseHandler {
             parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.LAST_CELL));
             parseContextManager.incrementTokenPosition(1);
         } else {
-            if (isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
+            if (KeywordBalance.FOR_INSTRUCTION == parseContextManager.getBalanceContext().peekKeyword()) {
                 parseContextManager.tokenAt(0).setTokenClass(TokenClass.END_FOR_KEYWORD);
-            } else if (isKeywordBalance(KeywordBalance.IF_INSTRUCTION)) {
+            } else if (KeywordBalance.IF_INSTRUCTION == parseContextManager.getBalanceContext().peekKeyword()) {
                 parseContextManager.tokenAt(0).setTokenClass(TokenClass.ENDIF_KEYWORD);
             } else {
                 throw new RuntimeException();
