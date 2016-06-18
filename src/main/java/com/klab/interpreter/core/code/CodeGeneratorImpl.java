@@ -10,8 +10,6 @@ import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.service.Parser;
 import com.klab.interpreter.translate.keyword.PostParseHandler;
 import com.klab.interpreter.translate.service.InstructionTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -20,12 +18,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CodeGeneratorImpl implements CodeGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorImpl.class);
     private Supplier<Code> defaultCodeSupplier = Code::new;
     private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
     private Parser parser;
@@ -89,28 +87,31 @@ public class CodeGeneratorImpl implements CodeGenerator {
         return code;
     }
 
-    private void process(Code code, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
+    private void process(Code code, MacroInstructionTranslatedCallback callback) {
         while (parser.hasNext()) {
             List<Expression<ParseToken>> expressionList = parser.process();
             PostParseHandler postParseHandler = findPostParseHandler(expressionList);
-            if (nonNull(postParseHandler)) {
-                code.add(postParseHandler.handle(expressionList, instructionTranslator));
+            if (isNull(postParseHandler)) {
+                for (Expression<ParseToken> node : expressionList) {
+                    code.add(instructionTranslator.translate(node));
+                }
             } else {
-                expressionList.forEach(expression -> code.add(instructionTranslator.translate(expression)));
+                code.add(postParseHandler.handle(expressionList, instructionTranslator));
             }
             memorySpace.reserve(identifierMapper.mainMappingsSize());
-            if (macroInstructionTranslatedCallback != null) {
-                macroInstructionTranslatedCallback.invoke();
+            if (nonNull(callback)) {
+                callback.invoke();
             }
         }
-        LOGGER.info("Translated: {}", code);
     }
 
     private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
-        return postParseHandlers.stream()
-                .filter(handler -> handler.canBeHandled(expressionList))
-                .findFirst()
-                .orElse(null);
+        for (PostParseHandler handler : postParseHandlers) {
+            if (handler.canBeHandled(expressionList)) {
+                return handler;
+            }
+        }
+        return null;
     }
 
     @Autowired

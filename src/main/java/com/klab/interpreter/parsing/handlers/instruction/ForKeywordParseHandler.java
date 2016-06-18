@@ -16,7 +16,9 @@ import static com.klab.interpreter.parsing.exception.WrongForInstructionExceptio
 public class ForKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        checkIfExpected();
+        if (parseContextManager.expressionSize() != 0) {
+            throw new WrongForInstructionException(FOR_KEYWORD_NOT_ALLOWED_HERE, parseContextManager.getParseContext());
+        }
         parseContextManager.getBalanceContext().put(KeywordBalance.FOR_INSTRUCTION);
         parseContextManager.addExpressionValue(new ForToken(parseContextManager.tokenAt(0)));
         parseContextManager.incrementTokenPosition(1);
@@ -25,11 +27,5 @@ public class ForKeywordParseHandler extends AbstractParseHandler {
     @Override
     public TokenClass getSupportedTokenClass() {
         return TokenClass.FOR_KEYWORD;
-    }
-
-    private void checkIfExpected() {
-        if (parseContextManager.expressionSize() != 0) {
-            throw new WrongForInstructionException(FOR_KEYWORD_NOT_ALLOWED_HERE, parseContextManager.getParseContext());
-        }
     }
 }
