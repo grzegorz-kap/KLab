@@ -1,6 +1,7 @@
 package com.klab.interpreter.translate.service;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
@@ -19,8 +20,9 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -78,17 +80,23 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
             }
             process(expression.getChildren().get(1));
             boolean print = expression.getProperty(Expression.PRINT_PROPERTY_KEY);
-            Set<String> names = Sets.newHashSet();
+            Map<String, List<Instruction>> names = Maps.newHashMap();
             for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
+                List<Instruction> instructions = names.computeIfAbsent(target.getValue().getLexeme(), key -> Lists.newArrayList());
                 if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
                     TokenIdentifierObject id = new TokenIdentifierObject((IdentifierToken) target.getValue());
                     manager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
-                    manager.addInstruction(new ReverseStoreInstruction(print), address);
+                    ReverseStoreInstruction instruction = new ReverseStoreInstruction(print);
+                    manager.addInstruction(instruction, address);
+                    instructions.add(instruction);
                 } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
-                    createModifyAssign(target, print && names.add(target.getValue().getLexeme()));
+                    instructions.add(createModifyAssign(target, print));
                 } else {
                     throw new RuntimeException(); //TODO runtime exception
                 }
+            }
+            for (List<Instruction> instructions : names.values()) {
+                instructions.subList(0, instructions.size() - 1).forEach(instruction -> instruction.setPrint(false));
             }
         } else if (left.getValue().getParseClass().equals(ParseClass.CALL)) {
             process(expression.getChildren().get(1));
@@ -99,7 +107,7 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         }
     }
 
-    private void createModifyAssign(Expression<ParseToken> target, boolean print) {
+    private Instruction createModifyAssign(Expression<ParseToken> target, boolean print) {
         if (target.getChildren().size() < 1 || target.getChildren().size() > 2) {
             throw new RuntimeException();
         }
@@ -113,6 +121,7 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         Instruction instruction = new Instruction(code, 0);
         instruction.setPrint(print);
         manager.addInstruction(instruction, address);
+        return instruction;
     }
 
     private void handleShortCircuitOperator(Expression<ParseToken> expression, InstructionCode jmptnp) {
