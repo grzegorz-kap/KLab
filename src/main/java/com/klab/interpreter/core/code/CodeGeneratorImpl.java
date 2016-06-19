@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Objects.isNull;
@@ -101,7 +102,9 @@ public class CodeGeneratorImpl implements CodeGenerator {
                     code.add(expressionTranslator.translate(node));
                 }
             } else {
-                code.add(postParseHandler.handle(expressionList, expressionTranslator));
+                Optional.ofNullable(postParseHandler.handle(expressionList, expressionTranslator)).ifPresent(
+                        code::add
+                );
             }
             memorySpace.reserve(identifierMapper.mainMappingsSize());
             if (nonNull(callback)) {
