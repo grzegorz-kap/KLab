@@ -9,46 +9,45 @@ import com.klab.interpreter.parsing.model.tokens.IdentifierToken;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
 import com.klab.interpreter.service.functions.model.CallToken;
-import com.klab.interpreter.translate.handlers.TranslateHandler;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.translate.model.JumperInstruction;
 import com.klab.interpreter.translate.model.ReverseStoreInstruction;
 import com.klab.interpreter.types.ModifyingIdentifierObject;
 import com.klab.interpreter.types.TokenIdentifierObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class InstructionTranslatorService extends AbstractInstructionTranslator {
-    public static final String UNEXPECTED_TOKEN_MESSAGE = "Unexpected token";
-
-    @Autowired
-    public InstructionTranslatorService(Set<TranslateHandler> translateHandlers) {
-        super(translateHandlers);
-    }
-
+public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
     @Override
     protected void translate() {
         Expression<ParseToken> parseTokenExpression = translateContext.getExpression();
         process(parseTokenExpression);
         if (getAnsProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.ANS, 1), translateContextManager.previousCodeAddress());
+            manager.addInstruction(new Instruction(InstructionCode.ANS, 1), manager.previousCodeAddress());
         }
         if (getPrintProperty()) {
-            translateContextManager.addInstruction(new Instruction(InstructionCode.PRINT, 0), translateContextManager.previousCodeAddress());
+            manager.addInstruction(new Instruction(InstructionCode.PRINT, 0), manager.previousCodeAddress());
+        }
+    }
+
+    private void process(Expression<ParseToken> parseTokenExpression) {
+        if (parseTokenExpression instanceof ExpressionValue) {
+            translateExpressionValue(parseTokenExpression);
+        } else {
+            translateExpressionNode(parseTokenExpression);
         }
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
         getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
     }
+
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
         if (checkIfOperator(OperatorCode.AND, expression.getValue())) {
@@ -58,7 +57,9 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         } else if (checkIfOperator(OperatorCode.ASSIGN, expression.getValue())) {
             handleAssignOperator(expression);
         } else {
-            expression.getChildren().forEach(this::process);
+            for (Expression<ParseToken> child : expression.getChildren()) {
+                process(child);
+            }
             translateExpressionValue(expression);
         }
     }
@@ -76,8 +77,8 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
             for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
                 if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
                     TokenIdentifierObject id = new TokenIdentifierObject((IdentifierToken) target.getValue());
-                    translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
-                    translateContextManager.addInstruction(new ReverseStoreInstruction(print), address);
+                    manager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
+                    manager.addInstruction(new ReverseStoreInstruction(print), address);
                 } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
                     createModifyAssign(target);
                 } else {
@@ -101,16 +102,17 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
         // TODO check if variable is defined
         CallToken var = (CallToken) target.getValue();
         CodeAddress address = target.getValue().getAddress();
-        translateContextManager.addInstruction(new Instruction(InstructionCode.PUSH, 0, new ModifyingIdentifierObject(var.getVariableAddress(), var.getCallName())), address);
+        ModifyingIdentifierObject identifierObject = new ModifyingIdentifierObject(var.getVariableAddress(), var.getCallName());
+        manager.addInstruction(new Instruction(InstructionCode.PUSH, 0, identifierObject), address);
         InstructionCode code = target.getChildren().size() == 2 ? InstructionCode.MODIFY2 : InstructionCode.MODIFY1;
-        translateContextManager.addInstruction(new Instruction(code, 0), address);
+        manager.addInstruction(new Instruction(code, 0), address);
     }
 
     private void handleShortCircuitOperator(Expression<ParseToken> expression, InstructionCode jmptnp) {
         process(expression.getChildren().get(0));
-        translateContextManager.addInstruction(new Instruction(InstructionCode.LOGICAL, 0), expression.getValue().getAddress());
+        manager.addInstruction(new Instruction(InstructionCode.LOGICAL, 0), expression.getValue().getAddress());
         JumperInstruction jmpt = new JumperInstruction(jmptnp, 0);
-        translateContextManager.addInstruction(jmpt, expression.getValue().getAddress());
+        manager.addInstruction(jmpt, expression.getValue().getAddress());
         process(expression.getChildren().get(1));
         translateExpressionValue(expression);
         jmpt.setJumpIndex(code.size() + translateContext.getMacroInstruction().size());
@@ -122,14 +124,6 @@ public class InstructionTranslatorService extends AbstractInstructionTranslator 
             return operatorCode.equals(operatorToken.getOperatorCode());
         } else {
             return false;
-        }
-    }
-
-    private void process(Expression<ParseToken> parseTokenExpression) {
-        if (parseTokenExpression instanceof ExpressionValue) {
-            translateExpressionValue(parseTokenExpression);
-        } else {
-            translateExpressionNode(parseTokenExpression);
         }
     }
 

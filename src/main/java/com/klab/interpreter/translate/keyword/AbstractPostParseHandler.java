@@ -7,7 +7,7 @@ import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.translate.model.JumperInstruction;
 import com.klab.interpreter.translate.model.MacroInstruction;
-import com.klab.interpreter.translate.service.InstructionTranslator;
+import com.klab.interpreter.translate.service.ExpressionTranslator;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public abstract class AbstractPostParseHandler implements PostParseHandler {
     public abstract boolean isInstructionCompletelyTranslated();
 
     @Override
-    public abstract MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator);
+    public abstract MacroInstruction handle(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator);
 
     @Override
     public void setCode(Code code) {

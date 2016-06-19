@@ -8,7 +8,7 @@ import com.klab.interpreter.translate.keyword.exception.KeywordParseException;
 import com.klab.interpreter.translate.keyword.model.IfInstructionContext;
 import com.klab.interpreter.translate.model.JumperInstruction;
 import com.klab.interpreter.translate.model.MacroInstruction;
-import com.klab.interpreter.translate.service.InstructionTranslator;
+import com.klab.interpreter.translate.service.ExpressionTranslator;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -40,23 +40,23 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
 
     @Override
     public MacroInstruction handle(List<Expression<ParseToken>> expressions,
-                                   InstructionTranslator instructionTranslator) {
+                                   ExpressionTranslator expressionTranslator) {
         if (isIfStart(expressions)) {
-            return handleIFStart(expressions, instructionTranslator);
+            return handleIFStart(expressions, expressionTranslator);
         }
         if (isIfEnd(expressions)) {
-            return handleIfEnd(expressions, instructionTranslator);
+            return handleIfEnd(expressions, expressionTranslator);
         }
         if (isElse(expressions)) {
-            return handleElse(expressions, instructionTranslator);
+            return handleElse(expressions, expressionTranslator);
         }
         if (isElseIf(expressions)) {
-            return handleElseIf(expressions, instructionTranslator);
+            return handleElseIf(expressions, expressionTranslator);
         }
         return new MacroInstruction();
     }
 
-    private MacroInstruction handleElseIf(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
+    private MacroInstruction handleElseIf(List<Expression<ParseToken>> expressions, ExpressionTranslator translator) {
         setupNoPrintNoAns(expressions, 1);
         JumperInstruction jumperInstruction = createJumpOnFalse();
         JumperInstruction jumpEndInstruction = createJmpInstruction();
@@ -70,7 +70,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
                 .add(jumperInstruction, address);
     }
 
-    private MacroInstruction handleIFStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
+    private MacroInstruction handleIFStart(List<Expression<ParseToken>> expressions, ExpressionTranslator translator) {
         ifInstructionContext.addIf();
         setupNoPrintNoAns(expressions, 1);
         JumperInstruction jumperInstruction = createJumpOnFalse();
@@ -79,7 +79,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
                 .add(jumperInstruction, expressions.get(0).getValue().getAddress());
     }
 
-    private MacroInstruction handleElse(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
+    private MacroInstruction handleElse(List<Expression<ParseToken>> expressions, ExpressionTranslator translator) {
         JumperInstruction jumperInstruction = createJmpInstruction();
         ifInstructionContext.addEndIfJumper(jumperInstruction);
         setupOnFalseOrThrow(1);
@@ -88,7 +88,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
                 .add(jumperInstruction, expressions.get(0).getValue().getAddress());
     }
 
-    private MacroInstruction handleIfEnd(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
+    private MacroInstruction handleIfEnd(List<Expression<ParseToken>> expressions, ExpressionTranslator translator) {
         setupJumpOnFalse();
         int addressToJump = code.size();
         ifInstructionContext.forEachEndIfJumper(jumperInstruction -> jumperInstruction.setJumpIndex(addressToJump));

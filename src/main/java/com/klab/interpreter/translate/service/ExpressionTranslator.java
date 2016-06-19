@@ -7,7 +7,7 @@ import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.translate.handlers.TranslateHandler;
 import com.klab.interpreter.translate.model.MacroInstruction;
 
-public interface InstructionTranslator {
+public interface ExpressionTranslator {
     MacroInstruction translate(Expression<ParseToken> expression);
 
     TranslateHandler getTranslateHandler(ParseClass parseClass);

@@ -4,7 +4,7 @@ import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.translate.model.MacroInstruction;
-import com.klab.interpreter.translate.service.InstructionTranslator;
+import com.klab.interpreter.translate.service.ExpressionTranslator;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface PostParseHandler {
 
     boolean isInstructionCompletelyTranslated();
 
-    MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator);
+    MacroInstruction handle(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator);
 
     void setCode(Code code);
 

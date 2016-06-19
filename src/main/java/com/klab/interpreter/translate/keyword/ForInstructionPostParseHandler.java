@@ -10,7 +10,7 @@ import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
 import com.klab.interpreter.translate.keyword.exception.KeywordParseException;
 import com.klab.interpreter.translate.keyword.model.ForInstructionContext;
 import com.klab.interpreter.translate.model.*;
-import com.klab.interpreter.translate.service.InstructionTranslator;
+import com.klab.interpreter.translate.service.ExpressionTranslator;
 import com.klab.interpreter.types.IdentifierObject;
 import com.klab.interpreter.types.TokenIdentifierObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +47,9 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     }
 
     @Override
-    public MacroInstruction handle(List<Expression<ParseToken>> expressions, InstructionTranslator instructionTranslator) {
+    public MacroInstruction handle(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
         if (isForStart(expressions)) {
-            return handleForStart(expressions, instructionTranslator);
+            return handleForStart(expressions, expressionTranslator);
         }
         if (isForEnd(expressions)) {
             return handleForEnd(expressions);
@@ -77,7 +77,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         return new MacroInstruction().add(jmp, expressions.get(0).getValue().getAddress());
     }
 
-    private MacroInstruction handleForStart(List<Expression<ParseToken>> expressions, InstructionTranslator translator) {
+    private MacroInstruction handleForStart(List<Expression<ParseToken>> expressions, ExpressionTranslator translator) {
         setupNoPrintNoAns(expressions, 1);
         checkIfAssignOperator(expressions);
         CodeAddress forAddress = expressions.get(0).getValue().getAddress();
