@@ -18,6 +18,12 @@ public class InterpreterImpl implements Interpreter {
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterImpl.class);
     private InterpreterService interpreterService;
     private EventService eventService;
+    private volatile boolean execution = false;
+
+    @Override
+    public boolean executionInProgress() {
+        return execution;
+    }
 
     @Override
     public void startSync(ExecutionCommand cmd) {
@@ -37,7 +43,7 @@ public class InterpreterImpl implements Interpreter {
 
     public void start(ExecutionCommand cmd, boolean events) {
         Interpreter.MAIN_LOCK.lock();
-        LOGGER.info("\n{}", cmd.getBody());
+        execution = true;
         if (events) {
             eventService.publish(new ExecutionStartedEvent(cmd, this));
         }
@@ -50,6 +56,7 @@ public class InterpreterImpl implements Interpreter {
             LOGGER.error("", ex);
         } finally {
             Interpreter.MAIN_LOCK.unlock();
+            execution = false;
             if (events) {
                 eventService.publish(new ExecutionCompletedEvent(cmd, this));
             }

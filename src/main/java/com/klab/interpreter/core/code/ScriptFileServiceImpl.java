@@ -6,6 +6,7 @@ import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.utils.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +23,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Service
 public class ScriptFileServiceImpl implements ScriptFileService, InitializingBean {
+    private static final Logger LOGGER = getLogger(ScriptFileServiceImpl.class);
     private EventService eventService;
     private String scriptRegex = "[A-Za-z][A-Za-z0-9_]*[.]m$";
     private String workingDirectory;
@@ -48,6 +52,7 @@ public class ScriptFileServiceImpl implements ScriptFileService, InitializingBea
     public void writeScript(String scriptName, String content) throws IOException {
         scriptName = FilenameUtils.removeExtension(scriptName);
         Path path = Paths.get(workingDirectory, String.format("%s%s", scriptName, extension));
+        LOGGER.info("Writing script: {}", path);
         Files.write(path, content.getBytes(Charset.forName(charsetName)));
     }
 

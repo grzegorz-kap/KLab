@@ -2,7 +2,6 @@ package com.klab.gui.controller;
 
 import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
-import com.klab.gui.events.CommandSubmittedEvent;
 import com.klab.gui.events.OpenScriptEvent;
 import com.klab.gui.factories.ScriptTabFactory;
 import com.klab.gui.model.ScriptContext;
@@ -133,14 +132,9 @@ public class ScriptEditorController implements Initializable {
     }
 
     private void onRun(ActionEvent actionEvent, boolean profiling) {
-        Tab tab = scriptPane.getSelectionModel().getSelectedItem();
-        if (tab != null) {
-            CommandSubmittedEvent event = CommandSubmittedEvent.create()
-                    .data(tab.getText())
-                    .profiling(profiling)
-                    .build(this);
-            eventService.publish(event);
-        }
+        Optional.ofNullable(scriptPane.getSelectionModel().getSelectedItem()).ifPresent(tab -> {
+            scriptTabFactory.runScript(scriptPane, tab, profiling);
+        });
     }
 
     public void newScript(ActionEvent actionEvent) throws IOException {

@@ -14,4 +14,6 @@ public interface Interpreter {
     void startSync(ExecutionCommand cmd);
 
     List<Code> callStack();
+
+    boolean executionInProgress();
 }

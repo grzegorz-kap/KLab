@@ -20,4 +20,6 @@ public interface ScriptTabFactory {
     void resumeExecution();
 
     void runWithPause(TabPane scriptPane, Tab tab);
+
+    void runScript(TabPane scriptPane, Tab tab, boolean profiling);
 }

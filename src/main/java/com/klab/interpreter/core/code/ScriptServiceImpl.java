@@ -48,7 +48,7 @@ class ScriptServiceImpl implements ScriptService {
     }
 
     @Subscribe
-    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
+    public synchronized void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
         Code code = cachedCode.get(event.getData().getScriptId());
         if (nonNull(code)) {
             breakpointService.updateBreakpoints(code);
@@ -56,21 +56,22 @@ class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public Code read(String scriptName, boolean cached) {
+    public synchronized Code read(String scriptName, boolean cached) {
         Code code = null;
+        String name = FilenameUtils.removeExtension(scriptName);
         try {
-            code = codeGenerator.translate(scriptFileService.readScript(scriptName), () -> {
+            code = codeGenerator.translate(scriptFileService.readScript(name), () -> {
                 Code instructions = new Code();
-                instructions.setSourceId(scriptName);
+                instructions.setSourceId(name);
                 return instructions;
             });
             code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0), null);
             breakpointService.updateBreakpoints(code);
             if (cached) {
-                cachedCode.put(scriptName, code);
+                cachedCode.put(name, code);
             }
         } catch (IOException e) {
-            LOGGER.error("Error reading script: '{}', cause: '{}", scriptName);
+            LOGGER.error("Error reading script: '{}', cause: '{}", name);
         }
         return code;
     }
