@@ -93,7 +93,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
         int addressToJump = code.size();
         ifInstructionContext.forEachEndIfJumper(jumperInstruction -> jumperInstruction.setJumpIndex(addressToJump));
         expressions.get(0).setProperty(Expression.PRINT_PROPERTY_KEY, false);
-        ifInstructionContext.removeLastIf();
+        ifInstructionContext.removeLast();
         return new MacroInstruction();
     }
 

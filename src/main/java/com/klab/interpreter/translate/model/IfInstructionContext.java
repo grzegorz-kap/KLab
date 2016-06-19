@@ -7,14 +7,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class IfInstructionContext {
-
     private Deque<IfContext> ifContexts = new ArrayDeque<>();
 
     public void addIf() {
         ifContexts.push(new IfContext());
     }
 
-    public void removeLastIf() {
+    public void removeLast() {
         ifContexts.pop();
     }
 
@@ -39,7 +38,7 @@ public class IfInstructionContext {
     }
 
     private static class IfContext {
-        public List<JumperInstruction> endIfJumps = new ArrayList<>();
-        public JumperInstruction jumpOnFalse;
+        List<JumperInstruction> endIfJumps = new ArrayList<>();
+        JumperInstruction jumpOnFalse;
     }
 }
