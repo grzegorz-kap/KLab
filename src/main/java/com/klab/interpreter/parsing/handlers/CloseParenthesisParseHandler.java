@@ -1,16 +1,16 @@
 package com.klab.interpreter.parsing.handlers;
 
+import com.klab.interpreter.functions.InternalFunctionsHolder;
 import com.klab.interpreter.lexer.model.TokenClass;
 import com.klab.interpreter.parsing.exception.UnexpectedCloseParenthesisException;
 import com.klab.interpreter.parsing.handlers.helpers.ExpressionHelper;
 import com.klab.interpreter.parsing.handlers.helpers.StackHelper;
 import com.klab.interpreter.parsing.model.BalanceType;
+import com.klab.interpreter.parsing.model.CallToken;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.service.BalanceContextService;
-import com.klab.interpreter.service.functions.InternalFunctionsHolder;
-import com.klab.interpreter.service.functions.model.CallToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

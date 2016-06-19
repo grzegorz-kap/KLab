@@ -16,13 +16,6 @@ import org.springframework.stereotype.Component;
 public class ContinueKeywordParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        check();
-        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.CONTINUE_FOR));
-        parseContextManager.incrementTokenPosition(1);
-        parseContextManager.setInstructionPrint(true);
-    }
-
-    private void check() {
         BalanceContext balanceContext = parseContextManager.getBalanceContext();
         if (!balanceContext.isKeywordBalance(KeywordBalance.FOR_INSTRUCTION)) {
             throw new UnexpectedKeywordException("continue", parseContextManager.getParseContext());
@@ -30,6 +23,9 @@ public class ContinueKeywordParseHandler extends AbstractParseHandler {
         if (parseContextManager.expressionSize() != 0) {
             throw new UnexpectedKeywordException("continue", parseContextManager.getParseContext());
         }
+        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.CONTINUE_FOR));
+        parseContextManager.incrementTokenPosition(1);
+        parseContextManager.setInstructionPrint(true);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.klab.interpreter.types.matrix;
 
-import com.klab.interpreter.service.LUResult;
+import com.klab.interpreter.functions.math.LUResult;
 import com.klab.interpreter.types.*;
 import com.klab.interpreter.types.foriterator.ForIterable;
 

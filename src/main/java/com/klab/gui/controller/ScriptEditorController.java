@@ -14,7 +14,7 @@ import com.klab.interpreter.debug.BreakpointReachedEvent;
 import com.klab.interpreter.debug.BreakpointReleaseEvent;
 import com.klab.interpreter.debug.BreakpointService;
 import com.klab.interpreter.execution.model.Code;
-import com.klab.interpreter.service.functions.external.ExternalFunctionService;
+import com.klab.interpreter.functions.external.ExternalFunctionService;
 import com.klab.interpreter.translate.model.Instruction;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

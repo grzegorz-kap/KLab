@@ -1,9 +1,9 @@
 package com.klab.interpreter.translate.handlers;
 
+import com.klab.interpreter.parsing.model.CallToken;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
-import com.klab.interpreter.service.functions.model.CallToken;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.types.TokenIdentifierObject;

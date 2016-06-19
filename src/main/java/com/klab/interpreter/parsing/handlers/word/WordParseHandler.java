@@ -2,8 +2,8 @@ package com.klab.interpreter.parsing.handlers.word;
 
 import com.klab.interpreter.lexer.model.TokenClass;
 import com.klab.interpreter.parsing.handlers.AbstractParseHandler;
+import com.klab.interpreter.parsing.handlers.CallParseHandler;
 import com.klab.interpreter.parsing.service.ParseContextManager;
-import com.klab.interpreter.service.functions.CallParseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
