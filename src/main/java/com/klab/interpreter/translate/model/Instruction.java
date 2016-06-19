@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Instruction {
     private InstructionCode instructionCode;
+    private boolean print;
     private List<ObjectData> data = new ArrayList<>();
     private int argumentsNumber = 0;
     private Breakpoint breakpoint = null;
@@ -96,5 +97,13 @@ public class Instruction {
 
     public void setProfilingData(ProfilingData<Instruction> profilingData) {
         this.profilingData = profilingData;
+    }
+
+    public void setPrint(boolean print) {
+        this.print = print;
+    }
+
+    public boolean isPrint() {
+        return print;
     }
 }

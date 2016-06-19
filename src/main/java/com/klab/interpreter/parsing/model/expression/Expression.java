@@ -28,6 +28,8 @@ public interface Expression<T> {
 
     <P> P getProperty(String key, Class<P> clazz);
 
+    <P> P getProperty(String key);
+
     NumericType getResolvedNumericType();
 
     void setResolvedNumericType(NumericType resolvedNumericType);

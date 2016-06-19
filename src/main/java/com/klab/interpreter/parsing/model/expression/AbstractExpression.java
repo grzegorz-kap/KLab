@@ -47,6 +47,11 @@ abstract class AbstractExpression<T> implements Expression<T> {
     }
 
     @Override
+    public <P> P getProperty(String key) {
+        return (P) properties.get(key);
+    }
+
+    @Override
     public NumericType getResolvedNumericType() {
         return resolvedNumericType;
     }

@@ -1,6 +1,8 @@
 package com.klab.interpreter.execution.handlers;
 
+import com.klab.common.EventService;
 import com.klab.interpreter.commons.memory.MemorySpace;
+import com.klab.interpreter.core.events.PrintEvent;
 import com.klab.interpreter.execution.model.InstructionPointer;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.types.*;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 public class Modify2InstructionHandler extends AbstractInstructionHandler {
     private MemorySpace memorySpace;
     private ConvertersHolder convertersHolder;
+    private EventService eventService;
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
@@ -24,7 +27,7 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
         AddressIterator col = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         NumericObject source = (NumericObject) executionContext.executionStackPop();
-        NumericObject dest = (NumericObject) memorySpace.getForModify(target.getAddress());
+        NumericObject dest = (NumericObject) memorySpace.get(target.getAddress());
         NumericType numericType = dest.getNumericType();
         if (!(dest instanceof Matrix) && (row.max() > 1 || col.max() > 1)) {
             numericType = convertersHolder.scalarToMatrix(numericType);
@@ -34,6 +37,11 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
         Editable<Number> editable = convertersHolder.convert(dest, numericType);
         EditSupportable<Number> supplier = convertersHolder.convert(source, numericType);
         editable.edit(row, col, supplier.getEditSupplier());
+        editable.setTemp(true); // AVOID COPYING
+        ObjectData objectData = memorySpace.set(target.getAddress(), editable, dest.getName());
+        if (instructionPointer.currentInstruction().isPrint()) {
+            eventService.publish(new PrintEvent(objectData, this));
+        }
         instructionPointer.increment();
     }
 
@@ -50,5 +58,10 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
     @Autowired
     public void setConvertersHolder(ConvertersHolder convertersHolder) {
         this.convertersHolder = convertersHolder;
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }

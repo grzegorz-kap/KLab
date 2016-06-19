@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.service;
 
+import com.google.common.collect.Sets;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -75,28 +77,29 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
                 throw new RuntimeException("Wrong assignment target");
             }
             process(expression.getChildren().get(1));
-            boolean print = expression.getProperty(Expression.PRINT_PROPERTY_KEY, Boolean.class);
+            boolean print = expression.getProperty(Expression.PRINT_PROPERTY_KEY);
+            Set<String> names = Sets.newHashSet();
             for (Expression<ParseToken> target : left.getChildren().get(0).getChildren()) {
                 if (target.getValue().getParseClass().equals(ParseClass.IDENTIFIER)) {
                     TokenIdentifierObject id = new TokenIdentifierObject((IdentifierToken) target.getValue());
                     manager.addInstruction(new Instruction(InstructionCode.PUSH, 0, id), address);
                     manager.addInstruction(new ReverseStoreInstruction(print), address);
                 } else if (target.getValue().getParseClass().equals(ParseClass.CALL)) {
-                    createModifyAssign(target);
+                    createModifyAssign(target, print && names.add(target.getValue().getLexeme()));
                 } else {
                     throw new RuntimeException(); //TODO runtime exception
                 }
             }
         } else if (left.getValue().getParseClass().equals(ParseClass.CALL)) {
             process(expression.getChildren().get(1));
-            createModifyAssign(left);
+            createModifyAssign(left, expression.getProperty(Expression.PRINT_PROPERTY_KEY));
         } else {
             expression.getChildren().forEach(this::process);
             translateExpressionValue(expression);
         }
     }
 
-    private void createModifyAssign(Expression<ParseToken> target) {
+    private void createModifyAssign(Expression<ParseToken> target, boolean print) {
         if (target.getChildren().size() < 1 || target.getChildren().size() > 2) {
             throw new RuntimeException();
         }
@@ -107,7 +110,9 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         ModifyingIdentifierObject identifierObject = new ModifyingIdentifierObject(var.getVariableAddress(), var.getCallName());
         manager.addInstruction(new Instruction(InstructionCode.PUSH, 0, identifierObject), address);
         InstructionCode code = target.getChildren().size() == 2 ? InstructionCode.MODIFY2 : InstructionCode.MODIFY1;
-        manager.addInstruction(new Instruction(code, 0), address);
+        Instruction instruction = new Instruction(code, 0);
+        instruction.setPrint(print);
+        manager.addInstruction(instruction, address);
     }
 
     private void handleShortCircuitOperator(Expression<ParseToken> expression, InstructionCode jmptnp) {

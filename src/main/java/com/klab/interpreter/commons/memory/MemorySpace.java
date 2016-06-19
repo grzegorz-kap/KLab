@@ -15,8 +15,6 @@ public interface MemorySpace {
 
     ObjectData get(int address);
 
-    ObjectData getForModify(int address);
-
     Stream<ObjectWrapper> listCurrentScopeVariables();
 
     int scopeId();
