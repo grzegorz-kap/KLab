@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class JMPFNPInstructionHandler extends AbstractInstructionHandler {
+public class JumpIfTrueInstructionHandler extends AbstractInstructionHandler {
     @Override
     public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.JMPFNP;
+        return InstructionCode.JUMP_IF_TRUE;
     }
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
         JumperInstruction jmp = (JumperInstruction) instructionPointer.currentInstruction();
-        boolean value = executionContext.executionStackPeek().isTrue();
-        if (!value) {
+        boolean result = executionContext.executionStackPeek().isTrue();
+        if (result) {
             instructionPointer.jumpTo(jmp.getJumpIndex());
         } else {
             instructionPointer.increment();

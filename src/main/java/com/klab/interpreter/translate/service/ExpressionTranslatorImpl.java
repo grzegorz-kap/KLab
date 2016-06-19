@@ -7,7 +7,6 @@ import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.model.expression.ExpressionValue;
 import com.klab.interpreter.parsing.model.tokens.IdentifierToken;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
-import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
 import com.klab.interpreter.service.functions.model.CallToken;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
@@ -51,9 +50,9 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
         if (checkIfOperator(OperatorCode.AND, expression.getValue())) {
-            handleShortCircuitOperator(expression, InstructionCode.JMPFNP);
+            handleShortCircuitOperator(expression, InstructionCode.JUMP_IF_FALSE);
         } else if (checkIfOperator(OperatorCode.OR, expression.getValue())) {
-            handleShortCircuitOperator(expression, InstructionCode.JMPTNP);
+            handleShortCircuitOperator(expression, InstructionCode.JUMP_IF_TRUE);
         } else if (checkIfOperator(OperatorCode.ASSIGN, expression.getValue())) {
             handleAssignOperator(expression);
         } else {
@@ -65,6 +64,9 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
     }
 
     private void handleAssignOperator(Expression<ParseToken> expression) {
+        if (expression.getParent() != null) {
+            throw new RuntimeException();
+        }
         expression.setProperty(Expression.ANS_PROPERTY_KEY, false);
         CodeAddress address = expression.getValue().getAddress();
         Expression<ParseToken> left = expression.getChildren().get(0);
@@ -95,10 +97,10 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
     }
 
     private void createModifyAssign(Expression<ParseToken> target) {
-        target.getChildren().forEach(this::process);
         if (target.getChildren().size() < 1 || target.getChildren().size() > 2) {
             throw new RuntimeException();
         }
+        target.getChildren().forEach(this::process);
         // TODO check if variable is defined
         CallToken var = (CallToken) target.getValue();
         CodeAddress address = target.getValue().getAddress();
@@ -116,15 +118,6 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         process(expression.getChildren().get(1));
         translateExpressionValue(expression);
         jmpt.setJumpIndex(code.size() + translateContext.getMacroInstruction().size());
-    }
-
-    private boolean checkIfOperator(OperatorCode operatorCode, ParseToken parseToken) {
-        if (parseToken instanceof OperatorToken) {
-            OperatorToken operatorToken = (OperatorToken) parseToken;
-            return operatorCode.equals(operatorToken.getOperatorCode());
-        } else {
-            return false;
-        }
     }
 
     private boolean getAnsProperty() {
