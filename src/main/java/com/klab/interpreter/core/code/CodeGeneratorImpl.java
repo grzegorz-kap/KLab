@@ -8,7 +8,7 @@ import com.klab.interpreter.lexer.service.Tokenizer;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.service.Parser;
-import com.klab.interpreter.translate.keyword.PostParseHandler;
+import com.klab.interpreter.translate.handlers.PostParseHandler;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;

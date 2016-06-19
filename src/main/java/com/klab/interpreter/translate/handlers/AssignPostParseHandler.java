@@ -10,7 +10,6 @@ import com.klab.interpreter.parsing.model.tokens.IdentifierToken;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
 import com.klab.interpreter.service.functions.model.CallToken;
-import com.klab.interpreter.translate.keyword.AbstractPostParseHandler;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.translate.model.MacroInstruction;

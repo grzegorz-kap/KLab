@@ -1,7 +1,6 @@
-package com.klab.interpreter.translate.keyword.model;
+package com.klab.interpreter.translate.model;
 
 import com.klab.interpreter.lexer.model.CodeAddress;
-import com.klab.interpreter.translate.model.JumperInstruction;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

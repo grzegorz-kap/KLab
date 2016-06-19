@@ -1,4 +1,4 @@
-package com.klab.interpreter.translate.keyword;
+package com.klab.interpreter.translate.handlers;
 
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.parsing.model.ParseClass;

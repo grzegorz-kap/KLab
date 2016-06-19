@@ -1,4 +1,4 @@
-package com.klab.interpreter.translate.keyword.exception;
+package com.klab.interpreter.translate.exception;
 
 public class KeywordParseException extends RuntimeException {
 

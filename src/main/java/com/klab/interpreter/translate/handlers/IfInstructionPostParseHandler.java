@@ -1,11 +1,11 @@
-package com.klab.interpreter.translate.keyword;
+package com.klab.interpreter.translate.handlers;
 
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
-import com.klab.interpreter.translate.keyword.exception.KeywordParseException;
-import com.klab.interpreter.translate.keyword.model.IfInstructionContext;
+import com.klab.interpreter.translate.exception.KeywordParseException;
+import com.klab.interpreter.translate.model.IfInstructionContext;
 import com.klab.interpreter.translate.model.JumperInstruction;
 import com.klab.interpreter.translate.model.MacroInstruction;
 import com.klab.interpreter.translate.service.ExpressionTranslator;

@@ -1,4 +1,4 @@
-package com.klab.interpreter.translate.keyword;
+package com.klab.interpreter.translate.handlers;
 
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.lexer.model.CodeAddress;
@@ -7,8 +7,7 @@ import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
-import com.klab.interpreter.translate.keyword.exception.KeywordParseException;
-import com.klab.interpreter.translate.keyword.model.ForInstructionContext;
+import com.klab.interpreter.translate.exception.KeywordParseException;
 import com.klab.interpreter.translate.model.*;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 import com.klab.interpreter.types.IdentifierObject;
