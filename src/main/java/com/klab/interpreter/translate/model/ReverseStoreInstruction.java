@@ -4,7 +4,7 @@ public class ReverseStoreInstruction extends Instruction {
     private boolean print;
 
     public ReverseStoreInstruction(boolean print) {
-        super(InstructionCode.RSTORE, 0);
+        super(InstructionCode.REVERSE_STORE, 0);
         this.print = print;
     }
 

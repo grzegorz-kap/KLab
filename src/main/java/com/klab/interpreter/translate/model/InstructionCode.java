@@ -40,7 +40,7 @@ public enum InstructionCode {
     NEG(36),
     SCRIPT_EXIT(37),
     FUNCTION_END(38),
-    RSTORE(39),
+    REVERSE_STORE(39),
     MODIFY2(40),
     MODIFY1(41),
     MALLCELL(42),

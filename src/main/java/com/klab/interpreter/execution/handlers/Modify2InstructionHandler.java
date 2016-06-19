@@ -25,19 +25,14 @@ public class Modify2InstructionHandler extends AbstractInstructionHandler {
         AddressIterator row = ((Addressable) executionContext.executionStackPop()).getAddressIterator();
         NumericObject source = (NumericObject) executionContext.executionStackPop();
         NumericObject dest = (NumericObject) memorySpace.getForModify(target.getAddress());
-
         NumericType numericType = dest.getNumericType();
         if (!(dest instanceof Matrix) && (row.max() > 1 || col.max() > 1)) {
             numericType = convertersHolder.scalarToMatrix(numericType);
         }
-
         // TODO add scalar version
         numericType = convertersHolder.promote(numericType, source.getNumericType());
-        dest = convertersHolder.getConverter(dest.getNumericType(), numericType).convert(dest);
-        source = convertersHolder.getConverter(source.getNumericType(), numericType).convert(source);
-
-        Editable editable = (Editable) dest;
-        EditSupportable supplier = (EditSupportable) source;
+        Editable<Number> editable = convertersHolder.convert(dest, numericType);
+        EditSupportable<Number> supplier = convertersHolder.convert(source, numericType);
         editable.edit(row, col, supplier.getEditSupplier());
         instructionPointer.increment();
     }

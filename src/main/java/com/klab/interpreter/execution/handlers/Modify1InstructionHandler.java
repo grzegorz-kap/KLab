@@ -27,10 +27,8 @@ public class Modify1InstructionHandler extends AbstractInstructionHandler {
             throw new RuntimeException(); // TODO
         }
         NumericType numericType = convertersHolder.promote(source.getNumericType(), dest.getNumericType());
-        dest = convertersHolder.getConverter(dest.getNumericType(), numericType).convert(dest);
-        source = convertersHolder.getConverter(source.getNumericType(), numericType).convert(source);
-        Editable editable = (Editable) dest;
-        EditSupportable supplier = (EditSupportable) source;
+        Editable<Number> editable = convertersHolder.convert(dest, numericType);
+        EditSupportable<Number> supplier = convertersHolder.convert(source, numericType);
         editable.edit(cells, supplier.getEditSupplier());
         instructionPointer.increment();
     }
