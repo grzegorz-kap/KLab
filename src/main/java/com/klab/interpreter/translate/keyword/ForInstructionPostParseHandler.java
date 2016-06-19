@@ -29,7 +29,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
 
     @Override
     public void reset() {
-//        forInstructionContext = new ForInstructionContext();
+        forInstructionContext = new ForInstructionContext();
     }
 
     @Override

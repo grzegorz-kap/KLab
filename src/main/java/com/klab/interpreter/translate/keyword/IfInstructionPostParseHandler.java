@@ -25,7 +25,7 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
 
     @Override
     public void reset() {
-//        ifInstructionContext = new IfInstructionContext();
+        ifInstructionContext = new IfInstructionContext();
     }
 
     @Override
