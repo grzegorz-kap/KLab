@@ -18,7 +18,7 @@ public class LastCellTranslateHandler extends AbstractTranslateHandler {
     public void handle(Expression<ParseToken> expression) {
         Expression<ParseToken> child = expression;
         Expression<ParseToken> parent = expression.getParent();
-        while (parent != null && !parent.getValue().getParseClass().equals(ParseClass.CALL)) {
+        while (parent != null && parent.getValue().getParseClass() != ParseClass.CALL) {
             child = child.getParent();
             parent = parent.getParent();
         }
@@ -36,7 +36,8 @@ public class LastCellTranslateHandler extends AbstractTranslateHandler {
         if (cl.getVariableAddress() == null) {
             throw new RuntimeException(); // TODO
         }
-        Instruction instruction = new Instruction(code, 0, new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress()));
+        TokenIdentifierObject idData = new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress());
+        Instruction instruction = new Instruction(code, 0, idData);
         tCM.addInstruction(instruction, expression.getValue().getAddress());
     }
 
