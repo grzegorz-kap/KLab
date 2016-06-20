@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.handlers;
 
+import com.google.common.collect.Sets;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.klab.interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY;
 
@@ -22,6 +24,9 @@ import static com.klab.interpreter.parsing.model.expression.Expression.PRINT_PRO
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
     private IfInstructionContext ifInstructionContext = new IfInstructionContext();
+    private Set<ExpressionPredicate> predicates = Sets.newHashSet(
+            this::isIfStart, this::isIfEnd, this::isElse, this::isElseIf
+    );
 
     @Override
     public void reset() {
@@ -29,8 +34,8 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
     }
 
     @Override
-    public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
-        return isIfStart(expressions) || isIfEnd(expressions) || isElse(expressions) || isElseIf(expressions);
+    protected Set<ExpressionPredicate> getPredicates() {
+        return predicates;
     }
 
     @Override

@@ -21,22 +21,27 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class AssignPostParseHandler extends AbstractPostParseHandler {
     @Override
-    public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
-        if (expressions.size() != 1) {
-            return false;
-        }
-        Expression<ParseToken> expression = expressions.get(0);
-        ParseToken parseToken = expression.getValue();
-        return parseToken != null &&
-                parseToken instanceof OperatorToken &&
-                OperatorCode.ASSIGN.equals(((OperatorToken) parseToken).getOperatorCode());
+    protected Set<ExpressionPredicate> getPredicates() {
+        return Collections.singleton(
+                expressions -> {
+                    if (expressions.size() != 1) {
+                        return false;
+                    }
+                    Expression<ParseToken> expression = expressions.get(0);
+                    ParseToken parseToken = expression.getValue();
+                    return parseToken != null &&
+                            parseToken instanceof OperatorToken &&
+                            OperatorCode.ASSIGN.equals(((OperatorToken) parseToken).getOperatorCode());
+                });
     }
 
     @Override

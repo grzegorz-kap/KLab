@@ -1,5 +1,6 @@
 package com.klab.interpreter.translate.handlers;
 
+import com.google.common.collect.Sets;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -26,14 +28,18 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
 
+    private Set<ExpressionPredicate> predicates = Sets.newHashSet(
+            this::isForStart, this::isForEnd, this::isBreak, this::isContinue
+    );
+
     @Override
-    public void reset() {
-        forInstructionContext = new ForInstructionContext();
+    public Set<ExpressionPredicate> getPredicates() {
+        return predicates;
     }
 
     @Override
-    public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
-        return isForStart(expressions) || isForEnd(expressions) || isBreak(expressions) || isContinue(expressions);
+    public void reset() {
+        forInstructionContext = new ForInstructionContext();
     }
 
     private boolean isContinue(List<Expression<ParseToken>> expressions) {

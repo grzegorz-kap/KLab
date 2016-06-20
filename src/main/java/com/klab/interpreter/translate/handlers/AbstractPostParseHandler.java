@@ -10,12 +10,17 @@ import com.klab.interpreter.translate.model.MacroInstruction;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 
 import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractPostParseHandler implements PostParseHandler {
     protected Code code;
 
     @Override
-    public abstract boolean canBeHandled(List<Expression<ParseToken>> expressions);
+    public boolean canBeHandled(List<Expression<ParseToken>> expressions) {
+        return getPredicates().stream().anyMatch(p -> p.test(expressions));
+    }
+
+    protected abstract Set<ExpressionPredicate> getPredicates();
 
     @Override
     public abstract boolean isInstructionCompletelyTranslated();

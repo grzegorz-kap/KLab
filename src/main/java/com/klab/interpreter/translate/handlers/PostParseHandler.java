@@ -7,6 +7,7 @@ import com.klab.interpreter.translate.model.MacroInstruction;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public interface PostParseHandler {
 
@@ -19,4 +20,7 @@ public interface PostParseHandler {
     void setCode(Code code);
 
     void reset();
+
+    interface ExpressionPredicate extends Predicate<List<Expression<ParseToken>>> {
+    }
 }
