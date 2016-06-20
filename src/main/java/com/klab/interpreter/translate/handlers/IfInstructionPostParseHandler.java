@@ -1,6 +1,6 @@
 package com.klab.interpreter.translate.handlers;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
@@ -10,23 +10,30 @@ import com.klab.interpreter.translate.model.IfInstructionContext;
 import com.klab.interpreter.translate.model.JumperInstruction;
 import com.klab.interpreter.translate.model.MacroInstruction;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.klab.interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
+public class IfInstructionPostParseHandler extends AbstractPostParseHandler implements InitializingBean {
     private IfInstructionContext ifInstructionContext = new IfInstructionContext();
-    private Set<ExpressionPredicate> predicates = Sets.newHashSet(
-            this::isIfStart, this::isIfEnd, this::isElse, this::isElseIf
-    );
+    private Map<ExpressionPredicate, HandleAction> handlers = Maps.newLinkedHashMap();
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        handlers.put(this::isIfStart, this::handleIFStart);
+        handlers.put(this::isIfEnd, this::handleIfEnd);
+        handlers.put(this::isElse, this::handleElse);
+        handlers.put(this::isElseIf, this::handleElseIf);
+    }
 
     @Override
     public void reset() {
@@ -34,31 +41,13 @@ public class IfInstructionPostParseHandler extends AbstractPostParseHandler {
     }
 
     @Override
-    protected Set<ExpressionPredicate> getPredicates() {
-        return predicates;
+    protected Map<ExpressionPredicate, HandleAction> getHandlersMap() {
+        return handlers;
     }
 
     @Override
     public boolean isInstructionCompletelyTranslated() {
         return ifInstructionContext.size() == 0;
-    }
-
-    @Override
-    public MacroInstruction handle(List<Expression<ParseToken>> expressions,
-                                   ExpressionTranslator expressionTranslator) {
-        if (isIfStart(expressions)) {
-            return handleIFStart(expressions, expressionTranslator);
-        }
-        if (isIfEnd(expressions)) {
-            return handleIfEnd(expressions, expressionTranslator);
-        }
-        if (isElse(expressions)) {
-            return handleElse(expressions, expressionTranslator);
-        }
-        if (isElseIf(expressions)) {
-            return handleElseIf(expressions, expressionTranslator);
-        }
-        return new MacroInstruction();
     }
 
     private MacroInstruction handleElseIf(List<Expression<ParseToken>> expressions, ExpressionTranslator translator) {

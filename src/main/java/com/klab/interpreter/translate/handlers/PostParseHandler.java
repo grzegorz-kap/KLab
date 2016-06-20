@@ -21,6 +21,12 @@ public interface PostParseHandler {
 
     void reset();
 
+    @FunctionalInterface
     interface ExpressionPredicate extends Predicate<List<Expression<ParseToken>>> {
+    }
+
+    @FunctionalInterface
+    interface HandleAction {
+        MacroInstruction handle(List<Expression<ParseToken>> expression, ExpressionTranslator expressionTranslator);
     }
 }

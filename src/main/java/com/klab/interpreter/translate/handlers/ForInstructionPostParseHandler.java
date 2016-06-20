@@ -1,6 +1,6 @@
 package com.klab.interpreter.translate.handlers;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.lexer.model.CodeAddress;
 import com.klab.interpreter.parsing.model.ParseClass;
@@ -13,28 +13,34 @@ import com.klab.interpreter.translate.model.*;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 import com.klab.interpreter.types.IdentifierObject;
 import com.klab.interpreter.types.TokenIdentifierObject;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
+public class ForInstructionPostParseHandler extends AbstractPostParseHandler implements InitializingBean {
     private static final String DATA_FORMAT = "$$%s$iterator%d%d/%s";
     private ForInstructionContext forInstructionContext = new ForInstructionContext();
     private IdentifierMapper identifierMapper;
-
-    private Set<ExpressionPredicate> predicates = Sets.newHashSet(
-            this::isForStart, this::isForEnd, this::isBreak, this::isContinue
-    );
+    private Map<ExpressionPredicate, HandleAction> handlers = Maps.newLinkedHashMap();
 
     @Override
-    public Set<ExpressionPredicate> getPredicates() {
-        return predicates;
+    public void afterPropertiesSet() throws Exception {
+        handlers.put(this::isForStart, this::handleForStart);
+        handlers.put(this::isForEnd, this::handleForEnd);
+        handlers.put(this::isContinue, this::handleContinue);
+        handlers.put(this::isBreak, this::handleBreak);
+    }
+
+    @Override
+    protected Map<ExpressionPredicate, HandleAction> getHandlersMap() {
+        return handlers;
     }
 
     @Override
@@ -51,31 +57,14 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         return forInstructionContext.size() == 0;
     }
 
-    @Override
-    public MacroInstruction handle(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
-        if (isForStart(expressions)) {
-            return handleForStart(expressions, expressionTranslator);
-        }
-        if (isForEnd(expressions)) {
-            return handleForEnd(expressions);
-        }
-        if (isBreak(expressions)) {
-            return handleBreak(expressions);
-        }
-        if (isContinue(expressions)) {
-            return handleContinue(expressions);
-        }
-        return new MacroInstruction();
-    }
-
-    private MacroInstruction handleContinue(List<Expression<ParseToken>> expressions) {
+    private MacroInstruction handleContinue(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
         setupNoPrintNoAns(expressions, 0);
         JumperInstruction jmp = createJmpInstruction();
         jmp.setJumpIndex(forInstructionContext.getFlhNextAddress());
         return new MacroInstruction().add(jmp, expressions.get(0).getValue().getAddress());
     }
 
-    private MacroInstruction handleBreak(List<Expression<ParseToken>> expressions) {
+    private MacroInstruction handleBreak(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
         setupNoPrintNoAns(expressions, 0);
         JumperInstruction jmp = createJmpInstruction();
         forInstructionContext.addFalseJumper(jmp);
@@ -105,7 +94,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler {
         return instruction;
     }
 
-    private MacroInstruction handleForEnd(List<Expression<ParseToken>> expressions) {
+    private MacroInstruction handleForEnd(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
         JumperInstruction flhnextJump = createJmpInstruction();
         flhnextJump.setJumpIndex(forInstructionContext.getFlhNextAddress());
         forInstructionContext.setJumpsOnFalse(code.size() + 1);

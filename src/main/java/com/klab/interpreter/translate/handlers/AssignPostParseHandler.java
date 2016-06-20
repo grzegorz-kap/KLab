@@ -17,31 +17,38 @@ import com.klab.interpreter.translate.model.ReverseStoreInstruction;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 import com.klab.interpreter.types.ModifyingIdentifierObject;
 import com.klab.interpreter.types.TokenIdentifierObject;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class AssignPostParseHandler extends AbstractPostParseHandler {
+public class AssignPostParseHandler extends AbstractPostParseHandler implements InitializingBean {
+    private static final ExpressionPredicate PREDICATE = expressions -> {
+        if (expressions.size() != 1) {
+            return false;
+        }
+        Expression<ParseToken> expression = expressions.get(0);
+        ParseToken parseToken = expression.getValue();
+        return parseToken != null &&
+                parseToken instanceof OperatorToken &&
+                OperatorCode.ASSIGN.equals(((OperatorToken) parseToken).getOperatorCode());
+    };
+
+    Map<ExpressionPredicate, HandleAction> handlers = Maps.newLinkedHashMap();
+
     @Override
-    protected Set<ExpressionPredicate> getPredicates() {
-        return Collections.singleton(
-                expressions -> {
-                    if (expressions.size() != 1) {
-                        return false;
-                    }
-                    Expression<ParseToken> expression = expressions.get(0);
-                    ParseToken parseToken = expression.getValue();
-                    return parseToken != null &&
-                            parseToken instanceof OperatorToken &&
-                            OperatorCode.ASSIGN.equals(((OperatorToken) parseToken).getOperatorCode());
-                });
+    public void afterPropertiesSet() throws Exception {
+        handlers.put(PREDICATE, this::handleAction);
+    }
+
+    @Override
+    protected Map<ExpressionPredicate, HandleAction> getHandlersMap() {
+        return handlers;
     }
 
     @Override
@@ -49,8 +56,7 @@ public class AssignPostParseHandler extends AbstractPostParseHandler {
         return true;
     }
 
-    @Override
-    public MacroInstruction handle(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
+    private MacroInstruction handleAction(List<Expression<ParseToken>> expressions, ExpressionTranslator expressionTranslator) {
         Expression<ParseToken> expression = expressions.get(0);
         MacroInstruction code = new MacroInstruction();
         if (expression.getParent() != null) {
@@ -108,7 +114,6 @@ public class AssignPostParseHandler extends AbstractPostParseHandler {
         code.add(instruction, address);
         return instruction;
     }
-
 
     @Override
     public void reset() {
