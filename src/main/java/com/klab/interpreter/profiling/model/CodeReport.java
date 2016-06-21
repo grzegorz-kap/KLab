@@ -1,6 +1,6 @@
 package com.klab.interpreter.profiling.model;
 
-import com.klab.interpreter.analyze.CodeLine;
+import com.klab.interpreter.commons.analyze.CodeLine;
 import com.klab.interpreter.execution.model.Code;
 
 import java.util.Map;

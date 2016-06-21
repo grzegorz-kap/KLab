@@ -1,4 +1,4 @@
-package com.klab.gui;
+package com.klab.gui.controller;
 
 import com.klab.interpreter.profiling.model.CodeReport;
 

@@ -1,4 +1,4 @@
-package com.klab.gui;
+package com.klab.gui.helpers;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 

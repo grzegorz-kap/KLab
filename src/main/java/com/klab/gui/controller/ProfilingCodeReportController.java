@@ -1,9 +1,7 @@
 package com.klab.gui.controller;
 
-import com.klab.gui.CustomInitializeble;
-import com.klab.gui.HtmlUtils;
-import com.klab.gui.ProfilingCodeReportDetailsViewer;
-import com.klab.interpreter.analyze.CodeLine;
+import com.klab.gui.helpers.HtmlUtils;
+import com.klab.interpreter.commons.analyze.CodeLine;
 import com.klab.interpreter.profiling.ReportService;
 import com.klab.interpreter.profiling.model.CodeReport;
 import com.klab.interpreter.profiling.model.ProfilingData;

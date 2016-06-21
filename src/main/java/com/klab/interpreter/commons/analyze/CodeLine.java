@@ -1,4 +1,4 @@
-package com.klab.interpreter.analyze;
+package com.klab.interpreter.commons.analyze;
 
 import com.klab.interpreter.translate.model.Instruction;
 

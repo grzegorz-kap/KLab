@@ -1,7 +1,7 @@
 package com.klab.gui.config;
 
 import com.klab.gui.App;
-import com.klab.gui.CustomInitializeble;
+import com.klab.gui.controller.CustomInitializeble;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

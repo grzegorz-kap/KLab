@@ -1,7 +1,6 @@
-package com.klab.interpreter.analyze;
+package com.klab.interpreter.commons.analyze;
 
 import com.klab.interpreter.execution.model.Code;
-import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -9,10 +8,11 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
-@Service
-public class CodeLinerImpl implements CodeLiner {
-    @Override
-    public List<CodeLine> separate(Code code) {
+public class CodeLiner {
+    private CodeLiner() {
+    }
+
+    public static List<CodeLine> separate(Code code) {
         String[] lines = code.getSourceCode().split("\\r?\\n");
 
         return code.instructions()

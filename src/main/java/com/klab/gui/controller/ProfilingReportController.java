@@ -1,7 +1,6 @@
 package com.klab.gui.controller;
 
 import com.google.common.eventbus.Subscribe;
-import com.klab.gui.ProfilingCodeReportDetailsViewer;
 import com.klab.gui.config.GuiContext;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.profiling.ProfilingService;

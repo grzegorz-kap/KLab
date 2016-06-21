@@ -1,8 +1,8 @@
 package com.klab.interpreter.profiling;
 
 import com.google.common.collect.Maps;
-import com.klab.interpreter.analyze.CodeLine;
-import com.klab.interpreter.analyze.CodeLiner;
+import com.klab.interpreter.commons.analyze.CodeLine;
+import com.klab.interpreter.commons.analyze.CodeLiner;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.profiling.model.CodeReport;
 import com.klab.interpreter.profiling.model.ProfilingData;
@@ -11,7 +11,6 @@ import com.klab.interpreter.profiling.model.SourceType;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -32,8 +31,6 @@ public class ReportServiceImpl implements ReportService {
         }
     };
     private static final String COMMAND = "command";
-
-    private CodeLiner codeLiner;
 
     @Override
     public ProfilingReport process(Collection<Code> measured) {
@@ -81,7 +78,7 @@ public class ReportServiceImpl implements ReportService {
     public void computeLines(CodeReport codeReport) {
         if (!MapUtils.isNotEmpty(codeReport.getLinesProfile())) {
             Map<Integer, ProfilingData<CodeLine>> map = Maps.newLinkedHashMap();
-            codeLiner.separate(codeReport.getCode()).stream()
+            CodeLiner.separate(codeReport.getCode()).stream()
                     .map(ProfilingData::new)
                     .peek(data -> {
                         long sum = data.getSubject().getInstructions().stream()
@@ -99,10 +96,5 @@ public class ReportServiceImpl implements ReportService {
                     .forEach(data -> map.put(data.getSubject().getNumber(), data));
             codeReport.setLinesProfile(map);
         }
-    }
-
-    @Autowired
-    public void setCodeLiner(CodeLiner codeLiner) {
-        this.codeLiner = codeLiner;
     }
 }
