@@ -63,11 +63,6 @@ public class OjalgoMatrixScalarWrapper<N extends Number> implements MatrixStore<
     }
 
     @Override
-    public Builder<N> builder() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public PhysicalStore<N> copy() {
         throw new UnsupportedOperationException();
     }
