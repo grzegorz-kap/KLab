@@ -21,13 +21,13 @@ public class RangeAddressIterator implements AddressIterator, Addressable {
     }
 
     @Override
-    public ObjectData copy() {
-        return new RangeAddressIterator(start, end);
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setTemp(boolean temp) {
-        throw new UnsupportedOperationException();
+    public ObjectData copy() {
+        return new RangeAddressIterator(start, end);
     }
 
     @Override

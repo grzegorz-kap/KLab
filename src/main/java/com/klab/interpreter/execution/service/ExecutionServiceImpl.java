@@ -35,22 +35,6 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private boolean stop = false;
 
     @Override
-    public void enableProfiling() {
-        handleAction = profilingService;
-    }
-
-    @Override
-    public void disableProfiling() {
-        handleAction = InstructionHandler::handle;
-    }
-
-    @Subscribe
-    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
-        ip.codeStream().forEach(breakpointService::updateBreakpoints);
-        breakpointService.updateBreakpoints(ip.getCode());
-    }
-
-    @Override
     public void start() throws ExecutionError {
         memorySpace.reserve(identifierMapper.mainMappingsSize());
         stop = false;
@@ -71,16 +55,21 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
         }
     }
 
+    @Override
+    public void enableProfiling() {
+        handleAction = profilingService;
+    }
+
+    @Override
+    public void disableProfiling() {
+        handleAction = InstructionHandler::handle;
+    }
+
     private void block(Instruction instruction) {
         executionPause = null;
         BreakpointImpl breakpoint = new BreakpointImpl(ip.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
         breakpoint.setCode(ip.getCode());
         breakpointService.block(breakpoint);
-    }
-
-    @Subscribe
-    private void onRunToEvent(RunToEvent event) {
-        executionPause = new RunTo(event.getLine(), event.getScript());
     }
 
     @Override
@@ -93,6 +82,17 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
             callStack.add(code);
         }
         return callStack;
+    }
+
+    @Subscribe
+    private void onRunToEvent(RunToEvent event) {
+        executionPause = new RunTo(event.getLine(), event.getScript());
+    }
+
+    @Subscribe
+    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
+        ip.codeStream().forEach(breakpointService::updateBreakpoints);
+        breakpointService.updateBreakpoints(ip.getCode());
     }
 
     @Subscribe

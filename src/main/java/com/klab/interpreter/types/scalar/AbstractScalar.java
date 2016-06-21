@@ -4,18 +4,18 @@ import com.klab.interpreter.commons.exception.InterpreterCastException;
 import com.klab.interpreter.types.*;
 
 abstract class AbstractScalar<N extends Number> extends AbstractNumericObject implements Sizeable, Scalar<N>, Indexable {
+    private boolean temp;
+
+    AbstractScalar(NumericType numericType) {
+        super(numericType);
+    }
+
     static int getIntOrThrow(double value) {
         if (Math.rint(value) == value) {
             return (int) value;
         } else {
             throw new InterpreterCastException(InterpreterCastException.EXPECTED_INTEGER_VALUE);
         }
-    }
-
-    private boolean temp;
-
-    AbstractScalar(NumericType numericType) {
-        super(numericType);
     }
 
     @Override

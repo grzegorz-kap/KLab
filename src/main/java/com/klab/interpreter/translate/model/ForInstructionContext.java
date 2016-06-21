@@ -26,12 +26,12 @@ public class ForInstructionContext {
         iterators.peekFirst().name = name;
     }
 
-    public void setIteratorDataName(String iteratorDataName) {
-        iterators.peekFirst().iteratorDataName = iteratorDataName;
-    }
-
     public String getIteratorDataName() {
         return iterators.peekFirst().iteratorDataName;
+    }
+
+    public void setIteratorDataName(String iteratorDataName) {
+        iterators.peekFirst().iteratorDataName = iteratorDataName;
     }
 
     public int getFlhNextAddress() {
@@ -58,21 +58,21 @@ public class ForInstructionContext {
         iterators.peekFirst().codeAddress = codeAddress;
     }
 
-    public void setScriptId(String scriptId) {
-        iterators.peekFirst().scriptId = scriptId;
-    }
-
     public String getScriptId() {
         return iterators.peekFirst().scriptId;
     }
 
+    public void setScriptId(String scriptId) {
+        iterators.peekFirst().scriptId = scriptId;
+    }
+
     private static class ForIterator {
+        public String name;
+        String iteratorDataName;
+        CodeAddress codeAddress;
+        String scriptId;
         Set<JumperInstruction> falseJumpers = new HashSet<>();
         int flhNextAddress;
-        public String name;
-        public String iteratorDataName;
-        public CodeAddress codeAddress;
-        public String scriptId;
 
         ForIterator(int flhNextAddress, JumperInstruction falseJumper) {
             this.flhNextAddress = flhNextAddress;

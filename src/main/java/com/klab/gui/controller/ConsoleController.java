@@ -30,13 +30,12 @@ import java.util.Objects;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ConsoleController implements InitializingBean {
+    public TextArea commandInput;
+    public CodeArea consoleOutput;
     private Interpreter interpreter;
     private EventService eventService;
     private CommandHistoryService commandHistoryService;
     private CommandHistoryIterator commandHistoryIterator;
-
-    public TextArea commandInput;
-    public CodeArea consoleOutput;
 
     @Override
     public void afterPropertiesSet() throws Exception {

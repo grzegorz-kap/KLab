@@ -99,11 +99,11 @@ public class Instruction {
         this.profilingData = profilingData;
     }
 
-    public void setPrint(boolean print) {
-        this.print = print;
-    }
-
     public boolean isPrint() {
         return print;
+    }
+
+    public void setPrint(boolean print) {
+        this.print = print;
     }
 }

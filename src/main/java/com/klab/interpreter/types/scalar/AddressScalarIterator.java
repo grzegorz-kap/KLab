@@ -23,13 +23,13 @@ class AddressScalarIterator implements AddressIterator {
     }
 
     @Override
-    public void setTemp(boolean temp) {
-        throw new UnsupportedOperationException();
+    public boolean isTemp() {
+        return false;
     }
 
     @Override
-    public boolean isTemp() {
-        return false;
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

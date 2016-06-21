@@ -11,10 +11,9 @@ import java.util.Collection;
 import static java.util.Objects.nonNull;
 
 public abstract class AbstractExecutionService implements ExecutionService {
+    protected ExecutionContext executionContext;
     InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
     InstructionPointer ip;
-
-    protected ExecutionContext executionContext;
 
     @Override
     public ExecutionContext getExecutionContext() {

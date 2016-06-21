@@ -10,8 +10,8 @@ import org.ojalgo.matrix.store.PhysicalStore;
 import java.util.Optional;
 
 class OjalgoLUResult<T extends Number> implements LUResult {
-    private OjalgoAbstractMatrix<T> ojalgoAbstractMatrix;
     private final LU<T> lu;
+    private OjalgoAbstractMatrix<T> ojalgoAbstractMatrix;
     private Matrix p;
     private Matrix y;
 

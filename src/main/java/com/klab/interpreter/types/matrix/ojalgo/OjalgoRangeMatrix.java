@@ -10,12 +10,12 @@ import org.ojalgo.matrix.store.PhysicalStore;
 import org.ojalgo.matrix.store.PrimitiveDenseStore;
 
 public class OjalgoRangeMatrix extends OjalgoDoubleMatrix {
-    private PhysicalStore.Factory<Double, PrimitiveDenseStore> factory = PrimitiveDenseStore.FACTORY;
-    private OjalgoDoubleMatrix doubleMatrix;
     private final double j;
     private final double i;
     private final double k;
     private final int m;
+    private PhysicalStore.Factory<Double, PrimitiveDenseStore> factory = PrimitiveDenseStore.FACTORY;
+    private OjalgoDoubleMatrix doubleMatrix;
 
     public OjalgoRangeMatrix(Number start, Number step, Number stop) {
         j = start.doubleValue();

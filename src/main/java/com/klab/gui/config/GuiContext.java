@@ -1,6 +1,6 @@
 package com.klab.gui.config;
 
-import com.klab.gui.App;
+import com.klab.gui.BootApp;
 import com.klab.gui.controller.CustomInitializeble;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -76,7 +76,7 @@ public class GuiContext implements ApplicationContextAware, InitializingBean, Re
     }
 
     public <T, U> T loadScene(final String url, Consumer<U> controllerConsumer) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(url), null, null, applicationContext::getBean);
+        FXMLLoader loader = new FXMLLoader(BootApp.class.getResource(url), null, null, applicationContext::getBean);
         try {
             T load = loader.load();
             U controller = loader.getController();

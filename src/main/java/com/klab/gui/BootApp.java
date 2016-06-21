@@ -9,7 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.io.IOException;
 
-public class App extends Application {
+public class BootApp extends Application {
     private ApplicationContext applicationContext = new AnnotationConfigApplicationContext(GuiAppConfiguration.class);
     private GuiContext guiContext = applicationContext.getBean(GuiContext.class);
 

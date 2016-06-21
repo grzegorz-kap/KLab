@@ -48,9 +48,7 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         } else if (checkIfOperator(OperatorCode.OR, expression.getValue())) {
             handleShortCircuitOperator(expression, InstructionCode.JUMP_IF_TRUE);
         } else {
-            for (Expression<ParseToken> child : expression.getChildren()) {
-                process(child);
-            }
+            expression.getChildren().forEach(this::process);
             translateExpressionValue(expression);
         }
     }

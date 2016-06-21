@@ -27,10 +27,6 @@ public class CodeReport {
         this.linesProfile = linesProfile;
     }
 
-    public void setSourceType(SourceType sourceType) {
-        this.sourceType = sourceType;
-    }
-
     public ProfilingReport getParent() {
         return parent;
     }
@@ -65,6 +61,10 @@ public class CodeReport {
 
     public SourceType getSourceType() {
         return sourceType;
+    }
+
+    public void setSourceType(SourceType sourceType) {
+        this.sourceType = sourceType;
     }
 
     public long getTotalTime() {

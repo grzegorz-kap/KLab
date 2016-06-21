@@ -44,16 +44,6 @@ import static org.apache.commons.io.FilenameUtils.removeExtension;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptEditorController implements Initializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptEditorController.class);
-
-    private ScriptTabFactory scriptTabFactory;
-    private BreakpointService breakpointService;
-    private EventService eventService;
-    private ScriptViewService scriptViewService;
-    private ScriptService scriptService;
-    private ExternalFunctionService externalFunctionService;
-    private Interpreter interpreter;
-    private Breakpoint reachedBreakpoint = null;
-
     // @FXML
     public TabPane scriptPane;
     public Button runButton;
@@ -64,6 +54,14 @@ public class ScriptEditorController implements Initializable {
     public ListView<Instruction> microInstructionList;
     public ListView<String> callStack;
     public Button stopButton;
+    private ScriptTabFactory scriptTabFactory;
+    private BreakpointService breakpointService;
+    private EventService eventService;
+    private ScriptViewService scriptViewService;
+    private ScriptService scriptService;
+    private ExternalFunctionService externalFunctionService;
+    private Interpreter interpreter;
+    private Breakpoint reachedBreakpoint = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

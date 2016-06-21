@@ -75,21 +75,21 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
 
     private String handleVariableTooltip(String name) {
         ObjectData data = memorySpace.find(name);
-            if (data != null && StringUtils.isNoneBlank(data.getName())) {
-                String result = String.format("%s = ", data.getName());
-                if (data instanceof Scalar) {
-                    return result + data.toString();
-                }
-                if (data instanceof Sizeable) {
-                    Sizeable sizeable = (Sizeable) data;
-                    if (sizeable.length() <= 5) {
-                        return result + "\n" + data.toString();
-                    } else {
-                        return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getCells());
-                    }
-                }
+        if (data != null && StringUtils.isNoneBlank(data.getName())) {
+            String result = String.format("%s = ", data.getName());
+            if (data instanceof Scalar) {
                 return result + data.toString();
             }
+            if (data instanceof Sizeable) {
+                Sizeable sizeable = (Sizeable) data;
+                if (sizeable.length() <= 5) {
+                    return result + "\n" + data.toString();
+                } else {
+                    return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getCells());
+                }
+            }
+            return result + data.toString();
+        }
         return "";
     }
 
