@@ -9,15 +9,31 @@ import java.util.Map;
 
 @Service
 public class IdentifierMapperImpl implements IdentifierMapper {
-    private Integer mainIdentifierFreeAddress = 0;
-    private Integer internalFunctionFreeAddress = 0;
-    private Integer externalFunctionFreeAddress = 0;
-    private Map<String, Integer> mainIdentifierAddressMap = Maps.newHashMap();
-    private Map<String, Integer> internalFunctionAddressMap = Maps.newHashMap();
-    private Map<String, Integer> externalFunctionAddressMap = Maps.newHashMap();
-
     private Deque<Map<String, Integer>> scopes = new ArrayDeque<>();
     private Deque<Integer> scopesAddress = new ArrayDeque<>();
+
+    private int internalFunctionFreeAddress = 0;
+    private Map<String, Integer> internalFunctionAddressMap = Maps.newHashMap();
+
+    private int externalFunctionFreeAddress = 0;
+    private Map<String, Integer> externalFunctionAddressMap = Maps.newHashMap();
+
+    private int mainIdentifierFreeAddress = 0;
+    private Map<String, Integer> mainIdentifierAddressMap = Maps.newHashMap();
+
+    @Override
+    public Integer registerMainIdentifier(String id) {
+        return mainIdentifierAddressMap.computeIfAbsent(id, name -> {
+            return mainIdentifierFreeAddress++;
+        });
+    }
+
+    @Override
+    public Integer registerExternalFunction(String id) {
+        return externalFunctionAddressMap.computeIfAbsent(id, name -> {
+            return externalFunctionFreeAddress++;
+        });
+    }
 
     @Override
     public void putNewScope() {
@@ -36,16 +52,6 @@ public class IdentifierMapperImpl implements IdentifierMapper {
     @Override
     public int mainMappingsSize() {
         return mainIdentifierAddressMap.size();
-    }
-
-    @Override
-    public Integer registerExternalFunction(String id) {
-        return externalFunctionAddressMap.computeIfAbsent(id, name -> externalFunctionFreeAddress++);
-    }
-
-    @Override
-    public Integer registerMainIdentifier(String id) {
-        return mainIdentifierAddressMap.computeIfAbsent(id, name -> mainIdentifierFreeAddress++);
     }
 
     @Override
