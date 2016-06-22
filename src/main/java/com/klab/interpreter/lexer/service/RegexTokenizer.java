@@ -57,17 +57,14 @@ public class RegexTokenizer extends AbstractTokenizer {
         if (tokenizerContext.isCharAt(0, '\'') && !noStringPrecursors.contains(tokenizerContextManager.tokenClassAt(0))) {
             StringBuilder lexeme = new StringBuilder("'");
             int offset = 1;
-            while (true) {
-                char character = tokenizerContext.charAt(offset++);
+            char character;
+            do {
+                character = tokenizerContext.charAt(offset++);
                 if ("\n\0".indexOf(character) != -1) {
                     throw new RuntimeException("Error reading string");
                 }
                 lexeme.append(character);
-                if (character == '\'') {
-                    break;
-                }
-            }
-
+            } while (character != '\'');
             addToken(lexeme.toString(), TokenClass.STRING);
             return true;
         } else {
