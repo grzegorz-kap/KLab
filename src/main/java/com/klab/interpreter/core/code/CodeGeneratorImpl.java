@@ -30,7 +30,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private ParserService parserService;
     private TokenizerService tokenizerService;
     private ExpressionTranslator expressionTranslator;
-    private List<PostParseHandler> postParseHandlers;
+    private List<PostParseHandler> preTranslateHandlers;
     private MemorySpace memorySpace;
     private IdentifierMapper identifierMapper;
     private Code codeCache;
@@ -70,7 +70,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public boolean isInstructionCompletelyTranslated() {
-        for (PostParseHandler handler : postParseHandlers) {
+        for (PostParseHandler handler : preTranslateHandlers) {
             if (!handler.isInstructionCompletelyTranslated()) {
                 return false;
             }
@@ -81,8 +81,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private Code initCode(Supplier<Code> codeSupplier) {
         Code code = codeSupplier.get();
         if (code != codeCache) {
-            postParseHandlers.forEach(handler -> handler.setCode(code));
-            expressionTranslator.setCode(code);
+            preTranslateHandlers.forEach(handler -> handler.setCode(code));
+            expressionTranslator.setupCode(code);
             codeCache = code;
         }
         return code;
@@ -90,7 +90,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public void reset() {
-        postParseHandlers.forEach(PostParseHandler::reset);
+        preTranslateHandlers.forEach(PostParseHandler::reset);
     }
 
     private void process(Code code, MacroInstructionTranslatedCallback callback) {
@@ -114,7 +114,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
-        for (PostParseHandler handler : postParseHandlers) {
+        for (PostParseHandler handler : preTranslateHandlers) {
             if (handler.canBeHandled(expressionList)) {
                 return handler;
             }
@@ -138,8 +138,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Autowired
-    public void setPostParseHandlers(List<PostParseHandler> postParseHandlers) {
-        this.postParseHandlers = postParseHandlers;
+    public void setPreTranslateHandlers(List<PostParseHandler> preTranslateHandlers) {
+        this.preTranslateHandlers = preTranslateHandlers;
     }
 
     @Autowired

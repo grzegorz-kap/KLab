@@ -42,7 +42,7 @@ public class LastCellTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.LAST_CELL;
     }
 }

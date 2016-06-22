@@ -22,7 +22,7 @@ public class MatrixTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.MATRIX;
     }
 }

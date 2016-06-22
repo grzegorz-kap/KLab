@@ -38,7 +38,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.IDENTIFIER;
     }
 }

@@ -20,9 +20,9 @@ import java.util.Optional;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ExpressionTranslatorImpl implements ExpressionTranslator {
     private TranslateContextManager manager = new TranslateContextManager();
-    private Code code;
     private TranslateContext translateContext;
-    private TranslateHandler[] translateHandlers;
+    private Code code;
+    private TranslateHandler[] handlers;
 
     @Override
     public MacroInstruction translate(Expression<ParseToken> parseTokenExpression) {
@@ -39,12 +39,7 @@ public class ExpressionTranslatorImpl implements ExpressionTranslator {
     }
 
     @Override
-    public TranslateHandler getTranslateHandler(ParseClass parseClass) {
-        return translateHandlers[parseClass.getIndex()];
-    }
-
-    @Override
-    public void setCode(Code code) {
+    public void setupCode(Code code) {
         this.code = code;
     }
 
@@ -57,12 +52,9 @@ public class ExpressionTranslatorImpl implements ExpressionTranslator {
     }
 
     private void translateExpressionValue(Expression<ParseToken> expression) {
-        getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
-    }
-
-    private boolean checkIfOperator(OperatorCode operatorCode, ParseToken parseToken) {
-        return parseToken instanceof OperatorToken &&
-                operatorCode.equals(((OperatorToken) parseToken).getOperatorCode());
+        ParseClass parseClass = expression.getValue().getParseClass();
+        TranslateHandler handler = handlers[parseClass.getIndex()];
+        handler.handle(expression);
     }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
@@ -74,6 +66,11 @@ public class ExpressionTranslatorImpl implements ExpressionTranslator {
             expression.getChildren().forEach(this::process);
             translateExpressionValue(expression);
         }
+    }
+
+    private boolean checkIfOperator(OperatorCode operatorCode, ParseToken parseToken) {
+        return parseToken instanceof OperatorToken &&
+                operatorCode.equals(((OperatorToken) parseToken).getOperatorCode());
     }
 
     private void handleShortCircuitOperator(Expression<ParseToken> expression, InstructionCode jmptnp) {
@@ -99,11 +96,11 @@ public class ExpressionTranslatorImpl implements ExpressionTranslator {
     }
 
     @Autowired
-    void setTranslateHandlers(TranslateHandler[] translateHandlers) {
-        this.translateHandlers = new TranslateHandler[ParseClass.values().length];
-        for (TranslateHandler translateHandler : translateHandlers) {
+    public void setHandlers(TranslateHandler[] handlers) {
+        this.handlers = new TranslateHandler[ParseClass.values().length];
+        for (TranslateHandler translateHandler : handlers) {
             translateHandler.setTranslateContextManager(manager);
-            this.translateHandlers[translateHandler.getSupportedParseClass().getIndex()] = translateHandler;
+            this.handlers[translateHandler.supportedParseClass().getIndex()] = translateHandler;
         }
     }
 }

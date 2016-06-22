@@ -40,7 +40,7 @@ public class MatrixAllTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.MATRIX_ALL;
     }
 }

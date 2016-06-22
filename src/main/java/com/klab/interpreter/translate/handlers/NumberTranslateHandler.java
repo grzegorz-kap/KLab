@@ -28,7 +28,7 @@ public class NumberTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.NUMBER;
     }
 
