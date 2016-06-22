@@ -17,7 +17,7 @@ public class MatrixAllParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.MATRIX_ALL;
     }
 }

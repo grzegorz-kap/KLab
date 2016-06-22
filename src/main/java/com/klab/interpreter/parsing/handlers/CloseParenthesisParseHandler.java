@@ -28,7 +28,7 @@ public class CloseParenthesisParseHandler extends AbstractParseHandler {
     private InternalFunctionsHolder internalFunctionHolder;
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.CLOSE_PARENTHESIS;
     }
 

@@ -12,5 +12,5 @@ public interface ParseHandler {
 
     void setParseContextManager(ParseContextManager parseContextManager);
 
-    TokenClass getSupportedTokenClass();
+    TokenClass supportedTokenClass();
 }

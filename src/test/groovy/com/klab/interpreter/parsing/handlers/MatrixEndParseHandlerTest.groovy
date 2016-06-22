@@ -32,7 +32,7 @@ class MatrixEndParseHandlerTest extends Specification {
 
     def "Test supported class"() {
         when:
-        def result = handler.getSupportedTokenClass()
+        def result = handler.supportedTokenClass()
 
         then:
         result == TokenClass.CLOSE_BRACKET

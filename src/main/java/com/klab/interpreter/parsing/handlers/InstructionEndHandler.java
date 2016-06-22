@@ -17,7 +17,7 @@ public class InstructionEndHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return null;
     }
 

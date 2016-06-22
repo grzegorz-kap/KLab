@@ -19,8 +19,6 @@ import static java.util.Objects.requireNonNull;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OperatorParseHandler extends AbstractParseHandler {
     private OperatorFactory operatorFactory;
-
-    @Autowired
     private ExpressionUtils expressionUtils;
 
     @Override
@@ -73,12 +71,17 @@ public class OperatorParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.OPERATOR;
     }
 
     @Autowired
-    public void setOperatorFactory(OperatorFactory operatorFactory) {
+    void setOperatorFactory(OperatorFactory operatorFactory) {
         this.operatorFactory = operatorFactory;
+    }
+
+    @Autowired
+    void setExpressionUtils(ExpressionUtils expressionUtils) {
+        this.expressionUtils = expressionUtils;
     }
 }

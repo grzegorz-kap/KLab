@@ -17,7 +17,7 @@ public class FunctionArgumentDelimiterParseHandler extends AbstractParseHandler 
     private StackHelper stackHelper;
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return null;
     }
 

@@ -16,7 +16,7 @@ import static com.klab.interpreter.parsing.exception.WrongIfInstructionException
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class EndifKeywordParseHandler extends AbstractParseHandler {
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.ENDIF_KEYWORD;
     }
 

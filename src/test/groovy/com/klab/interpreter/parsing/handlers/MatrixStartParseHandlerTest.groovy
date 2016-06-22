@@ -25,7 +25,7 @@ class MatrixStartParseHandlerTest extends Specification {
 
     def "Test supported class"() {
         when:
-        def result = matrixHandler.getSupportedTokenClass()
+        def result = matrixHandler.supportedTokenClass()
 
         then:
         result == TokenClass.OPEN_BRACKET

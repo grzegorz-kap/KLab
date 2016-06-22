@@ -12,7 +12,7 @@ class MatrixNewColumnParseHandlerTest extends Specification {
 
     def "Return correct supported TokenClass"() {
         when:
-        def supported = parseHandler.getSupportedTokenClass()
+        def supported = parseHandler.supportedTokenClass()
         then:
         supported == null
     }

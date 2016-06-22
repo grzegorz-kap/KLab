@@ -28,7 +28,7 @@ public class CommaParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.COMMA;
     }
 

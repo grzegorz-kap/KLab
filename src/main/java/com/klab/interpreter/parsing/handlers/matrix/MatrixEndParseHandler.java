@@ -33,7 +33,7 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     private TypeResolver typeResolver;
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.CLOSE_BRACKET;
     }
 

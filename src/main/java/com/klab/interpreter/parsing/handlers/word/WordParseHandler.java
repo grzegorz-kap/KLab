@@ -25,7 +25,7 @@ public class WordParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.WORD;
     }
 

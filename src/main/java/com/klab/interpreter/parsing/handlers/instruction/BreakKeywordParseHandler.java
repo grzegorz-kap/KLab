@@ -29,7 +29,7 @@ public class BreakKeywordParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.BREAK_KEYWORD;
     }
 }

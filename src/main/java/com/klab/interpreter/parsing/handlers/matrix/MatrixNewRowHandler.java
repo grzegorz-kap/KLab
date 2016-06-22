@@ -25,7 +25,7 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
     private TypeResolver typeResolver;
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return null;
     }
 

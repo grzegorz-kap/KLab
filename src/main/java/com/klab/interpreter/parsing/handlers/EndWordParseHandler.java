@@ -29,7 +29,7 @@ public class EndWordParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.END_KEYWORD;
     }
 }

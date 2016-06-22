@@ -26,7 +26,7 @@ public class MatrixStartParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.OPEN_BRACKET;
     }
 
