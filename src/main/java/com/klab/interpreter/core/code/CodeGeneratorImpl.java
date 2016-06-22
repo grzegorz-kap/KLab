@@ -7,7 +7,7 @@ import com.klab.interpreter.lexer.model.TokenList;
 import com.klab.interpreter.lexer.service.TokenizerService;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
-import com.klab.interpreter.parsing.service.Parser;
+import com.klab.interpreter.parsing.service.ParserService;
 import com.klab.interpreter.translate.handlers.PostParseHandler;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import static java.util.Objects.nonNull;
 public class CodeGeneratorImpl implements CodeGenerator {
     private Supplier<Code> defaultCodeSupplier = Code::new;
     private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
-    private Parser parser;
+    private ParserService parserService;
     private TokenizerService tokenizerService;
     private ExpressionTranslator expressionTranslator;
     private List<PostParseHandler> postParseHandlers;
@@ -48,7 +48,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     @Override
     public Code translate(TokenList input, Supplier<Code> codeSupplier) {
         Code code = initCode(codeSupplier);
-        parser.setTokenList(input);
+        parserService.setTokenList(input);
         process(code, defaultMacroInstructionTranslatedCallback);
         return code;
     }
@@ -62,7 +62,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
         code.setSourceCode(input);
-        parser.setTokenList(tokenizerService.readTokens(input));
+        parserService.setTokenList(tokenizerService.readTokens(input));
         process(code, macroInstructionTranslatedCallback);
         code.setSourceCode(input);
         return code;
@@ -94,8 +94,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     private void process(Code code, MacroInstructionTranslatedCallback callback) {
-        while (parser.hasNext()) {
-            List<Expression<ParseToken>> expressionList = parser.process();
+        while (parserService.hasNext()) {
+            List<Expression<ParseToken>> expressionList = parserService.process();
             PostParseHandler postParseHandler = findPostParseHandler(expressionList);
             if (isNull(postParseHandler)) {
                 for (Expression<ParseToken> node : expressionList) {
@@ -123,8 +123,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Autowired
-    public void setParser(Parser parser) {
-        this.parser = parser;
+    public void setParserService(ParserService parserService) {
+        this.parserService = parserService;
     }
 
     @Autowired

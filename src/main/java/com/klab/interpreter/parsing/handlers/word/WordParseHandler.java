@@ -37,12 +37,12 @@ public class WordParseHandler extends AbstractParseHandler {
     }
 
     @Autowired
-    public void setIdentifierParseHandler(IdentifierParseHandler identifierParseHandler) {
+    void setIdentifierParseHandler(IdentifierParseHandler identifierParseHandler) {
         this.identifierParseHandler = identifierParseHandler;
     }
 
     @Autowired
-    public void setCallParseHandler(CallParseHandler callParseHandler) {
+    void setCallParseHandler(CallParseHandler callParseHandler) {
         this.callParseHandler = callParseHandler;
     }
 }

@@ -47,7 +47,7 @@ public class ParseContextManager {
         parseContext.incrementIndex(value);
     }
 
-    public boolean isEndOfTokens() {
+    boolean isEndOfTokens() {
         return parseContext.getTokensIndex() >= parseContext.getTokensLength();
     }
 
@@ -75,11 +75,11 @@ public class ParseContextManager {
         parseContext.stackPush(parseToken);
     }
 
-    public int stackSize() {
+    int stackSize() {
         return parseContext.stackSize();
     }
 
-    public void checkIfCorrectNumberOfArguments(int expectedArgumentsNumber) {
+    private void checkIfCorrectNumberOfArguments(int expectedArgumentsNumber) {
         if (parseContext.expressionSize() < expectedArgumentsNumber) {
             throw new WrongNumberOfArgumentsException("Wrong number of arguments.", parseContext);
         }
@@ -136,7 +136,7 @@ public class ParseContextManager {
         return parseContext;
     }
 
-    public void setParseContext(ParseContext parseContext) {
+    void setParseContext(ParseContext parseContext) {
         this.parseContext = parseContext;
     }
 }
