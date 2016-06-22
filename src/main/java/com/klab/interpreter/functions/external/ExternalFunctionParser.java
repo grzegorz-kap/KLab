@@ -5,7 +5,7 @@ import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.core.code.CodeGenerator;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.lexer.model.TokenList;
-import com.klab.interpreter.lexer.service.Tokenizer;
+import com.klab.interpreter.lexer.service.TokenizerService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class ExternalFunctionParser {
     private Pattern endPattern = Pattern.compile("((end)|(endfunction))([\\n \\t])*$", Pattern.MULTILINE);
     private IdentifierMapper identifierMapper;
     private CodeGenerator codeGenerator;
-    private Tokenizer tokenizer;
+    private TokenizerService tokenizerService;
 
     public ExternalFunctionParser() {
         StringBuilder builder = new StringBuilder()
@@ -67,7 +67,7 @@ public class ExternalFunctionParser {
         fun.getReturns().forEach(externalReturn -> identifierMapper.registerMainIdentifier(externalReturn.getName()));
         fun.setNarginAddress(identifierMapper.registerMainIdentifier(NARGIN));
         fun.setNargoutAddress(identifierMapper.registerMainIdentifier(NARGOUT));
-        TokenList tokenList = tokenizer.readTokens(StringUtils.removeEnd(input, end));
+        TokenList tokenList = tokenizerService.readTokens(StringUtils.removeEnd(input, end));
         int lines = StringUtils.countMatches(signature, '\n');
         tokenList.removeIf(token -> token.getAddress().getLine() <= lines);
         Code code = codeGenerator.translate(tokenList, () -> new Code(fun.getName()));
@@ -111,7 +111,7 @@ public class ExternalFunctionParser {
     }
 
     @Autowired
-    public void setTokenizer(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
+    public void setTokenizerService(TokenizerService tokenizerService) {
+        this.tokenizerService = tokenizerService;
     }
 }

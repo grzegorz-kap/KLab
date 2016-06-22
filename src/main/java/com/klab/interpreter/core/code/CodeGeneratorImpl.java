@@ -4,7 +4,7 @@ import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.lexer.model.TokenList;
-import com.klab.interpreter.lexer.service.Tokenizer;
+import com.klab.interpreter.lexer.service.TokenizerService;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.service.Parser;
@@ -28,7 +28,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private Supplier<Code> defaultCodeSupplier = Code::new;
     private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
     private Parser parser;
-    private Tokenizer tokenizer;
+    private TokenizerService tokenizerService;
     private ExpressionTranslator expressionTranslator;
     private List<PostParseHandler> postParseHandlers;
     private MemorySpace memorySpace;
@@ -62,7 +62,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
         code.setSourceCode(input);
-        parser.setTokenList(tokenizer.readTokens(input));
+        parser.setTokenList(tokenizerService.readTokens(input));
         process(code, macroInstructionTranslatedCallback);
         code.setSourceCode(input);
         return code;
@@ -128,8 +128,8 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Autowired
-    public void setTokenizer(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
+    public void setTokenizerService(TokenizerService tokenizerService) {
+        this.tokenizerService = tokenizerService;
     }
 
     @Autowired

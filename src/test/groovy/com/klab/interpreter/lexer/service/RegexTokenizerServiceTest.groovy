@@ -6,12 +6,12 @@ import com.klab.interpreter.lexer.utils.TokenRegexReader
 import com.klab.interpreter.lexer.utils.TokenStartMatcher
 import spock.lang.Specification
 
-class RegexTokenizerTest extends Specification {
+class RegexTokenizerServiceTest extends Specification {
 
-    Tokenizer tokenizer
+    TokenizerService tokenizer
 
     def setup() {
-        RegexTokenizer regexTokenizer = new RegexTokenizer()
+        RegexTokenizerService regexTokenizer = new RegexTokenizerService()
         regexTokenizer.settCM(new TokenizerContextManager())
         regexTokenizer.setTokenRegexReader(new TokenRegexReader())
         regexTokenizer.setTokenMatcher(new TokenMatcher())

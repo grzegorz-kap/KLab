@@ -21,7 +21,7 @@ import static com.klab.interpreter.lexer.model.TokenClass.*;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class RegexTokenizer extends AbstractTokenizer {
+public class RegexTokenizerService extends AbstractTokenizerService {
     private static final Pattern NUMBER_REGEX = Pattern.compile("^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?");
     private static final Pattern WORD_REGEX = Pattern.compile("^[A-Za-z_$][A-Za-z_$0-9]*");
     private static final Pattern SPACE_REGEX = Pattern.compile("^[ \\t]+");

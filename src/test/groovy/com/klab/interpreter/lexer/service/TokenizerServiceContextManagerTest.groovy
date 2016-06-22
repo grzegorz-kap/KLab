@@ -7,7 +7,7 @@ import spock.lang.Specification
 import static com.klab.interpreter.lexer.makers.TokenMaker.*
 import static com.natpryce.makeiteasy.MakeItEasy.*
 
-class TokenizerContextManagerTest extends Specification {
+class TokenizerServiceContextManagerTest extends Specification {
 
     private TokenizerContextManager manager;
     private TokenizerContext tokenizerContext;
