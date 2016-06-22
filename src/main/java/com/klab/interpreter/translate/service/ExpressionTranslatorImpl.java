@@ -1,12 +1,15 @@
 package com.klab.interpreter.translate.service;
 
+import com.klab.interpreter.execution.model.Code;
+import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.model.expression.ExpressionValue;
 import com.klab.interpreter.parsing.model.tokens.operators.OperatorCode;
-import com.klab.interpreter.translate.model.Instruction;
-import com.klab.interpreter.translate.model.InstructionCode;
-import com.klab.interpreter.translate.model.JumperInstruction;
+import com.klab.interpreter.parsing.model.tokens.operators.OperatorToken;
+import com.klab.interpreter.translate.handlers.TranslateHandler;
+import com.klab.interpreter.translate.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,16 @@ import java.util.Optional;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
+public class ExpressionTranslatorImpl implements ExpressionTranslator {
+    private TranslateContextManager manager = new TranslateContextManager();
+    private Code code;
+    private TranslateContext translateContext;
+    private TranslateHandler[] translateHandlers;
+
     @Override
-    protected void translate() {
-        Expression<ParseToken> parseTokenExpression = translateContext.getExpression();
+    public MacroInstruction translate(Expression<ParseToken> parseTokenExpression) {
+        translateContext = new TranslateContext(parseTokenExpression);
+        manager.setTranslateContext(translateContext);
         process(parseTokenExpression);
         if (getAnsProperty()) {
             manager.addInstruction(new Instruction(InstructionCode.ANS, 1), manager.previousCodeAddress());
@@ -26,8 +35,18 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         if (getPrintProperty()) {
             manager.addInstruction(new Instruction(InstructionCode.PRINT, 0), manager.previousCodeAddress());
         }
+        return translateContext.getMacroInstruction();
     }
 
+    @Override
+    public TranslateHandler getTranslateHandler(ParseClass parseClass) {
+        return translateHandlers[parseClass.getIndex()];
+    }
+
+    @Override
+    public void setCode(Code code) {
+        this.code = code;
+    }
 
     private void process(Expression<ParseToken> parseTokenExpression) {
         if (parseTokenExpression instanceof ExpressionValue) {
@@ -41,6 +60,10 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         getTranslateHandler(expression.getValue().getParseClass()).handle(expression);
     }
 
+    private boolean checkIfOperator(OperatorCode operatorCode, ParseToken parseToken) {
+        return parseToken instanceof OperatorToken &&
+                operatorCode.equals(((OperatorToken) parseToken).getOperatorCode());
+    }
 
     private void translateExpressionNode(Expression<ParseToken> expression) {
         if (checkIfOperator(OperatorCode.AND, expression.getValue())) {
@@ -73,5 +96,14 @@ public class ExpressionTranslatorImpl extends AbstractExpressionTranslator {
         return Optional
                 .ofNullable(translateContext.getExpression().getProperty(Expression.PRINT_PROPERTY_KEY, Boolean.class))
                 .orElse(false);
+    }
+
+    @Autowired
+    void setTranslateHandlers(TranslateHandler[] translateHandlers) {
+        this.translateHandlers = new TranslateHandler[ParseClass.values().length];
+        for (TranslateHandler translateHandler : translateHandlers) {
+            translateHandler.setTranslateContextManager(manager);
+            this.translateHandlers[translateHandler.getSupportedParseClass().getIndex()] = translateHandler;
+        }
     }
 }

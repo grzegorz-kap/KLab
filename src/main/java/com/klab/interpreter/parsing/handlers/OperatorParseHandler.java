@@ -33,7 +33,8 @@ public class OperatorParseHandler extends AbstractParseHandler {
 
             OperatorToken o2 = (OperatorToken) parseToken;
             int compereResult = o1.getPriority().compareTo(o2.getPriority());
-            boolean operate = o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 || o1.getAssociativity() == RIGHT_TO_LEFT && compereResult <= -1;
+            boolean operate = o1.getAssociativity() == LEFT_TO_RIGHT && compereResult <= 0 ||
+                    o1.getAssociativity() == RIGHT_TO_LEFT && compereResult <= -1;
 
             if (!operate) {
                 break;
