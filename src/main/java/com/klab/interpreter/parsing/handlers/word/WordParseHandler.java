@@ -30,10 +30,10 @@ public class WordParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
+    public void setParseContextManager(ParseContextManager parseContextManager) {
         this.parseContextManager = parseContextManager;
-        identifierParseHandler.setContextManager(parseContextManager);
-        callParseHandler.setContextManager(parseContextManager);
+        identifierParseHandler.setParseContextManager(parseContextManager);
+        callParseHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

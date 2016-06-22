@@ -21,7 +21,7 @@ class OperatorHandlerTest extends Specification {
     List<Expression<ParseToken>> expressionList;
 
     def setup() {
-        operatorHandler.contextManager = Mock(ParseContextManager)
+        operatorHandler.parseContextManager = Mock(ParseContextManager)
         operatorHandler.setOperatorFactory(new OperatorFactory());
         stack = new ArrayDeque<>();
         expressionList = new ArrayList<>();

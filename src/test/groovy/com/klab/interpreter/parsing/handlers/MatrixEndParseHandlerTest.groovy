@@ -24,7 +24,7 @@ class MatrixEndParseHandlerTest extends Specification {
 
     def setup() {
         handler.setMatrixNewRowHandler(rowHandler)
-        handler.setContextManager(parseContextManager)
+        handler.setParseContextManager(parseContextManager)
         handler.setStackHelper(stackHelper)
         handler.setExpressionHelper(expressionHelper)
         handler.setBalanceContextService(balanceContextService)

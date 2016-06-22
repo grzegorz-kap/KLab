@@ -63,9 +63,9 @@ public class MatrixEndParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
-        super.setContextManager(parseContextManager);
-        matrixNewRowHandler.setContextManager(parseContextManager);
+    public void setParseContextManager(ParseContextManager parseContextManager) {
+        super.setParseContextManager(parseContextManager);
+        matrixNewRowHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

@@ -33,11 +33,11 @@ public class CommaParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
-        super.setContextManager(parseContextManager);
-        matrixNewColumnParseHandler.setContextManager(parseContextManager);
-        instructionEndHandler.setContextManager(parseContextManager);
-        functionArgumentDelimiterParseHandler.setContextManager(parseContextManager);
+    public void setParseContextManager(ParseContextManager parseContextManager) {
+        super.setParseContextManager(parseContextManager);
+        matrixNewColumnParseHandler.setParseContextManager(parseContextManager);
+        instructionEndHandler.setParseContextManager(parseContextManager);
+        functionArgumentDelimiterParseHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

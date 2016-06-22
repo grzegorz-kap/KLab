@@ -33,9 +33,9 @@ public class SpaceParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
-        super.setContextManager(parseContextManager);
-        matrixNewColumnParseHandler.setContextManager(parseContextManager);
+    public void setParseContextManager(ParseContextManager parseContextManager) {
+        super.setParseContextManager(parseContextManager);
+        matrixNewColumnParseHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

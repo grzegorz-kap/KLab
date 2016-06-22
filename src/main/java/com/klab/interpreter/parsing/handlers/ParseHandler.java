@@ -10,7 +10,7 @@ public interface ParseHandler {
         throw new UnsupportedOperationException();
     }
 
-    void setContextManager(ParseContextManager parseContextManager);
+    void setParseContextManager(ParseContextManager parseContextManager);
 
     TokenClass getSupportedTokenClass();
 }

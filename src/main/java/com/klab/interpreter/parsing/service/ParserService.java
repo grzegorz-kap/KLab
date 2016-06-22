@@ -9,7 +9,7 @@ import java.util.List;
 public interface ParserService {
     List<Expression<ParseToken>> process();
 
-    void setTokenList(TokenList tokenList);
+    void setupTokenList(TokenList tokenList);
 
     boolean hasNext();
 }

@@ -48,7 +48,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     @Override
     public Code translate(TokenList input, Supplier<Code> codeSupplier) {
         Code code = initCode(codeSupplier);
-        parserService.setTokenList(input);
+        parserService.setupTokenList(input);
         process(code, defaultMacroInstructionTranslatedCallback);
         return code;
     }
@@ -62,7 +62,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
     public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
         code.setSourceCode(input);
-        parserService.setTokenList(tokenizerService.readTokens(input));
+        parserService.setupTokenList(tokenizerService.readTokens(input));
         process(code, macroInstructionTranslatedCallback);
         code.setSourceCode(input);
         return code;

@@ -19,7 +19,7 @@ class MatrixStartParseHandlerTest extends Specification {
     def balanceContextService = Mock(BalanceContextService)
 
     def setup() {
-        matrixHandler.setContextManager(parseContextManager)
+        matrixHandler.setParseContextManager(parseContextManager)
         matrixHandler.setBalanceContextService(balanceContextService)
     }
 

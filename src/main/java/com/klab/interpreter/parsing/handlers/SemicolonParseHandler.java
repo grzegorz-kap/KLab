@@ -30,10 +30,10 @@ public class SemicolonParseHandler extends AbstractParseHandler {
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
-        super.setContextManager(parseContextManager);
-        matrixNewRowHandler.setContextManager(parseContextManager);
-        instructionEndHandler.setContextManager(parseContextManager);
+    public void setParseContextManager(ParseContextManager parseContextManager) {
+        super.setParseContextManager(parseContextManager);
+        matrixNewRowHandler.setParseContextManager(parseContextManager);
+        instructionEndHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

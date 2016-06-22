@@ -34,7 +34,7 @@ public class ParserServiceImpl implements ParserService, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         Stream.of(parseHandlers).filter(Objects::nonNull)
                 .forEach(handler -> {
-                    handler.setContextManager(parseContextManager);
+                    handler.setParseContextManager(parseContextManager);
                 });
     }
 
@@ -51,7 +51,7 @@ public class ParserServiceImpl implements ParserService, InitializingBean {
     }
 
     @Override
-    public void setTokenList(TokenList tokenList) {
+    public void setupTokenList(TokenList tokenList) {
         parseContext = new ParseContext(tokenList);
         parseContext.setParseHandlers(parseHandlers);
         parseContextManager.setParseContext(parseContext);
