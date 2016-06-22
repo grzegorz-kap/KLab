@@ -18,14 +18,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.klab.interpreter.lexer.model.TokenClass.*;
+import static java.util.regex.Pattern.compile;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RegexTokenizerService extends AbstractTokenizerService {
-    private static final Pattern NUMBER_REGEX = Pattern.compile("^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?");
-    private static final Pattern WORD_REGEX = Pattern.compile("^[A-Za-z_$][A-Za-z_$0-9]*");
-    private static final Pattern SPACE_REGEX = Pattern.compile("^[ \\t]+");
-    private static final Pattern NEWLINE_REGEX = Pattern.compile("^[\\n\\t\\r ]+");
+    private static final Pattern NUMBER_REGEX = compile("^((\\d+\\.?\\d*)|(\\.\\d+))([eE][-+]?\\d+)?i?");
+    private static final Pattern WORD_REGEX = compile("^[A-Za-z_$][A-Za-z_$0-9]*");
+    private static final Pattern SPACE_REGEX = compile("^[ \\t]+");
+    private static final Pattern NEWLINE_REGEX = compile("^[\\n\\t\\r ]+");
 
     private ArrayList<TokenClass> noStringPrecursors = Lists.newArrayList(NUMBER, CLOSE_PARENTHESIS, CLOSE_BRACKET, WORD);
 
