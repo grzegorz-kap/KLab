@@ -9,6 +9,7 @@ import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
 import com.klab.interpreter.parsing.service.ParserService;
 import com.klab.interpreter.translate.handlers.PostParseHandler;
+import com.klab.interpreter.translate.model.MacroInstruction;
 import com.klab.interpreter.translate.service.ExpressionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -26,7 +27,7 @@ import static java.util.Objects.nonNull;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CodeGeneratorImpl implements CodeGenerator {
     private Supplier<Code> defaultCodeSupplier = Code::new;
-    private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
+    private InstructionTranslatedCallback defaultInstructionTranslatedCallback = null;
     private ParserService parserService;
     private TokenizerService tokenizerService;
     private ExpressionTranslator expressionTranslator;
@@ -37,19 +38,19 @@ public class CodeGeneratorImpl implements CodeGenerator {
 
     @Override
     public Code translate(String input) {
-        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
+        return translate(input, defaultCodeSupplier, defaultInstructionTranslatedCallback);
     }
 
     @Override
     public Code translate(String input, Supplier<Code> codeSupplier) {
-        return translate(input, codeSupplier, defaultMacroInstructionTranslatedCallback);
+        return translate(input, codeSupplier, defaultInstructionTranslatedCallback);
     }
 
     @Override
     public Code translate(TokenList input, Supplier<Code> codeSupplier) {
         Code code = initCode(codeSupplier);
         parserService.setupTokenList(input);
-        process(code, defaultMacroInstructionTranslatedCallback);
+        process(code, defaultInstructionTranslatedCallback);
         return code;
     }
 
@@ -59,12 +60,11 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Override
-    public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
+    public Code translate(String input, Supplier<Code> codeSupplier, InstructionTranslatedCallback instructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
-        code.setSourceCode(input);
+        code.setSourceText(input);
         parserService.setupTokenList(tokenizerService.readTokens(input));
-        process(code, macroInstructionTranslatedCallback);
-        code.setSourceCode(input);
+        process(code, instructionTranslatedCallback);
         return code;
     }
 
@@ -93,24 +93,25 @@ public class CodeGeneratorImpl implements CodeGenerator {
         preTranslateHandlers.forEach(PostParseHandler::reset);
     }
 
-    private void process(Code code, MacroInstructionTranslatedCallback callback) {
+    private void process(Code code, InstructionTranslatedCallback callback) {
         while (parserService.hasNext()) {
             List<Expression<ParseToken>> expressionList = parserService.process();
-            PostParseHandler postParseHandler = findPostParseHandler(expressionList);
-            if (isNull(postParseHandler)) {
+            PostParseHandler handler = findPostParseHandler(expressionList);
+            if (!isNull(handler)) {
+                MacroInstruction instructions
+                        = handler.handle(expressionList, expressionTranslator);
+                Optional.ofNullable(instructions).ifPresent(code::add);
+            } else {
                 for (Expression<ParseToken> node : expressionList) {
                     code.add(expressionTranslator.translate(node));
                 }
-            } else {
-                Optional.ofNullable(postParseHandler.handle(expressionList, expressionTranslator)).ifPresent(
-                        code::add
-                );
             }
-            memorySpace.reserve(identifierMapper.mainMappingsSize());
             if (nonNull(callback)) {
+                memorySpace.reserve(identifierMapper.mainMappingsSize());
                 callback.invoke();
             }
         }
+        memorySpace.reserve(identifierMapper.mainMappingsSize());
     }
 
     private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
@@ -123,32 +124,32 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Autowired
-    public void setParserService(ParserService parserService) {
+    private void setParserService(ParserService parserService) {
         this.parserService = parserService;
     }
 
     @Autowired
-    public void setTokenizerService(TokenizerService tokenizerService) {
+    private void setTokenizerService(TokenizerService tokenizerService) {
         this.tokenizerService = tokenizerService;
     }
 
     @Autowired
-    public void setExpressionTranslator(ExpressionTranslator expressionTranslator) {
+    private void setExpressionTranslator(ExpressionTranslator expressionTranslator) {
         this.expressionTranslator = expressionTranslator;
     }
 
     @Autowired
-    public void setPreTranslateHandlers(List<PostParseHandler> preTranslateHandlers) {
+    private void setPreTranslateHandlers(List<PostParseHandler> preTranslateHandlers) {
         this.preTranslateHandlers = preTranslateHandlers;
     }
 
     @Autowired
-    public void setMemorySpace(MemorySpace memorySpace) {
+    private void setMemorySpace(MemorySpace memorySpace) {
         this.memorySpace = memorySpace;
     }
 
     @Autowired
-    public void setIdentifierMapper(IdentifierMapper identifierMapper) {
+    private void setIdentifierMapper(IdentifierMapper identifierMapper) {
         this.identifierMapper = identifierMapper;
     }
 }

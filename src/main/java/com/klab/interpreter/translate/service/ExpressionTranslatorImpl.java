@@ -25,7 +25,7 @@ public class ExpressionTranslatorImpl implements ExpressionTranslator {
     private TranslateHandler[] handlers;
 
     @Override
-    public MacroInstruction translate(Expression<ParseToken> parseTokenExpression) {
+    public synchronized MacroInstruction translate(Expression<ParseToken> parseTokenExpression) {
         translateContext = new TranslateContext(parseTokenExpression);
         manager.setTranslateContext(translateContext);
         process(parseTokenExpression);

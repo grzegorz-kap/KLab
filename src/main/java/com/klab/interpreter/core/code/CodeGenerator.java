@@ -12,7 +12,7 @@ public interface CodeGenerator {
 
     Code translate(String input, Supplier<Code> codeSupplier);
 
-    Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback);
+    Code translate(String input, Supplier<Code> codeSupplier, InstructionTranslatedCallback macroInstructionTranslatedCallback);
 
     Code translate(TokenList input);
 

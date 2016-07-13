@@ -1,5 +1,5 @@
 package com.klab.interpreter.core.code;
 
-public interface MacroInstructionTranslatedCallback {
+public interface InstructionTranslatedCallback {
     void invoke();
 }
