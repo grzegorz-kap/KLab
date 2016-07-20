@@ -80,7 +80,7 @@ public class ConsoleController implements InitializingBean {
     public void onCommandSubmittedEvent(CommandSubmittedEvent command) {
         consoleOutput.appendText(String.format(">> %s \n", command.getData()));
         commandHistoryService.add(command.getData());
-        interpreter.startAsync(new ExecutionCommand(command.getData(), command.isProfiling()));
+        interpreter.start(new ExecutionCommand(command.getData(), command.isProfiling()), true);
     }
 
     @Subscribe

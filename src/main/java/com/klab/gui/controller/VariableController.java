@@ -92,8 +92,8 @@ public class VariableController implements Initializable {
         TableView<Row> tableView = new TableView<>();
         tableView.widthProperty().addListener(new NumberChangeListenerHideHeaderRow(tableView));
         tableView.setEditable(true);
-        int rows = (int) ((Sizeable) variable.getData()).getRows();
-        int columns = (int) ((Sizeable) variable.getData()).getColumns();
+        int rows = ((Sizeable) variable.getData()).getRows();
+        int columns = ((Sizeable) variable.getData()).getColumns();
         int cells = rows * columns;
 
         if (cells <= maxCellsToDisplay) {
@@ -113,7 +113,7 @@ public class VariableController implements Initializable {
                     int i = t.getTablePosition().getRow();
                     int j = t.getTablePosition().getColumn();
                     String command = String.format("%s(%s,%s)=%s;", name, i + 1, j + 1, t.getNewValue());
-                    interpreter.startSync(new ExecutionCommand(command));
+                    interpreter.start(new ExecutionCommand(command), false);
                     variablesMap.get(variable).setVersion(variable.getVersion());
                     t.getTableView().getItems().get(i).modify(variable.getData(), i, j);
                 });
@@ -172,7 +172,7 @@ public class VariableController implements Initializable {
             this.data = data;
             if (data instanceof Matrix) {
                 Matrix matrix = (Matrix) data;
-                cells = IntStream.range(0, (int) matrix.getColumns())
+                cells = IntStream.range(0, matrix.getColumns())
                         .mapToObj(n -> matrix.get(rowNumber, n).toString())
                         .map(SimpleStringProperty::new)
                         .collect(Collectors.toList());

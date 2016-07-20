@@ -12,19 +12,25 @@ import com.klab.interpreter.debug.*;
 import com.klab.interpreter.execution.InstructionAction;
 import com.klab.interpreter.execution.handlers.InstructionHandler;
 import com.klab.interpreter.execution.model.Code;
+import com.klab.interpreter.execution.model.ExecutionContext;
+import com.klab.interpreter.execution.model.InstructionPointer;
 import com.klab.interpreter.profiling.ProfilingServiceImpl;
 import com.klab.interpreter.translate.model.Instruction;
+import com.klab.interpreter.translate.model.InstructionCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ExecutionServiceImpl extends AbstractExecutionService {
+public class ExecutionServiceImpl implements ExecutionService {
     private IdentifierMapper identifierMapper;
     private MemorySpace memorySpace;
     private InstructionAction handleAction = InstructionHandler::handle;
@@ -33,6 +39,9 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     private EventService eventService;
     private PauseStep executionPause = null;
     private boolean stop = false;
+    private ExecutionContext executionContext;
+    private InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
+    private InstructionPointer ip;
 
     @Override
     public void start() throws ExecutionError {
@@ -84,13 +93,25 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
         return callStack;
     }
 
+    @Override
+    public ExecutionContext getExecutionContext() {
+        return executionContext;
+    }
+
+    @Override
+    public void resetCodeAndStack() {
+        executionContext.clearExecutionStack();
+        executionContext.clearCode();
+        ip = executionContext.newInstructionPointer();
+    }
+
     @Subscribe
     private void onRunToEvent(RunToEvent event) {
         executionPause = new RunTo(event.getLine(), event.getScript());
     }
 
     @Subscribe
-    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
+    private void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
         ip.codeStream().forEach(breakpointService::updateBreakpoints);
         breakpointService.updateBreakpoints(ip.getCode());
     }
@@ -112,27 +133,40 @@ public class ExecutionServiceImpl extends AbstractExecutionService {
     }
 
     @Autowired
-    public void setIdentifierMapper(IdentifierMapper identifierMapper) {
+    private void setInstructionHandlers(Collection<InstructionHandler> instructionHandlers) {
+        this.executionContext = new ExecutionContext();
+        this.ip = this.executionContext.newInstructionPointer();
+        instructionHandlers.stream()
+                .filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
+                .forEach(handler -> {
+                    InstructionCode code = handler.getSupportedInstructionCode();
+                    this.instructionHandlers[code.getIndex()] = handler;
+                    handler.setExecutionContext(this.executionContext);
+                });
+    }
+
+    @Autowired
+    void setIdentifierMapper(IdentifierMapper identifierMapper) {
         this.identifierMapper = identifierMapper;
     }
 
     @Autowired
-    public void setMemorySpace(MemorySpace memorySpace) {
+    void setMemorySpace(MemorySpace memorySpace) {
         this.memorySpace = memorySpace;
     }
 
     @Autowired
-    public void setProfilingService(ProfilingServiceImpl profilingService) {
+    void setProfilingService(ProfilingServiceImpl profilingService) {
         this.profilingService = profilingService;
     }
 
     @Autowired
-    public void setBreakpointService(BreakpointService breakpointService) {
+    void setBreakpointService(BreakpointService breakpointService) {
         this.breakpointService = breakpointService;
     }
 
     @Autowired
-    public void setEventService(EventService eventService) {
+    void setEventService(EventService eventService) {
         this.eventService = eventService;
     }
 }

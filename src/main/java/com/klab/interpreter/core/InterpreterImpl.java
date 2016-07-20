@@ -1,14 +1,15 @@
 package com.klab.interpreter.core;
 
 import com.klab.common.EventService;
+import com.klab.interpreter.core.code.CodeGenerator;
 import com.klab.interpreter.core.events.ErrorEvent;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.execution.model.Code;
+import com.klab.interpreter.execution.service.ExecutionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,39 +17,23 @@ import java.util.List;
 @Service
 public class InterpreterImpl implements Interpreter {
     private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterImpl.class);
-    private InterpreterService interpreterService;
+    private ExecutionService executionService;
+    private CodeGenerator codeGenerator;
     private EventService eventService;
-    private volatile boolean execution = false;
-
-    @Override
-    public boolean executionInProgress() {
-        return execution;
-    }
-
-    @Override
-    public void startSync(ExecutionCommand cmd) {
-        start(cmd, false);
-    }
 
     @Override
     public List<Code> callStack() {
-        return interpreterService.callStack();
+        return executionService.callStack();
     }
 
     @Override
-    @Async
-    public void startAsync(ExecutionCommand cmd) {
-        start(cmd, true);
-    }
-
-    public void start(ExecutionCommand cmd, boolean events) {
+    public void start(ExecutionCommand cmd, boolean isAsync) {
         Interpreter.MAIN_LOCK.lock();
-        execution = true;
-        if (events) {
+        if (isAsync) {
             eventService.publish(new ExecutionStartedEvent(cmd, this));
         }
         try {
-            interpreterService.startExecution(cmd);
+            startExecution(cmd);
         } catch (ExecutionError ex) {
             eventService.publish(new ErrorEvent(ex, this));
             LOGGER.error("", ex);
@@ -56,20 +41,48 @@ public class InterpreterImpl implements Interpreter {
             LOGGER.error("", ex);
         } finally {
             Interpreter.MAIN_LOCK.unlock();
-            execution = false;
-            if (events) {
+            if (isAsync) {
                 eventService.publish(new ExecutionCompletedEvent(cmd, this));
             }
         }
     }
 
-    @Autowired
-    public void setInterpreterService(InterpreterService interpreterService) {
-        this.interpreterService = interpreterService;
+    private void startExecution(ExecutionCommand input) {
+        executionService.resetCodeAndStack();
+        codeGenerator.reset();
+        if (input.isProfiling()) {
+            executionService.enableProfiling();
+        } else {
+            executionService.disableProfiling();
+        }
+        codeGenerator.translate(input.getBody(), this::getCode, this::execute);
+        if (!codeGenerator.isInstructionCompletelyTranslated()) {
+            throw new RuntimeException("Not completed statement");
+        }
+    }
+
+    private Code getCode() {
+        return executionService.getExecutionContext().getCode();
+    }
+
+    private void execute() throws ExecutionError {
+        if (codeGenerator.isInstructionCompletelyTranslated()) {
+            executionService.start();
+        }
     }
 
     @Autowired
-    public void setEventService(EventService eventService) {
+    private void setExecutionService(ExecutionService executionService) {
+        this.executionService = executionService;
+    }
+
+    @Autowired
+    private void setCodeGenerator(CodeGenerator codeGenerator) {
+        this.codeGenerator = codeGenerator;
+    }
+
+    @Autowired
+    private void setEventService(EventService eventService) {
         this.eventService = eventService;
     }
 }
