@@ -48,18 +48,18 @@ public class ExecutionServiceImpl implements ExecutionService {
         memorySpace.reserve(identifierMapper.mainMappingsSize());
         stop = false;
         while (!ip.isCodeEnd() && !this.stop) {
-            Instruction instruction = ip.currentInstruction();
-            InstructionHandler instructionHandler = instructionHandlers[instruction.getInstructionCode().getIndex()];
-            if (instruction.isBreakpoint()) {
+            Instruction instr = ip.currentInstruction();
+            if (instr.isBreakpoint()) {
                 executionPause = null;
-                breakpointService.block(instruction.getBreakpoint());
+                breakpointService.block(instr.getBreakpoint());
             } else if (executionPause != null && executionPause.shouldStop(ip)) {
-                block(instruction);
+                block(instr);
             }
+            InstructionHandler handler = instructionHandlers[instr.getInstructionCode().getIndex()];
             try {
-                handleAction.handle(instructionHandler, ip);
+                handleAction.handle(handler, ip);
             } catch (Exception ex) {
-                throw new ExecutionError(ex.getMessage(), ip.getSourceId(), ex, instruction);
+                throw new ExecutionError(ex.getMessage(), ip.getSourceId(), ex, instr);
             }
         }
     }
