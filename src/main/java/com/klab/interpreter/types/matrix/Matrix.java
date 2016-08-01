@@ -7,7 +7,6 @@ import com.klab.interpreter.types.foriterator.ForIterable;
 import java.util.function.Consumer;
 
 public interface Matrix<T extends Number> extends
-//        Scalar<T>,
         NumericObject,
         Sizeable,
         ForIterable,

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.klab.interpreter.execution.handlers.InstructionHandler</OriginalElement>
+  <nodes>
+    <node x="540.0" y="292.0">com.klab.interpreter.execution.handlers.operators.MultInstructionHandler</node>
+    <node x="0.0" y="303.0">com.klab.interpreter.execution.handlers.PushInstructionHandler</node>
+    <node x="400.0" y="0.0">com.klab.interpreter.execution.handlers.InstructionHandler</node>
+    <node x="820.0" y="303.0">com.klab.interpreter.execution.handlers.JMPInstructionHandler</node>
+    <node x="400.0" y="146.0">com.klab.interpreter.execution.handlers.AbstractInstructionHandler</node>
+    <node x="0.0" y="433.0">com.klab.interpreter.execution.model.ExecutionContext</node>
+    <node x="260.0" y="292.0">com.klab.interpreter.execution.handlers.StoreInstructionHandler</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.klab.interpreter.execution.handlers.JMPInstructionHandler" target="com.klab.interpreter.execution.handlers.AbstractInstructionHandler">
+      <point x="0.0" y="-37.0" />
+      <point x="984.0" y="262.0" />
+      <point x="627.5" y="262.0" />
+      <point x="97.5" y="48.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.handlers.AbstractInstructionHandler" target="com.klab.interpreter.execution.handlers.InstructionHandler">
+      <point x="0.0" y="-48.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.handlers.operators.MultInstructionHandler" target="com.klab.interpreter.execution.handlers.AbstractInstructionHandler">
+      <point x="0.0" y="-48.0" />
+      <point x="670.0" y="272.0" />
+      <point x="562.5" y="272.0" />
+      <point x="32.5" y="48.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.handlers.PushInstructionHandler" target="com.klab.interpreter.execution.handlers.AbstractInstructionHandler">
+      <point x="0.0" y="-37.0" />
+      <point x="120.0" y="262.0" />
+      <point x="432.5" y="262.0" />
+      <point x="-97.5" y="48.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.handlers.AbstractInstructionHandler" target="com.klab.interpreter.execution.model.ExecutionContext">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.handlers.StoreInstructionHandler" target="com.klab.interpreter.execution.handlers.AbstractInstructionHandler">
+      <point x="0.0" y="-48.0" />
+      <point x="390.0" y="272.0" />
+      <point x="497.5" y="272.0" />
+      <point x="-32.5" y="48.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="564.0" y="342.0" />
+  <SelectedNodes>
+    <node>com.klab.interpreter.execution.model.ExecutionContext</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

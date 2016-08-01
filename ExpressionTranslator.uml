@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.klab.interpreter.translate.service.ExpressionTranslator</OriginalElement>
+  <nodes>
+    <node x="271.25" y="147.0">com.klab.interpreter.translate.service.ExpressionTranslatorImpl</node>
+    <node x="394.0" y="0.0">com.klab.interpreter.translate.handlers.TranslateHandler</node>
+    <node x="73.5" y="311.0">com.klab.interpreter.parsing.model.ParseClass</node>
+    <node x="0.0" y="0.0">com.klab.interpreter.translate.service.ExpressionTranslator</node>
+    <node x="-15.0" y="-15.0">com.klab.interpreter.translate.model.Instruction</node>
+    <node x="0.0" y="413.0">com.klab.interpreter.parsing.model.ParseToken</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.klab.interpreter.translate.service.ExpressionTranslatorImpl" target="com.klab.interpreter.translate.service.ExpressionTranslator">
+      <point x="-131.33333333333337" y="-59.5" />
+      <point x="336.91666666666663" y="122.0" />
+      <point x="187.0" y="122.0" />
+      <point x="0.0" y="48.5" />
+    </edge>
+    <edge source="com.klab.interpreter.translate.service.ExpressionTranslatorImpl" target="com.klab.interpreter.translate.handlers.TranslateHandler">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.translate.model.Instruction" target="com.klab.interpreter.translate.model.Instruction">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="345.5" y="276.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+
