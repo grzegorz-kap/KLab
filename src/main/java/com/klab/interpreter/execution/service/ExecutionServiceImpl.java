@@ -37,10 +37,10 @@ public class ExecutionServiceImpl implements ExecutionService {
     private ProfilingServiceImpl profilingService;
     private BreakpointService breakpointService;
     private EventService eventService;
-    private PauseStep executionPause = null;
+    private PauseStep executionPause = new NoPauseStep();
     private boolean stop = false;
     private ExecutionContext executionContext;
-    private InstructionHandler[] instructionHandlers = new InstructionHandler[InstructionCode.values().length];
+    private InstructionHandler[] handlers = new InstructionHandler[InstructionCode.values().length];
     private InstructionPointer ip;
 
     @Override
@@ -50,12 +50,12 @@ public class ExecutionServiceImpl implements ExecutionService {
         while (!ip.isCodeEnd() && !this.stop) {
             Instruction instr = ip.currentInstruction();
             if (instr.isBreakpoint()) {
-                executionPause = null;
+                executionPause = new NoPauseStep();
                 breakpointService.block(instr.getBreakpoint());
-            } else if (executionPause != null && executionPause.shouldStop(ip)) {
+            } else if (executionPause.shouldStop(ip)) {
                 block(instr);
             }
-            InstructionHandler handler = instructionHandlers[instr.getInstructionCode().getIndex()];
+            InstructionHandler handler = handlers[instr.handlerIndex()];
             try {
                 handleAction.handle(handler, ip);
             } catch (Exception ex) {
@@ -75,7 +75,7 @@ public class ExecutionServiceImpl implements ExecutionService {
     }
 
     private void block(Instruction instruction) {
-        executionPause = null;
+        executionPause = new NoPauseStep();
         BreakpointImpl breakpoint = new BreakpointImpl(ip.getSourceId(), instruction.getCodeAddress().getLine(), instruction);
         breakpoint.setCode(ip.getCode());
         breakpointService.block(breakpoint);
@@ -133,14 +133,14 @@ public class ExecutionServiceImpl implements ExecutionService {
     }
 
     @Autowired
-    private void setInstructionHandlers(Collection<InstructionHandler> instructionHandlers) {
+    private void setHandlers(Collection<InstructionHandler> handlers) {
         this.executionContext = new ExecutionContext();
         this.ip = this.executionContext.newInstructionPointer();
-        instructionHandlers.stream()
+        handlers.stream()
                 .filter(instructionHandler -> nonNull(instructionHandler.getSupportedInstructionCode()))
                 .forEach(handler -> {
                     InstructionCode code = handler.getSupportedInstructionCode();
-                    this.instructionHandlers[code.getIndex()] = handler;
+                    this.handlers[code.getIndex()] = handler;
                     handler.setExecutionContext(this.executionContext);
                 });
     }

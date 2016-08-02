@@ -59,6 +59,10 @@ public class Instruction {
         return instructionCode;
     }
 
+    public int handlerIndex() {
+        return instructionCode.getIndex();
+    }
+
     public void setInstructionCode(InstructionCode instructionCode) {
         this.instructionCode = instructionCode;
     }

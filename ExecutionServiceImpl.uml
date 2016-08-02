@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.klab.interpreter.execution.service.ExecutionServiceImpl</OriginalElement>
+  <nodes>
+    <node x="153.8125" y="0.0">com.klab.interpreter.debug.BreakpointReachedEvent</node>
+    <node x="424.8125" y="80.0">com.klab.interpreter.execution.service.ExecutionServiceImpl</node>
+    <node x="338.8125" y="0.0">com.klab.interpreter.debug.BreakpointService</node>
+    <node x="227.5625" y="80.0">com.klab.interpreter.debug.BreakpointServiceImpl</node>
+    <node x="486.8125" y="0.0">com.klab.common.EventService</node>
+    <node x="20.0625" y="80.0">com.klab.interpreter.translate.model.Instruction</node>
+    <node x="42.8125" y="0.0">com.klab.interpreter.debug.Breakpoint</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.klab.interpreter.execution.service.ExecutionServiceImpl" target="com.klab.common.EventService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.debug.BreakpointServiceImpl" target="com.klab.interpreter.debug.Breakpoint">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.debug.BreakpointServiceImpl" target="com.klab.common.EventService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.debug.BreakpointServiceImpl" target="com.klab.interpreter.debug.BreakpointService">
+      <point x="19.0" y="-15.0" />
+      <point x="322.5625" y="50.0" />
+      <point x="370.8125" y="50.0" />
+      <point x="-32.0" y="15.0" />
+    </edge>
+    <edge source="com.klab.interpreter.debug.BreakpointServiceImpl" target="com.klab.interpreter.debug.BreakpointReachedEvent">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.translate.model.Instruction" target="com.klab.interpreter.debug.Breakpoint">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.service.ExecutionServiceImpl" target="com.klab.interpreter.debug.BreakpointService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.translate.model.Instruction" target="com.klab.interpreter.translate.model.Instruction">
+      <point x="0.0" y="0.0" />
+      <point x="65.5625" y="55.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="336.5" y="-61.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>packageLocal</VISIBILITY>
+</Diagram>
+
