@@ -35,12 +35,12 @@ public class ProfilingServiceImpl implements InstructionAction, ProfilingService
     }
 
     @Override
-    public Collection<Code> measured() {
-        return Collections.unmodifiableCollection(measured);
+    public void clear() {
+        measured.clear();
     }
 
-    @Subscribe
-    public void onExecutionStart(ExecutionStartedEvent event) {
-        measured.clear();
+    @Override
+    public Collection<Code> measured() {
+        return Collections.unmodifiableCollection(measured);
     }
 }

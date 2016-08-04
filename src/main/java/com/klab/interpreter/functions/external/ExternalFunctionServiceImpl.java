@@ -3,6 +3,7 @@ package com.klab.interpreter.functions.external;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
+import com.klab.interpreter.core.ExecutionStartInitialization;
 import com.klab.interpreter.core.code.ScriptFileService;
 import com.klab.interpreter.core.events.CodeTranslatedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Service
-class ExternalFunctionServiceImpl implements ExternalFunctionService {
+class ExternalFunctionServiceImpl implements ExternalFunctionService, ExecutionStartInitialization {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalFunctionServiceImpl.class);
     private ScriptFileService scriptFileService;
     private BreakpointService breakpointService;
@@ -67,8 +68,8 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService {
         throw new UnsupportedOperationException(); // TODO exception
     }
 
-    @Subscribe
-    public void onExecutionStartEvent(ExecutionStartedEvent executionStartedEvent) {
+    @Override
+    public void initialize() {
         for (ExternalFunction externalFunction : functionsCache.values()) {
             externalFunction.getCode().forEach(instruction -> instruction.setProfilingData(null));
         }

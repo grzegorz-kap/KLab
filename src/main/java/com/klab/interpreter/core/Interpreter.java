@@ -7,11 +7,13 @@ import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.execution.service.ExecutionService;
+import com.klab.interpreter.profiling.ProfilingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -26,6 +28,7 @@ public class Interpreter {
     private ExecutionService executionService;
     private CodeGenerator codeGenerator;
     private EventService eventService;
+    private Collection<ExecutionStartInitialization> executionStartInitializations;
 
     public List<Code> callStack() {
         return executionService.callStack();
@@ -33,6 +36,7 @@ public class Interpreter {
 
     public void start(ExecutionCommand cmd, boolean isAsync) {
         MAIN_LOCK.lock();
+        executionStartInitializations.forEach(ExecutionStartInitialization::initialize);
         if (isAsync) {
             eventService.publish(new ExecutionStartedEvent(cmd, this));
         }
@@ -88,5 +92,10 @@ public class Interpreter {
     @Autowired
     void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    @Autowired
+    void setExecutionStartInitializations(Collection<ExecutionStartInitialization> executionStartInitializations) {
+        this.executionStartInitializations = executionStartInitializations;
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
+import com.klab.interpreter.core.ExecutionStartInitialization;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ReleaseBreakpointsEvent;
@@ -24,7 +25,7 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
-public class BreakpointServiceImpl implements BreakpointService {
+public class BreakpointServiceImpl implements BreakpointService, ExecutionStartInitialization {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
     private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
@@ -69,8 +70,8 @@ public class BreakpointServiceImpl implements BreakpointService {
         blockedSet.clear();
     }
 
-    @Subscribe
-    private void onExecutionStart(ExecutionStartedEvent event) {
+    @Override
+    public void initialize() {
         blockedSet.clear();
     }
 
