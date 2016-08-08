@@ -98,8 +98,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
             List<Expression<ParseToken>> expressionList = parserService.process();
             PostParseHandler handler = findPostParseHandler(expressionList);
             if (!isNull(handler)) {
-                MacroInstruction instructions
-                        = handler.handle(expressionList, expressionTranslator);
+                MacroInstruction instructions = handler.handle(expressionList, expressionTranslator);
                 Optional.ofNullable(instructions).ifPresent(code::add);
             } else {
                 for (Expression<ParseToken> node : expressionList) {

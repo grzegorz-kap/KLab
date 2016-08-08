@@ -26,7 +26,7 @@ public class ExternalFunctionParser {
     private static final String NARGIN = "nargin";
     private static final String NARGOUT = "nargout";
     private Pattern signaturePattern;
-    private Pattern endPattern = Pattern.compile("((end)|(endfunction))([\\n \\t])*$", Pattern.MULTILINE);
+    private Pattern endPattern = Pattern.compile("(end)([\\n \\t])+?$", Pattern.MULTILINE);
     private IdentifierMapper identifierMapper;
     private CodeGenerator codeGenerator;
     private TokenizerService tokenizerService;
@@ -67,7 +67,8 @@ public class ExternalFunctionParser {
         fun.getReturns().forEach(externalReturn -> identifierMapper.registerMainIdentifier(externalReturn.getName()));
         fun.setNarginAddress(identifierMapper.registerMainIdentifier(NARGIN));
         fun.setNargoutAddress(identifierMapper.registerMainIdentifier(NARGOUT));
-        TokenList tokenList = tokenizerService.readTokens(StringUtils.removeEnd(input, end));
+        input = StringUtils.removeEnd(input, end);
+        TokenList tokenList = tokenizerService.readTokens(input);
         int lines = StringUtils.countMatches(signature, '\n');
         tokenList.removeIf(token -> token.getAddress().getLine() <= lines);
         Code code = codeGenerator.translate(tokenList, () -> new Code(fun.getName()));

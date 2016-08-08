@@ -24,10 +24,15 @@ public class FunctionEndInstructionHandler extends AbstractInstructionHandler {
         List<ObjectData> output = new ArrayList<>(instruction.getOutputStart());
         int expectedOutput = instruction.getExpectedOutput() < 0 ? 1 : instruction.getExpectedOutput();
         final int end = instruction.getOutputStart() + expectedOutput;
+        boolean notThrow = instruction.getExpectedOutput() < 0;
         for (int index = end - 1; index >= instruction.getOutputStart(); index--) {
             ObjectData object = memorySpace.get(index);
             if (object == null) {
-                throw new RuntimeException(); // TODO
+                if (notThrow) {
+                    break;// TODO
+                } else {
+                    throw new RuntimeException();
+                }
             }
             object.setTemp(true);
             output.add(object);
