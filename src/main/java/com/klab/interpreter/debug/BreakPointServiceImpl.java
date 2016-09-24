@@ -25,7 +25,7 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
-public class BreakpointServiceImpl implements BreakpointService, ExecutionStartInitialization {
+public class BreakPointServiceImpl implements BreakpointService, ExecutionStartInitialization {
     private static final Logger LOGGER = LoggerFactory.getLogger(BreakpointService.class);
     private EventService eventService;
     private Map<String, Set<BreakpointAddress>> breakPoints = Maps.newHashMap();
