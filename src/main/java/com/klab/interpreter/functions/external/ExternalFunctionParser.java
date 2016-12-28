@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ public class ExternalFunctionParser {
     private static final String NARGIN = "nargin";
     private static final String NARGOUT = "nargout";
     private Pattern signaturePattern;
-    private Pattern endPattern = Pattern.compile("(end)([\\n \\t])+?$", Pattern.MULTILINE);
+    private Pattern endPattern = Pattern.compile("(end)([\\n \\t])*\\z", Pattern.MULTILINE);
     private IdentifierMapper identifierMapper;
     private CodeGenerator codeGenerator;
     private TokenizerService tokenizerService;
@@ -45,20 +46,22 @@ public class ExternalFunctionParser {
         this.signaturePattern = Pattern.compile(builder.toString(), Pattern.MULTILINE);
     }
 
-    public ExternalFunction parse(String input) {
+    public Optional<ExternalFunction> parse(String input) {
         Matcher signatureMatcher = signaturePattern.matcher(input);
         Matcher endMatcher = endPattern.matcher(input);
-        if (signatureMatcher.find() && endMatcher.find()) {
+        boolean isSignatureMatched = signatureMatcher.find();
+        boolean isEndMatched = endMatcher.find();
+        if (isSignatureMatched && isEndMatched) {
             ExternalFunction fun = new ExternalFunction();
             fun.setName(signatureMatcher.group(7));
             processOutput(fun, signatureMatcher.group(2));
             processInput(fun, signatureMatcher.group(8));
             processBody(fun, input, signatureMatcher.group(), endMatcher.group());
-            return fun;
+            return Optional.of(fun);
         } else {
             LOGGER.error("Error parsing: {}", input);
         }
-        return null;
+        return Optional.empty();
     }
 
     private synchronized void processBody(ExternalFunction fun, String input, String signature, String end) {
