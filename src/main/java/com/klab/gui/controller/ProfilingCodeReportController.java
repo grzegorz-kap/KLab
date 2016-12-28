@@ -17,11 +17,11 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
-import java.util.stream.IntStream;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ProfilingCodeReportController implements ProfilingCodeReportDetailsViewer, CustomInitializeble, ResourceLoaderAware {
+public class ProfilingCodeReportController implements
+        ProfilingCodeReportDetailsViewer, CustomInitializeble, ResourceLoaderAware {
     private ResourceLoader resourceLoader;
     private CodeReport codeReport;
     private ReportService reportService;
@@ -45,7 +45,8 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
         String sourceCode = codeReport.getCode().getSourceCode();
         String[] lines = sourceCode.split("\\r?\\n");
         reportService.computeLines(codeReport);
-        IntStream.range(0, lines.length).forEach(index -> {
+
+        for (int index = 0; index < lines.length; index++) {
             ProfilingData<CodeLine> line = codeReport.getLinesProfile().get(index + 1);
             builder.append("<tr>");
             builder.append("<td style='text-align:right;'>")
@@ -57,7 +58,7 @@ public class ProfilingCodeReportController implements ProfilingCodeReportDetails
                     .append(HtmlUtils.formatCode(lines[index]))
                     .append("</td>");
             builder.append("</tr>");
-        });
+        }
         return builder.toString();
     }
 
