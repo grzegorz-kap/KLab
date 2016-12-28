@@ -11,6 +11,7 @@ import com.klab.interpreter.profiling.ProfilingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -34,7 +35,8 @@ public class Interpreter {
         return executionService.callStack();
     }
 
-    public void start(ExecutionCommand cmd, boolean isAsync) {
+    @Async
+    public void startAsync(ExecutionCommand cmd, boolean isAsync) {
         MAIN_LOCK.lock();
         executionStartInitializations.forEach(ExecutionStartInitialization::initialize);
         if (isAsync) {
@@ -53,6 +55,10 @@ public class Interpreter {
                 eventService.publish(new ExecutionCompletedEvent(cmd, this));
             }
         }
+    }
+
+    public void startSync(ExecutionCommand command) {
+        startAsync(command, false);
     }
 
     private void startExecution(ExecutionCommand input) {

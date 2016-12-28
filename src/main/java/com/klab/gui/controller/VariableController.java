@@ -113,7 +113,7 @@ public class VariableController implements Initializable {
                     int i = t.getTablePosition().getRow();
                     int j = t.getTablePosition().getColumn();
                     String command = String.format("%s(%s,%s)=%s;", name, i + 1, j + 1, t.getNewValue());
-                    interpreter.start(new ExecutionCommand(command), false);
+                    interpreter.startSync(new ExecutionCommand(command));
                     variablesMap.get(variable).setVersion(variable.getVersion());
                     t.getTableView().getItems().get(i).modify(variable.getData(), i, j);
                 });
