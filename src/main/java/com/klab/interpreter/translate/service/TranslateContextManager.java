@@ -12,7 +12,10 @@ public class TranslateContextManager {
 
     public CodeAddress previousCodeAddress() {
         List<Instruction> instructions = translateContext.getMacroInstruction().get();
-        Instruction reduce = instructions.stream().filter(i -> i.getCodeAddress() != null).reduce((a, b) -> b).orElse(null);
+        Instruction reduce = instructions.stream()
+        		.filter(i -> i.getCodeAddress() != null)
+        		.reduce((a, b) -> b)
+        		.orElse(null);
         return reduce != null ? reduce.getCodeAddress() : null;
     }
 

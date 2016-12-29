@@ -217,7 +217,8 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
 
     private void writeScript(TabPane scriptPane, Tab tab) {
         try {
-            scriptFileService.writeScript(tab.getText(), get(tab.getText(), scriptPane).getText());
+            final String text = tab.getText();
+			scriptFileService.writeScript(text, get(text, scriptPane).getText());
         } catch (IOException e) {
             LOGGER.error("error", e);
         }

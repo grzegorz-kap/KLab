@@ -5,7 +5,9 @@ import com.klab.interpreter.translate.model.Instruction;
 import org.apache.commons.lang3.StringUtils;
 
 public class ExecutionError extends RuntimeException {
-    private Instruction instruction;
+	private static final long serialVersionUID = 3398408710038009978L;
+	
+	private Instruction instruction;
     private String scriptId;
 
     public ExecutionError(String message, String scriptId, Throwable cause, Instruction instruction) {

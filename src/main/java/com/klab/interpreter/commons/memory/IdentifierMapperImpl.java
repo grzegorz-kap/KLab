@@ -1,6 +1,8 @@
 package com.klab.interpreter.commons.memory;
 
 import com.google.common.collect.Maps;
+
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayDeque;
@@ -9,44 +11,49 @@ import java.util.Map;
 
 @Service
 public class IdentifierMapperImpl implements IdentifierMapper {
-    private Deque<Map<String, Integer>> scopes = new ArrayDeque<>();
-    private Deque<Integer> scopesAddress = new ArrayDeque<>();
-
-    private int internalFunctionFreeAddress = 0;
-    private Map<String, Integer> internalFunctionAddressMap = Maps.newHashMap();
-
-    private int externalFunctionFreeAddress = 0;
-    private Map<String, Integer> externalFunctionAddressMap = Maps.newHashMap();
-
-    private int mainIdentifierFreeAddress = 0;
-    private Map<String, Integer> mainIdentifierAddressMap = Maps.newHashMap();
+    private Deque<AddressMap> scopes = new ArrayDeque<>();
+    private AddressMap internalFunctionAddressMap = new AddressMap();
+    private AddressMap externalFunctionAddressMap = new AddressMap();
+    private AddressMap mainIdentifierAddressMap = new AddressMap();
+    
+    private static class AddressMap {
+    	private int freeAddress = 0;
+    	private Map<String, Integer> map = new HashedMap<>();
+    	
+    	public Integer register(final String id) {
+    		return map.computeIfAbsent(id, key -> {
+    			return freeAddress++;
+    		});
+    	}
+    	
+    	public Integer get(final String key) {
+    		return map.get(key);
+    	}
+    	
+    	public int size() {
+    		return map.size();
+    	}
+    }
 
     @Override
     public Integer registerMainIdentifier(String id) {
-        return mainIdentifierAddressMap.computeIfAbsent(id, name -> {
-            return mainIdentifierFreeAddress++;
-        });
+        return mainIdentifierAddressMap.register(id);
     }
 
     @Override
     public Integer registerExternalFunction(String id) {
-        return externalFunctionAddressMap.computeIfAbsent(id, name -> {
-            return externalFunctionFreeAddress++;
-        });
+       return externalFunctionAddressMap.register(id);
     }
 
     @Override
     public void putNewScope() {
         scopes.addFirst(mainIdentifierAddressMap);
-        scopesAddress.addFirst(mainIdentifierFreeAddress);
-        mainIdentifierAddressMap = Maps.newHashMap();
-        mainIdentifierFreeAddress = 0;
+        mainIdentifierAddressMap = new AddressMap();
     }
 
     @Override
     public void restorePreviousScope() {
         mainIdentifierAddressMap = scopes.removeFirst();
-        mainIdentifierFreeAddress = scopesAddress.removeFirst();
     }
 
     @Override
@@ -56,7 +63,7 @@ public class IdentifierMapperImpl implements IdentifierMapper {
 
     @Override
     public Integer registerInternalFunction(String id) {
-        return internalFunctionAddressMap.computeIfAbsent(id, name -> internalFunctionFreeAddress++);
+        return internalFunctionAddressMap.register(id);
     }
 
     @Override
