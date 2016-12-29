@@ -33,7 +33,7 @@ public class IdentifierTranslateHandler extends AbstractTranslateHandler {
         Instruction instruction = new Instruction(InstructionCode.LOAD, 0);
         IdentifierObject identifierObject = new TokenIdentifierObject(identifierToken);
         identifierObject.setCanBeScript(Objects.isNull(expression.getParent()) && expression.getChildrenCount() == 0);
-        instruction.add(identifierObject);
+        instruction.addData(identifierObject);
         tCM.addInstruction(instruction, address(expression));
     }
 

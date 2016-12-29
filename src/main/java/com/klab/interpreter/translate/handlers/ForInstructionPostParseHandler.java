@@ -90,7 +90,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler imp
     private Instruction createFlInit() {
         Instruction instruction = new Instruction(InstructionCode.FLINIT, 0);
         String name = forInstructionContext.getIteratorDataName();
-        instruction.add(new TokenIdentifierObject(name, identifierMapper.getMainAddress(name)));
+        instruction.addData(new TokenIdentifierObject(name, identifierMapper.getMainAddress(name)));
         return instruction;
     }
 
@@ -101,7 +101,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler imp
         String iteratorName = forInstructionContext.getIteratorDataName();
         Integer iteratorAddress = identifierMapper.getMainAddress(iteratorName);
         Instruction clearInstruction = new Instruction(InstructionCode.CLEAR, 0);
-        clearInstruction.add(new TokenIdentifierObject(iteratorName, iteratorAddress));
+        clearInstruction.addData(new TokenIdentifierObject(iteratorName, iteratorAddress));
         forInstructionContext.pop();
         CodeAddress address = expressions.get(0).getValue().getAddress();
         return new MacroInstruction().add(flhnextJump, address).add(clearInstruction, address);
@@ -109,7 +109,7 @@ public class ForInstructionPostParseHandler extends AbstractPostParseHandler imp
 
     private void findIteratorTarget(MacroInstruction macroInstruction, FLNextInstruction flnextInstruction) {
         Instruction instruction = macroInstruction.get(0);
-        IdentifierObject id = (IdentifierObject) instruction.getObjectData(0);
+        IdentifierObject id = (IdentifierObject) instruction.getData(0);
         forInstructionContext.setName(id.getId());
         flnextInstruction.setIteratorId(new TokenIdentifierObject(id.getId(), id.getAddress()));
         CodeAddress codeAddress = forInstructionContext.getCodeAddress();

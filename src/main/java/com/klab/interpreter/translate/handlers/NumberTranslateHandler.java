@@ -23,7 +23,7 @@ public class NumberTranslateHandler extends AbstractTranslateHandler {
         Instruction instruction = new Instruction();
         instruction.setInstructionCode(InstructionCode.PUSH);
         instruction.setArgumentsNumber(1);
-        instruction.add(numberScalarFactory.getDouble(numberToken.getToken().getLexeme()));
+        instruction.addData(numberScalarFactory.getDouble(numberToken.getToken().getLexeme()));
         tCM.addInstruction(instruction, address(expression));
     }
 

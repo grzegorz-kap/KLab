@@ -31,28 +31,16 @@ public class Instruction {
         Collections.addAll(this.data, data);
     }
 
-    public void add(ObjectData objectData) {
+    public void addData(ObjectData objectData) {
         data.add(objectData);
     }
 
-    public ObjectData getObjectData(int index) {
+    public ObjectData getData(int index) {
         return data.get(index);
     }
 
-    public <T> T getObjectData(int index, Class<T> clazz) {
+    public <T> T getData(int index, Class<T> clazz) {
         return clazz.cast(data.get(index));
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append(instructionCode);
-        b.append('\t');
-        data.forEach(objectData -> b.append(objectData).append("\t"));
-        if (profilingData != null) {
-            b.append('\t').append(profilingData);
-        }
-        return b.toString();
     }
 
     public InstructionCode getInstructionCode() {
@@ -105,6 +93,18 @@ public class Instruction {
 
     public boolean isPrint() {
         return print;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append(instructionCode);
+        b.append('\t');
+        data.forEach(objectData -> b.append(objectData).append("\t"));
+        if (profilingData != null) {
+            b.append('\t').append(profilingData);
+        }
+        return b.toString();
     }
 
     public void setPrint(boolean print) {

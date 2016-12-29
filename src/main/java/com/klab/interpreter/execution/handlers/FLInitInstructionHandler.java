@@ -20,7 +20,7 @@ public class FLInitInstructionHandler extends AbstractInstructionHandler {
     @Override
     public void handle(InstructionPointer instructionPointer) {
         ForIterable forIterable = getForIterable(executionContext.executionStackPop());
-        IdentifierObject identifierObject = (IdentifierObject) instructionPointer.currentInstruction().getObjectData(0);
+        IdentifierObject identifierObject = (IdentifierObject) instructionPointer.currentInstruction().getData(0);
         memorySpace.set(identifierObject.getAddress(), forIterable.getForIterator(), identifierObject.getId());
         instructionPointer.increment();
     }
