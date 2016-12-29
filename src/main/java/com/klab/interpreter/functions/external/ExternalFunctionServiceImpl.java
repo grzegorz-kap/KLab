@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 class ExternalFunctionServiceImpl implements ExternalFunctionService, ExecutionStartInitialization {
@@ -48,24 +49,26 @@ class ExternalFunctionServiceImpl implements ExternalFunctionService, ExecutionS
     private ExternalFunction read(FunctionMapKey key, CallInstruction cl) {
         try {
             String fileContent = scriptFileService.readScript(key.name);
-            ExternalFunction e = externalFunctionParser.parse(fileContent);
+            Optional<ExternalFunction> externalFunctionOptional = externalFunctionParser.parse(fileContent);
+            if (externalFunctionOptional.isPresent()) {
+                final ExternalFunction externalFunction = externalFunctionOptional.get();
+                if (!externalFunction.getName().equals(key.name)) {
+                    throw new RuntimeException("Function name does not match file name!");
+                }
 
-            if (!e.getName().equals(key.name)) {
-                throw new RuntimeException("Function name does not match file name!");
+                EndFunctionInstruction ret = new EndFunctionInstruction(externalFunction.getArguments().size(), externalFunction.getReturns().size());
+                ret.setExpectedOutput(cl.getExpectedOutputSize());
+                externalFunction.getCode().add(ret, null);
+                externalFunction.getCode().setSourceId(key.name);
+                breakpointService.updateBreakpoints(externalFunction.getCode());
+                functionsCache.put(key, externalFunction);
+                eventService.publishAsync(new CodeTranslatedEvent(externalFunction.getCode(), this));
+                return externalFunction;
             }
-
-            EndFunctionInstruction ret = new EndFunctionInstruction(e.getArguments().size(), e.getReturns().size());
-            ret.setExpectedOutput(cl.getExpectedOutputSize());
-            e.getCode().add(ret, null);
-            e.getCode().setSourceId(key.name);
-            breakpointService.updateBreakpoints(e.getCode());
-            functionsCache.put(key, e);
-            eventService.publishAsync(new CodeTranslatedEvent(e.getCode(), this));
-            return e;
         } catch (IOException e) {
             LOGGER.error("Error reading function '{}'. {}", key.name, e);
         }
-        throw new UnsupportedOperationException(); // TODO exception
+        throw new UnsupportedOperationException(String.format("Function '%s' not found or incorrect syntax", key.name)); // TODO exception
     }
 
     @Override

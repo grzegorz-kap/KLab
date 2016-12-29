@@ -1,13 +1,11 @@
 package com.klab.interpreter.commons.memory;
 
-import com.google.common.collect.Maps;
-
-import org.apache.commons.collections4.map.HashedMap;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
+
+import org.apache.commons.collections4.map.HashedMap;
+import org.springframework.stereotype.Service;
 
 @Service
 public class IdentifierMapperImpl implements IdentifierMapper {
