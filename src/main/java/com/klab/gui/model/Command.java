@@ -6,6 +6,10 @@ public class Command {
     private String content;
     private Date createdAt;
 
+    /** For JSON */
+    private Command() {
+    }
+
     public Command(String content) {
         this.content = content;
         this.createdAt = new Date();
