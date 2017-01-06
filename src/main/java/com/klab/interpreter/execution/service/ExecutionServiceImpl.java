@@ -124,7 +124,7 @@ public class ExecutionServiceImpl implements ExecutionService {
 
     @Subscribe
     private void onStepOverEvent(StepOverEvent event) {
-        executionPause = new StepOver(ip.callLevel(), event.getData().getLine());
+        executionPause = new Stepover(ip.callLevel(), event.getData().getLine());
     }
 
     @Subscribe
