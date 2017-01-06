@@ -37,12 +37,12 @@ public class Timer extends AbstractObjectData implements Sizeable {
     }
 
     @Override
-    public long getRows() {
+    public int getRows() {
         return 1;
     }
 
     @Override
-    public long getColumns() {
+    public int getColumns() {
         return 1;
     }
 

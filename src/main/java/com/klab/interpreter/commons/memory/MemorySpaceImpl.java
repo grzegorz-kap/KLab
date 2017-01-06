@@ -93,13 +93,6 @@ public class MemorySpaceImpl implements MemorySpace {
     }
 
     @Override
-    public ObjectData getForModify(int address) {
-        ObjectWrapper wrapper = memory[address];
-        wrapper.version++;
-        return wrapper.data;
-    }
-
-    @Override
     public Stream<ObjectWrapper> listCurrentScopeVariables() {
         return Stream.of(memory);
     }

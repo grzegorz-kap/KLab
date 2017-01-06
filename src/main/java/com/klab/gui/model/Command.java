@@ -6,6 +6,7 @@ public class Command {
     private String content;
     private Date createdAt;
 
+    /** For JSON */
     private Command() {
     }
 

@@ -12,25 +12,25 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IdentifierParseHandler extends AbstractParseHandler {
-
-    private IdentifierMapper identifierMapper;
+    private IdentifierMapper mapper;
 
     @Override
     public void handle() {
-        IdentifierToken identifierToken = new IdentifierToken(pCtxMgr.tokenAt(0));
-        identifierToken.setAddress(identifierMapper.registerMainIdentifier(identifierToken.getId()));
-        pCtxMgr.addExpressionValue(identifierToken);
-        pCtxMgr.incrementTokenPosition(1);
+        IdentifierToken idToken = new IdentifierToken(tokenAt(0));
+        String variableName = idToken.getId();
+        Integer address = mapper.registerMainIdentifier(variableName);
+        idToken.setAddress(address);
+        addExpressionValue(idToken);
+        incrementTokenPosition(1);
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return null;
     }
 
     @Autowired
-    private void setIdentifierMapper(IdentifierMapper identifierMapper) {
-        this.identifierMapper = identifierMapper;
+    private void setMapper(IdentifierMapper mapper) {
+        this.mapper = mapper;
     }
-
 }

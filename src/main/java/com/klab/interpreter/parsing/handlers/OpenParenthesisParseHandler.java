@@ -14,13 +14,13 @@ public class OpenParenthesisParseHandler extends AbstractParseHandler {
 
     @Override
     public void handle() {
-        Token token = pCtxMgr.tokenAt(0);
-        pCtxMgr.stackPush(new ParenthesisParseToken(token, ParseClass.OPEN_PARENTHESIS));
-        pCtxMgr.incrementTokenPosition(1);
+        Token token = parseContextManager.tokenAt(0);
+        parseContextManager.stackPush(new ParenthesisParseToken(token, ParseClass.OPEN_PARENTHESIS));
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.OPEN_PARENTHESIS;
     }
 }

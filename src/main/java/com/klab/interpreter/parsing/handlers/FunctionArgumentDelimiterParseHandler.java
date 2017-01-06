@@ -17,17 +17,16 @@ public class FunctionArgumentDelimiterParseHandler extends AbstractParseHandler 
     private StackHelper stackHelper;
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return null;
     }
 
     @Override
     public void handle() {
-        if (!stackHelper.stackToExpressionUntilParseClass(pCtxMgr, ParseClass.CALL_START)) {
-            throw new UnexpectedFunctionArgumentsDelimiter(UNEXPECTED_ARGUMENT_DELIMITER,
-                    pCtxMgr.getParseContext());
+        if (!stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.CALL_START)) {
+            throw new UnexpectedFunctionArgumentsDelimiter(UNEXPECTED_ARGUMENT_DELIMITER, parseContextManager.getParseContext());
         }
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Autowired

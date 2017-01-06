@@ -9,6 +9,7 @@ import com.klab.gui.model.ScriptContext;
 import com.klab.gui.service.ScriptViewService;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.core.code.ScriptFileService;
+import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.StopExecutionEvent;
 import com.klab.interpreter.debug.*;
 import com.klab.interpreter.types.ObjectData;
@@ -35,7 +36,7 @@ import static java.util.Objects.isNull;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ScriptTabFactoryImpl implements ScriptTabFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTabFactoryImpl.class);
-
+    private boolean execution = false;
     private MemorySpace memorySpace;
     private ScriptViewService scriptViewService;
     private BreakpointService breakpointService;
@@ -56,8 +57,9 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
         ScriptContext context = scripts.get(scriptName);
         if (isNull(context) && !noCreate) {
             context = new ScriptContext(scriptName, scriptViewService.readScript(scriptName));
+            Tab tab = context.getTab();
             context.createLineNumbersFactory(breakpointService);
-            context.setOnRunHandler(t -> eventService.publish(CommandSubmittedEvent.create().data(scriptName).build(this)));
+            context.setOnRunHandler(t -> runScript(scriptPane, tab, false));
             context.setOnCloseHandler(t -> {
                 scriptPane.getTabs().remove(t.getTab());
                 scripts.remove(scriptName);
@@ -66,28 +68,28 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
             context.setOnRenameHandler(this::handleOnRename);
             context.setTooltipProducer(this::handleVariableTooltip);
             scripts.put(scriptName, context);
-            scriptPane.getTabs().add(context.getTab());
+            scriptPane.getTabs().add(tab);
         }
         return context;
     }
 
     private String handleVariableTooltip(String name) {
         ObjectData data = memorySpace.find(name);
-            if (data != null && StringUtils.isNoneBlank(data.getName())) {
-                String result = String.format("%s = ", data.getName());
-                if (data instanceof Scalar) {
-                    return result + data.toString();
-                }
-                if (data instanceof Sizeable) {
-                    Sizeable sizeable = (Sizeable) data;
-                    if (sizeable.length() <= 5) {
-                        return result + "\n" + data.toString();
-                    } else {
-                        return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getCells());
-                    }
-                }
+        if (data != null && StringUtils.isNoneBlank(data.getName())) {
+            String result = String.format("%s = ", data.getName());
+            if (data instanceof Scalar) {
                 return result + data.toString();
             }
+            if (data instanceof Sizeable) {
+                Sizeable sizeable = (Sizeable) data;
+                if (sizeable.length() <= 5) {
+                    return result + "\n" + data.toString();
+                } else {
+                    return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getCells());
+                }
+            }
+            return result + data.toString();
+        }
         return "";
     }
 
@@ -112,8 +114,13 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
         }
     }
 
+    private void onExecutionStart(ExecutionStartedEvent event) {
+        execution = true;
+    }
+
     @Subscribe
     private void onStopExecution(StopExecutionEvent event) {
+        execution = false;
         scripts.values().stream()
                 .map(ScriptContext::getCodeArea)
                 .forEach(codeArea -> codeArea.clearStyle(0, codeArea.getText().length()));
@@ -194,18 +201,24 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
         }
     }
 
-    private void runScript(TabPane scriptPane, Tab tab, boolean profiling) {
-        writeScript(scriptPane, tab);
-        eventService.publish(CommandSubmittedEvent.create()
-                .data(tab.getText())
-                .profiling(profiling)
-                .build(this)
-        );
+    @Override
+    public void runScript(TabPane scriptPane, Tab tab, boolean profiling) {
+        if (!execution) {
+            for (Tab script : scriptPane.getTabs()) {
+                writeScript(scriptPane, script);
+            }
+            eventService.publish(CommandSubmittedEvent.create()
+                    .data(tab.getText())
+                    .profiling(profiling)
+                    .build(this)
+            );
+        }
     }
 
     private void writeScript(TabPane scriptPane, Tab tab) {
         try {
-            scriptFileService.writeScript(tab.getText(), get(tab.getText(), scriptPane).getText());
+            final String text = tab.getText();
+			scriptFileService.writeScript(text, get(text, scriptPane).getText());
         } catch (IOException e) {
             LOGGER.error("error", e);
         }

@@ -21,7 +21,7 @@ public class StringTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.STRING;
     }
 }

@@ -7,7 +7,6 @@ public interface Scalar<T extends Number> extends
         NumericObject,
         Negable<T>,
         Editable<T>,
-        EditSupportable<T>
-{
+        EditSupportable<T> {
     T getValue();
 }

@@ -2,15 +2,13 @@ package com.klab.interpreter.parsing.model.expression;
 
 import com.klab.interpreter.types.NumericType;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class AbstractExpression<T> implements Expression<T> {
-    protected Expression<T> parent;
-    protected T value;
-    protected NumericType resolvedNumericType;
+abstract class AbstractExpression<T> implements Expression<T> {
+    private Expression<T> parent;
+    private T value;
+    private NumericType resolvedNumericType;
     private HashMap<String, Object> properties = new HashMap<>();
 
     @Override
@@ -26,16 +24,6 @@ public abstract class AbstractExpression<T> implements Expression<T> {
     @Override
     public void setParent(Expression<T> parent) {
         this.parent = parent;
-    }
-
-    @Override
-    public void addChildren(Collection<? extends Expression<T>> expressions) {
-        throw new UnsupportedOperationException("addChildren");
-    }
-
-    @Override
-    public List<Expression<T>> getChildren() {
-        throw new RuntimeException();
     }
 
     @Override
@@ -56,6 +44,11 @@ public abstract class AbstractExpression<T> implements Expression<T> {
     @Override
     public <P> P getProperty(String key, Class<P> clazz) {
         return clazz.cast(properties.get(key));
+    }
+
+    @Override
+    public <P> P getProperty(String key) {
+        return (P) properties.get(key);
     }
 
     @Override

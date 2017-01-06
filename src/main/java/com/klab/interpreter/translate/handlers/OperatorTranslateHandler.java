@@ -39,7 +39,7 @@ public class OperatorTranslateHandler extends AbstractTranslateHandler {
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.OPERATOR;
     }
 

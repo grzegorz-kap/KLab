@@ -3,8 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0"
-            prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="512.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.40"
             fx:controller="com.klab.gui.controller.ScriptEditorController">
     <top>
         <VBox prefHeight="41.0" prefWidth="600.0" BorderPane.alignment="CENTER">
@@ -122,19 +123,6 @@
                 <SplitPane dividerPositions="0.29243353783231085, 0.7791411042944786" prefHeight="200.0"
                            prefWidth="200.0">
                     <items>
-                        <AnchorPane prefHeight="222.0" prefWidth="252.0">
-                            <children>
-                                <TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="Console"
-                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <content>
-                                        <AnchorPane>
-                                            <fx:include source="script-console.fxml"/>
-                                        </AnchorPane>
-                                    </content>
-                                </TitledPane>
-                            </children>
-                        </AnchorPane>
                         <AnchorPane>
                             <TitledPane animated="false" collapsible="false" text="Variables"
                                         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.klab.interpreter.core.Interpreter</OriginalElement>
+  <nodes>
+    <node x="772.408866995074" y="237.35467980295562">com.klab.interpreter.execution.model.InstructionPointer</node>
+    <node x="285.8694581280789" y="541.8103448275863">com.klab.interpreter.execution.service.ExecutionService</node>
+    <node x="516.2155172413793" y="954.8485221674878">com.klab.interpreter.execution.handlers.InstructionHandler</node>
+    <node x="498.22660098522147" y="347.13669950738915">com.klab.interpreter.execution.model.ExecutionStack</node>
+    <node x="860.4870689655168" y="916.4876847290641">com.klab.interpreter.execution.service.ExecutionServiceImpl</node>
+    <node x="516.9642857142858" y="552.7967980295567">com.klab.interpreter.execution.model.ExecutionContext</node>
+    <node x="194.7795566502462" y="322.7068965517241">com.klab.interpreter.types.ObjectData</node>
+    <node x="130.58743842364527" y="737.3891625615762">com.klab.interpreter.core.code.CodeGenerator</node>
+    <node x="294.12099753694577" y="975.435960591133">com.klab.interpreter.core.Interpreter</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.klab.interpreter.core.Interpreter" target="com.klab.interpreter.core.code.CodeGenerator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.core.Interpreter" target="com.klab.interpreter.execution.service.ExecutionService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.service.ExecutionServiceImpl" target="com.klab.interpreter.execution.model.InstructionPointer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.service.ExecutionServiceImpl" target="com.klab.interpreter.execution.service.ExecutionService">
+      <point x="-88.33333333333337" y="-81.0" />
+      <point x="856.7916666666667" y="890.0" />
+      <point x="447.1674876847291" y="888.9322660098521" />
+      <point x="53.0" y="81.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.model.ExecutionContext" target="com.klab.interpreter.execution.model.ExecutionStack">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.model.ExecutionContext" target="com.klab.interpreter.execution.model.InstructionPointer">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.model.ExecutionStack" target="com.klab.interpreter.types.ObjectData">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.service.ExecutionServiceImpl" target="com.klab.interpreter.execution.handlers.InstructionHandler">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.execution.service.ExecutionServiceImpl" target="com.klab.interpreter.execution.model.ExecutionContext">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.9419953596287703" x="645.5" y="658.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

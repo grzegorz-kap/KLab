@@ -34,4 +34,8 @@ public class ParseToken {
     public void setParseClass(ParseClass parseClass) {
         this.parseClass = parseClass;
     }
+
+    public String getLexeme() {
+        return token == null ? "" : token.getLexeme();
+    }
 }

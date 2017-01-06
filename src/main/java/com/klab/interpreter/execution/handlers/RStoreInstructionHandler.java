@@ -33,7 +33,7 @@ public class RStoreInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public InstructionCode getSupportedInstructionCode() {
-        return InstructionCode.RSTORE;
+        return InstructionCode.REVERSE_STORE;
     }
 
     @Autowired

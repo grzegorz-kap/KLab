@@ -12,33 +12,28 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class SemicolonParseHandler extends AbstractParseHandler {
-
     private MatrixNewRowHandler matrixNewRowHandler;
     private InstructionEndHandler instructionEndHandler;
 
     @Override
     public void handle() {
-        if (isSemicolonInsideMatrix()) {
+        if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
             matrixNewRowHandler.handle();
         } else {
             instructionEndHandler.handle();
         }
     }
 
-    private boolean isSemicolonInsideMatrix() {
-        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
-    }
-
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.SEMICOLON;
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
-        super.setContextManager(parseContextManager);
-        matrixNewRowHandler.setContextManager(parseContextManager);
-        instructionEndHandler.setContextManager(parseContextManager);
+    public void setParseContextManager(ParseContextManager parseContextManager) {
+        super.setParseContextManager(parseContextManager);
+        matrixNewRowHandler.setParseContextManager(parseContextManager);
+        instructionEndHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

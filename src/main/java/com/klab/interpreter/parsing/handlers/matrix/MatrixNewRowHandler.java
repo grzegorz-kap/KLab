@@ -1,6 +1,5 @@
 package com.klab.interpreter.parsing.handlers.matrix;
 
-import com.klab.interpreter.lexer.model.Token;
 import com.klab.interpreter.lexer.model.TokenClass;
 import com.klab.interpreter.parsing.handlers.AbstractParseHandler;
 import com.klab.interpreter.parsing.handlers.helpers.ExpressionHelper;
@@ -26,38 +25,29 @@ public class MatrixNewRowHandler extends AbstractParseHandler {
     private TypeResolver typeResolver;
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return null;
     }
 
     @Override
     public void handle() {
         handleAction();
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     public void handleAction() {
-        stackHelper.stackToExpressionUntilParseClass(pCtxMgr, ParseClass.MATRIX_START);
-        List<Expression<ParseToken>> expressions = popExpressions();
-        VerseToken verseToken = createVerseToken();
-        pCtxMgr.addExpression(createExpressionNode(expressions, verseToken));
+        stackHelper.stackToExpressionUntilParseClass(parseContextManager, ParseClass.MATRIX_START);
+        List<Expression<ParseToken>> expressions = expressionHelper.popUntilParseClass(parseContextManager, this::popExpressionPredicate);
+        parseContextManager.addExpression(createExpressionNode(expressions));
     }
 
-    private ExpressionNode<ParseToken> createExpressionNode(List<Expression<ParseToken>> expressions, VerseToken verseToken) {
+    private ExpressionNode<ParseToken> createExpressionNode(List<Expression<ParseToken>> expressions) {
+        parseContextManager.tokenAt(0).setLexeme(";");
+        VerseToken verseToken = new VerseToken(parseContextManager.tokenAt(0));
         ExpressionNode<ParseToken> expressionNode = new ExpressionNode<>(verseToken);
         expressionNode.setResolvedNumericType(typeResolver.resolveNumeric(expressions));
         expressionNode.addChildren(expressions);
         return expressionNode;
-    }
-
-    private VerseToken createVerseToken() {
-        Token token = pCtxMgr.tokenAt(0);
-        token.setLexeme(";");
-        return new VerseToken(token);
-    }
-
-    private List<Expression<ParseToken>> popExpressions() {
-        return expressionHelper.popUntilParseClass(pCtxMgr, this::popExpressionPredicate);
     }
 
     private boolean popExpressionPredicate(ParseClass parseClass) {

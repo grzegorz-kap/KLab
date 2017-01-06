@@ -92,8 +92,8 @@ public class VariableController implements Initializable {
         TableView<Row> tableView = new TableView<>();
         tableView.widthProperty().addListener(new NumberChangeListenerHideHeaderRow(tableView));
         tableView.setEditable(true);
-        int rows = (int) ((Sizeable) variable.getData()).getRows();
-        int columns = (int) ((Sizeable) variable.getData()).getColumns();
+        int rows = ((Sizeable) variable.getData()).getRows();
+        int columns = ((Sizeable) variable.getData()).getColumns();
         int cells = rows * columns;
 
         if (cells <= maxCellsToDisplay) {
@@ -172,7 +172,7 @@ public class VariableController implements Initializable {
             this.data = data;
             if (data instanceof Matrix) {
                 Matrix matrix = (Matrix) data;
-                cells = IntStream.range(0, (int) matrix.getColumns())
+                cells = IntStream.range(0, matrix.getColumns())
                         .mapToObj(n -> matrix.get(rowNumber, n).toString())
                         .map(SimpleStringProperty::new)
                         .collect(Collectors.toList());

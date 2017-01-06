@@ -63,11 +63,6 @@ public class OjalgoMatrixScalarWrapper<N extends Number> implements MatrixStore<
     }
 
     @Override
-    public Builder<N> builder() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public PhysicalStore<N> copy() {
         throw new UnsupportedOperationException();
     }
@@ -79,11 +74,6 @@ public class OjalgoMatrixScalarWrapper<N extends Number> implements MatrixStore<
 
     @Override
     public N multiplyBoth(Access1D<N> access1D) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public MatrixStore<N> multiplyLeft(Access1D<N> access1D) {
         throw new UnsupportedOperationException();
     }
 

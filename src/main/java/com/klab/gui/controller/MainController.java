@@ -3,7 +3,6 @@ package com.klab.gui.controller;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.klab.common.EventService;
-import com.klab.gui.CustomInitializeble;
 import com.klab.gui.config.GuiContext;
 import com.klab.gui.events.AppendCommandEvent;
 import com.klab.gui.events.NewCommandEvent;

@@ -10,5 +10,5 @@ public interface TranslateHandler {
 
     void setTranslateContextManager(TranslateContextManager translateContextManager);
 
-    ParseClass getSupportedParseClass();
+    ParseClass supportedParseClass();
 }

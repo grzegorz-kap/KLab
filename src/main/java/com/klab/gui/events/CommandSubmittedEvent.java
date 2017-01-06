@@ -7,12 +7,12 @@ import static java.util.Objects.requireNonNull;
 public class CommandSubmittedEvent extends InterpreterEvent<String> {
     private boolean profiling;
 
-    public static CommandSubmittedEventBuilder create() {
-        return new CommandSubmittedEventBuilder();
-    }
-
     private CommandSubmittedEvent(String data, Object source) {
         super(data, source);
+    }
+
+    public static CommandSubmittedEventBuilder create() {
+        return new CommandSubmittedEventBuilder();
     }
 
     public boolean isProfiling() {

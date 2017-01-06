@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 public class MatrixAllParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        pCtxMgr.addExpressionValue(new ParseToken(pCtxMgr.tokenAt(0), ParseClass.MATRIX_ALL));
-        pCtxMgr.incrementTokenPosition(1);
+        parseContextManager.addExpressionValue(new ParseToken(parseContextManager.tokenAt(0), ParseClass.MATRIX_ALL));
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.MATRIX_ALL;
     }
 }

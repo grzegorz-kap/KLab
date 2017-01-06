@@ -6,10 +6,9 @@ import org.ojalgo.matrix.store.PhysicalStore;
 
 import java.util.Objects;
 
-public abstract class OjalgoAbstractMatrixBuilder<T extends Number> implements MatrixBuilder<T> {
-
+abstract class OjalgoAbstractMatrixBuilder<T extends Number> implements MatrixBuilder<T> {
     protected PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory;
-    protected PhysicalStore.Builder<T> builder = null;
+    protected PhysicalStore.LogicalBuilder<T> builder;
 
     OjalgoAbstractMatrixBuilder(PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory) {
         this.factory = factory;
@@ -47,9 +46,9 @@ public abstract class OjalgoAbstractMatrixBuilder<T extends Number> implements M
         return this;
     }
 
-    private void createIfEmpty(long rowsNumber, long colsNumber) {
+    private void createIfEmpty(int rowsNumber, int colsNumber) {
         if (Objects.isNull(builder)) {
-            builder = factory.makeZero(rowsNumber, colsNumber).builder();
+            builder = factory.builder().makeZero(rowsNumber, colsNumber);
         }
     }
 }

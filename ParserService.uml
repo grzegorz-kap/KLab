@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.klab.interpreter.parsing.service.ParserService</OriginalElement>
+  <nodes>
+    <node x="0.0" y="11.5">com.klab.interpreter.parsing.service.ParserService</node>
+    <node x="236.49999999999997" y="169.0">com.klab.interpreter.parsing.service.ParserServiceImpl</node>
+    <node x="332.0" y="0.0">com.klab.interpreter.parsing.handlers.ParseHandler</node>
+    <node x="0.0" y="377.0">com.klab.interpreter.parsing.model.expression.Expression</node>
+    <node x="652.5" y="377.0">com.klab.interpreter.parsing.model.ParseClass</node>
+    <node x="579.0" y="479.0">com.klab.interpreter.parsing.model.ParseToken</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.klab.interpreter.parsing.service.ParserServiceImpl" target="com.klab.interpreter.parsing.handlers.ParseHandler">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.klab.interpreter.parsing.service.ParserServiceImpl" target="com.klab.interpreter.parsing.service.ParserService">
+      <point x="-94.0" y="-81.5" />
+      <point x="283.5" y="144.0" />
+      <point x="156.0" y="144.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="com.klab.interpreter.parsing.model.ParseToken" target="com.klab.interpreter.parsing.model.ParseClass">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="413.5" y="314.0" />
+  <SelectedNodes>
+    <node>com.klab.interpreter.parsing.model.expression.Expression</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

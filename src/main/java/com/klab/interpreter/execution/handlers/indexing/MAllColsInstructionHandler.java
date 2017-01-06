@@ -19,7 +19,7 @@ public class MAllColsInstructionHandler extends AbstractInstructionHandler {
 
     @Override
     public void handle(InstructionPointer instructionPointer) {
-        IdentifierObject id = (IdentifierObject) instructionPointer.currentInstruction().getObjectData(0);
+        IdentifierObject id = (IdentifierObject) instructionPointer.currentInstruction().getData(0);
         Sizeable sizeable = (Sizeable) memorySpace.get(id.getAddress());
         executionContext.executionStackPush(new RangeAddressIterator(1, sizeable.getColumns()));
         instructionPointer.increment();

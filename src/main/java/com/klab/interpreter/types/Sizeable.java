@@ -1,9 +1,9 @@
 package com.klab.interpreter.types;
 
 public interface Sizeable {
-    long getRows();
+    int getRows();
 
-    long getColumns();
+    int getColumns();
 
     long getCells();
 

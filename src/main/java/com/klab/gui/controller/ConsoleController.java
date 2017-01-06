@@ -10,12 +10,14 @@ import com.klab.gui.service.CommandHistoryService;
 import com.klab.interpreter.core.ExecutionCommand;
 import com.klab.interpreter.core.Interpreter;
 import com.klab.interpreter.core.events.ClearConsoleEvent;
+import com.klab.interpreter.core.events.ErrorEvent;
 import com.klab.interpreter.core.events.PrintEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fxmisc.richtext.CodeArea;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +30,12 @@ import java.util.Objects;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ConsoleController implements InitializingBean {
+    public TextArea commandInput;
+    public CodeArea consoleOutput;
     private Interpreter interpreter;
     private EventService eventService;
     private CommandHistoryService commandHistoryService;
     private CommandHistoryIterator commandHistoryIterator;
-
-    public TextArea commandInput;
-    public CodeArea consoleOutput;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -55,6 +56,16 @@ public class ConsoleController implements InitializingBean {
     }
 
     @Subscribe
+    public void onError(ErrorEvent event) {
+        Platform.runLater(() -> {
+            consoleOutput.appendText("\n" + event.getData().getAddress());
+            consoleOutput.appendText("\n" + event.getData().getMessage() + "\n");
+            consoleOutput.appendText(ExceptionUtils.getStackTrace(event.getData()));
+            consoleOutput.appendText("\n");
+        });
+    }
+
+    @Subscribe
     public void onPrintEvent(PrintEvent printEvent) {
         Platform.runLater(() -> {
             String objectName = printEvent.getName();
@@ -69,7 +80,7 @@ public class ConsoleController implements InitializingBean {
     public void onCommandSubmittedEvent(CommandSubmittedEvent command) {
         consoleOutput.appendText(String.format(">> %s \n", command.getData()));
         commandHistoryService.add(command.getData());
-        interpreter.startAsync(new ExecutionCommand(command.getData(), command.isProfiling()));
+        interpreter.startAsync(new ExecutionCommand(command.getData(), command.isProfiling()), true);
     }
 
     @Subscribe

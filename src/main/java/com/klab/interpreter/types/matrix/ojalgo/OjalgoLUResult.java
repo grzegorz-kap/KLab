@@ -1,6 +1,6 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
-import com.klab.interpreter.service.LUResult;
+import com.klab.interpreter.functions.math.LUResult;
 import com.klab.interpreter.types.ObjectData;
 import com.klab.interpreter.types.matrix.Matrix;
 import org.ojalgo.matrix.decomposition.LU;
@@ -10,8 +10,8 @@ import org.ojalgo.matrix.store.PhysicalStore;
 import java.util.Optional;
 
 class OjalgoLUResult<T extends Number> implements LUResult {
-    private OjalgoAbstractMatrix<T> ojalgoAbstractMatrix;
     private final LU<T> lu;
+    private OjalgoAbstractMatrix<T> ojalgoAbstractMatrix;
     private Matrix p;
     private Matrix y;
 

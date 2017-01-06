@@ -1,9 +1,9 @@
 package com.klab.interpreter.translate.handlers;
 
+import com.klab.interpreter.parsing.model.CallToken;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
-import com.klab.interpreter.service.functions.model.CallToken;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.types.TokenIdentifierObject;
@@ -35,11 +35,12 @@ public class MatrixAllTranslateHandler extends AbstractTranslateHandler {
         if (address.getVariableAddress() == null) {
             throw new RuntimeException(); // TODO
         }
-        tCM.addInstruction(new Instruction(code, 0, new TokenIdentifierObject(address.getCallName(), address.getVariableAddress())), address(expression));
+        TokenIdentifierObject idObject = new TokenIdentifierObject(address.getCallName(), address.getVariableAddress());
+        tCM.addInstruction(new Instruction(code, 0, idObject), address(expression));
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.MATRIX_ALL;
     }
 }

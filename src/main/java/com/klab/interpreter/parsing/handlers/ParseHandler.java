@@ -6,9 +6,11 @@ import com.klab.interpreter.parsing.service.ParseContextManager;
 public interface ParseHandler {
     void handle();
 
-    void handleStackFinish();
+    default void handleStackFinish() {
+        throw new UnsupportedOperationException();
+    }
 
-    void setContextManager(ParseContextManager parseContextManager);
+    void setParseContextManager(ParseContextManager parseContextManager);
 
-    TokenClass getSupportedTokenClass();
+    TokenClass supportedTokenClass();
 }

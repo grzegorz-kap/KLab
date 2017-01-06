@@ -24,7 +24,7 @@ class OjalgoDoubleMatrixBuilder extends OjalgoAbstractMatrixBuilder<Double> {
     @Override
     public Matrix<Double> build() {
         if (builder != null) {
-            return new OjalgoDoubleMatrix(builder.build());
+            return new OjalgoDoubleMatrix(builder.get());
         } else {
             return new OjalgoDoubleMatrix(factory.makeZero(0, 0));
         }

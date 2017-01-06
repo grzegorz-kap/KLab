@@ -1,7 +1,6 @@
 package com.klab.gui.controller;
 
 import com.google.common.eventbus.Subscribe;
-import com.klab.gui.ProfilingCodeReportDetailsViewer;
 import com.klab.gui.config.GuiContext;
 import com.klab.interpreter.core.events.ExecutionCompletedEvent;
 import com.klab.interpreter.profiling.ProfilingService;
@@ -27,15 +26,14 @@ import java.util.ResourceBundle;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ProfilingReportController implements Initializable {
-    private GuiContext guiContext;
-    private ProfilingService profilingService;
-    private ReportService reportService;
-
     // FXML
     public TableView<CodeReport> profileSummary;
     public TableColumn<CodeReport, String> titleColumn;
     public TableColumn<CodeReport, String> callsColumn;
     public TableColumn<CodeReport, String> totalTimeColumn;
+    private GuiContext guiContext;
+    private ProfilingService profilingService;
+    private ReportService reportService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -1,6 +1,6 @@
 package com.klab.interpreter.profiling.model;
 
-import com.klab.interpreter.analyze.CodeLine;
+import com.klab.interpreter.commons.analyze.CodeLine;
 import com.klab.interpreter.execution.model.Code;
 
 import java.util.Map;
@@ -25,10 +25,6 @@ public class CodeReport {
 
     public void setLinesProfile(Map<Integer, ProfilingData<CodeLine>> linesProfile) {
         this.linesProfile = linesProfile;
-    }
-
-    public void setSourceType(SourceType sourceType) {
-        this.sourceType = sourceType;
     }
 
     public ProfilingReport getParent() {
@@ -65,6 +61,10 @@ public class CodeReport {
 
     public SourceType getSourceType() {
         return sourceType;
+    }
+
+    public void setSourceType(SourceType sourceType) {
+        this.sourceType = sourceType;
     }
 
     public long getTotalTime() {

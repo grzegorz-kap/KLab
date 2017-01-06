@@ -1,6 +1,6 @@
 package com.klab.interpreter.types.matrix.ojalgo;
 
-import com.klab.interpreter.service.LUResult;
+import com.klab.interpreter.functions.math.LUResult;
 import com.klab.interpreter.types.*;
 import com.klab.interpreter.types.foriterator.ForIterator;
 import com.klab.interpreter.types.foriterator.OjalgoForIteratorFactory;
@@ -13,21 +13,26 @@ import org.ojalgo.matrix.store.PhysicalStore;
 
 import java.util.Iterator;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNumericObject implements Matrix<T>, Sizeable {
     private PhysicalStore<T> matrixStore;
     private MatrixStore<T> lazyStore;
+    private Function<MatrixStore<T>, OjalgoAbstractMatrix<T>> creator;
     private PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory;
     private boolean temp = true;
 
-    public OjalgoAbstractMatrix(NumericType numericType) {
+    public OjalgoAbstractMatrix(NumericType numericType, Function<MatrixStore<T>, OjalgoAbstractMatrix<T>> creator) {
         super(numericType);
+        this.creator = creator;
     }
-
-    public abstract OjalgoAbstractMatrix<T> create(MatrixStore<T> matrixStore);
 
     public PhysicalStore.Factory<T, ? extends PhysicalStore<T>> getFactory() {
         return factory;
+    }
+
+    public void setFactory(PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory) {
+        this.factory = factory;
     }
 
     @Override
@@ -42,7 +47,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     @Override
     public ObjectData copy() {
-        return create(getLazyStore());
+        return creator.apply(getLazyStore());
     }
 
     @Override
@@ -74,7 +79,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
         while (cell.hasNext()) {
             matrix.set(address++, lazyStore.get(cell.getNext() - 1));
         }
-        return create(matrix);
+        return creator.apply(matrix);
     }
 
     @Override
@@ -167,7 +172,7 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
             colIndex = 0;
             rowIndex++;
         }
-        return create(matrix);
+        return creator.apply(matrix);
     }
 
     @Override
@@ -205,13 +210,13 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
     }
 
     @Override
-    public long getRows() {
-        return getLazyStore().countRows();
+    public int getRows() {
+        return (int) getLazyStore().countRows();
     }
 
     @Override
-    public long getColumns() {
-        return getLazyStore().countColumns();
+    public int getColumns() {
+        return (int) getLazyStore().countColumns();
     }
 
     public T getNumber(int m) {
@@ -239,10 +244,6 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
         this.lazyStore = lazyStore;
     }
 
-    public void setFactory(PhysicalStore.Factory<T, ? extends PhysicalStore<T>> factory) {
-        this.factory = factory;
-    }
-
     private PhysicalStore<T> createMatrixStore(long rows, long columns) {
         return factory.makeZero(rows, columns);
     }
@@ -258,5 +259,9 @@ public abstract class OjalgoAbstractMatrix<T extends Number> extends AbstractNum
 
     public BinaryFunction<T> getDivideFunction() {
         return lazyStore.factory().function().divide();
+    }
+
+    public OjalgoAbstractMatrix<T> create(MatrixStore<T> ns) {
+        return creator.apply(ns);
     }
 }

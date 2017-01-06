@@ -1,9 +1,9 @@
 package com.klab.interpreter.translate.handlers;
 
+import com.klab.interpreter.parsing.model.CallToken;
 import com.klab.interpreter.parsing.model.ParseClass;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
-import com.klab.interpreter.service.functions.model.CallToken;
 import com.klab.interpreter.translate.model.Instruction;
 import com.klab.interpreter.translate.model.InstructionCode;
 import com.klab.interpreter.types.TokenIdentifierObject;
@@ -18,7 +18,7 @@ public class LastCellTranslateHandler extends AbstractTranslateHandler {
     public void handle(Expression<ParseToken> expression) {
         Expression<ParseToken> child = expression;
         Expression<ParseToken> parent = expression.getParent();
-        while (parent != null && !parent.getValue().getParseClass().equals(ParseClass.CALL)) {
+        while (parent != null && parent.getValue().getParseClass() != ParseClass.CALL) {
             child = child.getParent();
             parent = parent.getParent();
         }
@@ -36,12 +36,13 @@ public class LastCellTranslateHandler extends AbstractTranslateHandler {
         if (cl.getVariableAddress() == null) {
             throw new RuntimeException(); // TODO
         }
-        Instruction instruction = new Instruction(code, 0, new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress()));
+        TokenIdentifierObject idData = new TokenIdentifierObject(cl.getCallName(), cl.getVariableAddress());
+        Instruction instruction = new Instruction(code, 0, idData);
         tCM.addInstruction(instruction, expression.getValue().getAddress());
     }
 
     @Override
-    public ParseClass getSupportedParseClass() {
+    public ParseClass supportedParseClass() {
         return ParseClass.LAST_CELL;
     }
 }

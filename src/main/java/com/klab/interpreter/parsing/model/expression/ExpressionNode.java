@@ -9,7 +9,7 @@ public class ExpressionNode<T> extends AbstractExpression<T> implements Expressi
     private List<Expression<T>> children = new ArrayList<>();
 
     public ExpressionNode(T value) {
-        this.value = value;
+        setValue(value);
     }
 
     @Override

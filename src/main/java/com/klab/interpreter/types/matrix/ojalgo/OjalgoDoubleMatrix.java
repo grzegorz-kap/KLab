@@ -17,8 +17,13 @@ public class OjalgoDoubleMatrix extends OjalgoAbstractMatrix<Double> implements 
         }
     };
 
+    OjalgoDoubleMatrix() {
+        super(NumericType.MATRIX_DOUBLE, OjalgoDoubleMatrix::new);
+
+    }
+
     public OjalgoDoubleMatrix(MatrixStore<Double> store) {
-        super(NumericType.MATRIX_DOUBLE);
+        super(NumericType.MATRIX_DOUBLE, OjalgoDoubleMatrix::new);
         setFactory(PrimitiveDenseStore.FACTORY);
         setLazyStore(store);
     }
@@ -26,11 +31,6 @@ public class OjalgoDoubleMatrix extends OjalgoAbstractMatrix<Double> implements 
     @Override
     public Negable<Double> negate() {
         return new OjalgoDoubleMatrix(getLazyStore().operateOnAll(NEG_FUN).get());
-    }
-
-    @Override
-    public OjalgoAbstractMatrix<Double> create(MatrixStore<Double> matrixStore) {
-        return new OjalgoDoubleMatrix(matrixStore);
     }
 
     @Override

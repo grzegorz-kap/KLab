@@ -18,7 +18,7 @@ class MatrixVerseTranslateHandlerTest extends Specification {
 
     def "Test supported class"() {
         when:
-        def result = handler.getSupportedParseClass()
+        def result = handler.supportedParseClass()
         then:
         result == ParseClass.MATRIX_VERSE
     }

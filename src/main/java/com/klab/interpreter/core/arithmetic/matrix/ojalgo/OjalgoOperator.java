@@ -13,23 +13,27 @@ public abstract class OjalgoOperator<T extends Number> {
         this.creator = creator;
     }
 
+    private <N extends OjalgoAbstractMatrix<T>> N cast(NumericObject a) {
+        return (N) a;
+    }
+
     public NumericObject operate(NumericObject a, NumericObject b) {
-        OjalgoAbstractMatrix<T> first = (OjalgoAbstractMatrix<T>) a;
-        OjalgoAbstractMatrix<T> second = (OjalgoAbstractMatrix<T>) b;
+        OjalgoAbstractMatrix<T> first = cast(a);
+        OjalgoAbstractMatrix<T> second = cast(b);
         checkSize(first, second);
         return creator.create(operate(first, second));
     }
 
     protected NumericObject operate(NumericObject a, NumericObject b, OjalgoBinaryAction<T> action) {
-        OjalgoAbstractMatrix<T> first = (OjalgoAbstractMatrix<T>) a;
-        OjalgoAbstractMatrix<T> second = (OjalgoAbstractMatrix<T>) b;
+        OjalgoAbstractMatrix<T> first = cast(a);
+        OjalgoAbstractMatrix<T> second = cast(b);
         checkSize(first, second);
         return creator.create(action.operate(first, second));
     }
 
     protected NumericObject operate(NumericObject a, NumericObject b, MatrixStoreAction<T> action) {
-        OjalgoAbstractMatrix<T> first = ((OjalgoAbstractMatrix<T>) a);
-        OjalgoAbstractMatrix<T> second = ((OjalgoAbstractMatrix<T>) b);
+        OjalgoAbstractMatrix<T> first = cast(a);
+        OjalgoAbstractMatrix<T> second = cast(b);
         if (first.isScalar()) {
             return creator.create(action.operate(new OjalgoMatrixScalarWrapper<>(first, second), second.getLazyStore()));
         }

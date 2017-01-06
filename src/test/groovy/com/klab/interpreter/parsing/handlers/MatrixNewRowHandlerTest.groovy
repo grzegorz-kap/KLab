@@ -22,7 +22,7 @@ class MatrixNewRowHandlerTest extends Specification {
     def setup() {
         handler.setStackHelper(stackHelper)
         handler.setExpressionHelper(expressionHelper)
-        handler.setContextManager(parseContextManager)
+        handler.setParseContextManager(parseContextManager)
     }
 
     def "Testing handle method"() {

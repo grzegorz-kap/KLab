@@ -26,19 +26,19 @@ public class NewLineParseHandler extends AbstractParseHandler {
     }
 
     private boolean isNewLineInsideMatrix() {
-        return pCtxMgr.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
+        return parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX);
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.NEW_LINE;
     }
 
     @Override
-    public void setContextManager(ParseContextManager parseContextManager) {
-        super.setContextManager(parseContextManager);
-        instructionEndHandler.setContextManager(parseContextManager);
-        matrixNewRowHandler.setContextManager(parseContextManager);
+    public void setParseContextManager(ParseContextManager parseContextManager) {
+        super.setParseContextManager(parseContextManager);
+        instructionEndHandler.setParseContextManager(parseContextManager);
+        matrixNewRowHandler.setParseContextManager(parseContextManager);
     }
 
     @Autowired

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Instruction {
     private InstructionCode instructionCode;
+    private boolean print;
     private List<ObjectData> data = new ArrayList<>();
     private int argumentsNumber = 0;
     private Breakpoint breakpoint = null;
@@ -30,32 +31,24 @@ public class Instruction {
         Collections.addAll(this.data, data);
     }
 
-    public void add(ObjectData objectData) {
+    public void addData(ObjectData objectData) {
         data.add(objectData);
     }
 
-    public ObjectData getObjectData(int index) {
+    public ObjectData getData(int index) {
         return data.get(index);
     }
 
-    public <T> T getObjectData(int index, Class<T> clazz) {
+    public <T> T getData(int index, Class<T> clazz) {
         return clazz.cast(data.get(index));
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append(instructionCode);
-        b.append('\t');
-        data.forEach(objectData -> b.append(objectData).append("\t"));
-        if (profilingData != null) {
-            b.append('\t').append(profilingData);
-        }
-        return b.toString();
     }
 
     public InstructionCode getInstructionCode() {
         return instructionCode;
+    }
+
+    public int handlerIndex() {
+        return instructionCode.getIndex();
     }
 
     public void setInstructionCode(InstructionCode instructionCode) {
@@ -96,5 +89,25 @@ public class Instruction {
 
     public void setProfilingData(ProfilingData<Instruction> profilingData) {
         this.profilingData = profilingData;
+    }
+
+    public boolean isPrint() {
+        return print;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append(instructionCode);
+        b.append('\t');
+        data.forEach(objectData -> b.append(objectData).append("\t"));
+        if (profilingData != null) {
+            b.append('\t').append(profilingData);
+        }
+        return b.toString();
+    }
+
+    public void setPrint(boolean print) {
+        this.print = print;
     }
 }

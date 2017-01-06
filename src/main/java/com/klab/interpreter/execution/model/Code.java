@@ -75,7 +75,7 @@ public class Code implements Iterable<Instruction> {
         return sourceCode;
     }
 
-    public void setSourceCode(String sourceCode) {
+    public void setSourceText(String sourceCode) {
         this.sourceCode = sourceCode;
     }
 

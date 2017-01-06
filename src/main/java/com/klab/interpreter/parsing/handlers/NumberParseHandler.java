@@ -17,15 +17,15 @@ import static com.klab.interpreter.types.NumericType.DOUBLE;
 public class NumberParseHandler extends AbstractParseHandler {
     @Override
     public void handle() {
-        Token token = getContextManager().tokenAt(0);
+        Token token = parseContextManager.tokenAt(0);
         NumberToken numberToken = new NumberToken(token, token.getLexeme().endsWith("i") ? COMPLEX_DOUBLE : DOUBLE);
-        ExpressionValue<ParseToken> expressionValue = getContextManager().addExpressionValue(numberToken);
+        ExpressionValue<ParseToken> expressionValue = parseContextManager.addExpressionValue(numberToken);
         expressionValue.setResolvedNumericType(numberToken.getNumericType());
-        getContextManager().incrementTokenPosition(1);
+        parseContextManager.incrementTokenPosition(1);
     }
 
     @Override
-    public TokenClass getSupportedTokenClass() {
+    public TokenClass supportedTokenClass() {
         return TokenClass.NUMBER;
     }
 }

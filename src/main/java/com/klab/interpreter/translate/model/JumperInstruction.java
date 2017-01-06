@@ -1,7 +1,6 @@
 package com.klab.interpreter.translate.model;
 
 public class JumperInstruction extends Instruction {
-
     private Integer jumpIndex;
 
     public JumperInstruction(InstructionCode instructionCode, Integer argumentsNumber) {

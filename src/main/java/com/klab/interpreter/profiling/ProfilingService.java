@@ -9,5 +9,7 @@ import java.util.Collection;
 public interface ProfilingService {
     void handle(InstructionHandler handler, InstructionPointer pointer);
 
+    void clear();
+
     Collection<Code> measured();
 }

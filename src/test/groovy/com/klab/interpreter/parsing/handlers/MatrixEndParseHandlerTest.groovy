@@ -24,7 +24,7 @@ class MatrixEndParseHandlerTest extends Specification {
 
     def setup() {
         handler.setMatrixNewRowHandler(rowHandler)
-        handler.setContextManager(parseContextManager)
+        handler.setParseContextManager(parseContextManager)
         handler.setStackHelper(stackHelper)
         handler.setExpressionHelper(expressionHelper)
         handler.setBalanceContextService(balanceContextService)
@@ -32,7 +32,7 @@ class MatrixEndParseHandlerTest extends Specification {
 
     def "Test supported class"() {
         when:
-        def result = handler.getSupportedTokenClass()
+        def result = handler.supportedTokenClass()
 
         then:
         result == TokenClass.CLOSE_BRACKET

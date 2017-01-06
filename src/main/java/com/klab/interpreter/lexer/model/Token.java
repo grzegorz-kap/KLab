@@ -35,7 +35,7 @@ public class Token {
         this.tokenClass = tokenClass;
     }
 
-    public boolean isKeyword() {
+    public boolean getIsKeyword() {
         return isKeyword;
     }
 

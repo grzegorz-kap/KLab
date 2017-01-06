@@ -4,53 +4,53 @@ import com.klab.interpreter.commons.memory.IdentifierMapper;
 import com.klab.interpreter.commons.memory.MemorySpace;
 import com.klab.interpreter.execution.model.Code;
 import com.klab.interpreter.lexer.model.TokenList;
-import com.klab.interpreter.lexer.service.Tokenizer;
+import com.klab.interpreter.lexer.service.TokenizerService;
 import com.klab.interpreter.parsing.model.ParseToken;
 import com.klab.interpreter.parsing.model.expression.Expression;
-import com.klab.interpreter.parsing.service.Parser;
-import com.klab.interpreter.translate.keyword.PostParseHandler;
-import com.klab.interpreter.translate.service.InstructionTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.klab.interpreter.parsing.service.ParserService;
+import com.klab.interpreter.translate.handlers.PostParseHandler;
+import com.klab.interpreter.translate.model.MacroInstruction;
+import com.klab.interpreter.translate.service.ExpressionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CodeGeneratorImpl implements CodeGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CodeGeneratorImpl.class);
     private Supplier<Code> defaultCodeSupplier = Code::new;
-    private MacroInstructionTranslatedCallback defaultMacroInstructionTranslatedCallback = null;
-    private Parser parser;
-    private Tokenizer tokenizer;
-    private InstructionTranslator instructionTranslator;
-    private List<PostParseHandler> postParseHandlers;
+    private InstructionTranslatedCallback defaultInstructionTranslatedCallback = null;
+    private ParserService parserService;
+    private TokenizerService tokenizerService;
+    private ExpressionTranslator expressionTranslator;
+    private List<PostParseHandler> preTranslateHandlers;
     private MemorySpace memorySpace;
     private IdentifierMapper identifierMapper;
     private Code codeCache;
 
     @Override
     public Code translate(String input) {
-        return translate(input, defaultCodeSupplier, defaultMacroInstructionTranslatedCallback);
+        return translate(input, defaultCodeSupplier, defaultInstructionTranslatedCallback);
     }
 
     @Override
     public Code translate(String input, Supplier<Code> codeSupplier) {
-        return translate(input, codeSupplier, defaultMacroInstructionTranslatedCallback);
+        return translate(input, codeSupplier, defaultInstructionTranslatedCallback);
     }
 
     @Override
     public Code translate(TokenList input, Supplier<Code> codeSupplier) {
         Code code = initCode(codeSupplier);
-        parser.setTokenList(input);
-        process(code, defaultMacroInstructionTranslatedCallback);
+        parserService.setupTokenList(input);
+        process(code, defaultInstructionTranslatedCallback);
         return code;
     }
 
@@ -60,18 +60,17 @@ public class CodeGeneratorImpl implements CodeGenerator {
     }
 
     @Override
-    public Code translate(String input, Supplier<Code> codeSupplier, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
+    public Code translate(String input, Supplier<Code> codeSupplier, InstructionTranslatedCallback instructionTranslatedCallback) {
         Code code = initCode(codeSupplier);
-        code.setSourceCode(input);
-        parser.setTokenList(tokenizer.readTokens(input));
-        process(code, macroInstructionTranslatedCallback);
-        code.setSourceCode(input);
+        code.setSourceText(input);
+        parserService.setupTokenList(tokenizerService.readTokens(input));
+        process(code, instructionTranslatedCallback);
         return code;
     }
 
     @Override
     public boolean isInstructionCompletelyTranslated() {
-        for (PostParseHandler handler : postParseHandlers) {
+        for (PostParseHandler handler : preTranslateHandlers) {
             if (!handler.isInstructionCompletelyTranslated()) {
                 return false;
             }
@@ -82,64 +81,74 @@ public class CodeGeneratorImpl implements CodeGenerator {
     private Code initCode(Supplier<Code> codeSupplier) {
         Code code = codeSupplier.get();
         if (code != codeCache) {
-            postParseHandlers.forEach(handler -> handler.setCode(code));
-            instructionTranslator.setCode(code);
+            preTranslateHandlers.forEach(handler -> handler.setCode(code));
+            expressionTranslator.setupCode(code);
             codeCache = code;
         }
         return code;
     }
 
-    private void process(Code code, MacroInstructionTranslatedCallback macroInstructionTranslatedCallback) {
-        while (parser.hasNext()) {
-            List<Expression<ParseToken>> expressionList = parser.process();
-            PostParseHandler postParseHandler = findPostParseHandler(expressionList);
-            if (nonNull(postParseHandler)) {
-                code.add(postParseHandler.handle(expressionList, instructionTranslator));
+    @Override
+    public void reset() {
+        preTranslateHandlers.forEach(PostParseHandler::reset);
+    }
+
+    private void process(Code code, InstructionTranslatedCallback callback) {
+        while (parserService.hasNext()) {
+            List<Expression<ParseToken>> expressionList = parserService.process();
+            PostParseHandler handler = findPostParseHandler(expressionList);
+            if (!isNull(handler)) {
+                MacroInstruction instructions = handler.handle(expressionList, expressionTranslator);
+                Optional.ofNullable(instructions).ifPresent(code::add);
             } else {
-                expressionList.forEach(expression -> code.add(instructionTranslator.translate(expression)));
+                for (Expression<ParseToken> node : expressionList) {
+                    code.add(expressionTranslator.translate(node));
+                }
             }
-            memorySpace.reserve(identifierMapper.mainMappingsSize());
-            if (macroInstructionTranslatedCallback != null) {
-                macroInstructionTranslatedCallback.invoke();
+            if (nonNull(callback)) {
+                memorySpace.reserve(identifierMapper.mainMappingsSize());
+                callback.invoke();
             }
         }
-        LOGGER.info("Translated: {}", code);
+        memorySpace.reserve(identifierMapper.mainMappingsSize());
     }
 
     private PostParseHandler findPostParseHandler(List<Expression<ParseToken>> expressionList) {
-        return postParseHandlers.stream()
-                .filter(handler -> handler.canBeHandled(expressionList))
-                .findFirst()
-                .orElse(null);
+        for (PostParseHandler handler : preTranslateHandlers) {
+            if (handler.canBeHandled(expressionList)) {
+                return handler;
+            }
+        }
+        return null;
     }
 
     @Autowired
-    public void setParser(Parser parser) {
-        this.parser = parser;
+    private void setParserService(ParserService parserService) {
+        this.parserService = parserService;
     }
 
     @Autowired
-    public void setTokenizer(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
+    private void setTokenizerService(TokenizerService tokenizerService) {
+        this.tokenizerService = tokenizerService;
     }
 
     @Autowired
-    public void setInstructionTranslator(InstructionTranslator instructionTranslator) {
-        this.instructionTranslator = instructionTranslator;
+    private void setExpressionTranslator(ExpressionTranslator expressionTranslator) {
+        this.expressionTranslator = expressionTranslator;
     }
 
     @Autowired
-    public void setPostParseHandlers(List<PostParseHandler> postParseHandlers) {
-        this.postParseHandlers = postParseHandlers;
+    private void setPreTranslateHandlers(List<PostParseHandler> preTranslateHandlers) {
+        this.preTranslateHandlers = preTranslateHandlers;
     }
 
     @Autowired
-    public void setMemorySpace(MemorySpace memorySpace) {
+    private void setMemorySpace(MemorySpace memorySpace) {
         this.memorySpace = memorySpace;
     }
 
     @Autowired
-    public void setIdentifierMapper(IdentifierMapper identifierMapper) {
+    private void setIdentifierMapper(IdentifierMapper identifierMapper) {
         this.identifierMapper = identifierMapper;
     }
 }

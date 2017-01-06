@@ -17,7 +17,7 @@ class NumberHandlerTest extends Specification {
         given:
         def token = make a(saveToken, with(lexame, "3232.2121"), with(tokenClass, TokenClass.NUMBER))
         def result = null;
-        numberHandler.contextManager = Mock(ParseContextManager)
+        numberHandler.parseContextManager = Mock(ParseContextManager)
         when:
         numberHandler.handle()
         then:

@@ -1,7 +1,6 @@
 package com.klab.interpreter.lexer.model;
 
 public class RegexTokenizerContext extends TokenizerContext {
-
     private String regexInput;
     private int index = 0;
 

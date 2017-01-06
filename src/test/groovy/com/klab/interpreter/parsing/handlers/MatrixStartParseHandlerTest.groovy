@@ -19,13 +19,13 @@ class MatrixStartParseHandlerTest extends Specification {
     def balanceContextService = Mock(BalanceContextService)
 
     def setup() {
-        matrixHandler.setContextManager(parseContextManager)
+        matrixHandler.setParseContextManager(parseContextManager)
         matrixHandler.setBalanceContextService(balanceContextService)
     }
 
     def "Test supported class"() {
         when:
-        def result = matrixHandler.getSupportedTokenClass()
+        def result = matrixHandler.supportedTokenClass()
 
         then:
         result == TokenClass.OPEN_BRACKET

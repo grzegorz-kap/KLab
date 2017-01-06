@@ -2,6 +2,7 @@ package com.klab.interpreter.core.code;
 
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
+import com.klab.interpreter.core.ExecutionStartInitialization;
 import com.klab.interpreter.core.events.ExecutionStartedEvent;
 import com.klab.interpreter.core.events.ScriptChangeEvent;
 import com.klab.interpreter.debug.BreakpointService;
@@ -22,7 +23,7 @@ import java.util.Optional;
 import static java.util.Objects.nonNull;
 
 @Service
-class ScriptServiceImpl implements ScriptService {
+class ScriptServiceImpl implements ScriptService, ExecutionStartInitialization {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptServiceImpl.class);
     private Map<String, Code> cachedCode = Maps.newHashMap();
     private CodeGenerator codeGenerator;
@@ -31,11 +32,11 @@ class ScriptServiceImpl implements ScriptService {
 
     @Override
     public Code getCode(String scriptName) {
-        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName));
+        return Optional.ofNullable(cachedCode.get(scriptName)).orElse(read(scriptName, true));
     }
 
-    @Subscribe
-    public void onExecutionStart(ExecutionStartedEvent executionStartedEvent) {
+    @Override
+    public void initialize() {
         cachedCode.values().forEach(code -> code.forEach(instruction -> instruction.setProfilingData(null)));
     }
 
@@ -48,26 +49,30 @@ class ScriptServiceImpl implements ScriptService {
     }
 
     @Subscribe
-    public void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
+    public synchronized void onBreakpointsUpdated(BreakpointUpdatedEvent event) {
         Code code = cachedCode.get(event.getData().getScriptId());
         if (nonNull(code)) {
             breakpointService.updateBreakpoints(code);
         }
     }
 
-    private Code read(String scriptName) {
+    @Override
+    public synchronized Code read(String scriptName, boolean cached) {
         Code code = null;
+        String name = FilenameUtils.removeExtension(scriptName);
         try {
-            code = codeGenerator.translate(scriptFileService.readScript(scriptName), () -> {
+            code = codeGenerator.translate(scriptFileService.readScript(name), () -> {
                 Code instructions = new Code();
-                instructions.setSourceId(scriptName);
+                instructions.setSourceId(name);
                 return instructions;
             });
             code.add(new Instruction(InstructionCode.SCRIPT_EXIT, 0), null);
             breakpointService.updateBreakpoints(code);
-            cachedCode.put(scriptName, code);
+            if (cached) {
+                cachedCode.put(name, code);
+            }
         } catch (IOException e) {
-            LOGGER.error("Error reading script: '{}', cause: '{}", scriptName);
+            LOGGER.error("Error reading script: '{}', cause: '{}", name);
         }
         return code;
     }

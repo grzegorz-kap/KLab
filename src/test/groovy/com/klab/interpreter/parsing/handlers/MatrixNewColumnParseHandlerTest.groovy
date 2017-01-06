@@ -12,21 +12,21 @@ class MatrixNewColumnParseHandlerTest extends Specification {
 
     def "Return correct supported TokenClass"() {
         when:
-        def supported = parseHandler.getSupportedTokenClass()
+        def supported = parseHandler.supportedTokenClass()
         then:
         supported == null
     }
 
     def "Testing handle method"() {
         given:
-        parseHandler.pCtxMgr = Mock(ParseContextManager)
+        parseHandler.parseContextManager = Mock(ParseContextManager)
         parseHandler.stackHelper = Mock(StackHelper)
 
         when:
         parseHandler.handle()
 
         then:
-        1 * parseHandler.stackHelper.stackToExpressionUntilParseClass(parseHandler.pCtxMgr, ParseClass.MATRIX_START) >> 1
-        1 * parseHandler.pCtxMgr.incrementTokenPosition(1)
+        1 * parseHandler.stackHelper.stackToExpressionUntilParseClass(parseHandler.parseContextManager, ParseClass.MATRIX_START) >> 1
+        1 * parseHandler.parseContextManager.incrementTokenPosition(1)
     }
 }

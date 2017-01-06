@@ -3,12 +3,12 @@ package com.klab.interpreter.types;
 import java.util.NoSuchElementException;
 
 public class RangeAddressIterator implements AddressIterator, Addressable {
-    private long originalStart;
-    private long start;
-    private long end;
-    private long length;
+    private int originalStart;
+    private int start;
+    private int end;
+    private int length;
 
-    public RangeAddressIterator(long start, long end) {
+    public RangeAddressIterator(int start, int end) {
         this.start = start;
         this.originalStart = start;
         this.end = end;
@@ -21,13 +21,13 @@ public class RangeAddressIterator implements AddressIterator, Addressable {
     }
 
     @Override
-    public ObjectData copy() {
-        return new RangeAddressIterator(start, end);
+    public void setTemp(boolean temp) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setTemp(boolean temp) {
-        throw new UnsupportedOperationException();
+    public ObjectData copy() {
+        return new RangeAddressIterator(start, end);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class RangeAddressIterator implements AddressIterator, Addressable {
     }
 
     @Override
-    public long getNext() {
+    public int getNext() {
         if (hasNext()) {
             return start++;
         } else {
@@ -55,7 +55,7 @@ public class RangeAddressIterator implements AddressIterator, Addressable {
     }
 
     @Override
-    public long max() {
+    public int max() {
         return end;
     }
 

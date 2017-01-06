@@ -3,9 +3,9 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<ScrollPane AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="0.0" fx:id="variableScrollPanel"
-            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+            fx:id="variableScrollPanel" xmlns="http://javafx.com/javafx/8.0.40"
             fx:controller="com.klab.gui.controller.VariableController">
     <VBox fx:id="variablesBox">
     </VBox>
