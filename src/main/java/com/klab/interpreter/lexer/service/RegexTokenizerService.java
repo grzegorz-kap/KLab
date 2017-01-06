@@ -82,7 +82,7 @@ public class RegexTokenizerService extends AbstractTokenizerService {
             }
         }
 
-        String result = tryRead(TokenMatcher.getOperatorRegex());
+        String result = tryRead(TokenMatcher.OPERATOR_REGEX);
         if (Objects.nonNull(result)) {
             addToken(result, TokenClass.OPERATOR);
         }
@@ -91,7 +91,7 @@ public class RegexTokenizerService extends AbstractTokenizerService {
 
     @Override
     public boolean tryReadOtherSymbol() {
-        String result = tryRead(TokenMatcher.getSymbolsRegex());
+        String result = tryRead(TokenMatcher.SYMBOLS_REGEX);
         if (Objects.isNull(result)) {
             return false;
         }

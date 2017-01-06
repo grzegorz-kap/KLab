@@ -15,49 +15,62 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExpressionUtils {
-    @Autowired
-    private OperatorFactory operatorFactory;
+	@Autowired
+	private OperatorFactory operatorFactory;
 
-    private ExpressionUtils() {
-    }
+	private ExpressionUtils() {
+	}
 
-    public static boolean isAssignmentTarget(Expression<ParseToken> expression) {
-        Expression<ParseToken> parent = expression.getParent();
-        if (parent == null) {
-            return false;
-        }
-        ParseToken parentToken = parent.getValue();
-        if (!(parentToken instanceof OperatorToken)) {
-            return false;
-        }
-        OperatorToken operatorToken = (OperatorToken) parentToken;
-        return operatorToken.getOperatorCode().equals(OperatorCode.ASSIGN) && parent.getChildren().get(0) == expression;
-    }
+	public static boolean isAssignmentTarget(Expression<ParseToken> expression) {
+		Expression<ParseToken> parent = expression.getParent();
+		if (parent == null) {
+			return false;
+		}
+		ParseToken parentToken = parent.getValue();
+		if (!(parentToken instanceof OperatorToken)) {
+			return false;
+		}
+		OperatorToken operatorToken = (OperatorToken) parentToken;
+		return operatorToken.getOperatorCode().equals(OperatorCode.ASSIGN) && parent.getChildren().get(0) == expression;
+	}
 
-    public boolean isUnaryOperator(ParseContextManager parseContextManager, int index) {
-        String lexeme = parseContextManager.tokenAt(index).getLexeme();
-        if (!lexeme.matches("[-+]")) {
-            return false;
-        }
+	public boolean isUnaryOperator(ParseContextManager parseContextManager, int index) {
+		String lexeme = parseContextManager.tokenAt(index).getLexeme();
+		if (!lexeme.matches("[-+]")) {
+			return false;
+		}
 
-        Token prev = parseContextManager.tokenAt(index - 1);
-        Token next = parseContextManager.tokenAt(index + 1);
-        TokenClass previousClass = prev == null ? null : prev.getTokenClass();
-        TokenClass nextClass = next == null ? null : next.getTokenClass();
-        if (previousClass == null || previousClass.isUnaryOpPrecursor()) {
-            return true;
-        }
+		Token prev = parseContextManager.tokenAt(index - 1);
+		Token next = parseContextManager.tokenAt(index + 1);
+		TokenClass previousClass = prev == null ? null : prev.getTokenClass();
+		TokenClass nextClass = next == null ? null : next.getTokenClass();
+		if (previousClass == null || previousClass.isUnaryOpPrecursor()) {
+			return true;
+		}
 
-        if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
-            if (previousClass == TokenClass.SPACE && nextClass != TokenClass.SPACE || previousClass == TokenClass.OPEN_BRACKET) {
-                return true;
-            }
-        }
-        if (TokenClass.OPERATOR == previousClass) {
-            OperatorToken previous = operatorFactory.getOperator(prev);
-            return previous.getArgumentsNumber() > 1 || previous.getAssociativity() == OperatorAssociativity.RIGHT_TO_LEFT;
-        }
+		if (parseContextManager.getBalanceContext().isBalanceType(BalanceType.INSIDE_MATRIX)) {
+			if (previousClass == TokenClass.SPACE && nextClass != TokenClass.SPACE
+					|| previousClass == TokenClass.OPEN_BRACKET) {
+				return true;
+			}
+		}
+		if (checkForOperator(prev)) {
+			return true;
+		}
 
-        return false;
-    }
+		if (TokenClass.SPACE == previousClass && checkForOperator(parseContextManager.tokenAt(index - 2))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean checkForOperator(Token token) {
+		if (token == null || token.getTokenClass() != TokenClass.OPERATOR) {
+			return false;
+		}
+		OperatorToken previous = operatorFactory.getOperator(token);
+		return previous.getArgumentsNumber() > 1 || previous.getAssociativity() == OperatorAssociativity.RIGHT_TO_LEFT;
+
+	}
 }

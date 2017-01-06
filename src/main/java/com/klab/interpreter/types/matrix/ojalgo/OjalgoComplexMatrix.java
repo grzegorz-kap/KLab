@@ -14,9 +14,12 @@ import org.ojalgo.scalar.ComplexNumber;
 import static com.klab.interpreter.commons.exception.InterpreterCastException.COMPLEX_LOGICALS;
 
 public class OjalgoComplexMatrix extends OjalgoAbstractMatrix<ComplexNumber> implements Addressable {
-    private static final Negable.UnaryNagate<ComplexNumber> NEGATE_FUN = arg -> {
-        return ComplexNumber.valueOf(arg.getReal() != 0 || arg.getImaginary() != 0 ? 0.0D : 1.D);
-    };
+    private static final Negable.UnaryNagate<ComplexNumber> NEGATE_FUN = new Negable.UnaryNagate<ComplexNumber>() {
+		@Override
+		public ComplexNumber invoke(ComplexNumber arg) {
+		    return ComplexNumber.valueOf(arg.getReal() != 0 || arg.getImaginary() != 0 ? 0.0D : 1.D);
+		}
+	};
 
     public OjalgoComplexMatrix(MatrixStore<ComplexNumber> store) {
         super(NumericType.COMPLEX_MATRIX, OjalgoComplexMatrix::new);

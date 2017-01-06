@@ -1,31 +1,29 @@
 package com.klab.interpreter.parsing.service;
 
-import com.klab.interpreter.lexer.model.TokenClass;
-import com.klab.interpreter.lexer.model.TokenList;
-import com.klab.interpreter.parsing.handlers.ParseHandler;
-import com.klab.interpreter.parsing.model.ParseContext;
-import com.klab.interpreter.parsing.model.ParseToken;
-import com.klab.interpreter.parsing.model.expression.Expression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import static com.klab.interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY;
+import static java.util.Objects.nonNull;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.klab.interpreter.parsing.model.expression.Expression.PRINT_PROPERTY_KEY;
-import static java.util.Objects.nonNull;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.klab.interpreter.lexer.model.TokenClass;
+import com.klab.interpreter.lexer.model.TokenList;
+import com.klab.interpreter.parsing.handlers.ParseHandler;
+import com.klab.interpreter.parsing.model.ParseContext;
+import com.klab.interpreter.parsing.model.ParseToken;
+import com.klab.interpreter.parsing.model.expression.Expression;
 
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ParserServiceImpl implements ParserService, InitializingBean {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParserServiceImpl.class);
     private ParseContext parseContext;
     private ParseContextManager parseContextManager;
     private ParseHandler[] parseHandlers = new ParseHandler[TokenClass.values().length];
