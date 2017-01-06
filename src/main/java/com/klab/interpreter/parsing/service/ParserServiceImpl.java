@@ -70,9 +70,7 @@ public class ParserServiceImpl implements ParserService, InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         Stream.of(parseHandlers).filter(Objects::nonNull)
-                .forEach(handler -> {
-                    handler.setParseContextManager(parseContextManager);
-                });
+                .forEach(handler -> handler.setParseContextManager(parseContextManager));
     }
 
     @Override
@@ -84,7 +82,7 @@ public class ParserServiceImpl implements ParserService, InitializingBean {
 
     private void setFinishProperties() {
         boolean printFlag = parseContext.isInstructionPrint();
-        parseContext.forEachExpression(parseTokenExpression -> parseTokenExpression.setProperty(PRINT_PROPERTY_KEY, printFlag));
+        parseContext.forEachExpression(expression -> expression.setProperty(PRINT_PROPERTY_KEY, printFlag));
     }
 
     private void finishParseStack() {
