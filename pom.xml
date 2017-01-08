@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.klab</groupId>
+	<artifactId>interpreter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<apache.commons.version>3.4</apache.commons.version>
+		<groovy.version>2.4.4</groovy.version>
+		<spock.version>1.0-groovy-2.4</spock.version>
+		<cglib.version>3.2.1</cglib.version>
+		<objenesis.version>2.2</objenesis.version>
+		<makeiteasy.version>4.0.0</makeiteasy.version>
+		<spring.framework.version>4.2.5.RELEASE</spring.framework.version>
+		<javafx.plugin.version>8.1.4</javafx.plugin.version>
+		<slf4j.version>1.7.12</slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
+		<richtextfx.version>0.7-M1</richtextfx.version>
+		<ojalgo.version>40.0.0</ojalgo.version>
+		<junit.version>4.12</junit.version>
+		<guava.version>19.0</guava.version>
+		<commons.version>2.4</commons.version>
+	</properties>
+
+
+	<repositories>
+		<repository>
+			<id>jzy3d-snapshots</id>
+			<name>Jzy3d Snapshots</name>
+			<url>http://maven.jzy3d.org/snapshots</url>
+		</repository>
+		<repository>
+			<id>jzy3d-releases</id>
+			<name>Jzy3d Snapshots</name>
+			<url>http://maven.jzy3d.org/releases</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+	</dependencies>
+
+</project>
