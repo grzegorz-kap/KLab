@@ -90,6 +90,8 @@ public class AssignPostParseHandler extends AbstractPostParseHandler implements 
                 instructions.subList(0, instructions.size() - 1).forEach(instruction -> instruction.setPrint(false));
             }
         } else if (left.getValue().getParseClass().equals(ParseClass.CALL)) {
+            expression.getChildren().get(1).setProperty(Expression.ANS_PROPERTY_KEY, false);
+            expression.getChildren().get(1).setProperty(Expression.PRINT_PROPERTY_KEY, false);
             code.add(expressionTranslator.translate(expression.getChildren().get(1)));
             createModifyAssign(code, left, expression.getProperty(Expression.PRINT_PROPERTY_KEY), expressionTranslator);
         } else {
@@ -102,7 +104,11 @@ public class AssignPostParseHandler extends AbstractPostParseHandler implements 
         if (target.getChildren().size() < 1 || target.getChildren().size() > 2) {
             throw new RuntimeException();
         }
-        target.getChildren().forEach(e -> code.add(expressionTranslator.translate(e)));
+        target.getChildren().forEach(expression -> {
+            expression.setProperty(Expression.ANS_PROPERTY_KEY, false);
+            expression.setProperty(Expression.PRINT_PROPERTY_KEY, false);
+            code.add(expressionTranslator.translate(expression));
+        });
         // TODO check if variable is defined
         CallToken var = (CallToken) target.getValue();
         CodeAddress address = target.getValue().getAddress();
