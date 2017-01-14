@@ -82,10 +82,10 @@ public class ScriptTabFactoryImpl implements ScriptTabFactory {
             }
             if (data instanceof Sizeable) {
                 Sizeable sizeable = (Sizeable) data;
-                if (sizeable.length() <= 5) {
+                if (sizeable.getRows() <= 10 && sizeable.getColumns() <= 10) {
                     return result + "\n" + data.toString();
                 } else {
-                    return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getCells());
+                    return String.format("%s <%d x %d>", result, sizeable.getRows(), sizeable.getColumns());
                 }
             }
             return result + data.toString();
